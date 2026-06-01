@@ -10,13 +10,14 @@ export default function Dashboard() {
     metrics: [],
   });
   const [loading, setLoading] = useState(true);
+  const [activeTab, setActiveTab] = useState("projects");
   const navigate = useNavigate();
 
   useEffect(() => {
-    // 🛡️ CONTROL DE ACCESO FRONTEND: Si no hay token, te expulsa al login
+    // 🛡️ CONTROL DE ACCESO: Si no hay token, te expulsa al login de admin
     const token = localStorage.getItem("token_portfolio");
     if (!token) {
-      navigate("/login");
+      navigate("/admin-login");
       return;
     }
 
@@ -39,55 +40,211 @@ export default function Dashboard() {
   }, [navigate]);
 
   const handleLogout = () => {
-    localStorage.removeItem("token_portfolio"); // Borra el token
-    navigate("/login");
+    localStorage.removeItem("token_portfolio");
+    navigate("/admin-login");
   };
 
-  if (loading) return <p>Cargando panel de control...</p>;
+  if (loading) {
+    return (
+      <div className="admin-page-container">
+        <p style={{ color: "var(--text-sub)" }}>Cargando panel de control...</p>
+      </div>
+    );
+  }
 
   return (
-    <div style={{ padding: "30px" }}>
-      <div style={{ display: "flex", justifyContent: "space-between" }}>
-        <h1>Panel de Administración 🔐</h1>
+    <div className="dashboard-page-container">
+      {/* BARRA SUPERIOR */}
+      <header className="dashboard-header">
+        <div>
+          <h1 className="admin-title" style={{ fontSize: "2rem" }}>
+            Panel de Administración 🔐
+          </h1>
+          <p className="admin-subtitle">
+            Gestiona las bases de datos de tu portafolio en tiempo real
+          </p>
+        </div>
+        <button onClick={handleLogout} className="dashboard-logout-btn">
+          Cerrar Sesión 🚪
+        </button>
+      </header>
+
+      {/* BOTONES DE PESTAÑAS (TABS) */}
+      <div className="dashboard-tabs">
         <button
-          onClick={handleLogout}
-          style={{ backgroundColor: "red", color: "white" }}
+          onClick={() => setActiveTab("projects")}
+          className={`dashboard-tab-btn ${activeTab === "projects" ? "active" : ""}`}
         >
-          Cerrar Sesión
+          📁 Proyectos ({data.projects.length})
+        </button>
+        <button
+          onClick={() => setActiveTab("nodes")}
+          className={`dashboard-tab-btn ${activeTab === "nodes" ? "active" : ""}`}
+        >
+          🌐 Nodos ({data.nodes.length})
+        </button>
+        <button
+          onClick={() => setActiveTab("servers")}
+          className={`dashboard-tab-btn ${activeTab === "servers" ? "active" : ""}`}
+        >
+          🖥️ Servidores ({data.servers.length})
+        </button>
+        <button
+          onClick={() => setActiveTab("metrics")}
+          className={`dashboard-tab-btn ${activeTab === "metrics" ? "active" : ""}`}
+        >
+          📊 Métricas ({data.metrics.length})
         </button>
       </div>
 
-      {/* Ejemplo: Tabla para ver Proyectos */}
-      <h2>Gestión de Proyectos ({data.projects.length})</h2>
-      <table
-        border="1"
-        cellPadding="10"
-        style={{ width: "100%", marginBottom: "30px" }}
-      >
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Título</th>
-            <th>Acciones</th>
-          </tr>
-        </thead>
-        <tbody>
-          {data.projects.map((p) => (
-            <tr key={p.id}>
-              <td>{p.id}</td>
-              <td>{p.title}</td>
-              <td>
-                <button style={{ marginRight: "10px" }}>Editar ✏️</button>
-                <button style={{ backgroundColor: "orange" }}>
-                  Eliminar 🗑️
-                </button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      {/* PANEL DE TABLAS */}
+      <div className="dashboard-panel-card">
+        <div className="dashboard-table-wrapper">
+          {/* TABLA DE PROYECTOS */}
+          {activeTab === "projects" && (
+            <div>
+              <div className="dashboard-table-title-area">
+                <h2 className="admin-title" style={{ fontSize: "1.25rem" }}>
+                  Base de Datos: Proyectos
+                </h2>
+                <button className="admin-btn-add">+ Añadir Proyecto</button>
+              </div>
+              <table className="dashboard-table">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Título</th>
+                    <th style={{ textAlign: "right" }}>Acciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {data.projects.map((p) => (
+                    <tr key={p.id}>
+                      <td>{p.id}</td>
+                      <td
+                        style={{ fontWeight: "600", color: "var(--text-main)" }}
+                      >
+                        {p.title}
+                      </td>
+                      <td style={{ textAlign: "right" }}>
+                        <button className="admin-btn-edit">Editar ✏️</button>
+                        <button className="admin-btn-delete">
+                          Eliminar 🗑️
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
 
-      {/* Puedes replicar la misma estructura de tabla para nodes, servers y metrics abajo */}
+          {/* TABLA DE NODOS */}
+          {activeTab === "nodes" && (
+            <div>
+              <div className="dashboard-table-title-area">
+                <h2 className="admin-title" style={{ fontSize: "1.25rem" }}>
+                  Base de Datos: Nodos
+                </h2>
+                <button className="admin-btn-add">+ Añadir Nodo</button>
+              </div>
+              <table className="dashboard-table">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Nombre del Nodo</th>
+                    <th style={{ textAlign: "right" }}>Acciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {data.nodes.map((n) => (
+                    <tr key={n.id}>
+                      <td>{n.id}</td>
+                      <td>{n.name || "Nodo Activo"}</td>
+                      <td style={{ textAlign: "right" }}>
+                        <button className="admin-btn-edit">Editar ✏️</button>
+                        <button className="admin-btn-delete">
+                          Eliminar 🗑️
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+
+          {/* TABLA DE SERVIDORES */}
+          {activeTab === "servers" && (
+            <div>
+              <div className="dashboard-table-title-area">
+                <h2 className="admin-title" style={{ fontSize: "1.25rem" }}>
+                  Base de Datos: Servidores
+                </h2>
+                <button className="admin-btn-add">+ Añadir Servidor</button>
+              </div>
+              <table className="dashboard-table">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Host / IP</th>
+                    <th style={{ textAlign: "right" }}>Acciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {data.servers.map((s) => (
+                    <tr key={s.id}>
+                      <td>{s.id}</td>
+                      <td>{s.host || s.ip || "Servidor VPS"}</td>
+                      <td style={{ textAlign: "right" }}>
+                        <button className="admin-btn-edit">Editar ✏️</button>
+                        <button className="admin-btn-delete">
+                          Eliminar 🗑️
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+
+          {/* TABLA DE MÉTRICAS */}
+          {activeTab === "metrics" && (
+            <div>
+              <div className="dashboard-table-title-area">
+                <h2 className="admin-title" style={{ fontSize: "1.25rem" }}>
+                  Base de Datos: Métricas
+                </h2>
+                <button className="admin-btn-add">+ Registrar Métrica</button>
+              </div>
+              <table className="dashboard-table">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Uso CPU / Tipo</th>
+                    <th style={{ textAlign: "right" }}>Acciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {data.metrics.map((m) => (
+                    <tr key={m.id}>
+                      <td>{m.id}</td>
+                      <td>{m.label || m.cpu || "Métrica de Rendimiento"}</td>
+                      <td style={{ textAlign: "right" }}>
+                        <button className="admin-btn-edit">Editar ✏️</button>
+                        <button className="admin-btn-delete">
+                          Eliminar 🗑️
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </div>
+      </div>
     </div>
   );
 }
