@@ -1,11 +1,11 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import MainLayout from './components/layout/MainLayout'
-import Home from './pages/Home'
-import About from './pages/About'
-import Projects from './pages/Projects'
-import Automation from './pages/Automation'
-import Infrastructure from './pages/Infrastructure'
-import Contact from './pages/Contact'
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import MainLayout from "./components/layout/MainLayout";
+import Home from "./pages/Home";
+import About from "./pages/About";
+import Projects from "./pages/Projects";
+import Automation from "./pages/Automation";
+import Infrastructure from "./pages/Infrastructure";
+import Contact from "./pages/Contact";
 
 function App() {
   return (
@@ -23,10 +23,12 @@ function App() {
           <Route path="automatizacion" element={<Automation />} />
           <Route path="infraestructura" element={<Infrastructure />} />
           <Route path="contacto" element={<Contact />} />
+          <Route path="/admin-login" element={<Login />} />
+          <Route path="/admin/dashboard" element={<Dashboard />} />
         </Route>
       </Routes>
     </BrowserRouter>
-  )
+  );
 }
 
-export default App
+export default App;

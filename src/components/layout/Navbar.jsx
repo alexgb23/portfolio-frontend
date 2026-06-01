@@ -1,5 +1,5 @@
-import { NavLink, Link } from 'react-router-dom'
-import { FaMoon, FaSun, FaArrowRight } from 'react-icons/fa'
+import { NavLink, Link } from "react-router-dom";
+import { FaMoon, FaSun, FaArrowRight } from "react-icons/fa";
 
 function Navbar({ isDarkMode, setIsDarkMode }) {
   return (
@@ -10,20 +10,41 @@ function Navbar({ isDarkMode, setIsDarkMode }) {
         </Link>
 
         <div className="nav-links">
-          <NavLink to="/sobre-mi" className={({ isActive }) => (isActive ? 'active' : '')}>
+          <NavLink
+            to="/sobre-mi"
+            className={({ isActive }) => (isActive ? "active" : "")}
+          >
             Sobre mí
           </NavLink>
-          <NavLink to="/proyectos" className={({ isActive }) => (isActive ? 'active' : '')}>
+          <NavLink
+            to="/proyectos"
+            className={({ isActive }) => (isActive ? "active" : "")}
+          >
             Proyectos
           </NavLink>
-          <NavLink to="/automatizacion" className={({ isActive }) => (isActive ? 'active' : '')}>
+          <NavLink
+            to="/automatizacion"
+            className={({ isActive }) => (isActive ? "active" : "")}
+          >
             Automatización
           </NavLink>
-          <NavLink to="/infraestructura" className={({ isActive }) => (isActive ? 'active' : '')}>
+          <NavLink
+            to="/infraestructura"
+            className={({ isActive }) => (isActive ? "active" : "")}
+          >
             Infraestructura
           </NavLink>
-          <NavLink to="/contacto" className={({ isActive }) => (isActive ? 'active' : '')}>
+          <NavLink
+            to="/contacto"
+            className={({ isActive }) => (isActive ? "active" : "")}
+          >
             Contacto
+          </NavLink>
+          <NavLink
+            to="/admin-login"
+            className={({ isActive }) => (isActive ? "active" : "")}
+          >
+            Admin
           </NavLink>
         </div>
 
@@ -42,7 +63,7 @@ function Navbar({ isDarkMode, setIsDarkMode }) {
         </div>
       </div>
     </nav>
-  )
+  );
 }
 
-export default Navbar
+export default Navbar;
