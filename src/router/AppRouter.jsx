@@ -6,6 +6,8 @@ import Projects from "./pages/Projects";
 import Infrastructure from "./pages/Infrastructure";
 import Automation from "./pages/Automation";
 import Contact from "./pages/Contact";
+import Login from "./pages/Login";
+import Dashboard from "./pages/Dashboard";
 
 // 1. Importa tus nuevas páginas de administración
 import Login from "./pages/Login";

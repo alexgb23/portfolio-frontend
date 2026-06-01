@@ -6,6 +6,8 @@ import Projects from "./pages/Projects";
 import Automation from "./pages/Automation";
 import Infrastructure from "./pages/Infrastructure";
 import Contact from "./pages/Contact";
+import Login from "./pages/Login";
+import Dashboard from "./pages/Dashboard";
 
 function App() {
   return (
