@@ -75,6 +75,21 @@ export async function getMetrics() {
 
 // 🔴 NUEVAS PETICIONES PRIVADAS Y AUTENTICACIÓN
 
+// Añade esto al final de tu api.js junto a tus otras funciones privadas
+
+// Función para comprobar en tiempo real si el token de la sesión sigue activo
+export async function chequearAutenticacion() {
+  try {
+    const response = await apiCliente.get("/api/verify-auth");
+    return response.data; // Retorna los datos del usuario si el token es válido
+  } catch (error) {
+    // Si da error 401, el interceptor de respuesta de Axios lo borrará y te redirigirá a /login automáticamente
+    throw new Error(buildAxiosErrorMessage("Auth Verification", error), {
+      cause: error,
+    });
+  }
+}
+
 // Función para iniciar sesión y guardar el token
 export async function loginAdmin(email, password) {
   try {
