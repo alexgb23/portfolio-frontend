@@ -7,27 +7,27 @@
 html {
   scroll-behavior: smooth;
 }
-
 :root[data-theme="dark"] {
-  --bg-app: #080a10;
-  --bg-app-rgb: 8, 10, 16;
-  --bg-elevated: #0b0f17;
-  --bg-card: rgba(15, 18, 29, 0.72);
-  --bg-card-2: rgba(20, 26, 40, 0.92);
-  --bg-soft: rgba(255, 255, 255, 0.03);
-  --border: rgba(255, 255, 255, 0.08);
-  --border-strong: rgba(255, 255, 255, 0.14);
-  --text-main: #f3f4f6;
+  --bg-app: #0f131a;
+  --bg-app-rgb: 15, 19, 26;
+  --bg-elevated: #151a24;
+  --bg-card: rgba(21, 26, 36, 0.8);
+  --bg-card-2: rgba(28, 35, 49, 0.95);
+  --bg-soft: rgba(255, 255, 255, 0.04);
+  --border: rgba(255, 255, 255, 0.06);
+  --border-strong: rgba(255, 255, 255, 0.12);
+  --text-main: #f8fafc;
   --text-soft: #cbd5e1;
   --text-sub: #94a3b8;
-  --accent: #00d9ff;
-  --accent-2: #2563eb;
+  --accent: #38bdf8;
+  --accent-2: #3b82f6;
   --accent-green: #10b981;
-  --accent-glow: rgba(0, 217, 255, 0.14);
-  --shadow-sm: 0 8px 24px rgba(0, 0, 0, 0.16);
-  --shadow-md: 0 16px 50px rgba(0, 0, 0, 0.22);
-  --shadow-lg: 0 24px 80px rgba(0, 0, 0, 0.28);
-  --terminal-bg: #05070b;
+  --accent-glow: rgba(56, 189, 248, 0.12);
+  --shadow-sm: 0 8px 32px rgba(0, 0, 0, 0.24);
+  --shadow-md: 0 16px 48px rgba(0, 0, 0, 0.32);
+  --shadow-lg: 0 24px 64px rgba(0, 0, 0, 0.4);
+  --terminal-bg: #161b26;
+  --console-bg: #1c2331; /* Aclarado para que resalte del fondo en modo oscuro */
   --radius-sm: 12px;
   --radius-md: 18px;
   --radius-lg: 26px;
@@ -38,22 +38,23 @@ html {
   --bg-app: #f4f8fb;
   --bg-app-rgb: 244, 248, 251;
   --bg-elevated: #ffffff;
-  --bg-card: rgba(255, 255, 255, 0.82);
-  --bg-card-2: rgba(238, 244, 251, 0.94);
-  --bg-soft: rgba(15, 23, 42, 0.03);
-  --border: rgba(15, 23, 42, 0.08);
-  --border-strong: rgba(15, 23, 42, 0.14);
+  --bg-card: rgba(255, 255, 255, 0.94);
+  --bg-card-2: rgba(238, 244, 251, 0.98);
+  --bg-soft: rgba(15, 23, 42, 0.05);
+  --border: rgba(15, 23, 42, 0.09);
+  --border-strong: rgba(15, 23, 42, 0.16);
   --text-main: #0f172a;
-  --text-soft: #334155;
-  --text-sub: #64748b;
+  --text-soft: #27354a;
+  --text-sub: #52637a;
   --accent: #0ea5e9;
-  --accent-2: #2563eb;
+  --accent-2: #1d4ed8;
   --accent-green: #16a34a;
-  --accent-glow: rgba(14, 165, 233, 0.12);
+  --accent-glow: rgba(14, 165, 233, 0.15);
   --shadow-sm: 0 10px 25px rgba(15, 23, 42, 0.05);
   --shadow-md: 0 20px 55px rgba(15, 23, 42, 0.08);
   --shadow-lg: 0 30px 80px rgba(15, 23, 42, 0.12);
-  --terminal-bg: #0f172a;
+  --terminal-bg: #ffffff;
+  --console-bg: #1e2530;
   --radius-sm: 12px;
   --radius-md: 18px;
   --radius-lg: 26px;
@@ -342,9 +343,11 @@ button {
   padding: 10px 16px;
   border-radius: 999px;
   border: 1px solid var(--border);
-  background: var(--bg-card);
+  background: var(
+    --bg-elevated
+  ); /* Forzado a fondo sólido para cortar transparencias */
   backdrop-filter: blur(10px);
-  color: var(--text-soft);
+  color: var(--text-soft); /* Utiliza el nuevo gris oscuro ultra-legible */
   font-size: 0.92rem;
   font-weight: 600;
 }
@@ -482,13 +485,11 @@ button {
 .visual-card,
 .contact-card,
 .infra-block,
-.automation-band,
-.neo-terminal {
+.automation-band {
   background: var(--terminal-bg);
-  border-radius: 18px;
-  border: 1px solid var(--border);
-  box-shadow: var(--shadow);
+  color: var(--text-main);
 }
+
 .card,
 .expertise-card,
 .visual-card,
@@ -860,6 +861,14 @@ button {
 .neo-terminal {
   border-radius: var(--radius-md);
   overflow: hidden;
+}
+.neo-terminal,
+.term-content-area {
+  background: var(
+    --console-bg,
+    #05070b
+  ); /* Si estás en modo claro lee #1e2530. Si estás en modo oscuro (donde no creaste la variable) usa por defecto el negro #05070b */
+  color: #ffffff !important; /* El texto dentro de la consola se queda blanco siempre */
 }
 
 .term-top-bar {
