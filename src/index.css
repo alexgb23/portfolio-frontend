@@ -290,60 +290,84 @@ button {
   box-shadow: var(--shadow-lg);
 }
 
-/* HERO */
+/* ==========================================================================
+   HERO SECTION 
+   ========================================================================== */
+
 .hero-centered-section {
   padding: 112px 0 84px;
   border-bottom: 1px solid var(--border);
 }
 
+/* El contenedor principal distribuye las dos zonas en vertical */
 .hero-center-content {
   display: flex;
   flex-direction: column;
+  width: 100%;
+}
+
+/* --- BLOQUE SUPERIOR: TÍTULO IZQUIERDA / FOTO DERECHA --- */
+.hero-top-row {
+  display: flex;
+  flex-direction: row; /* H1 a la izquierda, avatar a la derecha */
+  align-items: center; /* Alinea verticalmente el centro de la foto con el H1 */
+  justify-content: space-between;
+  margin-bottom: 80px; /* Separación con la descripción inferior */
+}
+
+/* Controla el bloque izquierdo para dejar el espacio del centro libre */
+.hero-title-container {
+  flex: 1; /* Toma el espacio disponible de forma limpia */
+  max-width: 65%;
+}
+
+.hero-main-title {
+  margin: 0;
+  font-size: clamp(2.5rem, 5vw, 5.2rem);
+  line-height: 1.05;
+  letter-spacing: -0.04em;
+  color: var(--text-main);
+  text-align: left;
+  text-wrap: balance;
+}
+
+/* EL BLOQUE DE LA FOTO (DERECHA) */
+.avatar-block {
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  text-align: center;
+  flex-shrink: 0; /* Evita que la foto se encoja en pantallas medianas */
+
+  /* CORRECCIÓN: Quitamos el 80% y fijamos el ancho real de tu círculo animado */
+  width: 350px; /* Al medir 350px exactos, 'space-between' calcula el medio perfectamente */
 }
 
 .avatar-wrapper {
-  width: 160px;
-  height: 160px;
+  width: 350px;
+  height: 350px;
   background: linear-gradient(45deg, var(--accent-green), var(--accent));
-  padding: 3px;
+  padding: 4px;
   border-radius: 60% 40% 40% 60% / 60% 45% 55% 40%;
   animation: morphing 8s ease-in-out infinite alternate;
-  margin-bottom: 28px;
-  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.24);
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
 }
 
 .profile-avatar {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border-radius: 60% 40% 40% 60% / 60% 45% 55% 40%;
-  animation: morphing 8s ease-in-out infinite alternate;
+  border-radius: inherit;
+  animation: inherit;
   background: var(--bg-app);
 }
 
-@keyframes morphing {
-  0% {
-    border-radius: 60% 40% 40% 60% / 60% 45% 55% 40%;
-  }
-  50% {
-    border-radius: 45% 55% 50% 50% / 50% 55% 45% 50%;
-  }
-  100% {
-    border-radius: 55% 45% 60% 40% / 45% 65% 35% 55%;
-  }
-}
-
-.hero-text-block {
-  max-width: 900px;
-}
-
+/* El span centrado exactamente debajo de la foto */
 .hero-eyebrow {
   display: inline-block;
-  margin-bottom: 14px;
+  margin-top: 20px;
   padding: 8px 14px;
-  border-radius: 999px;
+  border-radius: var(--radius-sm);
   border: 1px solid var(--border);
   background: var(--bg-soft);
   color: var(--accent);
@@ -351,15 +375,17 @@ button {
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.14em;
+  white-space: nowrap;
+  margin-top: 36px;
 }
 
-.hero-text-block h1 {
-  margin: 0 0 18px;
-  font-size: clamp(2.5rem, 5vw, 5.2rem);
-  line-height: 0.98;
-  letter-spacing: -0.06em;
-  max-width: 14ch;
-  margin-inline: auto;
+/* --- BLOQUE INFERIOR: TOTALMENTE AL CENTRO --- */
+.hero-bottom-block {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centra todo su contenido de forma estricta */
+  text-align: center;
 }
 
 .hero-text {
@@ -373,7 +399,7 @@ button {
 .hero-highlights {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: center; /* Vuelve a centrar los tags */
   gap: 12px;
   margin-bottom: 28px;
 }
@@ -386,11 +412,9 @@ button {
   padding: 10px 16px;
   border-radius: 999px;
   border: 1px solid var(--border);
-  background: var(
-    --bg-elevated
-  ); /* Forzado a fondo sólido para cortar transparencias */
+  background: var(--bg-elevated);
   backdrop-filter: blur(10px);
-  color: var(--text-soft); /* Utiliza el nuevo gris oscuro ultra-legible */
+  color: var(--text-soft);
   font-size: 0.92rem;
   font-weight: 600;
 }
@@ -398,7 +422,7 @@ button {
 .hero-actions {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: center; /* Vuelve a centrar los botones */
   gap: 14px;
   margin-bottom: 24px;
 }
@@ -406,7 +430,7 @@ button {
 .social-center-links {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: center; /* Vuelve a centrar las redes */
   gap: 14px;
 }
 
@@ -417,7 +441,7 @@ button {
   gap: 10px;
   min-height: 48px;
   padding: 12px 18px;
-  border-radius: 14px;
+  border-radius: var(--radius-sm);
   border: 1px solid var(--border);
   background: var(--bg-card);
   backdrop-filter: blur(10px);
@@ -436,6 +460,19 @@ button {
 
 .alt-btn {
   background: transparent;
+}
+
+/* Animación de la foto */
+@keyframes morphing {
+  0% {
+    border-radius: 60% 40% 40% 60% / 60% 45% 55% 40%;
+  }
+  50% {
+    border-radius: 45% 55% 50% 50% / 50% 55% 45% 50%;
+  }
+  100% {
+    border-radius: 55% 45% 60% 40% / 45% 65% 35% 55%;
+  }
 }
 
 /* SECCIONES */
@@ -1338,66 +1375,91 @@ button {
     transform: rotate(360deg);
   }
 }
+/* ==========================================================================
+   RESPONSIVO (Ordenado de Mayor a Menor)
+   ========================================================================== */
 
-/* RESPONSIVE */
+/* 1. Pantallas grandes de escritorio (A partir de 992px) */
 @media (min-width: 992px) {
   .infra-preview-grid {
     grid-template-columns: 1fr 1fr;
   }
 }
 
+/* 2. Tablets y pantallas medianas (Hasta 960px) */
 @media (max-width: 960px) {
-  /* ==========================================================================
-   CORRECCIÓN DEL MENÚ MÓVIL
-   ========================================================================== */
-  @media (max-width: 960px) {
-    .mobile-menu-btn {
-      display: inline-flex; /* El botón solo aparece aquí */
-    }
-
-    .nav-links {
-      display: flex !important; /* Forzamos flex en lugar de none para la animación */
-      flex-direction: column;
-      position: fixed;
-      top: 88px; /* Ajustado al alto exacto de tu navbar */
-      left: 0;
-      width: 100%;
-      background: var(--bg-card);
-      backdrop-filter: blur(18px) saturate(140%);
-      border-bottom: 1px solid var(--border);
-      padding: 30px 24px;
-      gap: 24px;
-      align-items: flex-start;
-
-      /* Efecto de cortina para abrir y cerrar */
-      transform: translateY(-150%);
-      opacity: 0;
-      pointer-events: none;
-      transition:
-        transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-        opacity 0.25s ease;
-      z-index: 999;
-    }
-
-    /* Clase que inyecta JS al pulsar la hamburguesa o la X */
-    .nav-links.active {
-      transform: translateY(0);
-      opacity: 1;
-      pointer-events: auto;
-    }
-
-    /* Ajuste de enlaces en móvil para que ocupen todo el ancho y sea fácil pulsar */
-    .nav-links a {
-      width: 100%;
-      font-size: 1.1rem;
-      padding: 6px 0;
-    }
+  /* MENÚ MÓVIL */
+  .mobile-menu-btn {
+    display: inline-flex;
   }
 
-  .hero-text-block h1 {
-    font-size: clamp(2rem, 8vw, 3.2rem);
+  .nav-links {
+    display: flex !important;
+    flex-direction: column;
+    position: fixed;
+    top: 88px;
+    left: 0;
+    width: 100%;
+    background: var(--bg-card);
+    backdrop-filter: blur(18px) saturate(140%);
+    border-bottom: 1px solid var(--border);
+    padding: 30px 24px;
+    gap: 24px;
+    align-items: flex-start;
+    transform: translateY(-150%);
+    opacity: 0;
+    pointer-events: none;
+    transition:
+      transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+      opacity 0.25s ease;
+    z-index: 999;
   }
 
+  .nav-links.active {
+    transform: translateY(0);
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .nav-links a {
+    width: 100%;
+    font-size: 1.1rem;
+    padding: 6px 0;
+  }
+
+  /* SECCIÓN HERO (FOTO Y TITULO) */
+  .hero-top-row {
+    flex-direction: column; /* Apila las dos columnas en vertical */
+    text-align: center;
+    gap: 32px; /* Espacio de separación vertical entre H1 y Foto */
+    margin-bottom: 48px; /* Ajustamos el espacio con la descripción en móvil */
+  }
+
+  .hero-title-container {
+    max-width: 100%;
+    width: 100%;
+  }
+
+  .avatar-block {
+    width: 100%;
+    align-items: center; /* Centra la foto y el eyebrow horizontalmente */
+  }
+
+  .hero-main-title {
+    text-align: center;
+  }
+
+  .avatar-wrapper {
+    width: 260px;
+    height: 260px;
+  }
+
+  .hero-eyebrow {
+    white-space: normal;
+    margin-top: 20px;
+  }
+
+  /* ELEMENTOS DE INTERFAZ GENERALES */
   .contact-grid {
     grid-template-columns: 1fr;
   }
@@ -1414,6 +1476,7 @@ button {
   }
 }
 
+/* 3. Smartphones y pantallas pequeñas (Hasta 720px) */
 @media (max-width: 720px) {
   body {
     padding-top: 82px;
@@ -1436,15 +1499,14 @@ button {
     padding: 76px 0 48px;
   }
 
+  /* CORRECCIÓN: Ajustamos el tamaño a 240px de forma limpia sin romper la animación blob */
   .avatar-wrapper {
-    width: 140px;
-    height: 140px;
-    border-radius: 26px;
+    width: 240px;
+    height: 240px;
+    margin-bottom: 0; /* Quitado el margen para que respete el diseño del bloque */
   }
 
-  .profile-avatar {
-    border-radius: 22px;
-  }
+  /* Quitamos el .profile-avatar de aquí porque rompería tu animación morphing si cambia de radio */
 
   .hero-text {
     font-size: 1rem;
@@ -1454,10 +1516,14 @@ button {
   .hero-highlights,
   .hero-actions {
     gap: 10px;
+    width: 100%; /* Forzamos a ocupar el ancho total del contenedor */
   }
 
+  /* BOTONES AL 100% DE ANCHO EN MÓVIL (Estilo nativo app) */
   .social-btn,
-  .hero-highlights span {
+  .hero-highlights span,
+  .nav-cta,
+  .alt-btn {
     width: 100%;
     justify-content: center;
   }
