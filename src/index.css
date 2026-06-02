@@ -146,10 +146,30 @@ button {
 
 .nav-logo {
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+  align-items: center; /* Alinea verticalmente la foto con el texto */
+  gap: 12px; /* Espacio de separación entre tu foto y la palabra ALEX.SYS */
   text-decoration: none;
-  gap: 2px;
+}
+/* Agrupa el texto del logo para mantener el diseño original de subtítulo y raya */
+.logo-meta {
+  display: flex;
+  flex-direction: column;
+}
+/* EL AVATAR DEL LOGO (OCULTO POR DEFECTO EN ESCRITORIO) */
+.logo-avatar-wrapper {
+  display: none; /* Desaparece por completo en ordenadores */
+  width: 40px; /* Tamaño compacto ideal para la barra de navegación */
+  height: 40px;
+  border-radius: 50%; /* Completamente circular */
+  overflow: hidden;
+  border: 2px solid var(--accent); /* Un borde sutil con tu color de acento */
+  box-shadow: var(--shadow-sm);
+  flex-shrink: 0;
+}
+.logo-avatar {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 .logo-text {
   font-size: 1.15rem;
@@ -1427,6 +1447,29 @@ button {
     padding: 6px 0;
   }
 
+  @media (max-width: 960px) {
+    /* ... tus otros estilos de móvil del menú ... */
+
+    /* CORRECCIÓN: Avatar redondo, pequeño y con el borde de tu color de acento */
+    .logo-avatar-wrapper {
+      display: block; /* Lo hace visible a la izquierda en móvil */
+      width: 36px; /* Tamaño pequeño y compacto para la barra */
+      height: 36px;
+      border-radius: 50%; /* Lo corta en un círculo perfecto */
+      overflow: hidden; /* Evita que las esquinas de la foto sobresalgan */
+      border: 2px solid var(--accent); /* Usa exactamente tu color de acento */
+      box-shadow: var(--shadow-sm); /* Mantiene la sombra suave de tu web */
+      flex-shrink: 0; /* Evita que se aplaste si el texto del logo es largo */
+    }
+
+    /* Asegura que la imagen de dentro rellene el círculo sin deformarse */
+    .logo-avatar {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
   /* SECCIÓN HERO (FOTO Y TITULO) */
   .hero-top-row {
     flex-direction: column; /* Apila las dos columnas en vertical */
@@ -1434,15 +1477,12 @@ button {
     gap: 32px; /* Espacio de separación vertical entre H1 y Foto */
     margin-bottom: 48px; /* Ajustamos el espacio con la descripción en móvil */
   }
-
+  .avatar-wrapper {
+    display: none !important; /* Desaparece por completo sin dejar espacios vacíos */
+  }
   .hero-title-container {
     max-width: 100%;
     width: 100%;
-  }
-
-  .avatar-block {
-    width: 100%;
-    align-items: center; /* Centra la foto y el eyebrow horizontalmente */
   }
 
   .hero-main-title {
@@ -1501,9 +1541,7 @@ button {
 
   /* CORRECCIÓN: Ajustamos el tamaño a 240px de forma limpia sin romper la animación blob */
   .avatar-wrapper {
-    width: 240px;
-    height: 240px;
-    margin-bottom: 0; /* Quitado el margen para que respete el diseño del bloque */
+    display: none !important; /* Desaparece por completo sin dejar espacios vacíos */
   }
 
   /* Quitamos el .profile-avatar de aquí porque rompería tu animación morphing si cambia de radio */

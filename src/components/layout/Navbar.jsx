@@ -11,12 +11,24 @@ function Navbar({ isDarkMode, setIsDarkMode }) {
   return (
     <nav className="navbar">
       <div className="nav-container">
-        {/* CORRECCIÓN: Estructura interna adaptada para el diseño con subtítulo y raya */}
+        {/* LOGO OPTIMIZADO: Incluye el avatar para modo móvil */}
         <Link to="/" className="nav-logo" onClick={closeMenu}>
-          <div className="logo-text">
-            ALEX<span className="logo-accent">.SYS</span>
+          {/* Nuevo contenedor oculto en PC que se activa en móvil a la izquierda */}
+          <div className="logo-avatar-wrapper">
+            <img
+              src="/imagen_portfolio_mia_retocada.webp"
+              alt="Alex Avatar"
+              className="logo-avatar"
+            />
           </div>
-          <span className="logo-subtext">PORTFOLIO</span>
+
+          {/* Bloque de texto de tu marca */}
+          <div className="logo-meta">
+            <div className="logo-text">
+              ALEX<span className="logo-accent">.SYS</span>
+            </div>
+            <span className="logo-subtext">PORTFOLIO</span>
+          </div>
         </Link>
 
         {/* Añade la clase 'active' si isOpen es true */}
