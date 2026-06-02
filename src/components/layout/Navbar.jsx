@@ -11,8 +11,12 @@ function Navbar({ isDarkMode, setIsDarkMode }) {
   return (
     <nav className="navbar">
       <div className="nav-container">
+        {/* CORRECCIÓN: Estructura interna adaptada para el diseño con subtítulo y raya */}
         <Link to="/" className="nav-logo" onClick={closeMenu}>
-          ALEX<span className="logo-accent">.SYS</span>
+          <div className="logo-text">
+            ALEX<span className="logo-accent">.SYS</span>
+          </div>
+          <span className="logo-subtext">PORTFOLIO</span>
         </Link>
 
         {/* Añade la clase 'active' si isOpen es true */}

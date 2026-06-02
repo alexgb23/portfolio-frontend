@@ -145,11 +145,41 @@ button {
 }
 
 .nav-logo {
-  font-size: 1.05rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-decoration: none;
+  gap: 2px;
+}
+.logo-text {
+  font-size: 1.15rem;
   font-weight: 900;
   letter-spacing: -0.04em;
   color: var(--text-main);
   white-space: nowrap;
+  line-height: 1;
+}
+
+.logo-subtext {
+  font-size: 0.58rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.35em; /* Separa las letras para que ocupe casi el mismo ancho */
+  color: var(--text-sub);
+  width: 100%;
+  padding-top: 4px;
+  position: relative;
+  line-height: 1;
+}
+.logo-subtext::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  opacity: 0.7;
 }
 
 .logo-accent {
