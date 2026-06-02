@@ -204,6 +204,19 @@ button {
   gap: 12px;
 }
 
+/* BOTÓN HAMBURGUESA (Oculto en ordenadores de forma nativa) */
+.mobile-menu-btn {
+  display: none;
+  background: transparent;
+  border: none;
+  color: var(--text-main);
+  font-size: 1.4rem;
+  cursor: pointer;
+  padding: 8px;
+  align-items: center;
+  justify-content: center;
+}
+
 .theme-toggle {
   width: 44px;
   height: 44px;
@@ -1304,8 +1317,51 @@ button {
 }
 
 @media (max-width: 960px) {
-  .nav-links {
-    display: none;
+  /* ==========================================================================
+   CORRECCIÓN DEL MENÚ MÓVIL
+   ========================================================================== */
+  @media (max-width: 960px) {
+    .mobile-menu-btn {
+      display: inline-flex; /* El botón solo aparece aquí */
+    }
+
+    .nav-links {
+      display: flex !important; /* Forzamos flex en lugar de none para la animación */
+      flex-direction: column;
+      position: fixed;
+      top: 88px; /* Ajustado al alto exacto de tu navbar */
+      left: 0;
+      width: 100%;
+      background: var(--bg-card);
+      backdrop-filter: blur(18px) saturate(140%);
+      border-bottom: 1px solid var(--border);
+      padding: 30px 24px;
+      gap: 24px;
+      align-items: flex-start;
+
+      /* Efecto de cortina para abrir y cerrar */
+      transform: translateY(-150%);
+      opacity: 0;
+      pointer-events: none;
+      transition:
+        transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+        opacity 0.25s ease;
+      z-index: 999;
+    }
+
+    /* Clase que inyecta JS al pulsar la hamburguesa o la X */
+    .nav-links.active {
+      transform: translateY(0);
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    /* Ajuste de enlaces en móvil para que ocupen todo el ancho y sea fácil pulsar */
+    .nav-links a {
+      width: 100%;
+      font-size: 1.1rem;
+      padding: 6px 0;
+    }
   }
 
   .hero-text-block h1 {
