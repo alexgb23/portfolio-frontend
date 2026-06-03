@@ -1,42 +1,33 @@
-/* About Me */
-/* ========================================================
-   SECCIÓN ABOUT (Estilos por defecto para PC - Pantalla Completa)
-   ======================================================== */
+/* About Me — MOBILE FIRST */
 
 .about-section {
   width: 100%;
-  min-height: calc(100vh - 88px); /* Descuenta la altura de tu cabecera fija */
+  min-height: auto;
   display: flex;
-  align-items: center;
+  align-items: stretch;
   position: relative;
   overflow: hidden;
+  padding: 56px 0;
 }
 
-/* El contenedor ahora ocupa TODA la pantalla de lado a lado */
 .about-container {
   display: flex;
-  flex-direction: row;
-  align-items: stretch;
+  flex-direction: column;
   width: 100%;
 }
 
-/* LADO IZQUIERDO: Ocupa el 50% de la pantalla real */
 .about-left {
-  width: 50%;
-  padding: 60px 40px 60px 20px; /* Añadimos padding izquierdo de cortesía */
+  width: 100%;
+  padding: 0;
   display: flex;
   flex-direction: column;
   justify-content: center;
   z-index: 2;
 }
 
-/* TRUCO: Este div limita el texto a la mitad de tus 1200px globales */
 .about-left-content {
   width: 100%;
-  /* 580px es la mitad exacta de tu contenedor de 1200px (restando márgenes) */
-  max-width: 580px;
-  /* Empuja el texto hacia la derecha para alinearse con el resto de la web */
-  margin-left: auto;
+  max-width: 100%;
 }
 
 .about-kicker {
@@ -50,19 +41,19 @@
 }
 
 .about-title {
-  font-size: 2.3rem;
+  font-size: 1.75rem;
   font-weight: 800;
   line-height: 1.2;
-  margin-bottom: 24px;
+  margin-bottom: 20px;
   color: var(--text-main);
   transition: color 0.25s ease;
 }
 
 .about-text {
-  font-size: 1.05rem;
+  font-size: 1rem;
   line-height: 1.7;
   color: var(--text-sub);
-  margin-bottom: 32px;
+  margin-bottom: 28px;
   transition: color 0.25s ease;
 }
 
@@ -74,7 +65,7 @@
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  margin-bottom: 40px;
+  margin-bottom: 32px;
 }
 
 .badge {
@@ -92,18 +83,18 @@
 
 .skills-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 24px;
+  grid-template-columns: 1fr;
+  gap: 16px;
 }
 
 .skill-item {
   display: flex;
-  gap: 16px;
+  gap: 14px;
 }
 
 .skill-icon {
   color: var(--accent-green);
-  font-size: 1.25rem;
+  font-size: 1.2rem;
   margin-top: 4px;
   flex-shrink: 0;
 }
@@ -122,25 +113,10 @@
   transition: color 0.25s ease;
 }
 
-/* LADO DERECHO: Ocupa el 50% restante y llega hasta el borde físico derecho */
 .about-right {
-  display: flex;
-  width: 50%;
-  min-height: calc(100vh - 88px);
-  background-color: #24304d;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  padding: 40px;
-
-  /* Corte diagonal */
-  clip-path: polygon(15% 0%, 100% 0%, 100% 100%, 0% 100%);
-  margin-left: -5%;
-  padding-left: 15%;
-  transition: background-color 0.25s ease;
+  display: none;
 }
 
-/* Efectos de la foto */
 .bg-glow {
   position: absolute;
   width: 280px;
@@ -191,4 +167,81 @@
 
 .photo-wrapper:hover .profile-photo {
   filter: grayscale(0%);
+}
+
+@media (min-width: 721px) {
+  .about-section {
+    padding: 72px 0;
+  }
+
+  .about-title {
+    font-size: 1.95rem;
+  }
+
+  .about-text {
+    font-size: 1.05rem;
+  }
+
+  .skills-grid {
+    gap: 20px;
+  }
+}
+
+@media (min-width: 961px) {
+  .about-section {
+    min-height: calc(100vh - var(--navbar-height));
+    padding: 0;
+  }
+
+  .about-container {
+    flex-direction: row;
+    align-items: stretch;
+  }
+
+  .about-left {
+    width: 50%;
+    padding: 60px 40px 60px 20px;
+  }
+
+  .about-left-content {
+    max-width: 580px;
+    margin-left: auto;
+  }
+
+  .about-title {
+    font-size: 2.3rem;
+    margin-bottom: 24px;
+  }
+
+  .about-text {
+    margin-bottom: 32px;
+  }
+
+  .tech-badges {
+    margin-bottom: 40px;
+  }
+
+  .skills-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+
+  .skill-item {
+    gap: 16px;
+  }
+
+  .about-right {
+    display: flex;
+    width: 50%;
+    min-height: calc(100vh - var(--navbar-height));
+    background-color: #24304d;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    padding: 40px;
+    clip-path: polygon(15% 0%, 100% 0%, 100% 100%, 0% 100%);
+    margin-left: -5%;
+    padding-left: 15%;
+    transition: background-color 0.25s ease;
+  }
 }

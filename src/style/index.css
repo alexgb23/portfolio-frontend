@@ -698,28 +698,7 @@
   .linear-metrics-grid {
     width: 100%;
   }
-  .about-container {
-    flex-direction: column; /* Cambia a flujo vertical */
-  }
 
-  .about-left {
-    width: 100%; /* Toma todo el ancho disponible */
-    padding: 40px 0; /* Elimina el padding-right de PC */
-  }
-
-  .about-title {
-    font-size: 1.8rem; /* Encoge el H2 para que se adapte al smartphone */
-  }
-
-  .skills-grid {
-    grid-template-columns: 1fr; /* Pasa las habilidades a una columna */
-    gap: 20px;
-  }
-
-  /* DESAPARECE la foto y su fondo inclinado en móviles */
-  .about-right {
-    display: none;
-  }
 }
 
 /* 3. Smartphones y pantallas pequeñas (Hasta 720px) */
@@ -737,29 +716,5 @@
   .cmd-input-line label {
     margin-bottom: 4px;
   }
-  .about-container {
-    flex-direction: column; /* Apila verticales en móvil */
-  }
 
-  .about-left {
-    width: 100%;
-    padding: 32px 0; /* Usa el espaciado correcto de móvil */
-  }
-
-  .about-title {
-    font-size: 1.75rem; /* Ajustado para que no se corte en smartphones */
-  }
-
-  .skills-grid {
-    grid-template-columns: 1fr; /* Una sola columna para los iconos/habilidades */
-    gap: 16px;
-  }
-
-  .about-right {
-    width: 100%;
-    min-height: 40vh;
-    clip-path: none; /* ELIMINADA la inclinación para que la foto se vea completa y recta en móviles */
-    margin-left: 0;
-    padding: 40px 16px;
-  }
 }
