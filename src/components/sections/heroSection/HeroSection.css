@@ -1,0 +1,254 @@
+.hero-centered-section {
+  padding: 76px 0 48px;
+  border-bottom: 1px solid var(--border);
+}
+
+.hero-center-content {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.hero-top-row {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 28px;
+  margin-bottom: 40px;
+  text-align: center;
+}
+
+.hero-title-container {
+  width: 100%;
+  max-width: 100%;
+}
+
+.hero-main-title {
+  margin: 0;
+  font-size: clamp(2.3rem, 9vw, 3.5rem);
+  line-height: 1.05;
+  letter-spacing: -0.04em;
+  color: var(--text-main);
+  text-align: center;
+  text-wrap: balance;
+}
+
+.avatar-block {
+  display: none;
+}
+
+.avatar-wrapper {
+  width: 240px;
+  height: 240px;
+  background: linear-gradient(45deg, var(--accent-green), var(--accent));
+  padding: 4px;
+  border-radius: 60% 40% 40% 60% / 60% 45% 55% 40%;
+  animation: morphing 8s ease-in-out infinite alternate;
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+}
+
+.profile-avatar {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: inherit;
+  animation: inherit;
+  background: var(--bg-app);
+}
+
+.hero-eyebrow {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 8px 14px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--bg-soft);
+  color: var(--accent);
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  white-space: normal;
+}
+
+.hero-bottom-block {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.hero-text {
+  max-width: 760px;
+  margin: 0 auto 28px;
+  color: var(--text-sub);
+  font-size: 1rem;
+  line-height: 1.75;
+}
+
+.hero-highlights {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  margin-bottom: 24px;
+}
+
+.hero-highlights span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 44px;
+  width: 100%;
+  padding: 10px 16px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--bg-elevated);
+  backdrop-filter: blur(10px);
+  color: var(--text-soft);
+  font-size: 0.92rem;
+  font-weight: 600;
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.social-center-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+}
+
+.social-btn,
+.alt-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 48px;
+  width: 100%;
+  padding: 12px 18px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--bg-card);
+  backdrop-filter: blur(10px);
+  color: var(--text-main);
+  font-size: 0.94rem;
+  font-weight: 700;
+  transition: 0.25s ease;
+  box-shadow: var(--shadow-sm);
+}
+
+.social-btn:hover,
+.alt-btn:hover {
+  border-color: var(--border-strong);
+  transform: translateY(-2px);
+  box-shadow: 0 0 0 4px var(--accent-glow);
+}
+
+.alt-btn {
+  background: transparent;
+}
+
+@keyframes morphing {
+  0% {
+    border-radius: 60% 40% 40% 60% / 60% 45% 55% 40%;
+  }
+  50% {
+    border-radius: 45% 55% 50% 50% / 50% 55% 45% 50%;
+  }
+  100% {
+    border-radius: 55% 45% 60% 40% / 45% 65% 35% 55%;
+  }
+}
+
+@media (min-width: 721px) {
+  .hero-centered-section {
+    padding: 92px 0 64px;
+  }
+
+  .hero-text {
+    font-size: 1.05rem;
+  }
+
+  .hero-highlights,
+  .hero-actions,
+  .social-center-links {
+    width: auto;
+    gap: 12px;
+  }
+
+  .hero-highlights span,
+  .social-btn,
+  .alt-btn {
+    width: auto;
+  }
+}
+
+@media (min-width: 961px) {
+  .hero-centered-section {
+    padding: 112px 0 84px;
+  }
+
+  .hero-top-row {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 40px;
+    margin-bottom: 80px;
+    text-align: left;
+  }
+
+  .hero-title-container {
+    flex: 1;
+    max-width: 65%;
+  }
+
+  .hero-main-title {
+    font-size: clamp(2.8rem, 5vw, 5.2rem);
+    text-align: left;
+  }
+
+  .avatar-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-shrink: 0;
+    width: 320px;
+  }
+
+  .avatar-wrapper {
+    display: block;
+    width: 320px;
+    height: 320px;
+  }
+
+  .hero-eyebrow {
+    margin-top: 28px;
+    white-space: nowrap;
+  }
+}
+
+@media (min-width: 1200px) {
+  .avatar-block {
+    width: 350px;
+  }
+
+  .avatar-wrapper {
+    width: 350px;
+    height: 350px;
+  }
+}

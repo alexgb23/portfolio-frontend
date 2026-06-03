@@ -1,5 +1,5 @@
-import HeroSection from '../components/sections/HeroSection'
-import AboutPreview from '../components/sections/AboutPreview'
+import HeroSection from '../components/sections/heroSection/HeroSection'
+import AboutPreview from '../components/sections/aboutPreview/AboutPreview'
 import FeaturedProjects from '../components/sections/FeaturedProjects'
 import FeaturedAutomation from '../components/sections/FeaturedAutomation'
 import FeaturedInfrastructure from '../components/sections/FeaturedInfrastructure'

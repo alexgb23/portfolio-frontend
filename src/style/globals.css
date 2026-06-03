@@ -1,0 +1,35 @@
+body {
+  margin: 0;
+  font-family:
+    Inter,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+  color: var(--text-main);
+  background:
+    radial-gradient(circle at 0% 0%, var(--accent-glow), transparent 24%),
+    radial-gradient(circle at 100% 0%, rgba(37, 99, 235, 0.1), transparent 20%),
+    linear-gradient(
+      180deg,
+      rgba(var(--bg-app-rgb), 0.98),
+      rgba(var(--bg-app-rgb), 1)
+    ),
+    var(--bg-app);
+  transition:
+    background-color 0.25s ease,
+    color 0.25s ease;
+  padding-top: var(--navbar-height);
+}
+
+.container {
+  width: min(var(--container), calc(100% - 24px));
+  margin: 0 auto;
+}
+
+@media (min-width: 721px) {
+  .container {
+    width: min(var(--container), calc(100% - 40px));
+  }
+}

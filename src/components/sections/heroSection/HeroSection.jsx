@@ -7,8 +7,11 @@ import {
   FaGithub,
   FaLinkedin,
   FaEnvelope,
+  
   FaArrowRight,
 } from "react-icons/fa";
+import "../sectionsGlobals.css";
+import "./HeroSection.css";
 
 function HeroSection() {
   return (

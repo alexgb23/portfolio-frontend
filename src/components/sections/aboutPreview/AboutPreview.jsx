@@ -1,17 +1,19 @@
-import { Link } from 'react-router-dom'
+import { Link } from "react-router-dom";
 import {
   FaCode,
   FaServer,
   FaNetworkWired,
   FaMicrochip,
   FaArrowRight,
-} from 'react-icons/fa'
+} from "react-icons/fa";
+import "../sectionsGlobals.css";
 
 function AboutPreview() {
   return (
     <section className="section section-spaced section-separated" id="sobre-mi">
       <div className="section-head-centered narrow">
         <span className="section-kicker">Perfil técnico</span>
+
         <h2>Desarrollo, infraestructura y automatización en una sola visión</h2>
         <p>
           Mi trabajo une software, redes, servidores, electrónica aplicada y
@@ -72,7 +74,7 @@ function AboutPreview() {
         </Link>
       </div>
     </section>
-  )
+  );
 }
 
-export default AboutPreview
+export default AboutPreview;

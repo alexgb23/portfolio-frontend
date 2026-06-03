@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { FaArrowRight } from 'react-icons/fa'
 import ProjectCard from '../cards/ProjectCard'
+import "./sectionsGlobals.css";
 
 function FeaturedProjects({ projects = [] }) {
   return (

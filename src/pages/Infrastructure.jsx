@@ -1,10 +1,10 @@
-import ServerCard from '../components/cards/ServerCard'
-import MetricCard from '../components/cards/MetricCard'
-import { usePortfolioData } from '../hooks/usePortfolioData'
-import { FaServer, FaChartLine, FaNetworkWired } from 'react-icons/fa'
+import ServerCard from "../components/cards/ServerCard";
+import MetricCard from "../components/cards/MetricCard";
+import { usePortfolioData } from "../hooks/usePortfolioData";
+import { FaServer, FaChartLine, FaNetworkWired } from "react-icons/fa";
 
 function Infrastructure() {
-  const { servers, metrics, loading, error } = usePortfolioData()
+  const { servers, metrics, loading, error } = usePortfolioData();
 
   if (loading) {
     return (
@@ -12,7 +12,7 @@ function Infrastructure() {
         <div className="sys-loader"></div>
         <h2>Cargando infraestructura...</h2>
       </div>
-    )
+    );
   }
 
   if (error) {
@@ -21,7 +21,7 @@ function Infrastructure() {
         <h2>Error al cargar infraestructura</h2>
         <p>{error}</p>
       </div>
-    )
+    );
   }
 
   return (
@@ -35,7 +35,7 @@ function Infrastructure() {
         </p>
       </div>
 
-      <div className="expertise-grid" style={{ marginBottom: '2rem' }}>
+      <div className="expertise-grid" style={{ marginBottom: "2rem" }}>
         <article className="expertise-card">
           <div className="expertise-icon">
             <FaServer />
@@ -53,8 +53,8 @@ function Infrastructure() {
           </div>
           <h3>Conectividad y estructura</h3>
           <p>
-            La red y la organización del entorno forman parte del diseño técnico,
-            no un añadido posterior.
+            La red y la organización del entorno forman parte del diseño
+            técnico, no un añadido posterior.
           </p>
         </article>
 
@@ -75,7 +75,7 @@ function Infrastructure() {
         <p>Listado operativo de entornos y servicios principales.</p>
       </div>
 
-      <div className="list-linear" style={{ marginBottom: '2rem' }}>
+      <div className="list-linear" style={{ marginBottom: "2rem" }}>
         {servers?.length > 0 ? (
           servers.map((server) => (
             <ServerCard key={server.id} server={server} />
@@ -104,7 +104,7 @@ function Infrastructure() {
         )}
       </div>
     </section>
-  )
+  );
 }
 
-export default Infrastructure
+export default Infrastructure;

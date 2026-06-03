@@ -1,0 +1,194 @@
+/* About Me */
+/* ========================================================
+   SECCIÓN ABOUT (Estilos por defecto para PC - Pantalla Completa)
+   ======================================================== */
+
+.about-section {
+  width: 100%;
+  min-height: calc(100vh - 88px); /* Descuenta la altura de tu cabecera fija */
+  display: flex;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+
+/* El contenedor ahora ocupa TODA la pantalla de lado a lado */
+.about-container {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  width: 100%;
+}
+
+/* LADO IZQUIERDO: Ocupa el 50% de la pantalla real */
+.about-left {
+  width: 50%;
+  padding: 60px 40px 60px 20px; /* Añadimos padding izquierdo de cortesía */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  z-index: 2;
+}
+
+/* TRUCO: Este div limita el texto a la mitad de tus 1200px globales */
+.about-left-content {
+  width: 100%;
+  /* 580px es la mitad exacta de tu contenedor de 1200px (restando márgenes) */
+  max-width: 580px;
+  /* Empuja el texto hacia la derecha para alinearse con el resto de la web */
+  margin-left: auto;
+}
+
+.about-kicker {
+  color: var(--accent-green);
+  font-family: monospace;
+  font-size: 0.875rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+  display: block;
+}
+
+.about-title {
+  font-size: 2.3rem;
+  font-weight: 800;
+  line-height: 1.2;
+  margin-bottom: 24px;
+  color: var(--text-main);
+  transition: color 0.25s ease;
+}
+
+.about-text {
+  font-size: 1.05rem;
+  line-height: 1.7;
+  color: var(--text-sub);
+  margin-bottom: 32px;
+  transition: color 0.25s ease;
+}
+
+.about-text strong {
+  color: var(--accent);
+}
+
+.tech-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 40px;
+}
+
+.badge {
+  padding: 6px 14px;
+  font-size: 0.75rem;
+  font-family: monospace;
+  background-color: var(--bg-soft);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-soft);
+  transition:
+    background-color 0.25s ease,
+    border-color 0.25s ease;
+}
+
+.skills-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.skill-item {
+  display: flex;
+  gap: 16px;
+}
+
+.skill-icon {
+  color: var(--accent-green);
+  font-size: 1.25rem;
+  margin-top: 4px;
+  flex-shrink: 0;
+}
+
+.skill-item h3 {
+  font-weight: 600;
+  color: var(--text-main);
+  margin-bottom: 4px;
+  font-size: 1rem;
+  transition: color 0.25s ease;
+}
+
+.skill-item p {
+  font-size: 0.875rem;
+  color: var(--text-sub);
+  transition: color 0.25s ease;
+}
+
+/* LADO DERECHO: Ocupa el 50% restante y llega hasta el borde físico derecho */
+.about-right {
+  display: flex;
+  width: 50%;
+  min-height: calc(100vh - 88px);
+  background-color: #24304d;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  padding: 40px;
+
+  /* Corte diagonal */
+  clip-path: polygon(15% 0%, 100% 0%, 100% 100%, 0% 100%);
+  margin-left: -5%;
+  padding-left: 15%;
+  transition: background-color 0.25s ease;
+}
+
+/* Efectos de la foto */
+.bg-glow {
+  position: absolute;
+  width: 280px;
+  height: 280px;
+  background-color: var(--accent-glow);
+  border-radius: 50%;
+  filter: blur(64px);
+  pointer-events: none;
+}
+
+.photo-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 320px;
+  aspect-ratio: 1 / 1;
+}
+
+.photo-border {
+  position: absolute;
+  inset: -4px;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  border-radius: var(--radius-md);
+  filter: blur(4px);
+  opacity: 0.4;
+}
+
+.photo-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  border: 1px solid var(--border-strong);
+  background-color: var(--bg-elevated);
+  transition:
+    background-color 0.25s ease,
+    border-color 0.25s ease;
+}
+
+.profile-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  filter: grayscale(100%);
+  transition: filter 0.5s ease;
+}
+
+.photo-wrapper:hover .profile-photo {
+  filter: grayscale(0%);
+}

@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { FaArrowRight, FaMicrochip } from 'react-icons/fa'
 import NodeCard from '../cards/NodeCard'
+import "./sectionsGlobals.css";
 
 function FeaturedAutomation({ nodes = [] }) {
   return (

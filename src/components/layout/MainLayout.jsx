@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Outlet } from "react-router-dom";
-import Navbar from "./Navbar";
+import Navbar from "./Navbar/Navbar";
 
 function MainLayout() {
   const [isDarkMode, setIsDarkMode] = useState(() => {

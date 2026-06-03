@@ -1,11 +1,12 @@
-import { Link } from 'react-router-dom'
+import { Link } from "react-router-dom";
 import {
   FaGithub,
   FaLinkedin,
   FaEnvelope,
   FaGlobe,
   FaArrowRight,
-} from 'react-icons/fa'
+} from "react-icons/fa";
+import "./sectionsGlobals.css";
 
 function ContactPreview() {
   return (
@@ -65,7 +66,8 @@ function ContactPreview() {
 
           <div className="term-content-area">
             <p className="cmd-input">
-              <span className="prompt-color">guest@portfolio:~$</span> iniciar_contacto
+              <span className="prompt-color">guest@portfolio:~$</span>{" "}
+              iniciar_contacto
             </p>
 
             <p className="cmd-output">
@@ -73,13 +75,14 @@ function ContactPreview() {
             </p>
 
             <p className="cmd-output">
-              Respuesta orientada a desarrollo, infraestructura, redes y automatización.
+              Respuesta orientada a desarrollo, infraestructura, redes y
+              automatización.
             </p>
           </div>
         </div>
       </div>
     </section>
-  )
+  );
 }
 
-export default ContactPreview
+export default ContactPreview;

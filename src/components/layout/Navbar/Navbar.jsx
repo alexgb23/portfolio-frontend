@@ -2,6 +2,8 @@ import { useState } from "react";
 import { NavLink, Link } from "react-router-dom";
 import { FaMoon, FaSun, FaArrowRight, FaBars, FaTimes } from "react-icons/fa";
 
+import "./Navbar.css";
+
 function Navbar({ isDarkMode, setIsDarkMode }) {
   const [isOpen, setIsOpen] = useState(false);
 
