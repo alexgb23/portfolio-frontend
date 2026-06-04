@@ -7,6 +7,7 @@ import Automation from "./pages/automation/Automation";
 import Infrastructure from "./pages/infrastructure/Infrastructure";
 import Contact from "./pages/contact/Contact";
 import Login from "./pages/login/Login";
+import CardPrueba from "./pages/tarjetas de prueba/card_prua";
 import Dashboard from "./pages/dashboard/Dashboard";
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
           <Route path="infraestructura" element={<Infrastructure />} />
           <Route path="contacto" element={<Contact />} />
           <Route path="/admin-login" element={<Login />} />
+          <Route path="/card-prueba" element={<CardPrueba />} />
           <Route path="/admin/dashboard" element={<Dashboard />} />
         </Route>
       </Routes>

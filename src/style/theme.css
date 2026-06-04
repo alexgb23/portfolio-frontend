@@ -1,6 +1,5 @@
 :root[data-theme="dark"] {
   --navbar-height: 82px;
-
   --bg-app: #0f131a;
   --bg-app-rgb: 15, 19, 26;
   --bg-elevated: #151a24;
@@ -29,7 +28,6 @@
 
 :root[data-theme="light"] {
   --navbar-height: 82px;
-
   --bg-app: #f4f8fb;
   --bg-app-rgb: 244, 248, 251;
   --bg-elevated: #ffffff;

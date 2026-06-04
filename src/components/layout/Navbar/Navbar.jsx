@@ -77,6 +77,15 @@ function Navbar({ isDarkMode, setIsDarkMode }) {
           >
             Admin
           </NavLink>
+
+          <NavLink
+            to="/card-prueba"
+            className={({ isActive }) => (isActive ? "active" : "")}
+            onClick={closeMenu}
+          >
+            card-prueba
+          </NavLink>
+
         </div>
 
         <div className="nav-actions">

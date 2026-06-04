@@ -1,17 +1,48 @@
+import { Link } from "react-router-dom";
 import {
   FaGithub,
   FaLinkedin,
   FaEnvelope,
   FaGlobe,
-} from 'react-icons/fa'
+  FaInstagram,
+  FaFacebook,
+} from "react-icons/fa";
 import "./Contact.css";
+
+function SocialCard({ href, icon, label, title, text, className = "" }) {
+  const isMail = href.startsWith("mailto:");
+
+  return (
+    <a
+      href={href}
+      target={isMail ? undefined : "_blank"}
+      rel={isMail ? undefined : "noreferrer"}
+      className={`social-mini-card ${className}`}
+      aria-label={`${label}: ${title}`}
+    >
+      <div className="social-mini-front">
+        <div className="social-mini-shine"></div>
+
+        <div className="social-mini-icon">{icon}</div>
+
+        <div className="social-mini-content">
+          <span className="social-mini-label">{label}</span>
+          <span className="social-mini-title">{title}</span>
+          <span className="social-mini-text">{text}</span>
+        </div>
+      </div>
+
+      <div className="social-mini-shadow"></div>
+    </a>
+  );
+}
 
 function Contact() {
   return (
-    <section className="section section-spaced">
+    <section className="section section-spaced section-separated">
       <div className="section-head-centered">
         <span className="section-kicker">Contacto</span>
-        <h1>Canales profesionales y colaboración</h1>
+        <h2>Canales profesionales y colaboración</h2>
         <p>
           Disponible para colaboraciones, soporte técnico, desarrollo,
           automatización, infraestructura y soluciones integradas.
@@ -22,34 +53,68 @@ function Contact() {
         <div className="contact-card">
           <h3>Enlaces</h3>
 
-          <ul className="contact-links">
-            <li>
-              <a href="https://github.com" target="_blank" rel="noreferrer">
-                <FaGithub /> GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://linkedin.com" target="_blank" rel="noreferrer">
-                <FaLinkedin /> LinkedIn
-              </a>
-            </li>
-            <li>
-              <a href="mailto:tu-correo@empresa.com">
-                <FaEnvelope /> Correo profesional
-              </a>
-            </li>
-            <li>
-              <a href="https://tuempresa.com" target="_blank" rel="noreferrer">
-                <FaGlobe /> Sitio corporativo
-              </a>
-            </li>
-          </ul>
+          <div className="social-mini-grid">
+            <SocialCard
+              href="https://github.com"
+              icon={<FaGithub />}
+              label="GitHub"
+              title="AlexDev"
+              text="Repos y código"
+            />
+
+            <SocialCard
+              href="https://linkedin.com"
+              icon={<FaLinkedin />}
+              label="LinkedIn"
+              title="Alex Fernández"
+              text="Perfil profesional"
+            />
+
+            <SocialCard
+              href="mailto:tu-correo@empresa.com"
+              icon={<FaEnvelope />}
+              label="Correo"
+              title="Email"
+              text="Contacto directo"
+            />
+
+            <SocialCard
+              href="https://tuempresa.com"
+              icon={<FaGlobe />}
+              label="Web"
+              title="Cubalinks"
+              text="Empresa y servicios"
+            />
+
+            <SocialCard
+              href="https://instagram.com"
+              icon={<FaInstagram />}
+              label="Instagram"
+              title="@alefgb"
+              text="Perfil personal"
+            />
+
+            <SocialCard
+              href="https://facebook.com"
+              icon={<FaFacebook />}
+              label="Facebook"
+              title="Alexander Galvez"
+              text="Perfil personal"
+            />
+          </div>
+
+          <div className="section-more left">
+            <Link to="/contacto" className="inline-link">
+              Ir a contacto
+            </Link>
+          </div>
         </div>
 
         <div className="neo-terminal">
           <div className="term-top-bar">
             <div className="term-controls">
               <span className="c-red"></span>
+              
               <span className="c-yellow"></span>
               <span className="c-green"></span>
             </div>
@@ -62,7 +127,11 @@ function Contact() {
             </p>
 
             <p className="cmd-output">
-              Canal disponible para consultas y propuestas técnicas.
+              Canal disponible para consultas, propuestas y proyectos técnicos.
+            </p>
+
+            <p className="cmd-output">
+              Respuesta orientada a desarrollo, infraestructura, redes y automatización.
             </p>
 
             <form className="cmd-form" onSubmit={(e) => e.preventDefault()}>
@@ -94,7 +163,7 @@ function Contact() {
         </div>
       </div>
     </section>
-  )
+  );
 }
 
-export default Contact
+export default Contact;

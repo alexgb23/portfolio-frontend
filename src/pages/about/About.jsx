@@ -1,6 +1,5 @@
 import {
   FaCode,
-  FaServer,
   FaNetworkWired,
   FaMicrochip,
   FaDatabase,

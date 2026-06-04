@@ -1,102 +1,41 @@
 /* =========================================================
    TARJETAS — MOBILE FIRST
-   Base común + variante premium 3D para contact-card y links
+   Base común limpia para cards compartidas del proyecto
    ========================================================= */
 
 .card,
 .expertise-card,
 .visual-card,
-.contact-card,
 .infra-block,
 .automation-band {
-  position: relative;
-  isolation: isolate;
-  overflow: hidden;
   padding: 20px;
   border-radius: var(--radius-md);
   color: var(--text-main);
-
-  background: linear-gradient(
-    180deg,
-    color-mix(in srgb, var(--bg-card) 92%, white 8%) 0%,
-    color-mix(in srgb, var(--bg-card-2) 96%, transparent) 100%
-  );
-
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--bg-card) 92%, white 8%) 0%,
+      color-mix(in srgb, var(--bg-card-2) 96%, transparent) 100%
+    );
   border: 1px solid var(--border);
-
   box-shadow:
     var(--shadow-sm),
     inset 0 1px 0 color-mix(in srgb, #ffffff 16%, transparent),
     inset 0 -1px 0 color-mix(in srgb, #ffffff 4%, transparent);
-
   backdrop-filter: blur(12px) saturate(135%);
   -webkit-backdrop-filter: blur(12px) saturate(135%);
-
+  transform-style: preserve-3d;
+  transform: perspective(1200px) rotateX(1deg) rotateY(-1.4deg);
   transition:
-    transform 0.26s ease,
-    border-color 0.26s ease,
-    box-shadow 0.26s ease,
-    background 0.26s ease;
-}
-
-.card::before,
-.expertise-card::before,
-.visual-card::before,
-.contact-card::before,
-.infra-block::before,
-.automation-band::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  background: linear-gradient(
-    135deg,
-    color-mix(in srgb, #ffffff 18%, transparent) 0%,
-    color-mix(in srgb, #ffffff 8%, transparent) 18%,
-    color-mix(in srgb, #ffffff 2%, transparent) 42%,
-    transparent 72%
-  );
-  pointer-events: none;
-  z-index: 0;
-}
-
-.card::after,
-.expertise-card::after,
-.visual-card::after,
-.infra-block::after,
-.automation-band::after {
-  content: "";
-  position: absolute;
-  left: 10%;
-  right: 10%;
-  bottom: -20%;
-  height: 36%;
-  border-radius: 999px;
-  background: radial-gradient(
-    ellipse at center,
-    color-mix(in srgb, var(--accent-glow) 85%, transparent) 0%,
-    transparent 74%
-  );
-  filter: blur(16px);
-  opacity: 0.72;
-  pointer-events: none;
-  z-index: 0;
-}
-
-.card > *,
-.expertise-card > *,
-.visual-card > *,
-.contact-card > *,
-.infra-block > *,
-.automation-band > * {
-  position: relative;
-  z-index: 1;
+    transform 0.28s ease,
+    box-shadow 0.28s ease,
+    border-color 0.28s ease,
+    background 0.28s ease;
 }
 
 .card:not(:last-child),
 .expertise-card:not(:last-child),
 .visual-card:not(:last-child),
-.contact-card:not(:last-child),
 .infra-block:not(:last-child),
 .automation-band:not(:last-child) {
   margin-bottom: 16px;
@@ -105,10 +44,15 @@
 .card:hover,
 .expertise-card:hover,
 .visual-card:hover,
-.contact-card:hover,
 .infra-block:hover,
 .automation-band:hover {
+  transform: perspective(1200px) rotateX(0deg) rotateY(0deg) translateY(-2px);
   border-color: var(--border-strong);
+  box-shadow:
+    0 14px 28px rgba(15, 23, 42, 0.08),
+    0 4px 10px rgba(15, 23, 42, 0.05),
+    inset 0 1px 0 color-mix(in srgb, #ffffff 18%, transparent),
+    inset 0 -1px 0 color-mix(in srgb, #ffffff 5%, transparent);
 }
 
 .card h3,
@@ -119,16 +63,26 @@
 .expertise-card p,
 .expertise-card span,
 .expertise-card li,
-.contact-card h3,
-.contact-card p,
-.contact-card span,
-.contact-card li {
+.visual-card h3,
+.visual-card p,
+.visual-card span,
+.visual-card li,
+.infra-block h3,
+.infra-block p,
+.infra-block span,
+.infra-block li,
+.automation-band h3,
+.automation-band p,
+.automation-band span,
+.automation-band li {
   word-break: break-word;
 }
 
 .card h3,
 .expertise-card h3,
-.contact-card h3 {
+.visual-card h3,
+.infra-block h3,
+.automation-band h3 {
   margin: 0 0 12px;
   font-size: 1rem;
   line-height: 1.3;
@@ -137,7 +91,9 @@
 
 .card p,
 .expertise-card p,
-.contact-card p {
+.visual-card p,
+.infra-block p,
+.automation-band p {
   margin: 0 0 12px;
   color: var(--text-soft);
   line-height: 1.7;
@@ -202,252 +158,8 @@
 }
 
 /* =========================================================
-   CONTACT CARD — premium glass 3D hacia dentro por la derecha
-   ========================================================= */
-
-.contact-card {
-  padding: 22px;
-  border-radius: var(--radius-lg);
-  transform-style: preserve-3d;
-  transform: perspective(1800px) rotateY(18deg) rotateX(5deg) rotateZ(1deg);
-  transform-origin: center right;
-
-  background:
-    linear-gradient(
-      180deg,
-      rgba(255, 255, 255, 0.16) 0%,
-      rgba(255, 255, 255, 0.05) 18%,
-      rgba(6, 182, 212, 0.06) 100%
-    ),
-    linear-gradient(
-      135deg,
-      color-mix(in srgb, var(--accent) 20%, transparent) 0%,
-      color-mix(in srgb, var(--accent-2) 18%, transparent) 38%,
-      rgba(13, 24, 30, 0.84) 100%
-    );
-
-  border: 1px solid color-mix(in srgb, #ffffff 14%, var(--border-strong) 86%);
-
-  box-shadow:
-    var(--shadow-md),
-    0 0 28px color-mix(in srgb, var(--accent-glow) 92%, transparent),
-    inset 0 1px 0 rgba(255, 255, 255, 0.34),
-    inset 1px 0 0 rgba(255, 255, 255, 0.12),
-    inset 0 -14px 22px color-mix(in srgb, var(--accent) 14%, transparent),
-    inset -24px 0 34px rgba(0, 0, 0, 0.28);
-
-  backdrop-filter: blur(24px) saturate(165%);
-  -webkit-backdrop-filter: blur(24px) saturate(165%);
-}
-
-.contact-card::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  padding: 1.2px;
-  background: linear-gradient(
-    125deg,
-    rgba(255, 255, 255, 0.42) 0%,
-    rgba(255, 255, 255, 0.1) 26%,
-    color-mix(in srgb, var(--accent) 45%, transparent) 72%,
-    color-mix(in srgb, var(--accent-2) 38%, transparent) 100%
-  );
-  -webkit-mask:
-    linear-gradient(#fff 0 0) content-box,
-    linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  pointer-events: none;
-  z-index: 2;
-}
-
-.contact-card::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  background:
-    radial-gradient(
-      120% 100% at 0% 0%,
-      rgba(255, 255, 255, 0.22) 0%,
-      rgba(255, 255, 255, 0.06) 24%,
-      transparent 54%
-    ),
-    linear-gradient(
-      110deg,
-      rgba(255, 255, 255, 0.18) 0%,
-      rgba(255, 255, 255, 0.04) 22%,
-      transparent 50%
-    );
-  pointer-events: none;
-  z-index: 0;
-}
-
-.contact-card:hover {
-  transform: perspective(1800px) rotateY(14deg) rotateX(4deg) rotateZ(0.5deg)
-    translateZ(18px);
-  box-shadow:
-    var(--shadow-lg),
-    0 0 42px color-mix(in srgb, var(--accent) 34%, transparent),
-    0 0 62px color-mix(in srgb, var(--accent-2) 20%, transparent),
-    inset 0 1px 0 rgba(255, 255, 255, 0.44),
-    inset 1px 0 0 rgba(255, 255, 255, 0.14),
-    inset 0 -18px 30px color-mix(in srgb, var(--accent) 18%, transparent),
-    inset -28px 0 40px rgba(0, 0, 0, 0.32);
-}
-
-.contact-card h3 {
-  margin-bottom: 16px;
-}
-
-/* =========================================================
-   LINKS / REDES — mini tarjetas 3D hacia dentro por la derecha
-   ========================================================= */
-
-.contact-links {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: grid;
-  gap: 12px;
-}
-
-.contact-links li {
-  margin: 0;
-  padding: 0;
-}
-
-.contact-links a {
-  position: relative;
-  isolation: isolate;
-  overflow: hidden;
-
-  display: flex;
-  align-items: center;
-  gap: 12px;
-
-  min-height: 58px;
-  padding: 13px 16px;
-  border-radius: var(--radius-sm);
-  text-decoration: none;
-  color: var(--text-main);
-
-  transform-style: preserve-3d;
-  transform: perspective(1400px) rotateY(20deg) rotateX(5deg) rotateZ(1deg);
-  transform-origin: center right;
-
-  background:
-    linear-gradient(
-      180deg,
-      rgba(255, 255, 255, 0.16) 0%,
-      rgba(255, 255, 255, 0.05) 18%,
-      rgba(6, 182, 212, 0.05) 100%
-    ),
-    linear-gradient(
-      135deg,
-      color-mix(in srgb, var(--accent) 24%, transparent) 0%,
-      color-mix(in srgb, var(--accent-2) 20%, transparent) 42%,
-      rgba(11, 20, 26, 0.82) 100%
-    );
-
-  border: 1px solid color-mix(in srgb, #ffffff 14%, var(--border-strong) 86%);
-
-  box-shadow:
-    0 12px 24px rgba(0, 0, 0, 0.18),
-    0 0 20px color-mix(in srgb, var(--accent-glow) 85%, transparent),
-    inset 0 1px 0 rgba(255, 255, 255, 0.3),
-    inset 1px 0 0 rgba(255, 255, 255, 0.1),
-    inset 0 -10px 18px color-mix(in srgb, var(--accent) 14%, transparent),
-    inset -18px 0 24px rgba(0, 0, 0, 0.22);
-
-  backdrop-filter: blur(18px) saturate(160%);
-  -webkit-backdrop-filter: blur(18px) saturate(160%);
-
-  transition:
-    transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1),
-    box-shadow 0.35s ease,
-    border-color 0.35s ease,
-    background 0.35s ease,
-    color 0.35s ease;
-}
-
-.contact-links a::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  background: linear-gradient(
-    110deg,
-    rgba(255, 255, 255, 0.26) 0%,
-    rgba(255, 255, 255, 0.06) 20%,
-    transparent 46%
-  );
-  pointer-events: none;
-  z-index: 0;
-}
-
-.contact-links a::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  padding: 1px;
-  background: linear-gradient(
-    125deg,
-    rgba(255, 255, 255, 0.34) 0%,
-    rgba(255, 255, 255, 0.08) 30%,
-    color-mix(in srgb, var(--accent) 44%, transparent) 74%,
-    color-mix(in srgb, var(--accent-2) 32%, transparent) 100%
-  );
-  -webkit-mask:
-    linear-gradient(#fff 0 0) content-box,
-    linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  pointer-events: none;
-  z-index: 2;
-}
-
-.contact-links a > * {
-  position: relative;
-  z-index: 1;
-}
-
-.contact-links a svg {
-  flex-shrink: 0;
-  font-size: 1rem;
-  color: color-mix(in srgb, white 22%, var(--accent) 78%);
-  filter: drop-shadow(
-    0 0 10px color-mix(in srgb, var(--accent) 35%, transparent)
-  );
-}
-
-.contact-links a:hover {
-  transform: perspective(1400px) rotateY(15deg) rotateX(4deg) rotateZ(0.5deg)
-    translateZ(14px);
-  border-color: color-mix(in srgb, #ffffff 22%, var(--border-strong) 78%);
-  box-shadow:
-    0 18px 32px rgba(0, 0, 0, 0.22),
-    0 0 30px color-mix(in srgb, var(--accent) 30%, transparent),
-    0 0 46px color-mix(in srgb, var(--accent-2) 18%, transparent),
-    inset 0 1px 0 rgba(255, 255, 255, 0.4),
-    inset 1px 0 0 rgba(255, 255, 255, 0.14),
-    inset 0 -14px 22px color-mix(in srgb, var(--accent) 18%, transparent),
-    inset -22px 0 30px rgba(0, 0, 0, 0.26);
-}
-
-.contact-links a:hover svg {
-  color: color-mix(in srgb, white 12%, var(--accent) 88%);
-}
-
-.contact-links a:hover span,
-.contact-links a:hover {
-  color: #ffffff;
-}
-
-/* =========================================================
-   LIGHT MODE
+   LIGHT MODE OVERRIDES
+   Fondo hero-like cyan/teal igual al de contacto
    ========================================================= */
 
 :root[data-theme="light"] .card,
@@ -455,75 +167,130 @@
 :root[data-theme="light"] .visual-card,
 :root[data-theme="light"] .infra-block,
 :root[data-theme="light"] .automation-band {
-  background: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 0.96) 0%,
-    rgba(246, 249, 252, 0.98) 100%
-  );
-
-  border: 1px solid var(--border);
-
+  background:
+    radial-gradient(circle at top left, rgba(0, 212, 170, 0.10) 0%, transparent 34%),
+    radial-gradient(circle at bottom right, rgba(56, 189, 248, 0.12) 0%, transparent 38%),
+    linear-gradient(
+      180deg,
+      rgba(250, 253, 255, 0.94) 0%,
+      rgba(236, 245, 250, 0.96) 52%,
+      rgba(229, 241, 247, 0.98) 100%
+    );
+  border: 1px solid rgba(15, 23, 42, 0.08);
   box-shadow:
-    var(--shadow-sm),
-    inset 0 1px 0 rgba(255, 255, 255, 0.72),
-    inset 0 -1px 0 rgba(255, 255, 255, 0.24);
+    0 16px 34px rgba(15, 23, 42, 0.06),
+    0 4px 12px rgba(15, 23, 42, 0.04),
+    inset 0 1px 0 rgba(255, 255, 255, 0.82);
 }
 
-:root[data-theme="light"] .contact-card {
+:root[data-theme="light"] .card:hover,
+:root[data-theme="light"] .expertise-card:hover,
+:root[data-theme="light"] .visual-card:hover,
+:root[data-theme="light"] .infra-block:hover,
+:root[data-theme="light"] .automation-band:hover {
+  border-color: rgba(15, 23, 42, 0.12);
+  box-shadow:
+    0 18px 38px rgba(15, 23, 42, 0.08),
+    0 8px 18px rgba(15, 23, 42, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 0.86);
+}
+
+:root[data-theme="light"] .card-badge,
+:root[data-theme="light"] .date {
+  color: var(--text-sub);
+}
+
+:root[data-theme="light"] .tag {
   background:
     linear-gradient(
       180deg,
-      rgba(255, 255, 255, 0.92) 0%,
-      rgba(240, 248, 250, 0.96) 100%
-    ),
-    linear-gradient(
-      135deg,
-      rgba(8, 145, 178, 0.1) 0%,
-      rgba(15, 118, 110, 0.08) 100%
+      rgba(255, 255, 255, 0.72) 0%,
+      rgba(231, 244, 248, 0.92) 100%
     );
-
-  border: 1px solid var(--border-strong);
-
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  color: var(--text-soft);
   box-shadow:
-    var(--shadow-md),
-    0 0 20px rgba(8, 145, 178, 0.08),
-    inset 0 1px 0 rgba(255, 255, 255, 0.86),
-    inset 0 -10px 18px rgba(8, 145, 178, 0.06),
-    inset -16px 0 24px rgba(15, 23, 42, 0.12);
+    inset 0 1px 0 rgba(255, 255, 255, 0.72),
+    0 4px 10px rgba(15, 23, 42, 0.04);
 }
 
-:root[data-theme="light"] .contact-links a {
-  background:
-    linear-gradient(
-      180deg,
-      rgba(255, 255, 255, 0.9) 0%,
-      rgba(240, 248, 250, 0.94) 100%
-    ),
-    linear-gradient(
-      135deg,
-      rgba(8, 145, 178, 0.08) 0%,
-      rgba(15, 118, 110, 0.06) 100%
-    );
-
-  border: 1px solid var(--border);
-
-  box-shadow:
-    0 10px 20px rgba(15, 23, 42, 0.08),
-    0 0 16px rgba(8, 145, 178, 0.07),
-    inset 0 1px 0 rgba(255, 255, 255, 0.72),
-    inset 0 -8px 14px rgba(8, 145, 178, 0.05),
-    inset -12px 0 18px rgba(15, 23, 42, 0.1);
+:root[data-theme="light"] .status-ok {
+  background: color-mix(in srgb, var(--accent) 14%, white 70%);
+  border: 1px solid color-mix(in srgb, var(--accent) 20%, rgba(15, 23, 42, 0.06));
+  color: color-mix(in srgb, var(--accent-2) 78%, var(--text-main));
 }
 
 /* =========================================================
-   TABLET+
+   DARK MODE OVERRIDES
+   Sutil, inspirado en las tarjetas de redes
    ========================================================= */
+
+:root[data-theme="dark"] .card,
+:root[data-theme="dark"] .expertise-card,
+:root[data-theme="dark"] .visual-card,
+:root[data-theme="dark"] .infra-block,
+:root[data-theme="dark"] .automation-band {
+  background:
+    radial-gradient(circle at top left, rgba(0, 212, 170, 0.055) 0%, transparent 30%),
+    radial-gradient(circle at 85% 20%, rgba(91, 145, 255, 0.05) 0%, transparent 24%),
+    radial-gradient(circle at bottom right, rgba(56, 189, 248, 0.07) 0%, transparent 34%),
+    linear-gradient(
+      180deg,
+      rgba(24, 30, 40, 0.96) 0%,
+      rgba(18, 23, 33, 0.97) 52%,
+      rgba(14, 18, 28, 0.98) 100%
+    );
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  box-shadow:
+    0 14px 30px rgba(0, 0, 0, 0.26),
+    0 4px 12px rgba(0, 0, 0, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05),
+    inset 0 -1px 0 rgba(0, 212, 170, 0.04);
+}
+
+:root[data-theme="dark"] .card:hover,
+:root[data-theme="dark"] .expertise-card:hover,
+:root[data-theme="dark"] .visual-card:hover,
+:root[data-theme="dark"] .infra-block:hover,
+:root[data-theme="dark"] .automation-band:hover {
+  border-color: rgba(120, 190, 220, 0.16);
+  box-shadow:
+    0 18px 34px rgba(0, 0, 0, 0.32),
+    0 6px 14px rgba(0, 0, 0, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    inset 0 -1px 0 rgba(56, 189, 248, 0.06),
+    0 0 16px rgba(56, 189, 248, 0.05);
+}
+
+:root[data-theme="dark"] .card-badge,
+:root[data-theme="dark"] .date {
+  color: color-mix(in srgb, var(--text-sub) 88%, white 12%);
+}
+
+:root[data-theme="dark"] .tag {
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.05) 0%,
+      rgba(28, 36, 48, 0.82) 100%
+    );
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  color: color-mix(in srgb, var(--text-soft) 92%, white 8%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.04),
+    0 4px 10px rgba(0, 0, 0, 0.14);
+}
+
+:root[data-theme="dark"] .status-ok {
+  background: color-mix(in srgb, var(--accent-green) 16%, rgba(16, 24, 32, 0.72));
+  border: 1px solid color-mix(in srgb, var(--accent-green) 28%, transparent);
+  color: color-mix(in srgb, var(--accent-green) 88%, white 12%);
+}
 
 @media (min-width: 768px) {
   .card,
   .expertise-card,
   .visual-card,
-  .contact-card,
   .infra-block,
   .automation-band {
     padding: 24px;
@@ -531,16 +298,14 @@
 
   .card h3,
   .expertise-card h3,
-  .contact-card h3 {
+  .visual-card h3,
+  .infra-block h3,
+  .automation-band h3 {
     font-size: 1.08rem;
   }
 
   .card-top {
     flex-wrap: nowrap;
-    gap: 14px;
-  }
-
-  .contact-links {
     gap: 14px;
   }
 }
@@ -550,10 +315,16 @@
    ========================================================= */
 
 @media (prefers-reduced-motion: reduce) {
-  .contact-card,
-  .contact-card:hover,
-  .contact-links a,
-  .contact-links a:hover {
+  .card,
+  .card:hover,
+  .expertise-card,
+  .expertise-card:hover,
+  .visual-card,
+  .visual-card:hover,
+  .infra-block,
+  .infra-block:hover,
+  .automation-band,
+  .automation-band:hover {
     transform: none;
     transition: none;
   }
