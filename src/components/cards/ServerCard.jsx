@@ -1,5 +1,3 @@
-import "./cards.css";
-
 export default function ServerCard({ server }) {
   if (!server) return null;
 

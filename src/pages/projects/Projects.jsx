@@ -1,8 +1,8 @@
-import ProjectCard from '../components/cards/ProjectCard'
-import { usePortfolioData } from '../hooks/usePortfolioData'
+import ProjectCard from "../../components/cards/ProjectCard";
+import { usePortfolioData } from "../../hooks/usePortfolioData";
 
 function Projects() {
-  const { projects, loading, error } = usePortfolioData()
+  const { projects, loading, error } = usePortfolioData();
 
   if (loading) {
     return (
@@ -10,7 +10,7 @@ function Projects() {
         <div className="sys-loader"></div>
         <h2>Cargando proyectos...</h2>
       </div>
-    )
+    );
   }
 
   if (error) {
@@ -19,7 +19,7 @@ function Projects() {
         <h2>Error al cargar proyectos</h2>
         <p>{error}</p>
       </div>
-    )
+    );
   }
 
   return (
@@ -45,7 +45,7 @@ function Projects() {
         )}
       </div>
     </section>
-  )
+  );
 }
 
-export default Projects
+export default Projects;

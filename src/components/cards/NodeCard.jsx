@@ -1,5 +1,3 @@
-import "./cards.css";
-
 export default function NodeCard({ node }) {
   if (!node) return null;
   const statusClass = `status-${node.status?.toLowerCase() || "ok"}`;

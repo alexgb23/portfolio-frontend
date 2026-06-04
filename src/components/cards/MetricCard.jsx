@@ -1,5 +1,3 @@
-import "./cards.css";
-
 export default function MetricCard({ metric }) {
   if (!metric) return null;
 

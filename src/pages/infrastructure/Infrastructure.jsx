@@ -1,6 +1,6 @@
-import ServerCard from "../components/cards/ServerCard";
-import MetricCard from "../components/cards/MetricCard";
-import { usePortfolioData } from "../hooks/usePortfolioData";
+import ServerCard from "../../components/cards/ServerCard";
+import MetricCard from "../../components/cards/MetricCard";
+import { usePortfolioData } from "../../hooks/usePortfolioData";
 import { FaServer, FaChartLine, FaNetworkWired } from "react-icons/fa";
 
 function Infrastructure() {

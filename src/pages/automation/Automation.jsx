@@ -1,6 +1,7 @@
-import NodeCard from '../components/cards/NodeCard'
-import { usePortfolioData } from '../hooks/usePortfolioData'
+import NodeCard from '../../components/cards/NodeCard'
+import { usePortfolioData } from '../../hooks/usePortfolioData'
 import { FaMicrochip, FaSlidersH, FaBroadcastTower } from 'react-icons/fa'
+import './Automation.css'
 
 function Automation() {
   const { nodes, loading, error } = usePortfolioData()

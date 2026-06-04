@@ -14,6 +14,7 @@
   display: flex;
   flex-direction: column;
   width: 100%;
+  gap: 0;
 }
 
 .about-left {
@@ -31,29 +32,30 @@
 }
 
 .about-kicker {
+  display: block;
+  margin-bottom: 12px;
   color: var(--accent-green);
   font-family: monospace;
   font-size: 0.875rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  margin-bottom: 12px;
-  display: block;
 }
 
 .about-title {
+  margin-bottom: 20px;
+  color: var(--text-main);
   font-size: 1.75rem;
   font-weight: 800;
   line-height: 1.2;
-  margin-bottom: 20px;
-  color: var(--text-main);
+  text-wrap: balance;
   transition: color 0.25s ease;
 }
 
 .about-text {
+  margin-bottom: 28px;
+  color: var(--text-sub);
   font-size: 1rem;
   line-height: 1.7;
-  color: var(--text-sub);
-  margin-bottom: 28px;
   transition: color 0.25s ease;
 }
 
@@ -70,12 +72,12 @@
 
 .badge {
   padding: 6px 14px;
-  font-size: 0.75rem;
-  font-family: monospace;
-  background-color: var(--bg-soft);
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
+  background-color: var(--bg-soft);
   color: var(--text-soft);
+  font-size: 0.75rem;
+  font-family: monospace;
   transition:
     background-color 0.25s ease,
     border-color 0.25s ease;
@@ -89,27 +91,29 @@
 
 .skill-item {
   display: flex;
+  align-items: flex-start;
   gap: 14px;
 }
 
 .skill-icon {
+  flex-shrink: 0;
+  margin-top: 4px;
   color: var(--accent-green);
   font-size: 1.2rem;
-  margin-top: 4px;
-  flex-shrink: 0;
 }
 
 .skill-item h3 {
-  font-weight: 600;
-  color: var(--text-main);
   margin-bottom: 4px;
+  color: var(--text-main);
   font-size: 1rem;
+  font-weight: 600;
   transition: color 0.25s ease;
 }
 
 .skill-item p {
-  font-size: 0.875rem;
   color: var(--text-sub);
+  font-size: 0.875rem;
+  line-height: 1.6;
   transition: color 0.25s ease;
 }
 
@@ -121,24 +125,23 @@
   position: absolute;
   width: 280px;
   height: 280px;
-  background-color: var(--accent-glow);
   border-radius: 50%;
+  background-color: var(--accent-glow);
   filter: blur(64px);
   pointer-events: none;
 }
 
 .photo-wrapper {
   position: relative;
-  width: 100%;
-  max-width: 320px;
+  width: min(100%, 320px);
   aspect-ratio: 1 / 1;
 }
 
 .photo-border {
   position: absolute;
   inset: -4px;
-  background: linear-gradient(135deg, var(--accent), var(--accent-2));
   border-radius: var(--radius-md);
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
   filter: blur(4px);
   opacity: 0.4;
 }
@@ -147,9 +150,9 @@
   position: relative;
   width: 100%;
   height: 100%;
-  border-radius: var(--radius-md);
   overflow: hidden;
   border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md);
   background-color: var(--bg-elevated);
   transition:
     background-color 0.25s ease,
@@ -209,8 +212,8 @@
   }
 
   .about-title {
-    font-size: 2.3rem;
     margin-bottom: 24px;
+    font-size: 2.3rem;
   }
 
   .about-text {
@@ -232,16 +235,16 @@
 
   .about-right {
     display: flex;
-    width: 50%;
-    min-height: calc(100vh - var(--navbar-height));
-    background-color: #24304d;
+    position: relative;
     align-items: center;
     justify-content: center;
-    position: relative;
-    padding: 40px;
-    clip-path: polygon(15% 0%, 100% 0%, 100% 100%, 0% 100%);
+    width: 50%;
+    min-height: calc(100vh - var(--navbar-height));
     margin-left: -5%;
+    padding: 40px;
     padding-left: 15%;
+    background-color: #24304d;
+    clip-path: polygon(15% 0%, 100% 0%, 100% 100%, 0% 100%);
     transition: background-color 0.25s ease;
   }
 }

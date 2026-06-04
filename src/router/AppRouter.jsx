@@ -1,17 +1,13 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import MainLayout from "./components/layout/MainLayout";
-import Home from "./pages/Home";
+import Home from "./pages/home/Home";
 import About from "./pages/about/About";
-import Projects from "./pages/Projects";
-import Infrastructure from "./pages/Infrastructure";
-import Automation from "./pages/Automation";
-import Contact from "./pages/Contact";
-import Login from "./pages/Login";
-import Dashboard from "./pages/Dashboard";
-
-// 1. Importa tus nuevas páginas de administración
-import Login from "./pages/Login";
-import Dashboard from "./pages/Dashboard";
+import Projects from "./pages/projects/Projects";
+import Infrastructure from "./pages/infrastructure/Infrastructure";
+import Automation from "./pages/automation/Automation";
+import Contact from "./pages/contact/Contact";
+import Login from "./pages/login/Login";
+import Dashboard from "./pages/dashboard/Dashboard";
 
 function App() {
   return (

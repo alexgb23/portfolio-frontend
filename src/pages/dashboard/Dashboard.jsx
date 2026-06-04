@@ -1,6 +1,12 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getProjects, getNodes, getServers, getMetrics } from "../services/api";
+import {
+  getProjects,
+  getNodes,
+  getServers,
+  getMetrics,
+} from "../../services/api";
+import "./Dashboard.css";
 
 export default function Dashboard() {
   const [data, setData] = useState({

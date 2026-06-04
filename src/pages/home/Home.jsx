@@ -1,13 +1,14 @@
-import HeroSection from '../components/sections/heroSection/HeroSection'
-import AboutPreview from '../components/sections/aboutPreview/AboutPreview'
-import FeaturedProjects from '../components/sections/FeaturedProjects'
-import FeaturedAutomation from '../components/sections/FeaturedAutomation'
-import FeaturedInfrastructure from '../components/sections/FeaturedInfrastructure'
-import ContactPreview from '../components/sections/ContactPreview'
-import { usePortfolioData } from '../hooks/usePortfolioData'
+import HeroSection from "../../components/sections/heroSection/HeroSection";
+import AboutPreview from "../../components/sections/aboutPreview/AboutPreview";
+import FeaturedProjects from "../../components/sections/FeaturedProjects";
+import FeaturedAutomation from "../../components/sections/FeaturedAutomation";
+import FeaturedInfrastructure from "../../components/sections/FeaturedInfrastructure";
+import ContactPreview from "../../components/sections/ContactPreview";
+import { usePortfolioData } from "../../hooks/usePortfolioData";
 
 function Home() {
-  const { projects, nodes, servers, metrics, loading, error } = usePortfolioData()
+  const { projects, nodes, servers, metrics, loading, error } =
+    usePortfolioData();
 
   if (loading) {
     return (
@@ -16,7 +17,7 @@ function Home() {
         <h2>Sincronizando sistemas...</h2>
         <p>Cargando proyectos, nodos, servidores y métricas.</p>
       </div>
-    )
+    );
   }
 
   if (error) {
@@ -25,7 +26,7 @@ function Home() {
         <h2>Error de conexión</h2>
         <p>{error}</p>
       </div>
-    )
+    );
   }
 
   return (
@@ -40,7 +41,7 @@ function Home() {
       <FeaturedAutomation nodes={nodes?.slice(0, 2)} />
       <ContactPreview />
     </>
-  )
+  );
 }
 
-export default Home
+export default Home;

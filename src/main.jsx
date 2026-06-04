@@ -4,7 +4,7 @@ import App from "./App"; // 🚀 CORRECCIÓN: Llama a App, que es el que sabe d�
 import "./style/reset.css";
 import "./style/theme.css";
 import "./style/globals.css";
-import "./style/index.css";
+import "./style/cards.css";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>

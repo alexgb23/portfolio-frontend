@@ -4,6 +4,7 @@ import {
   FaEnvelope,
   FaGlobe,
 } from 'react-icons/fa'
+import "./Contact.css";
 
 function Contact() {
   return (

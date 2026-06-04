@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { loginAdmin } from "../services/api";
+import { loginAdmin } from "../../services/api";
+import "./Login.css";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -28,7 +29,7 @@ export default function Login() {
     <div className="admin-page-container">
       <div className="admin-card">
         <div className="admin-header">
-          <div style={{ fontSize: "40px", marginBottom: "12px" }}>🔐</div>
+          <div className="admin-login-icon">🔐</div>
           <h2 className="admin-title">Panel de Control</h2>
           <p className="admin-subtitle">
             Ingresa tus credenciales de administrador
@@ -38,7 +39,7 @@ export default function Login() {
         {error && (
           <div className="admin-error-box">
             <span>⚠️</span>
-            <p style={{ margin: 0 }}>{error}</p>
+            <p>{error}</p>
           </div>
         )}
 

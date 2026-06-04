@@ -1,5 +1,3 @@
-import "./cards.css";
-
 export default function ProjectCard({ project }) {
   if (!project) return null;
 

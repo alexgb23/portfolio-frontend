@@ -1,0 +1,32 @@
+/* ESTADOS */
+.state-wrapper {
+  min-height: calc(100vh - 88px);
+  padding: 40px 20px;
+}
+
+.centered {
+  display: grid;
+  place-items: center;
+  text-align: center;
+}
+
+.state-wrapper p {
+  max-width: 60ch;
+  color: var(--text-sub);
+}
+
+.sys-loader {
+  width: 48px;
+  height: 48px;
+  margin-bottom: 18px;
+  border-radius: 50%;
+  border: 4px solid rgba(255, 255, 255, 0.08);
+  border-top-color: var(--accent);
+  animation: spin 0.9s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
