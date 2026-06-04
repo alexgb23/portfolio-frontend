@@ -58,19 +58,115 @@
   background: var(--bg-app);
 }
 
-.hero-eyebrow {
+/* Creacion de transicion para hero-eyebrow*/
+
+.hero-badge-wrap {
   display: inline-block;
-  margin-top: 20px;
-  padding: 8px 14px;
-  border-radius: var(--radius-sm);
-  border: 1px solid var(--border);
-  background: var(--bg-soft);
-  color: var(--accent);
-  font-size: 0.78rem;
+  margin-top: 14px;
+}
+
+.hero-badge-glow {
+  position: relative;
+  display: inline-block;
+  padding: 1px;
+  border-radius: 9999px;
+  overflow: hidden;
+}
+
+.hero-badge-glow::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: conic-gradient(
+    from 0deg,
+    rgba(0, 212, 170, 0.18) 0deg,
+    rgba(0, 212, 170, 0.18) 120deg,
+    rgba(0, 212, 170, 0.95) 170deg,
+    rgba(56, 189, 248, 0.98) 210deg,
+    rgba(99, 102, 241, 0.9) 245deg,
+    rgba(56, 189, 248, 0.25) 290deg,
+    rgba(0, 212, 170, 0.18) 360deg
+  );
+  animation: heroBadgeSpin 3s linear infinite;
+  z-index: 0;
+}
+
+.hero-badge-inner {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 40px;
+  padding: 8px 16px;
+  border-radius: calc(9999px - 1.5px);
+  background: rgba(21, 26, 36, 0.98);
+  color: var(--text-soft);
+}
+
+.hero-badge-text {
+  font-size: 0.72rem;
   font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.14em;
+  line-height: 1.2;
+  text-align: center;
   white-space: normal;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+@keyframes heroBadgeSpin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes heroBadgeDotPulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.15);
+    opacity: 0.82;
+  }
+}
+
+@media (max-width: 720px) {
+  .hero-badge-wrap {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .hero-badge-glow {
+    width: 100%;
+  }
+
+  .hero-badge-inner {
+    width: 100%;
+    min-height: 38px;
+    padding: 8px 14px;
+  }
+
+  .hero-badge-text {
+    font-size: 0.8rem;
+    line-height: 1.35;
+    white-space: normal;
+    text-wrap: balance;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-badge-glow::before,
+  .hero-badge-dot {
+    animation: none;
+  }
 }
 
 .hero-bottom-block {
@@ -236,8 +332,11 @@
     height: 320px;
   }
 
-  .hero-eyebrow {
+  .hero-badge-wrap {
     margin-top: 28px;
+  }
+
+  .hero-badge-text {
     white-space: nowrap;
   }
 }

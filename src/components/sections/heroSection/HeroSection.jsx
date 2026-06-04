@@ -7,7 +7,6 @@ import {
   FaGithub,
   FaLinkedin,
   FaEnvelope,
-  
   FaArrowRight,
 } from "react-icons/fa";
 import "../sectionsGlobals.css";
@@ -36,9 +35,15 @@ function HeroSection() {
                 className="profile-avatar"
               />
             </div>
-            <span className="hero-eyebrow">
-              Informática · Redes · Sistemas · Domótica · Desarrollo
-            </span>
+            <div class="hero-badge-wrap">
+              <div class="hero-badge-glow">
+                <div class="hero-badge-inner">
+                  <span class="hero-badge-text">
+                    Informática · Redes · Sistemas · Domótica · Desarrollo
+                  </span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
