@@ -1,4 +1,8 @@
+import React from "react";
 import { Link } from "react-router-dom";
+import Atropos from "atropos/react";
+import "atropos/css";
+
 import {
   FaGithub,
   FaLinkedin,
@@ -7,6 +11,7 @@ import {
   FaInstagram,
   FaFacebook,
 } from "react-icons/fa";
+
 import "./Contact.css";
 
 function SocialCard({ href, icon, label, title, text, className = "" }) {
@@ -17,22 +22,25 @@ function SocialCard({ href, icon, label, title, text, className = "" }) {
       href={href}
       target={isMail ? undefined : "_blank"}
       rel={isMail ? undefined : "noreferrer"}
-      className={`social-mini-card ${className}`}
+      className={`social-mini-card${className ? ` ${className}` : ""}`}
       aria-label={`${label}: ${title}`}
     >
       <div className="social-mini-front">
-        <div className="social-mini-shine"></div>
+        <div className="social-mini-shine" aria-hidden="true"></div>
 
-        <div className="social-mini-icon">{icon}</div>
-
-        <div className="social-mini-content">
-          <span className="social-mini-label">{label}</span>
-          <span className="social-mini-title">{title}</span>
-          <span className="social-mini-text">{text}</span>
+        <div className="social-mini-icon" aria-hidden="true">
+          {icon}
         </div>
+
+        <div className="social-mini-textbox">
+          <span className="social-mini-name">{label}</span>
+          <span className="social-mini-desc">{text}</span>
+        </div>
+
+        <span className="social-mini-meta">{title}</span>
       </div>
 
-      <div className="social-mini-shadow"></div>
+      <div className="social-mini-shadow" aria-hidden="true"></div>
     </a>
   );
 }
@@ -114,7 +122,6 @@ function Contact() {
           <div className="term-top-bar">
             <div className="term-controls">
               <span className="c-red"></span>
-              
               <span className="c-yellow"></span>
               <span className="c-green"></span>
             </div>
@@ -123,7 +130,8 @@ function Contact() {
 
           <div className="term-content-area">
             <p className="cmd-input">
-              <span className="prompt-color">guest@portfolio:~$</span> iniciar_contacto
+              <span className="prompt-color">guest@portfolio:~$</span>{" "}
+              iniciar_contacto
             </p>
 
             <p className="cmd-output">
@@ -131,7 +139,8 @@ function Contact() {
             </p>
 
             <p className="cmd-output">
-              Respuesta orientada a desarrollo, infraestructura, redes y automatización.
+              Respuesta orientada a desarrollo, infraestructura, redes y
+              automatización.
             </p>
 
             <form className="cmd-form" onSubmit={(e) => e.preventDefault()}>
