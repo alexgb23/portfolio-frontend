@@ -1,8 +1,5 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import Atropos from "atropos/react";
-import "atropos/css";
-
 import {
   FaGithub,
   FaLinkedin,

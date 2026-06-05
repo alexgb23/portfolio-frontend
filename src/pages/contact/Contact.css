@@ -16,21 +16,6 @@
 }
 
 /* ==========================================================================
-   2. INTEGRACIÓN COMPATIBLE CON ATROPOS (ESTILOS CRÍTICOS)
-   ========================================================================== */
-.atropos-social-wrapper {
-  width: 100%;
-  height: 100%;
-  display: block;
-}
-
-.social-mini-front {
-  /* transform-style: preserve-3d;
-  perspective: 1500px; */
-  overflow: visible !important;
-}
-
-/* ==========================================================================
    3. LAYOUT GENERAL (MÓVIL POR DEFECTO — UNA COLUMNA)
    ========================================================================== */
 .contact-grid {
@@ -128,6 +113,7 @@
 .neo-terminal {
   display: flex;
   flex-direction: column;
+  align-self: flex-start;
   overflow: hidden;
   border-radius: var(--radius-md);
   color: var(--text-main);
@@ -223,9 +209,9 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  min-height: 340px;
-  gap: 16px;
+  gap: 12px;
   padding: 20px;
+  min-height: 0;
   background: linear-gradient(
     180deg,
     var(--terminal-bg) 0%,
@@ -247,6 +233,8 @@
 }
 
 .prompt-color {
+  display: inline-block;
+  margin-bottom: 18px;
   color: var(--accent);
 }
 
@@ -256,8 +244,8 @@
 
 .cmd-form {
   display: grid;
-  gap: 14px;
-  margin-top: 4px;
+  gap: 12px;
+  margin-top: 18px;
 }
 
 .cmd-input-line {
@@ -272,21 +260,46 @@
   font-weight: 700;
 }
 
-.cmd-input-line input {
-  width: 100%;
+.cmd-input-line input,
+.cmd-input-line textarea {
   padding: 8px 0;
+  resize: none;
+  line-height: 1.45;
   border: none;
   border-bottom: 1px solid var(--border-strong);
-  background: transparent;
+  background: transparent !important;
+  background-color: transparent !important;
   color: var(--text-main);
   outline: none;
+  font: inherit;
+  appearance: none;
+  -webkit-appearance: none;
+  box-shadow: none;
+}
+
+.cmd-input-line input:focus,
+.cmd-input-line textarea:focus {
+  background: transparent !important;
+  background-color: transparent !important;
+}
+
+.cmd-input-line input:-webkit-autofill,
+.cmd-input-line input:-webkit-autofill:hover,
+.cmd-input-line input:-webkit-autofill:focus,
+.cmd-input-line input:-webkit-autofill:active {
+  -webkit-text-fill-color: var(--text-main) !important;
+  -webkit-box-shadow: 0 0 0 1000px transparent inset !important;
+  box-shadow: 0 0 0 1000px transparent inset !important;
+  background-color: transparent !important;
+  transition: background-color 5000s ease-in-out 0s;
 }
 
 .cmd-submit-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 100%;
+  width: 80%;
+  margin: 0 auto;
   margin-top: 10px;
   min-height: 38px;
   padding: 8px 14px;
@@ -294,7 +307,7 @@
   border-radius: 8px;
   background: transparent;
   color: var(--accent);
-  font-weight: 500;
+  font-weight: 800;
   cursor: pointer;
   transition:
     background-color 0.2s ease,
@@ -328,14 +341,14 @@
   perspective: 1200px;
   transform-style: preserve-3d;
   transform-origin: center center;
-  transform: rotateX(9deg) rotateY(6deg);
+  transform: rotateX(2deg) rotateY(12deg);
   transition:
     transform 0.22s ease,
     box-shadow 0.22s ease;
 }
 
 .social-mini-card:hover {
-  transform: rotateX(11deg) rotateY(8deg) translateY(-2px);
+  transform: rotateX(4deg) rotateY(14deg) translateY(0px);
 }
 
 .social-mini-card::after {
@@ -350,6 +363,10 @@
   transform: rotateX(-76deg);
   z-index: 2;
   pointer-events: none;
+  transition:
+    transform 0.28s ease,
+    bottom 0.28s ease,
+    opacity 0.28s ease;
 }
 
 :root[data-theme="dark"] .social-mini-card::after {
@@ -380,8 +397,11 @@
   pointer-events: none;
   transition:
     background 0.28s ease,
-    box-shadow 0.28s ease;
+    box-shadow 0.28s ease,
+    transform 0.28s ease,
+    opacity 0.28s ease;
 }
+
 :root[data-theme="dark"] .social-mini-card::before {
   background: linear-gradient(
     90deg,
@@ -616,23 +636,24 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    align-items: stretch;
+    align-items: flex-start;
     gap: 30px;
     width: 100%;
   }
 
-  .contact-card {
-    flex: 0 0 35%;
+  .contact-card,
+  .neo-terminal {
     display: flex;
     flex-direction: column;
-    height: 100%;
+    min-width: 0;
+  }
+
+  .contact-card {
+    flex: 0 0 40%;
   }
 
   .neo-terminal {
     flex: 1;
-    display: flex;
-    flex-direction: column;
-    height: 100%;
   }
 
   .social-mini-grid {
@@ -641,20 +662,21 @@
     max-width: 420px;
     margin-left: auto;
     margin-right: auto;
-    flex: 1;
-  }
-
-  .social-mini-card {
-    transform-origin: center top;
-    transform: rotateX(9deg) rotateY(10deg);
-  }
-
-  .social-mini-card:hover {
-    transform: rotateX(9deg) rotateY(18deg) translateY(-2px);
   }
 
   .term-content-area {
-    flex: 1;
-    min-height: 350px;
+    flex: 0 0 auto;
+    min-height: 0;
+  }
+}
+
+@media (min-width: 992px) and (hover: hover) and (pointer: fine) {
+  .social-mini-card {
+    transform-origin: center top;
+    transform: rotateX(2deg) rotateY(12deg);
+  }
+
+  .social-mini-card:hover {
+    transform: rotateX(2deg) rotateY(12deg) scale(1.015);
   }
 }
