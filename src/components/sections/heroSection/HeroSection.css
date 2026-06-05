@@ -45,14 +45,7 @@
 }
 
 .avatar-wrapper {
-  width: 340px;
-  height: 400px;
-  margin-bottom: 14px;
-  background: linear-gradient(145deg, var(--accent-green), var(--accent));
-  padding: 5px;
-  border-radius: 74% 26% 36% 64% / 42% 32% 68% 58%;
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.18);
-  overflow: hidden;
+  display: none;
 }
 .profile-avatar {
   width: 100%;
