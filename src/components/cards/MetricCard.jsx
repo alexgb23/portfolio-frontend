@@ -2,7 +2,7 @@ export default function MetricCard({ metric }) {
   if (!metric) return null;
 
   return (
-    <article className="card card-metric">
+    <article className="card card-metric card-hover">
       <div className="card-top">
         <span className="card-badge">Telemetría IoT</span>
         <span className="date">{metric.room ?? "Ubicación N/D"}</span>

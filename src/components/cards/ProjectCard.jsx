@@ -9,7 +9,7 @@ export default function ProjectCard({ project }) {
     : "2026";
 
   return (
-    <article className="card card-project">
+    <article className="card card-project card-hover">
       <div className="card-top">
         <span className="card-badge">Software</span>
         <span className="date">{displayDate}</span>

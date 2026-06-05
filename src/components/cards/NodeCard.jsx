@@ -6,7 +6,7 @@ export default function NodeCard({ node }) {
   const value = node.current_value || node.valor_actual || "Sin Telemetría";
 
   return (
-    <article className="card card-row-system">
+    <article className="card card-row-system card-hover">
       <div className="system-title-group">
         <h3>{name}</h3>
         <div className="system-meta-desc">{type}</div>

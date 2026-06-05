@@ -11,12 +11,11 @@
   padding: 20px;
   border-radius: var(--radius-md);
   color: var(--text-main);
-  background:
-    linear-gradient(
-      180deg,
-      color-mix(in srgb, var(--bg-card) 92%, white 8%) 0%,
-      color-mix(in srgb, var(--bg-card-2) 96%, transparent) 100%
-    );
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--bg-card) 92%, white 8%) 0%,
+    color-mix(in srgb, var(--bg-card-2) 96%, transparent) 100%
+  );
   border: 1px solid var(--border);
   box-shadow:
     var(--shadow-sm),
@@ -41,16 +40,15 @@
   margin-bottom: 16px;
 }
 
-.card:hover,
+.card-hover:hover,
 .expertise-card:hover,
-.visual-card:hover,
-.infra-block:hover,
-.automation-band:hover {
-  transform: perspective(1200px) rotateX(0deg) rotateY(0deg) translateY(-2px);
+.visual-card:hover {
+  transform: perspective(1200px) rotateX(0deg) rotateY(0deg) translateY(-2px)
+    scale(1.015);
   border-color: var(--border-strong);
   box-shadow:
-    0 14px 28px rgba(15, 23, 42, 0.08),
-    0 4px 10px rgba(15, 23, 42, 0.05),
+    0 18px 34px rgba(15, 23, 42, 0.1),
+    0 6px 14px rgba(15, 23, 42, 0.06),
     inset 0 1px 0 color-mix(in srgb, #ffffff 18%, transparent),
     inset 0 -1px 0 color-mix(in srgb, #ffffff 5%, transparent);
 }
@@ -168,8 +166,16 @@
 :root[data-theme="light"] .infra-block,
 :root[data-theme="light"] .automation-band {
   background:
-    radial-gradient(circle at top left, rgba(0, 212, 170, 0.10) 0%, transparent 34%),
-    radial-gradient(circle at bottom right, rgba(56, 189, 248, 0.12) 0%, transparent 38%),
+    radial-gradient(
+      circle at top left,
+      rgba(0, 212, 170, 0.1) 0%,
+      transparent 34%
+    ),
+    radial-gradient(
+      circle at bottom right,
+      rgba(56, 189, 248, 0.12) 0%,
+      transparent 38%
+    ),
     linear-gradient(
       180deg,
       rgba(250, 253, 255, 0.94) 0%,
@@ -201,12 +207,11 @@
 }
 
 :root[data-theme="light"] .tag {
-  background:
-    linear-gradient(
-      180deg,
-      rgba(255, 255, 255, 0.72) 0%,
-      rgba(231, 244, 248, 0.92) 100%
-    );
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.72) 0%,
+    rgba(231, 244, 248, 0.92) 100%
+  );
   border: 1px solid rgba(15, 23, 42, 0.08);
   color: var(--text-soft);
   box-shadow:
@@ -216,7 +221,8 @@
 
 :root[data-theme="light"] .status-ok {
   background: color-mix(in srgb, var(--accent) 14%, white 70%);
-  border: 1px solid color-mix(in srgb, var(--accent) 20%, rgba(15, 23, 42, 0.06));
+  border: 1px solid
+    color-mix(in srgb, var(--accent) 20%, rgba(15, 23, 42, 0.06));
   color: color-mix(in srgb, var(--accent-2) 78%, var(--text-main));
 }
 
@@ -231,9 +237,21 @@
 :root[data-theme="dark"] .infra-block,
 :root[data-theme="dark"] .automation-band {
   background:
-    radial-gradient(circle at top left, rgba(0, 212, 170, 0.055) 0%, transparent 30%),
-    radial-gradient(circle at 85% 20%, rgba(91, 145, 255, 0.05) 0%, transparent 24%),
-    radial-gradient(circle at bottom right, rgba(56, 189, 248, 0.07) 0%, transparent 34%),
+    radial-gradient(
+      circle at top left,
+      rgba(0, 212, 170, 0.055) 0%,
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 85% 20%,
+      rgba(91, 145, 255, 0.05) 0%,
+      transparent 24%
+    ),
+    radial-gradient(
+      circle at bottom right,
+      rgba(56, 189, 248, 0.07) 0%,
+      transparent 34%
+    ),
     linear-gradient(
       180deg,
       rgba(24, 30, 40, 0.96) 0%,
@@ -268,12 +286,11 @@
 }
 
 :root[data-theme="dark"] .tag {
-  background:
-    linear-gradient(
-      180deg,
-      rgba(255, 255, 255, 0.05) 0%,
-      rgba(28, 36, 48, 0.82) 100%
-    );
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.05) 0%,
+    rgba(28, 36, 48, 0.82) 100%
+  );
   border: 1px solid rgba(255, 255, 255, 0.07);
   color: color-mix(in srgb, var(--text-soft) 92%, white 8%);
   box-shadow:
@@ -282,7 +299,11 @@
 }
 
 :root[data-theme="dark"] .status-ok {
-  background: color-mix(in srgb, var(--accent-green) 16%, rgba(16, 24, 32, 0.72));
+  background: color-mix(
+    in srgb,
+    var(--accent-green) 16%,
+    rgba(16, 24, 32, 0.72)
+  );
   border: 1px solid color-mix(in srgb, var(--accent-green) 28%, transparent);
   color: color-mix(in srgb, var(--accent-green) 88%, white 12%);
 }

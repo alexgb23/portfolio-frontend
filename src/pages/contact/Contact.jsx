@@ -153,12 +153,12 @@ function Contact() {
 
               <div className="cmd-input-line">
                 <label htmlFor="msg">MENSAJE</label>
-                <input
-                  type="text"
+                <textarea
                   id="msg"
                   placeholder="Describe brevemente el proyecto"
+                  rows="4"
                   required
-                />
+                ></textarea>
               </div>
 
               <button type="submit" className="cmd-submit-btn">

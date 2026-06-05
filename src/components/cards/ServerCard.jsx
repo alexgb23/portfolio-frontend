@@ -3,7 +3,7 @@ export default function ServerCard({ server }) {
 
   return (
     <article
-      className="card card-row-system"
+      className="card card-row-system card-hover"
       style={{ borderLeft: "2px solid var(--color-blue)" }}
     >
       <div className="system-title-group">
