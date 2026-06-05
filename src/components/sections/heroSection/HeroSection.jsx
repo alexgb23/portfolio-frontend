@@ -33,12 +33,12 @@ function HeroSection() {
                 src="/imagen_portfolio_mia_retocada.webp"
                 alt="Alex - Infraestructura, desarrollo y automatización"
                 className="profile-avatar"
-              />
+              />º
             </div>
-            <div class="hero-badge-wrap">
-              <div class="hero-badge-glow">
-                <div class="hero-badge-inner">
-                  <span class="hero-badge-text">
+            <div className="hero-badge-wrap">
+              <div className="hero-badge-glow">
+                <div className="hero-badge-inner">
+                  <span className="hero-badge-text">
                     Informática · Redes · Sistemas · Domótica · Desarrollo
                   </span>
                 </div>

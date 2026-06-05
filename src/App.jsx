@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import MainLayout from "./components/layout/MainLayout";
 import Home from "./pages/home/Home";
 import About from "./pages/about/About";
@@ -7,7 +7,7 @@ import Automation from "./pages/automation/Automation";
 import Infrastructure from "./pages/infrastructure/Infrastructure";
 import Contact from "./pages/contact/Contact";
 import Login from "./pages/login/Login";
-import CardPrueba from "./pages/tarjetas de prueba/card_prua";
+import CardPrueba from "./pages/tarjetas_de_prueba/card_prua";
 import Dashboard from "./pages/dashboard/Dashboard";
 
 function App() {
@@ -26,10 +26,13 @@ function App() {
           <Route path="automatizacion" element={<Automation />} />
           <Route path="infraestructura" element={<Infrastructure />} />
           <Route path="contacto" element={<Contact />} />
-          <Route path="/admin-login" element={<Login />} />
-          <Route path="/card-prueba" element={<CardPrueba />} />
-          <Route path="/admin/dashboard" element={<Dashboard />} />
+          <Route path="card-prueba" element={<CardPrueba />} />
         </Route>
+
+        <Route path="/admin-login" element={<Login />} />
+        <Route path="/admin/dashboard" element={<Dashboard />} />
+
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>
   );
