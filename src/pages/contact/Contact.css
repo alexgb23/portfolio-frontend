@@ -348,7 +348,7 @@
 }
 
 .social-mini-card:hover {
-  transform: rotateX(4deg) rotateY(14deg) translateY(0px);
+  transform: rotateX(6deg) rotateY(14deg) translateY(0px);
 }
 
 .social-mini-card::after {

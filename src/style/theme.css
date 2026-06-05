@@ -23,7 +23,7 @@
   --radius-sm: 12px;
   --radius-md: 18px;
   --radius-lg: 26px;
-  --container: 1200px;
+  --container: 1360px;
 }
 
 :root[data-theme="light"] {
@@ -51,7 +51,7 @@
   --radius-sm: 12px;
   --radius-md: 18px;
   --radius-lg: 26px;
-  --container: 1200px;
+  --container: 1360px;
 }
 
 @media (min-width: 721px) {
