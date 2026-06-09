@@ -33,7 +33,7 @@ function HeroSection() {
                 src="/imagen_portfolio_mia_retocada.webp"
                 alt="Alex - Infraestructura, desarrollo y automatización"
                 className="profile-avatar"
-              />º
+              />
             </div>
             <div className="hero-badge-wrap">
               <div className="hero-badge-glow">
