@@ -77,7 +77,6 @@ function Navbar({ isDarkMode, setIsDarkMode }) {
           >
             Admin
           </NavLink>
-
         </div>
 
         <div className="nav-actions">
