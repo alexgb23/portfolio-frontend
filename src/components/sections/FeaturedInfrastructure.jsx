@@ -5,6 +5,9 @@ import MetricCard from "../cards/MetricCard";
 import "./sectionsGlobals.css";
 
 function FeaturedInfrastructure({ servers = [], metrics = [] }) {
+  const hasServers = servers.length > 0;
+  const hasMetrics = metrics.length > 0;
+
   return (
     <section
       className="section section-spaced section-separated"
@@ -27,13 +30,21 @@ function FeaturedInfrastructure({ servers = [], metrics = [] }) {
             </h3>
           </div>
 
-          <div className="list-linear">
-            {servers.length > 0 ? (
-              servers.map((server, index) => (
-                <ServerCard key={server.id} server={server} index={index} />
-              ))
+          <div className="infra-block-body">
+            {hasServers ? (
+              <div className="list-linear">
+                {servers.map((server, index) => (
+                  <ServerCard
+                    key={server.id ?? `${server.hostname}-${index}`}
+                    server={server}
+                    index={index}
+                  />
+                ))}
+              </div>
             ) : (
-              <p className="mini-empty">No hay servidores cargados.</p>
+              <div className="empty-inline-state compact">
+                <p>No hay servidores cargados.</p>
+              </div>
             )}
           </div>
         </div>
@@ -45,13 +56,21 @@ function FeaturedInfrastructure({ servers = [], metrics = [] }) {
             </h3>
           </div>
 
-          <div className="grid-telemetry">
-            {metrics.length > 0 ? (
-              metrics.map((metric, index) => (
-                <MetricCard key={metric.id} metric={metric} index={index} />
-              ))
+          <div className="infra-block-body">
+            {hasMetrics ? (
+              <div className="grid-telemetry">
+                {metrics.map((metric, index) => (
+                  <MetricCard
+                    key={metric.id ?? `${metric.parameter}-${index}`}
+                    metric={metric}
+                    index={index}
+                  />
+                ))}
+              </div>
             ) : (
-              <p className="mini-empty">No hay métricas cargadas.</p>
+              <div className="empty-inline-state compact">
+                <p>No hay métricas cargadas.</p>
+              </div>
             )}
           </div>
         </div>
@@ -59,7 +78,8 @@ function FeaturedInfrastructure({ servers = [], metrics = [] }) {
 
       <div className="section-more">
         <Link to="/infraestructura" className="inline-link">
-          Ver infraestructura completa <FaArrowRight />
+          <span>Ver infraestructura completa</span>
+          <FaArrowRight />
         </Link>
       </div>
     </section>

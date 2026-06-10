@@ -3,6 +3,7 @@ import { usePortfolioData } from "../../hooks/usePortfolioData";
 
 function Projects() {
   const { projects, loading, error } = usePortfolioData();
+  const hasProjects = Array.isArray(projects) && projects.length > 0;
 
   if (loading) {
     return (
@@ -33,17 +34,21 @@ function Projects() {
         </p>
       </div>
 
-      <div className="grid-cards">
-        {projects?.length > 0 ? (
-          projects.map((project, index) => (
-            <ProjectCard key={project.id} project={project} index={index} />
-          ))
-        ) : (
-          <div className="empty-inline-state">
-            <p>No hay proyectos cargados actualmente.</p>
-          </div>
-        )}
-      </div>
+      {hasProjects ? (
+        <div className="grid-cards">
+          {projects.map((project, index) => (
+            <ProjectCard
+              key={project.id ?? `${project.title}-${index}`}
+              project={project}
+              index={index}
+            />
+          ))}
+        </div>
+      ) : (
+        <div className="empty-inline-state">
+          <p>No hay proyectos cargados actualmente.</p>
+        </div>
+      )}
     </section>
   );
 }

@@ -6,6 +6,9 @@ import { FaServer, FaChartLine, FaNetworkWired } from "react-icons/fa";
 function Infrastructure() {
   const { servers, metrics, loading, error } = usePortfolioData();
 
+  const hasServers = Array.isArray(servers) && servers.length > 0;
+  const hasMetrics = Array.isArray(metrics) && metrics.length > 0;
+
   if (loading) {
     return (
       <div className="state-wrapper centered">
@@ -35,34 +38,46 @@ function Infrastructure() {
         </p>
       </div>
 
-      <div className="expertise-grid" style={{ marginBottom: "2rem" }}>
-        <article className="expertise-card">
-          <div className="expertise-icon">
-            <FaServer />
+      <div className="expertise-grid infra-intro-grid">
+        <article className="expertise-card card-hover tone-1">
+          <div className="card-head">
+            <div className="expertise-icon">
+              <FaServer />
+            </div>
+            <div className="card-title-wrap">
+              <h3>Servicios desplegados</h3>
+            </div>
           </div>
-          <h3>Servicios desplegados</h3>
           <p>
             Máquinas, servicios y laboratorios técnicos preparados para pruebas,
             integración y operación real.
           </p>
         </article>
 
-        <article className="expertise-card">
-          <div className="expertise-icon">
-            <FaNetworkWired />
+        <article className="expertise-card card-hover tone-2">
+          <div className="card-head">
+            <div className="expertise-icon">
+              <FaNetworkWired />
+            </div>
+            <div className="card-title-wrap">
+              <h3>Conectividad y estructura</h3>
+            </div>
           </div>
-          <h3>Conectividad y estructura</h3>
           <p>
             La red y la organización del entorno forman parte del diseño
             técnico, no un añadido posterior.
           </p>
         </article>
 
-        <article className="expertise-card">
-          <div className="expertise-icon">
-            <FaChartLine />
+        <article className="expertise-card card-hover tone-0">
+          <div className="card-head">
+            <div className="expertise-icon">
+              <FaChartLine />
+            </div>
+            <div className="card-title-wrap">
+              <h3>Monitorización</h3>
+            </div>
           </div>
-          <h3>Monitorización</h3>
           <p>
             Supervisión de estado, recursos y comportamiento para detectar y
             anticipar incidencias.
@@ -70,38 +85,58 @@ function Infrastructure() {
         </article>
       </div>
 
-      <div className="section-head-centered narrow">
-        <h2>Servidores</h2>
-        <p>Listado operativo de entornos y servicios principales.</p>
-      </div>
-
-      <div className="list-linear" style={{ marginBottom: "2rem" }}>
-        {servers?.length > 0 ? (
-          servers.map((server, index) => (
-            <ServerCard key={server.id} server={server} index={index} />
-          ))
-        ) : (
-          <div className="empty-inline-state">
-            <p>No hay servidores cargados actualmente.</p>
+      <div className="infra-preview-grid infra-page-grid">
+        <div className="infra-block">
+          <div className="mini-head">
+            <h3>
+              <FaServer /> Servidores
+            </h3>
           </div>
-        )}
-      </div>
 
-      <div className="section-head-centered narrow">
-        <h2>Métricas</h2>
-        <p>Lecturas clave para supervisión técnica y estado operativo.</p>
-      </div>
-
-      <div className="grid-telemetry">
-        {metrics?.length > 0 ? (
-          metrics.map((metric, index) => (
-            <MetricCard key={metric.id} metric={metric} index={index} />
-          ))
-        ) : (
-          <div className="empty-inline-state">
-            <p>No hay métricas cargadas actualmente.</p>
+          <div className="infra-block-body">
+            {hasServers ? (
+              <div className="list-linear">
+                {servers.map((server, index) => (
+                  <ServerCard
+                    key={server.id ?? `${server.hostname}-${index}`}
+                    server={server}
+                    index={index}
+                  />
+                ))}
+              </div>
+            ) : (
+              <div className="empty-inline-state compact">
+                <p>No hay servidores cargados actualmente.</p>
+              </div>
+            )}
           </div>
-        )}
+        </div>
+
+        <div className="infra-block">
+          <div className="mini-head">
+            <h3>
+              <FaChartLine /> Métricas
+            </h3>
+          </div>
+
+          <div className="infra-block-body">
+            {hasMetrics ? (
+              <div className="grid-telemetry">
+                {metrics.map((metric, index) => (
+                  <MetricCard
+                    key={metric.id ?? `${metric.parameter}-${index}`}
+                    metric={metric}
+                    index={index}
+                  />
+                ))}
+              </div>
+            ) : (
+              <div className="empty-inline-state compact">
+                <p>No hay métricas cargadas actualmente.</p>
+              </div>
+            )}
+          </div>
+        </div>
       </div>
     </section>
   );

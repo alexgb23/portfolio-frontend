@@ -23,11 +23,12 @@ function AboutPreview() {
       </div>
 
       <div className="expertise-grid">
-        <article className="expertise-card tone-0">
+        <article className="expertise-card card-hover tone-0">
           <div className="card-head">
             <div className="expertise-icon">
               <FaCode />
             </div>
+
             <div className="card-title-wrap">
               <h3>Desarrollo</h3>
             </div>
@@ -39,11 +40,12 @@ function AboutPreview() {
           </p>
         </article>
 
-        <article className="expertise-card tone-1">
+        <article className="expertise-card card-hover tone-1">
           <div className="card-head">
             <div className="expertise-icon">
               <FaServer />
             </div>
+
             <div className="card-title-wrap">
               <h3>Infraestructura</h3>
             </div>
@@ -55,11 +57,12 @@ function AboutPreview() {
           </p>
         </article>
 
-        <article className="expertise-card tone-2">
+        <article className="expertise-card card-hover tone-2">
           <div className="card-head">
             <div className="expertise-icon">
               <FaNetworkWired />
             </div>
+
             <div className="card-title-wrap">
               <h3>Redes</h3>
             </div>
@@ -71,11 +74,12 @@ function AboutPreview() {
           </p>
         </article>
 
-        <article className="expertise-card tone-0">
+        <article className="expertise-card card-hover tone-0">
           <div className="card-head">
             <div className="expertise-icon">
               <FaMicrochip />
             </div>
+
             <div className="card-title-wrap">
               <h3>Domótica e inmótica</h3>
             </div>
@@ -90,7 +94,8 @@ function AboutPreview() {
 
       <div className="section-more">
         <Link to="/sobre-mi" className="inline-link">
-          Ver perfil completo <FaArrowRight />
+          <span>Ver perfil completo</span>
+          <FaArrowRight />
         </Link>
       </div>
     </section>

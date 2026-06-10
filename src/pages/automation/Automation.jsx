@@ -5,6 +5,7 @@ import "./Automation.css";
 
 function Automation() {
   const { nodes, loading, error } = usePortfolioData();
+  const hasNodes = Array.isArray(nodes) && nodes.length > 0;
 
   if (loading) {
     return (
@@ -35,34 +36,46 @@ function Automation() {
         </p>
       </div>
 
-      <div className="expertise-grid" style={{ marginBottom: "2rem" }}>
-        <article className="expertise-card">
-          <div className="expertise-icon">
-            <FaMicrochip />
+      <div className="expertise-grid automation-intro-grid">
+        <article className="expertise-card card-hover tone-1">
+          <div className="card-head">
+            <div className="expertise-icon">
+              <FaMicrochip />
+            </div>
+            <div className="card-title-wrap">
+              <h3>Integración hardware</h3>
+            </div>
           </div>
-          <h3>Integración hardware</h3>
           <p>
             Uso de nodos, placas y controladores para resolver necesidades
             concretas en automatización e inmótica.
           </p>
         </article>
 
-        <article className="expertise-card">
-          <div className="expertise-icon">
-            <FaSlidersH />
+        <article className="expertise-card card-hover tone-2">
+          <div className="card-head">
+            <div className="expertise-icon">
+              <FaSlidersH />
+            </div>
+            <div className="card-title-wrap">
+              <h3>Control operativo</h3>
+            </div>
           </div>
-          <h3>Control operativo</h3>
           <p>
             Diseño de flujos funcionales para activar, leer, supervisar y
             mantener procesos automatizados.
           </p>
         </article>
 
-        <article className="expertise-card">
-          <div className="expertise-icon">
-            <FaBroadcastTower />
+        <article className="expertise-card card-hover tone-0">
+          <div className="card-head">
+            <div className="expertise-icon">
+              <FaBroadcastTower />
+            </div>
+            <div className="card-title-wrap">
+              <h3>Comunicación y datos</h3>
+            </div>
           </div>
-          <h3>Comunicación y datos</h3>
           <p>
             Enlace entre sensores, red, paneles y servicios para dar contexto
             real a cada automatismo.
@@ -70,16 +83,32 @@ function Automation() {
         </article>
       </div>
 
-      <div className="list-linear">
-        {nodes?.length > 0 ? (
-          nodes.map((node, index) => (
-            <NodeCard key={node.id} node={node} index={index} />
-          ))
-        ) : (
-          <div className="empty-inline-state">
-            <p>No hay nodos cargados actualmente.</p>
-          </div>
-        )}
+      <div className="automation-band automation-page-band">
+        <div className="mini-head">
+          <h3>
+            <FaMicrochip /> Nodos desplegados
+          </h3>
+        </div>
+
+        <div className="automation-band-body">
+          {hasNodes ? (
+            <div className="list-linear">
+              {nodes.map((node, index) => (
+                <NodeCard
+                  key={
+                    node.id ?? `${node.node_name || node.nombre_nodo}-${index}`
+                  }
+                  node={node}
+                  index={index}
+                />
+              ))}
+            </div>
+          ) : (
+            <div className="empty-inline-state compact">
+              <p>No hay nodos cargados actualmente.</p>
+            </div>
+          )}
+        </div>
       </div>
     </section>
   );

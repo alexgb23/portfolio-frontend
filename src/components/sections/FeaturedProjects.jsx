@@ -4,6 +4,8 @@ import ProjectCard from "../cards/ProjectCard";
 import "./sectionsGlobals.css";
 
 function FeaturedProjects({ projects = [] }) {
+  const hasProjects = projects.length > 0;
+
   return (
     <section
       className="section section-spaced section-separated"
@@ -18,21 +20,26 @@ function FeaturedProjects({ projects = [] }) {
         </p>
       </div>
 
-      <div className="grid-cards">
-        {projects.length > 0 ? (
-          projects.map((project, index) => (
-            <ProjectCard key={project.id} project={project} index={index} />
-          ))
-        ) : (
-          <div className="empty-inline-state">
-            <p>Aún no hay proyectos destacados cargados.</p>
-          </div>
-        )}
-      </div>
+      {hasProjects ? (
+        <div className="grid-cards">
+          {projects.map((project, index) => (
+            <ProjectCard
+              key={project.id ?? `${project.title}-${index}`}
+              project={project}
+              index={index}
+            />
+          ))}
+        </div>
+      ) : (
+        <div className="empty-inline-state">
+          <p>Aún no hay proyectos destacados cargados.</p>
+        </div>
+      )}
 
       <div className="section-more">
         <Link to="/proyectos" className="inline-link">
-          Ver todos los proyectos <FaArrowRight />
+          <span>Ver todos los proyectos</span>
+          <FaArrowRight />
         </Link>
       </div>
     </section>

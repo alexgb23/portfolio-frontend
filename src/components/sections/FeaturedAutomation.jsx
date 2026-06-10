@@ -4,6 +4,8 @@ import NodeCard from "../cards/NodeCard";
 import "./sectionsGlobals.css";
 
 function FeaturedAutomation({ nodes = [] }) {
+  const hasNodes = nodes.length > 0;
+
   return (
     <section
       className="section section-spaced section-separated"
@@ -25,20 +27,31 @@ function FeaturedAutomation({ nodes = [] }) {
           </h3>
         </div>
 
-        <div className="list-linear">
-          {nodes.length > 0 ? (
-            nodes.map((node, index) => (
-              <NodeCard key={node.id} node={node} index={index} />
-            ))
+        <div className="automation-band-body">
+          {hasNodes ? (
+            <div className="list-linear">
+              {nodes.map((node, index) => (
+                <NodeCard
+                  key={
+                    node.id ?? `${node.node_name || node.nombre_nodo}-${index}`
+                  }
+                  node={node}
+                  index={index}
+                />
+              ))}
+            </div>
           ) : (
-            <p className="mini-empty">No hay nodos cargados.</p>
+            <div className="empty-inline-state compact">
+              <p>No hay nodos cargados.</p>
+            </div>
           )}
         </div>
       </div>
 
       <div className="section-more">
         <Link to="/automatizacion" className="inline-link">
-          Ver automatización completa <FaArrowRight />
+          <span>Ver automatización completa</span>
+          <FaArrowRight />
         </Link>
       </div>
     </section>
