@@ -1,13 +1,16 @@
-import { FaNetworkWired } from "react-icons/fa";
+import { FaNetworkWired, FaWaveSquare } from "react-icons/fa";
 
 export default function NodeCard({ node, index = 0 }) {
   if (!node) return null;
 
-  const statusClass = `status-${node.status?.toLowerCase() || "ok"}`;
+  const tone = index % 3;
+  const rawStatus = node.status || "ONLINE";
+  const normalizedStatus = rawStatus.toLowerCase();
+  const statusClass = `status-${normalizedStatus}`;
+
   const name = node.node_name || node.nombre_nodo || "Nodo Anónimo";
   const type = node.type || node.tipo || "General";
   const value = node.current_value || node.valor_actual || "Sin Telemetría";
-  const tone = index % 3;
 
   return (
     <article className={`card card-hover card-node tone-${tone}`}>
@@ -17,28 +20,29 @@ export default function NodeCard({ node, index = 0 }) {
           <span className="date">{type}</span>
         </div>
 
-        <div className="node-card-head">
-          <div className="node-card-icon">
+        <div className="card-head">
+          <div className="card-icon">
             <FaNetworkWired />
           </div>
 
-          <div className="node-card-title-wrap">
+          <div className="card-title-wrap">
             <h3>{name}</h3>
           </div>
         </div>
 
-        <div className="system-data-metrics">
-          <span>Status:</span>{" "}
-          <strong className={`status ${statusClass}`}>
-            {node.status || "ONLINE"}
-          </strong>
-        </div>
+        <div className="server-panel">
+          <div className="server-meta-row">
+            <span>Estado:</span>
+            <span className={`status ${statusClass}`}>{rawStatus}</span>
+          </div>
 
-        <div className="system-data-metrics">
-          <span>Telemetría:</span> <strong>{value}</strong>
+          <div className="server-stats">
+            <span className="server-stat-chip">
+              <FaWaveSquare />
+              {value}
+            </span>
+          </div>
         </div>
-
-        <span className={`status ${statusClass}`}>{node.status || "OK"}</span>
       </div>
     </article>
   );

@@ -1,5 +1,114 @@
 /* =========================================================
-   BASE COMÚN DE TARJETAS
+   TARJETAS Y BLOQUES TÉCNICOS — MOBILE FIRST
+   Portfolio personal / profesional IT
+   ========================================================= */
+
+/*
+=========================================================
+CLASES JSX QUE VAMOS A USAR / MANTENER
+=========================================================
+
+Base tarjetas:
+- .card
+- .card-hover
+- .card-top
+- .card-badge
+- .date
+- .card-head
+- .card-icon
+- .card-title-wrap
+
+Tonos:
+- .tone-0
+- .tone-1
+- .tone-2
+
+Variantes:
+- .card-project
+- .card-metric
+- .card-server
+- .card-node
+- .expertise-card
+
+Wrappers internos:
+- .project-card-inner
+- .metric-card-inner
+- .server-card-inner
+- .node-card-inner
+
+Elementos especiales:
+- .project-card-divider
+- .metric-display
+- .metric-value
+- .metric-unit
+- .system-data-metrics
+- .server-panel
+- .server-meta-row
+- .server-stats
+- .server-stat-chip
+- .server-code
+- .status
+- .status-ok
+- .status-online
+- .status-active
+- .status-warning
+- .status-error
+- .status-offline
+- .status-critical
+
+Contenedores de secciones:
+- .infra-preview-grid
+- .infra-block
+- .automation-band
+- .list-linear
+- .grid-telemetry
+- .expertise-grid
+*/
+
+/* =========================================================
+   TOKENS LOCALES DE APOYO
+   ========================================================= */
+
+:root {
+  --card-radius: 18px;
+  --card-radius-sm: 14px;
+  --card-pad: 1rem;
+  --card-gap: 0.9rem;
+  --card-gap-lg: 1rem;
+  --card-border: var(--border, rgba(255, 255, 255, 0.1));
+  --card-bg-dark:
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.045) 0%,
+      rgba(255, 255, 255, 0.02) 100%
+    );
+  --card-bg-light:
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.86) 0%,
+      rgba(255, 255, 255, 0.72) 100%
+    );
+  --card-shadow-dark:
+    0 14px 34px rgba(0, 0, 0, 0.18),
+    0 4px 12px rgba(0, 0, 0, 0.12);
+  --card-shadow-light:
+    0 16px 30px rgba(15, 23, 42, 0.08),
+    0 4px 12px rgba(15, 23, 42, 0.05);
+  --card-panel-dark: rgba(255, 255, 255, 0.045);
+  --card-panel-light: rgba(255, 255, 255, 0.72);
+  --card-line-fade:
+    linear-gradient(
+      90deg,
+      transparent 0%,
+      color-mix(in srgb, var(--card-tone-accent, var(--accent)) 22%, transparent) 16%,
+      color-mix(in srgb, var(--card-tone-accent, var(--accent)) 62%, rgba(255,255,255,0.18)) 50%,
+      color-mix(in srgb, var(--card-tone-accent, var(--accent)) 22%, transparent) 84%,
+      transparent 100%
+    );
+}
+
+/* =========================================================
+   BASE CARD
    ========================================================= */
 
 .card,
@@ -8,25 +117,36 @@
   display: flex;
   flex-direction: column;
   min-height: 100%;
-  padding: 1.1rem;
-  border-radius: 18px;
-  border: 1px solid var(--border, rgba(255, 255, 255, 0.12));
-  background: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 0.04),
-    rgba(255, 255, 255, 0.02)
-  );
-  box-shadow:
-    0 10px 30px rgba(0, 0, 0, 0.14),
-    inset 0 1px 0 rgba(255, 255, 255, 0.04);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
+  padding: var(--card-pad);
+  border-radius: var(--card-radius);
+  border: 1px solid var(--card-border);
   overflow: hidden;
+  isolation: isolate;
   transition:
     transform 0.22s ease,
     border-color 0.22s ease,
     box-shadow 0.22s ease,
     background 0.22s ease;
+}
+
+:root[data-theme="dark"] .card,
+:root[data-theme="dark"] .expertise-card {
+  background: var(--card-bg-dark);
+  box-shadow:
+    var(--card-shadow-dark),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+:root[data-theme="light"] .card,
+:root[data-theme="light"] .expertise-card {
+  background: var(--card-bg-light);
+  box-shadow:
+    var(--card-shadow-light),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
 
 .card::before,
@@ -38,95 +158,170 @@
   background: linear-gradient(
     90deg,
     transparent,
-    rgba(255, 255, 255, 0.2),
+    rgba(255, 255, 255, 0.18),
     transparent
   );
   pointer-events: none;
+  z-index: 0;
 }
 
 .card-hover:hover,
 .expertise-card:hover {
   transform: translateY(-4px);
-  border-color: var(--card-hover-border, rgba(255, 255, 255, 0.16));
+}
+
+:root[data-theme="dark"] .card-hover:hover,
+:root[data-theme="dark"] .expertise-card:hover {
+  border-color: color-mix(in srgb, var(--card-tone-accent, var(--accent)) 20%, rgba(255, 255, 255, 0.08));
   box-shadow:
-    0 16px 38px rgba(0, 0, 0, 0.2),
-    0 0 0 1px rgba(255, 255, 255, 0.03) inset;
+    0 18px 38px rgba(0, 0, 0, 0.22),
+    0 0 0 1px rgba(255, 255, 255, 0.03) inset,
+    0 0 18px color-mix(in srgb, var(--card-tone-accent, var(--accent)) 10%, transparent);
+}
+
+:root[data-theme="light"] .card-hover:hover,
+:root[data-theme="light"] .expertise-card:hover {
+  border-color: color-mix(in srgb, var(--card-tone-accent, var(--accent)) 16%, rgba(15, 23, 42, 0.08));
+  box-shadow:
+    0 18px 34px rgba(15, 23, 42, 0.1),
+    0 0 0 1px rgba(255, 255, 255, 0.38) inset,
+    0 0 18px color-mix(in srgb, var(--card-tone-accent, var(--accent)) 8%, transparent);
 }
 
 /* =========================================================
    CABECERA REUTILIZABLE
+   En JSX: usar .card-head + .card-icon + .card-title-wrap
    ========================================================= */
 
-.card-head,
-.expertise-card-head,
-.visual-card-head,
-.infra-card-head,
-.automation-card-head,
-.project-card-head {
+.card-head {
   display: flex;
   align-items: center;
-  gap: 12px;
-  margin-bottom: 14px;
+  gap: 0.75rem;
+  margin-bottom: 0.9rem;
+  position: relative;
+  z-index: 1;
 }
 
-.card-title-wrap,
-.expertise-card-title-wrap,
-.visual-card-title-wrap,
-.infra-card-title-wrap,
-.automation-card-title-wrap,
-.project-card-title-wrap {
+.card-title-wrap {
   min-width: 0;
   flex: 1;
 }
 
 .card-title-wrap h3,
-.expertise-card-title-wrap h3,
-.visual-card-title-wrap h3,
-.infra-card-title-wrap h3,
-.automation-card-title-wrap h3,
-.project-card-title-wrap h3 {
+.card h3,
+.expertise-card h3 {
   margin: 0;
+  line-height: 1.2;
+  color: var(--text-main, #fff);
+  font-size: 1.02rem;
 }
 
+/* =========================================================
+   ICONOS MEJORADOS
+   En JSX: usar .card-icon
+   About puede seguir con .expertise-icon
+   ========================================================= */
+
 .card-icon,
-.expertise-icon,
-.expertise-card-icon,
-.visual-card-icon,
-.infra-card-icon,
-.automation-card-icon,
-.project-card-icon {
-  width: 42px;
-  height: 42px;
-  border-radius: 12px;
+.expertise-icon {
+  position: relative;
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
   font-size: 1rem;
-  border: 1px solid
-    var(--card-icon-border, var(--border, rgba(255, 255, 255, 0.12)));
-  background: var(--card-icon-bg, rgba(255, 255, 255, 0.05));
-  color: var(--card-icon-color, var(--accent));
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  color: var(--card-icon-color, var(--card-tone-accent, var(--accent)));
+  border: 1px solid var(--card-icon-border, var(--card-border));
+  overflow: hidden;
   transition:
     transform 0.22s ease,
     border-color 0.22s ease,
     background 0.22s ease,
+    box-shadow 0.22s ease,
     color 0.22s ease;
 }
 
+.card-icon::before,
+.expertise-icon::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 30% 25%, rgba(255, 255, 255, 0.18), transparent 56%),
+    linear-gradient(180deg, rgba(255,255,255,0.06), transparent);
+  pointer-events: none;
+}
+
+:root[data-theme="dark"] .card-icon,
+:root[data-theme="dark"] .expertise-icon {
+  background:
+    radial-gradient(circle at 30% 25%, rgba(255,255,255,0.12), transparent 56%),
+    color-mix(in srgb, var(--card-tone-accent, var(--accent)) 12%, rgba(255,255,255,0.02));
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.06),
+    0 8px 20px color-mix(in srgb, var(--card-tone-accent, var(--accent)) 12%, transparent);
+}
+
+:root[data-theme="light"] .card-icon,
+:root[data-theme="light"] .expertise-icon {
+  background:
+    radial-gradient(circle at 30% 25%, rgba(255,255,255,0.72), transparent 56%),
+    color-mix(in srgb, var(--card-tone-accent, var(--accent)) 10%, white 74%);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.7),
+    0 10px 20px color-mix(in srgb, var(--card-tone-accent, var(--accent)) 10%, transparent);
+}
+
+.card-icon svg,
+.expertise-icon svg {
+  position: relative;
+  z-index: 1;
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.12));
+}
+
 .card-hover:hover .card-icon,
-.expertise-card:hover .expertise-icon,
-.expertise-card:hover .expertise-card-icon,
-.visual-card:hover .visual-card-icon,
-.infra-block:hover .infra-card-icon,
-.automation-band:hover .automation-card-icon,
-.card-project:hover .project-card-icon {
-  transform: translateY(-1px);
+.expertise-card:hover .expertise-icon {
+  transform: translateY(-1px) scale(1.02);
 }
 
 /* =========================================================
-   ELEMENTOS COMUNES INTERNOS
+   TONOS
+   En JSX: .tone-0 | .tone-1 | .tone-2
+   ========================================================= */
+
+.tone-0 {
+  --card-tone-accent: var(--accent);
+}
+
+.tone-1 {
+  --card-tone-accent: var(--accent-2);
+}
+
+.tone-2 {
+  --card-tone-accent: var(--accent-green);
+}
+
+:root[data-theme="dark"] .tone-0,
+:root[data-theme="dark"] .tone-1,
+:root[data-theme="dark"] .tone-2 {
+  --card-icon-color: var(--card-tone-accent);
+  --card-icon-bg: color-mix(in srgb, var(--card-tone-accent) 14%, rgba(255,255,255,0.02));
+  --card-icon-border: color-mix(in srgb, var(--card-tone-accent) 22%, rgba(255,255,255,0.08));
+}
+
+:root[data-theme="light"] .tone-0,
+:root[data-theme="light"] .tone-1,
+:root[data-theme="light"] .tone-2 {
+  --card-icon-color: var(--card-tone-accent);
+  --card-icon-bg: color-mix(in srgb, var(--card-tone-accent) 11%, white 78%);
+  --card-icon-border: color-mix(in srgb, var(--card-tone-accent) 18%, rgba(15,23,42,0.08));
+}
+
+/* =========================================================
+   TOP / BADGES / TEXTOS
    ========================================================= */
 
 .card-top {
@@ -134,48 +329,67 @@
   align-items: center;
   justify-content: space-between;
   gap: 0.75rem;
-  margin-bottom: 14px;
+  margin-bottom: 0.85rem;
+  position: relative;
+  z-index: 1;
 }
 
 .card-badge {
   display: inline-flex;
   align-items: center;
-  gap: 0.35rem;
-  padding: 0.38rem 0.68rem;
+  min-height: 28px;
+  padding: 0.34rem 0.68rem;
   border-radius: 999px;
-  font-size: 0.72rem;
+  font-size: 0.7rem;
   font-weight: 700;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.05em;
   text-transform: uppercase;
   color: var(--card-tone-accent, var(--accent));
-  background: color-mix(
-    in srgb,
-    var(--card-tone-accent, var(--accent)) 12%,
-    transparent
-  );
-  border: 1px solid
-    color-mix(in srgb, var(--card-tone-accent, var(--accent)) 22%, transparent);
+  border: 1px solid color-mix(in srgb, var(--card-tone-accent, var(--accent)) 20%, transparent);
+  background: color-mix(in srgb, var(--card-tone-accent, var(--accent)) 10%, transparent);
 }
 
 .date {
-  font-size: 0.8rem;
-  color: var(--text-soft, rgba(255, 255, 255, 0.62));
-}
-
-.card h3,
-.expertise-card h3 {
-  margin: 0 0 0.4rem;
-  line-height: 1.2;
-  font-size: 1.05rem;
-  color: var(--text-main, #fff);
+  font-size: 0.78rem;
+  color: var(--text-soft, rgba(255,255,255,0.65));
 }
 
 .card p,
 .expertise-card p {
   margin: 0;
   line-height: 1.6;
-  color: var(--text-soft, rgba(255, 255, 255, 0.72));
+  color: var(--text-soft, rgba(255,255,255,0.74));
+  position: relative;
+  z-index: 1;
 }
+
+/* =========================================================
+   LÍNEA DIVISORIA FADE
+   En JSX project: .project-card-divider
+   En expertise: automática por ::after
+   ========================================================= */
+
+.project-card-divider {
+  width: 100%;
+  height: 1px;
+  margin: 0 0 0.95rem;
+  background: var(--card-line-fade);
+  opacity: 0.95;
+}
+
+.expertise-card::after {
+  content: "";
+  display: block;
+  width: 72%;
+  height: 1px;
+  margin: 0.95rem 0 0.95rem;
+  background: var(--card-line-fade);
+  opacity: 0.95;
+}
+
+/* =========================================================
+   TAGS
+   ========================================================= */
 
 .tags {
   display: flex;
@@ -187,14 +401,14 @@
 .tag {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-  padding: 0.42rem 0.7rem;
+  min-height: 30px;
+  padding: 0.38rem 0.68rem;
   border-radius: 999px;
   font-size: 0.76rem;
   font-weight: 600;
-  color: var(--text-soft, rgba(255, 255, 255, 0.78));
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid var(--border, rgba(255, 255, 255, 0.12));
+  color: var(--text-soft, rgba(255,255,255,0.78));
+  border: 1px solid var(--card-border);
+  background: rgba(255,255,255,0.04);
   transition:
     transform 0.22s ease,
     border-color 0.22s ease,
@@ -206,49 +420,105 @@
 }
 
 /* =========================================================
-   STATUS Y MÉTRICAS
+   STATUS / MÉTRICAS / SERVER DATA
    ========================================================= */
 
 .system-data-metrics {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.35rem;
+  gap: 0.35rem 0.5rem;
   align-items: center;
   font-size: 0.92rem;
-  color: var(--text-soft, rgba(255, 255, 255, 0.72));
+  color: var(--text-soft, rgba(255,255,255,0.74));
+  position: relative;
+  z-index: 1;
 }
 
 .system-data-metrics strong {
   color: var(--text-main, #fff);
 }
 
-.node-metrics.highlight {
-  margin-top: auto;
+.metric-display,
+.server-panel {
+  display: grid;
+  gap: 0.72rem;
+  padding: 0.95rem 1rem;
+  border-radius: var(--card-radius-sm);
+  position: relative;
+  zIndex: 1;
 }
 
-.metric-display {
-  display: flex;
-  align-items: flex-end;
-  gap: 0.35rem;
-  padding: 0.95rem 1rem;
-  border-radius: 14px;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid
-    color-mix(in srgb, var(--card-tone-accent, var(--accent)) 20%, transparent);
+:root[data-theme="dark"] .metric-display,
+:root[data-theme="dark"] .server-panel {
+  background: var(--card-panel-dark);
+  border: 1px solid color-mix(in srgb, var(--card-tone-accent, var(--accent)) 18%, rgba(255,255,255,0.03));
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.04),
+    0 0 0 1px rgba(255,255,255,0.02);
+}
+
+:root[data-theme="light"] .metric-display,
+:root[data-theme="light"] .server-panel {
+  background: var(--card-panel-light);
+  border: 1px solid color-mix(in srgb, var(--card-tone-accent, var(--accent)) 14%, rgba(15,23,42,0.08));
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.7),
+    0 8px 18px rgba(15,23,42,0.04);
 }
 
 .metric-value {
-  font-size: clamp(1.8rem, 2vw, 2.35rem);
+  font-size: clamp(1.8rem, 5vw, 2.35rem);
   line-height: 1;
   font-weight: 800;
   color: var(--card-tone-accent, var(--accent));
 }
 
 .metric-unit {
-  font-size: 0.95rem;
+  font-size: 0.92rem;
   font-weight: 600;
-  color: var(--text-soft, rgba(255, 255, 255, 0.7));
-  margin-bottom: 0.22rem;
+  color: var(--text-soft, rgba(255,255,255,0.72));
+}
+
+.server-meta-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem 0.6rem;
+  font-size: 0.9rem;
+  color: var(--text-soft, rgba(255,255,255,0.74));
+}
+
+.server-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+}
+
+.server-stat-chip {
+  display: inline-flex;
+  align-items: center;
+  min-height: 30px;
+  padding: 0.38rem 0.65rem;
+  border-radius: 999px;
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: var(--text-main, #fff);
+  border: 1px solid var(--card-border);
+  background: rgba(255,255,255,0.04);
+}
+
+.server-code {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  padding: 0.22rem 0.56rem;
+  border-radius: 999px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--card-tone-accent, var(--accent));
+  border: 1px solid color-mix(in srgb, var(--card-tone-accent, var(--accent)) 18%, transparent);
+  background: color-mix(in srgb, var(--card-tone-accent, var(--accent)) 10%, transparent);
 }
 
 .status {
@@ -257,7 +527,7 @@
   justify-content: center;
   align-self: flex-start;
   min-height: 30px;
-  padding: 0.38rem 0.72rem;
+  padding: 0.36rem 0.72rem;
   border-radius: 999px;
   font-size: 0.72rem;
   font-weight: 700;
@@ -288,67 +558,8 @@
   border-color: rgba(239, 68, 68, 0.28);
 }
 
-.server-code {
-  color: var(--card-tone-accent, var(--accent));
-  font-weight: 700;
-}
-
 /* =========================================================
-   TONOS REUTILIZABLES
-   ========================================================= */
-
-.tone-0 {
-  --card-tone-accent: var(--accent);
-}
-
-.tone-1 {
-  --card-tone-accent: var(--accent-2);
-}
-
-.tone-2 {
-  --card-tone-accent: var(--accent-green);
-}
-
-:root[data-theme="dark"] .tone-0,
-:root[data-theme="dark"] .tone-1,
-:root[data-theme="dark"] .tone-2 {
-  --card-icon-color: var(--card-tone-accent);
-  --card-icon-bg: color-mix(
-    in srgb,
-    var(--card-tone-accent) 14%,
-    rgba(255, 255, 255, 0.02)
-  );
-  --card-icon-border: color-mix(
-    in srgb,
-    var(--card-tone-accent) 26%,
-    rgba(255, 255, 255, 0.08)
-  );
-  --card-hover-border: color-mix(
-    in srgb,
-    var(--card-tone-accent) 22%,
-    rgba(255, 255, 255, 0.08)
-  );
-}
-
-:root[data-theme="light"] .tone-0,
-:root[data-theme="light"] .tone-1,
-:root[data-theme="light"] .tone-2 {
-  --card-icon-color: var(--card-tone-accent);
-  --card-icon-bg: color-mix(in srgb, var(--card-tone-accent) 12%, white 78%);
-  --card-icon-border: color-mix(
-    in srgb,
-    var(--card-tone-accent) 24%,
-    rgba(15, 23, 42, 0.08)
-  );
-  --card-hover-border: color-mix(
-    in srgb,
-    var(--card-tone-accent) 18%,
-    rgba(15, 23, 42, 0.12)
-  );
-}
-
-/* =========================================================
-   VARIANTES DE TARJETA
+   VARIANTES
    ========================================================= */
 
 .card-project,
@@ -365,19 +576,13 @@
   display: flex;
   flex-direction: column;
   height: 100%;
-}
-
-.server-card-inner,
-.node-card-inner {
-  gap: 12px;
-}
-
-.card-project .card-top {
-  margin-bottom: 14px;
+  gap: 0.8rem;
+  position: relative;
+  z-index: 1;
 }
 
 .card-project p {
-  margin-bottom: 14px;
+  margin-bottom: 0.2rem;
   flex-grow: 1;
 }
 
@@ -385,94 +590,223 @@
   margin-top: auto;
 }
 
-.project-card-divider {
-  width: 100%;
-  height: 1px;
-  margin: 0 0 14px;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    var(--project-divider, rgba(255, 255, 255, 0.18)),
-    transparent
-  );
+/* =========================================================
+   EXPERTISE CARD COMO TARJETA TÉCNICA
+   ========================================================= */
+
+.expertise-card {
+  gap: 0.15rem;
 }
 
-:root[data-theme="dark"] .card-project {
-  --project-divider: color-mix(
-    in srgb,
-    var(--card-tone-accent, var(--accent)) 26%,
-    rgba(255, 255, 255, 0.14)
-  );
+:root[data-theme="dark"] .expertise-card {
+  box-shadow:
+    0 14px 30px rgba(0, 0, 0, 0.18),
+    0 0 18px color-mix(in srgb, var(--card-tone-accent, var(--accent)) 9%, transparent),
+    inset 0 1px 0 rgba(255,255,255,0.04);
 }
 
-:root[data-theme="light"] .card-project {
-  --project-divider: color-mix(
-    in srgb,
-    var(--card-tone-accent, var(--accent)) 22%,
-    rgba(15, 23, 42, 0.14)
-  );
+:root[data-theme="light"] .expertise-card {
+  box-shadow:
+    0 14px 26px rgba(15, 23, 42, 0.08),
+    0 0 14px color-mix(in srgb, var(--card-tone-accent, var(--accent)) 8%, transparent),
+    inset 0 1px 0 rgba(255,255,255,0.55);
 }
 
 /* =========================================================
-   ABOUT / EXPERTISE CARDS
+   CONTENEDORES PADRE VISIBLES DETRÁS
+   Infra / Automatización / Bandas técnicas
    ========================================================= */
 
-.expertise-grid {
+.infra-preview-grid,
+.automation-band {
+  position: relative;
+  border-radius: calc(var(--card-radius) + 4px);
+  padding: 0.9rem;
+  overflow: hidden;
+}
+
+:root[data-theme="dark"] .infra-preview-grid,
+:root[data-theme="dark"] .automation-band {
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.035), rgba(255,255,255,0.018));
+  border: 1px solid rgba(255,255,255,0.06);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.03),
+    0 10px 24px rgba(0,0,0,0.12);
+}
+
+:root[data-theme="light"] .infra-preview-grid,
+:root[data-theme="light"] .automation-band {
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.8), rgba(255,255,255,0.64));
+  border: 1px solid rgba(15,23,42,0.06);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.65),
+    0 12px 22px rgba(15,23,42,0.05);
+}
+
+/* =========================================================
+   GRID Y ESPACIADO PARA QUE NO CHOQUEN
+   y se vean más pequeñas / aireadas
+   ========================================================= */
+
+.infra-preview-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 1rem;
 }
 
-.expertise-card {
-  justify-content: flex-start;
+.infra-block {
+  display: flex;
+  flex-direction: column;
   gap: 0.9rem;
 }
 
-.expertise-card .expertise-icon {
-  margin-bottom: 0.1rem;
+.list-linear {
+  display: flex;
+  flex-direction: column;
+  gap: 0.95rem;
 }
 
-.expertise-card h3 {
-  margin-bottom: 0.25rem;
-}
-
-.expertise-card p {
-  max-width: unset;
+.grid-telemetry,
+.expertise-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.95rem;
 }
 
 /* =========================================================
-   RESPONSIVE
+   MINI HEADS / WRAPPERS DE SECCIÓN
+   ========================================================= */
+
+.mini-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.mini-head h3 {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.mini-empty,
+.empty-inline-state p {
+  margin: 0;
+  color: var(--text-soft, rgba(255,255,255,0.68));
+}
+
+/* =========================================================
+   TABLET
    ========================================================= */
 
 @media (min-width: 768px) {
-  .card,
-  .expertise-card {
-    padding: 1.2rem;
-    border-radius: 20px;
+  :root {
+    --card-radius: 20px;
+    --card-radius-sm: 15px;
+    --card-pad: 1.1rem;
   }
 
-  .card-head,
-  .expertise-card-head,
-  .visual-card-head,
-  .infra-card-head,
-  .automation-card-head,
-  .project-card-head {
-    gap: 14px;
+  .card,
+  .expertise-card {
+    padding: var(--card-pad);
+  }
+
+  .card-head {
+    gap: 0.85rem;
+    margin-bottom: 1rem;
   }
 
   .card-icon,
-  .expertise-icon,
-  .expertise-card-icon,
-  .visual-card-icon,
-  .infra-card-icon,
-  .automation-card-icon,
-  .project-card-icon {
-    width: 46px;
-    height: 46px;
+  .expertise-icon {
+    width: 48px;
+    height: 48px;
     font-size: 1.05rem;
   }
 
+  .infra-preview-grid,
+  .automation-band {
+    padding: 1rem;
+  }
+
+  .list-linear {
+    gap: 1rem;
+  }
+
+  .grid-telemetry {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
   .expertise-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+  }
+}
+
+/* =========================================================
+   DESKTOP
+   ========================================================= */
+
+@media (min-width: 1024px) {
+  :root {
+    --card-radius: 22px;
+    --card-pad: 1.15rem;
+  }
+
+  .infra-preview-grid {
+    grid-template-columns: 1.1fr 0.9fr;
     gap: 1.15rem;
+    padding: 1.1rem;
+  }
+
+  .automation-band {
+    padding: 1.05rem;
+  }
+
+  .list-linear {
+    gap: 1.05rem;
+  }
+
+  .grid-telemetry {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.05rem;
+  }
+
+  .expertise-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1.05rem;
+  }
+
+  .card-icon,
+  .expertise-icon {
+    width: 50px;
+    height: 50px;
+    font-size: 1.08rem;
+  }
+}
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .card,
+  .expertise-card,
+  .card-icon,
+  .expertise-icon,
+  .tag {
+    transition: none;
+  }
+
+  .card-hover:hover,
+  .expertise-card:hover,
+  .card-hover:hover .card-icon,
+  .expertise-card:hover .expertise-icon,
+  .card-hover:hover .tag {
+    transform: none;
   }
 }

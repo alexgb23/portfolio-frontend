@@ -1,9 +1,11 @@
-import { FaServer } from "react-icons/fa";
+import { FaServer, FaMicrochip, FaMemory } from "react-icons/fa";
 
 export default function ServerCard({ server, index = 0 }) {
   if (!server) return null;
 
   const tone = index % 3;
+  const status = (server.status || "ACTIVE").toUpperCase();
+  const statusClass = `status-${(server.status || "ok").toLowerCase()}`;
 
   return (
     <article className={`card card-hover card-server tone-${tone}`}>
@@ -13,27 +15,36 @@ export default function ServerCard({ server, index = 0 }) {
           <span className="date">{server.os ?? "Linux OS"}</span>
         </div>
 
-        <div className="server-card-head">
-          <div className="server-card-icon">
+        <div className="card-head">
+          <div className="card-icon">
             <FaServer />
           </div>
 
-          <div className="server-card-title-wrap">
+          <div className="card-title-wrap">
             <h3>{server.hostname ?? "vps-server"}</h3>
           </div>
         </div>
 
-        <div className="system-data-metrics">
-          <span>IP:</span>{" "}
-          <code className="server-code">{server.public_ip ?? "0.0.0.0"}</code>
+        <div className="server-panel">
+          <div className="server-meta-row">
+            <span>IP:</span>
+            <code className="server-code">{server.public_ip ?? "0.0.0.0"}</code>
+          </div>
+
+          <div className="server-stats">
+            <span className="server-stat-chip">
+              <FaMicrochip />
+              CPU {server.cpu_usage ?? "0%"}
+            </span>
+
+            <span className="server-stat-chip">
+              <FaMemory />
+              RAM {server.ram_usage ?? "0MB"}
+            </span>
+          </div>
         </div>
 
-        <div className="system-data-metrics">
-          <span>Carga:</span> <strong>CPU {server.cpu_usage ?? "0%"}</strong> |{" "}
-          <span>RAM</span> <strong>{server.ram_usage ?? "0MB"}</strong>
-        </div>
-
-        <span className="status status-ok">ACTIVE</span>
+        <span className={`status ${statusClass}`}>{status}</span>
       </div>
     </article>
   );

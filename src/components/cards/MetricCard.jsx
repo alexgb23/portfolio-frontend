@@ -13,21 +13,19 @@ export default function MetricCard({ metric, index = 0 }) {
           <span className="date">{metric.room ?? "Ubicación N/D"}</span>
         </div>
 
-        <div className="metric-card-head">
-          <div className="metric-card-icon">
+        <div className="card-head">
+          <div className="card-icon">
             <FaBroadcastTower />
           </div>
 
-          <div className="metric-card-title-wrap">
+          <div className="card-title-wrap">
             <h3>{metric.parameter ?? "Sensor"}</h3>
           </div>
         </div>
 
-        <div className="node-metrics highlight">
-          <div className="metric-display">
-            <span className="metric-value">{metric.value ?? "0"}</span>
-            <span className="metric-unit">{metric.unit ?? ""}</span>
-          </div>
+        <div className="metric-display">
+          <span className="metric-value">{metric.value ?? "0"}</span>
+          <span className="metric-unit">{metric.unit ?? ""}</span>
         </div>
       </div>
     </article>

@@ -87,10 +87,10 @@ export default function ProjectCard({ project, index = 0 }) {
           <span className="date">{displayDate}</span>
         </div>
 
-        <div className="project-card-head">
-          <div className="project-card-icon">{icon}</div>
+        <div className="card-head">
+          <div className="card-icon">{icon}</div>
 
-          <div className="project-card-title-wrap">
+          <div className="card-title-wrap">
             <h3>{project.title ?? "Sin título"}</h3>
           </div>
         </div>
@@ -99,13 +99,15 @@ export default function ProjectCard({ project, index = 0 }) {
 
         <p>{project.description ?? "Sin descripción"}</p>
 
-        <div className="tags">
-          {techList.map((tech, i) => (
-            <span key={i} className="tag">
-              {tech}
-            </span>
-          ))}
-        </div>
+        {techList.length > 0 && (
+          <div className="tags">
+            {techList.map((tech, i) => (
+              <span key={i} className="tag">
+                {tech}
+              </span>
+            ))}
+          </div>
+        )}
       </div>
     </article>
   );
