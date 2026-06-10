@@ -1,11 +1,14 @@
-import { Link } from 'react-router-dom'
-import { FaArrowRight, FaMicrochip } from 'react-icons/fa'
-import NodeCard from '../cards/NodeCard'
+import { Link } from "react-router-dom";
+import { FaArrowRight, FaMicrochip } from "react-icons/fa";
+import NodeCard from "../cards/NodeCard";
 import "./sectionsGlobals.css";
 
 function FeaturedAutomation({ nodes = [] }) {
   return (
-    <section className="section section-spaced section-separated" id="automatizacion">
+    <section
+      className="section section-spaced section-separated"
+      id="automatizacion"
+    >
       <div className="section-head-centered">
         <span className="section-kicker">Automatización</span>
         <h2>Nodos y controladores</h2>
@@ -17,12 +20,16 @@ function FeaturedAutomation({ nodes = [] }) {
 
       <div className="automation-band">
         <div className="mini-head">
-          <h3><FaMicrochip /> Nodos destacados</h3>
+          <h3>
+            <FaMicrochip /> Nodos destacados
+          </h3>
         </div>
 
         <div className="list-linear">
           {nodes.length > 0 ? (
-            nodes.map((node) => <NodeCard key={node.id} node={node} />)
+            nodes.map((node, index) => (
+              <NodeCard key={node.id} node={node} index={index} />
+            ))
           ) : (
             <p className="mini-empty">No hay nodos cargados.</p>
           )}
@@ -35,7 +42,7 @@ function FeaturedAutomation({ nodes = [] }) {
         </Link>
       </div>
     </section>
-  )
+  );
 }
 
-export default FeaturedAutomation
+export default FeaturedAutomation;

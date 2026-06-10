@@ -1,24 +1,45 @@
-export default function NodeCard({ node }) {
+import { FaNetworkWired } from "react-icons/fa";
+
+export default function NodeCard({ node, index = 0 }) {
   if (!node) return null;
+
   const statusClass = `status-${node.status?.toLowerCase() || "ok"}`;
   const name = node.node_name || node.nombre_nodo || "Nodo Anónimo";
   const type = node.type || node.tipo || "General";
   const value = node.current_value || node.valor_actual || "Sin Telemetría";
+  const tone = index % 3;
 
   return (
-    <article className="card card-row-system card-hover">
-      <div className="system-title-group">
-        <h3>{name}</h3>
-        <div className="system-meta-desc">{type}</div>
+    <article className={`card card-hover card-node tone-${tone}`}>
+      <div className="node-card-inner">
+        <div className="card-top">
+          <span className="card-badge">Infraestructura</span>
+          <span className="date">{type}</span>
+        </div>
+
+        <div className="node-card-head">
+          <div className="node-card-icon">
+            <FaNetworkWired />
+          </div>
+
+          <div className="node-card-title-wrap">
+            <h3>{name}</h3>
+          </div>
+        </div>
+
+        <div className="system-data-metrics">
+          <span>Status:</span>{" "}
+          <strong className={`status ${statusClass}`}>
+            {node.status || "ONLINE"}
+          </strong>
+        </div>
+
+        <div className="system-data-metrics">
+          <span>Telemetría:</span> <strong>{value}</strong>
+        </div>
+
+        <span className={`status ${statusClass}`}>{node.status || "OK"}</span>
       </div>
-      <div className="system-data-metrics">
-        <span>Status:</span>{" "}
-        <strong className="status status-ok">{node.status || "ONLINE"}</strong>
-      </div>
-      <div className="system-data-metrics">
-        <span>Telemetría:</span> <strong>{value}</strong>
-      </div>
-      <span className={`status ${statusClass}`}>{node.status || "OK"}</span>
     </article>
   );
 }

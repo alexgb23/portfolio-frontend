@@ -35,8 +35,8 @@ function Projects() {
 
       <div className="grid-cards">
         {projects?.length > 0 ? (
-          projects.map((project) => (
-            <ProjectCard key={project.id} project={project} />
+          projects.map((project, index) => (
+            <ProjectCard key={project.id} project={project} index={index} />
           ))
         ) : (
           <div className="empty-inline-state">

@@ -29,8 +29,8 @@ function FeaturedInfrastructure({ servers = [], metrics = [] }) {
 
           <div className="list-linear">
             {servers.length > 0 ? (
-              servers.map((server) => (
-                <ServerCard key={server.id} server={server} />
+              servers.map((server, index) => (
+                <ServerCard key={server.id} server={server} index={index} />
               ))
             ) : (
               <p className="mini-empty">No hay servidores cargados.</p>
@@ -47,8 +47,8 @@ function FeaturedInfrastructure({ servers = [], metrics = [] }) {
 
           <div className="grid-telemetry">
             {metrics.length > 0 ? (
-              metrics.map((metric) => (
-                <MetricCard key={metric.id} metric={metric} />
+              metrics.map((metric, index) => (
+                <MetricCard key={metric.id} metric={metric} index={index} />
               ))
             ) : (
               <p className="mini-empty">No hay métricas cargadas.</p>

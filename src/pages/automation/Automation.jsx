@@ -1,10 +1,10 @@
-import NodeCard from '../../components/cards/NodeCard'
-import { usePortfolioData } from '../../hooks/usePortfolioData'
-import { FaMicrochip, FaSlidersH, FaBroadcastTower } from 'react-icons/fa'
-import './Automation.css'
+import NodeCard from "../../components/cards/NodeCard";
+import { usePortfolioData } from "../../hooks/usePortfolioData";
+import { FaMicrochip, FaSlidersH, FaBroadcastTower } from "react-icons/fa";
+import "./Automation.css";
 
 function Automation() {
-  const { nodes, loading, error } = usePortfolioData()
+  const { nodes, loading, error } = usePortfolioData();
 
   if (loading) {
     return (
@@ -12,7 +12,7 @@ function Automation() {
         <div className="sys-loader"></div>
         <h2>Cargando automatización...</h2>
       </div>
-    )
+    );
   }
 
   if (error) {
@@ -21,7 +21,7 @@ function Automation() {
         <h2>Error al cargar nodos</h2>
         <p>{error}</p>
       </div>
-    )
+    );
   }
 
   return (
@@ -35,7 +35,7 @@ function Automation() {
         </p>
       </div>
 
-      <div className="expertise-grid" style={{ marginBottom: '2rem' }}>
+      <div className="expertise-grid" style={{ marginBottom: "2rem" }}>
         <article className="expertise-card">
           <div className="expertise-icon">
             <FaMicrochip />
@@ -72,7 +72,9 @@ function Automation() {
 
       <div className="list-linear">
         {nodes?.length > 0 ? (
-          nodes.map((node) => <NodeCard key={node.id} node={node} />)
+          nodes.map((node, index) => (
+            <NodeCard key={node.id} node={node} index={index} />
+          ))
         ) : (
           <div className="empty-inline-state">
             <p>No hay nodos cargados actualmente.</p>
@@ -80,7 +82,7 @@ function Automation() {
         )}
       </div>
     </section>
-  )
+  );
 }
 
-export default Automation
+export default Automation;

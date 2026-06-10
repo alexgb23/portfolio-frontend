@@ -23,44 +23,64 @@ function AboutPreview() {
       </div>
 
       <div className="expertise-grid">
-        <article className="expertise-card">
-          <div className="expertise-icon">
-            <FaCode />
+        <article className="expertise-card tone-0">
+          <div className="card-head">
+            <div className="expertise-icon">
+              <FaCode />
+            </div>
+            <div className="card-title-wrap">
+              <h3>Desarrollo</h3>
+            </div>
           </div>
-          <h3>Desarrollo</h3>
+
           <p>
             Laravel, JavaScript, React, APIs y lógica backend conectada a
             frontend útil.
           </p>
         </article>
 
-        <article className="expertise-card">
-          <div className="expertise-icon">
-            <FaServer />
+        <article className="expertise-card tone-1">
+          <div className="card-head">
+            <div className="expertise-icon">
+              <FaServer />
+            </div>
+            <div className="card-title-wrap">
+              <h3>Infraestructura</h3>
+            </div>
           </div>
-          <h3>Infraestructura</h3>
+
           <p>
             Servidores, virtualización, servicios técnicos, monitorización y
             laboratorio propio.
           </p>
         </article>
 
-        <article className="expertise-card">
-          <div className="expertise-icon">
-            <FaNetworkWired />
+        <article className="expertise-card tone-2">
+          <div className="card-head">
+            <div className="expertise-icon">
+              <FaNetworkWired />
+            </div>
+            <div className="card-title-wrap">
+              <h3>Redes</h3>
+            </div>
           </div>
-          <h3>Redes</h3>
+
           <p>
             Conectividad, servicios perimetrales, segmentación, routing y visión
             de sistemas.
           </p>
         </article>
 
-        <article className="expertise-card">
-          <div className="expertise-icon">
-            <FaMicrochip />
+        <article className="expertise-card tone-0">
+          <div className="card-head">
+            <div className="expertise-icon">
+              <FaMicrochip />
+            </div>
+            <div className="card-title-wrap">
+              <h3>Domótica e inmótica</h3>
+            </div>
           </div>
-          <h3>Domótica e inmótica</h3>
+
           <p>
             Sensores, nodos, integración de hardware y automatización aplicada a
             espacios reales.

@@ -77,8 +77,8 @@ function Infrastructure() {
 
       <div className="list-linear" style={{ marginBottom: "2rem" }}>
         {servers?.length > 0 ? (
-          servers.map((server) => (
-            <ServerCard key={server.id} server={server} />
+          servers.map((server, index) => (
+            <ServerCard key={server.id} server={server} index={index} />
           ))
         ) : (
           <div className="empty-inline-state">
@@ -94,8 +94,8 @@ function Infrastructure() {
 
       <div className="grid-telemetry">
         {metrics?.length > 0 ? (
-          metrics.map((metric) => (
-            <MetricCard key={metric.id} metric={metric} />
+          metrics.map((metric, index) => (
+            <MetricCard key={metric.id} metric={metric} index={index} />
           ))
         ) : (
           <div className="empty-inline-state">
