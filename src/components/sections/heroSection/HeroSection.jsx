@@ -16,9 +16,7 @@ function HeroSection() {
   return (
     <header className="hero-centered-section" id="inicio">
       <div className="container hero-center-content">
-        {/* PARTE SUPERIOR: Dos columnas en paralelo */}
         <div className="hero-top-row">
-          {/* CORRECCIÓN: Creamos el contenedor izquierdo para el título */}
           <div className="hero-title-container">
             <h1 className="hero-main-title">
               Construyo soluciones donde el software, la red y la automatización
@@ -26,15 +24,19 @@ function HeroSection() {
             </h1>
           </div>
 
-          {/* COLUMNA DERECHA: Foto y texto de informática debajo */}
           <div className="avatar-block">
             <div className="avatar-wrapper">
               <img
                 src="/imagen_portfolio_mia_retocada.webp"
-                alt="Alex - Infraestructura, desarrollo y automatización"
+                alt="Foto de Alex"
                 className="profile-avatar"
+                width="420"
+                height="420"
+                loading="eager"
+                decoding="async"
               />
             </div>
+
             <div className="hero-badge-wrap">
               <div className="hero-badge-glow">
                 <div className="hero-badge-inner">
@@ -47,58 +49,69 @@ function HeroSection() {
           </div>
         </div>
 
-        {/* PARTE INFERIOR: Bloque independiente e íntegramente centrado */}
         <div className="hero-bottom-block">
           <p className="hero-text">
             Técnico informático y desarrollador full-stack con experiencia en
-            sistemas, redes, domótica, inmótica, programación y diseño web. Creo
-            entornos robustos, visuales y funcionales para infraestructura,
-            monitorización y control.
+            sistemas, redes, domótica, inmótica, programación y diseño web.
+            Diseño entornos robustos para infraestructura, monitorización,
+            control y aplicaciones funcionales orientadas a resultados reales.
           </p>
 
-          <div className="hero-highlights">
+          <div
+            className="hero-highlights"
+            aria-label="Especialidades principales"
+          >
             <span>
-              <FaCode /> Laravel / React
+              <FaCode aria-hidden="true" /> Laravel / React
             </span>
             <span>
-              <FaNetworkWired /> Redes
+              <FaNetworkWired aria-hidden="true" /> Redes
             </span>
             <span>
-              <FaServer /> Infraestructura
+              <FaServer aria-hidden="true" /> Infraestructura
             </span>
             <span>
-              <FaMicrochip /> IoT / Automatización
+              <FaMicrochip aria-hidden="true" /> IoT / Automatización
             </span>
           </div>
 
           <div className="hero-actions">
             <Link to="/proyectos" className="nav-cta">
-              Ver proyectos <FaArrowRight />
+              Ver proyectos <FaArrowRight aria-hidden="true" />
             </Link>
+
             <Link to="/contacto" className="social-btn alt-btn">
               Contactar
             </Link>
           </div>
 
-          <div className="social-center-links">
+          <div className="social-center-links" aria-label="Perfiles y contacto">
             <a
-              href="https://github.com"
+              href="https://github.com/TU-USUARIO"
               target="_blank"
-              rel="noreferrer"
+              rel="noopener noreferrer"
               className="social-btn"
+              aria-label="Abrir perfil de GitHub en una pestaña nueva"
             >
-              <FaGithub /> GitHub
+              <FaGithub aria-hidden="true" /> GitHub
             </a>
+
             <a
-              href="https://linkedin.com"
+              href="https://www.linkedin.com/in/TU-USUARIO"
               target="_blank"
-              rel="noreferrer"
+              rel="noopener noreferrer"
               className="social-btn"
+              aria-label="Abrir perfil de LinkedIn en una pestaña nueva"
             >
-              <FaLinkedin /> LinkedIn
+              <FaLinkedin aria-hidden="true" /> LinkedIn
             </a>
-            <a href="mailto:tu-correo@empresa.com" className="social-btn">
-              <FaEnvelope /> Email
+
+            <a
+              href="mailto:tuemail@dominio.com"
+              className="social-btn"
+              aria-label="Enviar correo electrónico a Alex"
+            >
+              <FaEnvelope aria-hidden="true" /> Email
             </a>
           </div>
         </div>

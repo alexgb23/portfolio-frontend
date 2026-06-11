@@ -1,12 +1,46 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Outlet } from "react-router-dom";
 import Navbar from "./Navbar/Navbar";
 
 function MainLayout() {
-const [isDarkMode, setIsDarkMode] = useState(() => {
-  if (typeof window === "undefined") return false;
-  return window.matchMedia("(prefers-color-scheme: dark)").matches;
-});
+  const [themeMode, setThemeMode] = useState("system");
+
+  const [systemPrefersDark, setSystemPrefersDark] = useState(() => {
+    if (typeof window === "undefined") return false;
+    return window.matchMedia("(prefers-color-scheme: dark)").matches;
+  });
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+
+    const handleChange = (event) => {
+      setSystemPrefersDark(event.matches);
+    };
+
+    setSystemPrefersDark(mediaQuery.matches);
+
+    if (mediaQuery.addEventListener) {
+      mediaQuery.addEventListener("change", handleChange);
+    } else {
+      mediaQuery.addListener(handleChange);
+    }
+
+    return () => {
+      if (mediaQuery.removeEventListener) {
+        mediaQuery.removeEventListener("change", handleChange);
+      } else {
+        mediaQuery.removeListener(handleChange);
+      }
+    };
+  }, []);
+
+  const isDarkMode = useMemo(() => {
+    if (themeMode === "dark") return true;
+    if (themeMode === "light") return false;
+    return systemPrefersDark;
+  }, [themeMode, systemPrefersDark]);
 
   useEffect(() => {
     document.documentElement.setAttribute(
@@ -15,9 +49,22 @@ const [isDarkMode, setIsDarkMode] = useState(() => {
     );
   }, [isDarkMode]);
 
+  const toggleTheme = () => {
+    setThemeMode((currentMode) => {
+      const currentIsDark =
+        currentMode === "system" ? systemPrefersDark : currentMode === "dark";
+
+      return currentIsDark ? "light" : "dark";
+    });
+  };
+
   return (
     <>
-      <Navbar isDarkMode={isDarkMode} setIsDarkMode={setIsDarkMode} />
+      <Navbar
+        isDarkMode={isDarkMode}
+        themeMode={themeMode}
+        toggleTheme={toggleTheme}
+      />
       <main className="container">
         <Outlet />
       </main>

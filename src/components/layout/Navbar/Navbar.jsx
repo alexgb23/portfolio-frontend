@@ -4,18 +4,20 @@ import { FaMoon, FaSun, FaArrowRight, FaBars, FaTimes } from "react-icons/fa";
 
 import "./Navbar.css";
 
-function Navbar({ isDarkMode, setIsDarkMode }) {
+function Navbar({ isDarkMode, themeMode, toggleTheme }) {
   const [isOpen, setIsOpen] = useState(false);
 
-  // Función clave: Cierra el menú al cambiar de sección o pulsar la X
   const closeMenu = () => setIsOpen(false);
+
+  const themeLabel =
+    themeMode === "system"
+      ? `Tema automático (${isDarkMode ? "oscuro" : "claro"})`
+      : `Tema manual ${isDarkMode ? "oscuro" : "claro"}`;
 
   return (
     <nav className="navbar">
       <div className="nav-container">
-        {/* LOGO OPTIMIZADO: Incluye el avatar para modo móvil */}
         <Link to="/" className="nav-logo" onClick={closeMenu}>
-          {/* Nuevo contenedor oculto en PC que se activa en móvil a la izquierda */}
           <div className="logo-avatar-wrapper">
             <img
               src="/imagen_portfolio_mia_retocada.webp"
@@ -24,7 +26,6 @@ function Navbar({ isDarkMode, setIsDarkMode }) {
             />
           </div>
 
-          {/* Bloque de texto de tu marca */}
           <div className="logo-meta">
             <div className="logo-text">
               ALEX<span className="logo-accent">.SYS</span>
@@ -33,7 +34,6 @@ function Navbar({ isDarkMode, setIsDarkMode }) {
           </div>
         </Link>
 
-        {/* Añade la clase 'active' si isOpen es true */}
         <div className={`nav-links ${isOpen ? "active" : ""}`}>
           <NavLink
             to="/sobre-mi"
@@ -81,9 +81,14 @@ function Navbar({ isDarkMode, setIsDarkMode }) {
 
         <div className="nav-actions">
           <button
-            className="theme-toggle"
-            onClick={() => setIsDarkMode(!isDarkMode)}
-            aria-label="Cambiar tema"
+            type="button"
+            className={`theme-toggle ${themeMode === "system" ? "is-system" : ""}`}
+            onClick={toggleTheme}
+            aria-label={
+              isDarkMode ? "Activar modo claro" : "Activar modo oscuro"
+            }
+            aria-pressed={isDarkMode}
+            title={themeLabel}
           >
             {isDarkMode ? <FaSun /> : <FaMoon />}
           </button>
@@ -92,7 +97,6 @@ function Navbar({ isDarkMode, setIsDarkMode }) {
             Contacto <FaArrowRight />
           </NavLink>
 
-          {/* Botón dinámico: Cambia entre hamburguesa y X para cerrar */}
           <button
             className="mobile-menu-btn"
             onClick={() => setIsOpen(!isOpen)}
