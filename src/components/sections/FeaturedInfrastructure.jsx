@@ -4,7 +4,11 @@ import ServerCard from "../cards/ServerCard";
 import MetricCard from "../cards/MetricCard";
 import "./sectionsGlobals.css";
 
-function FeaturedInfrastructure({ servers = [], metrics = [] }) {
+function FeaturedInfrastructure({
+  servers = [],
+  metrics = [],
+  loading = false,
+}) {
   const hasServers = servers.length > 0;
   const hasMetrics = metrics.length > 0;
 
@@ -31,7 +35,25 @@ function FeaturedInfrastructure({ servers = [], metrics = [] }) {
           </div>
 
           <div className="infra-block-body">
-            {hasServers ? (
+            {loading ? (
+              <div className="list-linear">
+                {Array.from({ length: 2 }).map((_, index) => (
+                  <div
+                    className="server-skeleton-card"
+                    key={`server-skeleton-${index}`}
+                  >
+                    <div className="sk sk-badge"></div>
+                    <div className="sk sk-title"></div>
+                    <div className="sk sk-text"></div>
+                    <div className="sk sk-row">
+                      <span className="sk sk-chip"></span>
+                      <span className="sk sk-chip"></span>
+                    </div>
+                    <div className="sk sk-status"></div>
+                  </div>
+                ))}
+              </div>
+            ) : hasServers ? (
               <div className="list-linear">
                 {servers.map((server, index) => (
                   <ServerCard
@@ -57,7 +79,20 @@ function FeaturedInfrastructure({ servers = [], metrics = [] }) {
           </div>
 
           <div className="infra-block-body">
-            {hasMetrics ? (
+            {loading ? (
+              <div className="grid-telemetry">
+                {Array.from({ length: 4 }).map((_, index) => (
+                  <div
+                    className="metric-skeleton-card"
+                    key={`metric-skeleton-${index}`}
+                  >
+                    <div className="sk sk-metric-label"></div>
+                    <div className="sk sk-metric-value"></div>
+                    <div className="sk sk-metric-trend"></div>
+                  </div>
+                ))}
+              </div>
+            ) : hasMetrics ? (
               <div className="grid-telemetry">
                 {metrics.map((metric, index) => (
                   <MetricCard

@@ -2,9 +2,9 @@
    1. CONFIGURACIÓN BASE & VARIABLES LOCALES (MOBILE-FIRST)
    ========================================================================== */
 :root {
-  --social-card-h: 58px;
-  --social-radius: 10px;
-  --social-thickness: 8px;
+  --social-card-h: 64px;
+  --social-radius: 18px;
+  --social-thickness: 4px;
 
   --social-title-color-dark: #f8fafc;
   --social-desc-color-dark: #cbd5e1;
@@ -32,6 +32,7 @@
 .neo-terminal {
   width: 100%;
   min-width: 0;
+  border-radius: 22px;
 }
 
 /* Contenedor de Tarjetas */
@@ -321,6 +322,10 @@
 /* ==========================================================================
    5. GRID Y TARJETAS SOCIALES MINI
    ========================================================================== */
+/* ==========================================================================
+   5. GRID Y TARJETAS SOCIALES MINI — AJUSTADO AL SISTEMA VISUAL
+   ========================================================================== */
+
 .social-mini-grid {
   display: grid;
   grid-template-columns: 1fr;
@@ -334,143 +339,159 @@
   display: block;
   width: 100%;
   min-width: 0;
-  min-height: 58px;
+  min-height: var(--social-card-h);
   text-decoration: none;
   color: inherit;
   isolation: isolate;
-  perspective: 1200px;
-  transform-style: preserve-3d;
-  transform-origin: center center;
-  transform: rotateX(2deg) rotateY(12deg);
+  border-radius: var(--social-radius);
+  transform: translateY(0);
   transition:
     transform 0.22s ease,
-    box-shadow 0.22s ease;
+    box-shadow 0.22s ease,
+    filter 0.22s ease;
 }
 
 .social-mini-card:hover {
-  transform: rotateX(6deg) rotateY(14deg) translateY(0px);
+  transform: translateY(-2px);
 }
 
-.social-mini-card::after {
-  content: "";
-  position: absolute;
-  left: 2px;
-  right: 2px;
-  bottom: -12px;
-  height: 14px;
-  border-radius: 0 0 10px 10px;
-  transform-origin: top center;
-  transform: rotateX(-76deg);
-  z-index: 2;
-  pointer-events: none;
-  transition:
-    transform 0.28s ease,
-    bottom 0.28s ease,
-    opacity 0.28s ease;
-}
-
-:root[data-theme="dark"] .social-mini-card::after {
-  background: linear-gradient(
-    180deg,
-    rgba(8, 12, 18, 0.95) 0%,
-    rgba(20, 28, 38, 0.98) 100%
-  );
-  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.28);
-}
-
-:root[data-theme="light"] .social-mini-card::after {
-  background: linear-gradient(
-    180deg,
-    rgba(214, 223, 231, 0.92) 0%,
-    rgba(235, 242, 247, 0.98) 100%
-  );
-  box-shadow: 0 6px 14px rgba(15, 23, 42, 0.1);
+.social-mini-card:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--accent) 62%, white 8%);
+  outline-offset: 3px;
 }
 
 .social-mini-card::before {
   content: "";
   position: absolute;
-  inset: 0px 2px 0px calc(var(--social-thickness) * -1.15);
-  border-radius: var(--social-radius);
-  transform: translateZ(calc(var(--social-thickness) * -1.35));
-  z-index: 1;
+  inset: 0;
+  border-radius: inherit;
+  z-index: 0;
   pointer-events: none;
+  opacity: 0.9;
   transition:
-    background 0.28s ease,
-    box-shadow 0.28s ease,
-    transform 0.28s ease,
-    opacity 0.28s ease;
+    opacity 0.22s ease,
+    transform 0.22s ease,
+    box-shadow 0.22s ease;
 }
 
 :root[data-theme="dark"] .social-mini-card::before {
-  background: linear-gradient(
-    90deg,
-    rgba(255, 255, 255, 0.28) 0%,
-    color-mix(in srgb, var(--accent) 45%, transparent) 8%,
-    rgba(24, 30, 40, 0.98) 28%,
-    rgba(14, 18, 28, 0.995) 100%
-  );
+  background:
+    radial-gradient(
+      circle at 12% 18%,
+      color-mix(in srgb, var(--accent) 20%, transparent) 0%,
+      transparent 44%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.036) 0%,
+      rgba(255, 255, 255, 0.012) 100%
+    );
   box-shadow:
-    -10px 12px 25px rgba(0, 0, 0, 0.45),
-    -3px 3px 10px color-mix(in srgb, var(--accent) 18%, transparent);
+    inset 0 1px 0 rgba(255, 255, 255, 0.03),
+    0 10px 22px rgba(0, 0, 0, 0.16);
 }
 
 :root[data-theme="light"] .social-mini-card::before {
-  background: linear-gradient(
-    90deg,
-    rgba(255, 255, 255, 0.8) 0%,
-    color-mix(in srgb, var(--accent) 18%, white) 10%,
-    rgba(236, 243, 248, 0.98) 42%,
-    rgba(221, 232, 240, 0.72) 100%
-  );
+  background:
+    radial-gradient(
+      circle at 12% 18%,
+      color-mix(in srgb, var(--accent) 15%, white 85%) 0%,
+      transparent 46%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.5) 0%,
+      rgba(255, 255, 255, 0.1) 100%
+    );
   box-shadow:
-    -6px 8px 14px rgba(15, 23, 42, 0.1),
-    -1px 1px 4px rgba(255, 255, 255, 0.45);
+    inset 0 1px 0 rgba(255, 255, 255, 0.52),
+    0 10px 20px rgba(15, 23, 42, 0.06);
 }
 
 .social-mini-front {
-  position: absolute;
-  inset: 0;
-  z-index: 3;
-  border-radius: var(--social-radius);
-  transform: translateZ(2px);
+  position: relative;
+  z-index: 2;
+  border-radius: inherit;
   display: flex;
   align-items: center;
   gap: 12px;
   min-height: var(--social-card-h);
-  padding: 8px 12px;
+  padding: 12px 14px;
+  overflow: hidden;
+  transition:
+    border-color 0.22s ease,
+    background 0.22s ease,
+    box-shadow 0.22s ease;
 }
 
 :root[data-theme="dark"] .social-mini-front {
-  background: linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 0.22) 0%,
-    color-mix(in srgb, var(--accent) 18%, rgba(24, 30, 40, 0.35)) 28%,
-    rgba(18, 23, 33, 0.96) 100%
-  );
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  border-left: 2px solid rgba(255, 255, 255, 0.55);
-  border-top: 1px solid rgba(255, 255, 255, 0.3);
+  background:
+    radial-gradient(
+      circle at top left,
+      rgba(0, 212, 170, 0.075) 0%,
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at bottom right,
+      rgba(56, 189, 248, 0.08) 0%,
+      transparent 36%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(26, 33, 44, 0.94) 0%,
+      rgba(19, 25, 36, 0.95) 52%,
+      rgba(15, 20, 30, 0.97) 100%
+    );
+  border: 1px solid rgba(255, 255, 255, 0.1);
   box-shadow:
-    inset 1px 1px 1px rgba(255, 255, 255, 0.22),
-    inset -1px -1px 2px rgba(0, 0, 0, 0.1),
-    -3px 4px 10px rgba(0, 0, 0, 0.22);
+    inset 0 1px 0 rgba(255, 255, 255, 0.04),
+    0 8px 18px rgba(0, 0, 0, 0.12);
 }
 
 :root[data-theme="light"] .social-mini-front {
-  background: linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 0.96) 0%,
-    color-mix(in srgb, var(--accent) 8%, rgba(255, 255, 255, 0.98)) 38%,
-    rgba(241, 247, 251, 0.98) 100%
-  );
-  border: 1px solid rgba(148, 163, 184, 0.28);
-  border-left: 2px solid rgba(255, 255, 255, 0.95);
-  border-top: 1px solid rgba(255, 255, 255, 0.85);
+  background:
+    radial-gradient(
+      circle at top left,
+      rgba(0, 212, 170, 0.1) 0%,
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at bottom right,
+      rgba(56, 189, 248, 0.1) 0%,
+      transparent 36%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.92) 0%,
+      rgba(244, 249, 252, 0.97) 54%,
+      rgba(235, 243, 248, 0.99) 100%
+    );
+  border: 1px solid rgba(15, 23, 42, 0.1);
   box-shadow:
-    inset 1px 1px 1px rgba(255, 255, 255, 0.75),
-    inset 0 -1px 1px rgba(148, 163, 184, 0.1),
-    -2px 3px 8px rgba(15, 23, 42, 0.08);
+    inset 0 1px 0 rgba(255, 255, 255, 0.62),
+    0 10px 18px rgba(15, 23, 42, 0.05);
+}
+
+.social-mini-card:hover .social-mini-front {
+  border-color: color-mix(
+    in srgb,
+    var(--accent) 38%,
+    rgba(255, 255, 255, 0.16)
+  );
+}
+
+:root[data-theme="dark"] .social-mini-card:hover .social-mini-front {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.05),
+    0 12px 24px rgba(0, 0, 0, 0.16),
+    0 0 0 1px color-mix(in srgb, var(--accent) 18%, transparent);
+}
+
+:root[data-theme="light"] .social-mini-card:hover .social-mini-front {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.72),
+    0 12px 22px rgba(15, 23, 42, 0.07),
+    0 0 0 1px color-mix(in srgb, var(--accent) 16%, transparent);
 }
 
 .social-mini-shine {
@@ -481,17 +502,17 @@
   pointer-events: none;
   background: linear-gradient(
     180deg,
-    rgba(255, 255, 255, 0.1) 0%,
-    rgba(255, 255, 255, 0.02) 28%,
-    transparent 60%
+    rgba(255, 255, 255, 0.14) 0%,
+    rgba(255, 255, 255, 0.04) 24%,
+    transparent 58%
   );
 }
 
 :root[data-theme="light"] .social-mini-shine {
   background: linear-gradient(
     180deg,
-    rgba(255, 255, 255, 0.34) 0%,
-    rgba(255, 255, 255, 0.1) 26%,
+    rgba(255, 255, 255, 0.32) 0%,
+    rgba(255, 255, 255, 0.12) 26%,
     transparent 58%
   );
 }
@@ -499,21 +520,94 @@
 .social-mini-icon {
   position: relative;
   z-index: 3;
-  flex: 0 0 18px;
-  width: 18px;
-  height: 18px;
+  flex: 0 0 40px;
+  width: 40px;
+  height: 40px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  border-radius: 12px;
   font-size: 1rem;
+  background: transparent;
+  transition:
+    transform 0.22s ease,
+    color 0.22s ease,
+    border-color 0.22s ease,
+    box-shadow 0.22s ease,
+    background 0.22s ease;
 }
 
 :root[data-theme="dark"] .social-mini-icon {
-  color: #ffffff;
+  color: #f8fafc;
+  border: 1px solid
+    color-mix(in srgb, var(--accent) 28%, rgba(255, 255, 255, 0.14));
+  background: transparent;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.04),
+    0 0 0 1px rgba(255, 255, 255, 0.02),
+    0 0 16px color-mix(in srgb, var(--accent) 18%, transparent);
 }
 
 :root[data-theme="light"] .social-mini-icon {
   color: #0f172a;
+  border: 1px solid
+    color-mix(in srgb, var(--accent) 22%, rgba(15, 23, 42, 0.12));
+  background: transparent;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.55),
+    0 0 0 1px rgba(255, 255, 255, 0.24),
+    0 0 12px color-mix(in srgb, var(--accent) 10%, transparent);
+}
+
+.social-mini-card:hover .social-mini-icon {
+  transform: translateY(-1px) scale(1.03);
+}
+
+:root[data-theme="dark"] .social-mini-card:hover .social-mini-icon {
+  border-color: color-mix(
+    in srgb,
+    var(--accent) 58%,
+    rgba(255, 255, 255, 0.24)
+  );
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    0 0 0 1px color-mix(in srgb, var(--accent) 28%, transparent),
+    0 0 20px color-mix(in srgb, var(--accent) 28%, transparent),
+    0 0 34px color-mix(in srgb, var(--accent) 12%, transparent);
+}
+
+:root[data-theme="light"] .social-mini-card:hover .social-mini-icon {
+  border-color: color-mix(in srgb, var(--accent) 44%, rgba(15, 23, 42, 0.18));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.72),
+    0 0 0 1px color-mix(in srgb, var(--accent) 18%, transparent),
+    0 0 16px color-mix(in srgb, var(--accent) 16%, transparent);
+}
+
+.social-mini-icon::after {
+  content: "";
+  position: absolute;
+  inset: -4px;
+  border-radius: inherit;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.9;
+}
+
+:root[data-theme="dark"] .social-mini-icon::after {
+  background: radial-gradient(
+    circle,
+    color-mix(in srgb, var(--accent) 16%, transparent) 0%,
+    transparent 72%
+  );
+}
+
+:root[data-theme="light"] .social-mini-icon::after {
+  background: radial-gradient(
+    circle,
+    color-mix(in srgb, var(--accent) 10%, white 90%) 0%,
+    transparent 72%
+  );
 }
 
 .social-mini-textbox {
@@ -524,14 +618,14 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 2px;
+  gap: 3px;
 }
 
 .social-mini-name {
   display: block;
   font-size: 0.92rem;
   font-weight: 700;
-  letter-spacing: 0.01em;
+  letter-spacing: -0.01em;
   line-height: 1.1;
   white-space: nowrap;
   overflow: hidden;
@@ -539,29 +633,29 @@
 }
 
 :root[data-theme="dark"] .social-mini-name {
-  color: var(--social-title-color-dark);
+  color: #f8fafc;
 }
 
 :root[data-theme="light"] .social-mini-name {
-  color: var(--social-title-color-light);
+  color: #0f172a;
 }
 
 .social-mini-desc {
   display: block;
-  font-size: 0.72rem;
+  font-size: 0.74rem;
   font-weight: 500;
-  line-height: 1.1;
+  line-height: 1.2;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
 :root[data-theme="dark"] .social-mini-desc {
-  color: var(--social-desc-color-dark);
+  color: rgba(226, 232, 240, 0.82);
 }
 
 :root[data-theme="light"] .social-mini-desc {
-  color: var(--social-desc-color-light);
+  color: rgba(51, 65, 85, 0.86);
 }
 
 .social-mini-meta {
@@ -578,32 +672,40 @@
 }
 
 :root[data-theme="dark"] .social-mini-meta {
-  color: var(--social-meta-color-dark);
+  color: color-mix(in srgb, var(--accent) 36%, #e2e8f0);
 }
 
 :root[data-theme="light"] .social-mini-meta {
-  color: var(--social-meta-color-light);
+  color: color-mix(in srgb, var(--accent) 34%, #334155);
 }
 
 .social-mini-shadow {
   position: absolute;
-  left: 10px;
-  right: 10px;
-  bottom: -10px;
+  left: 14px;
+  right: 14px;
+  bottom: -8px;
   height: 14px;
   border-radius: 999px;
   z-index: 0;
-  filter: blur(10px);
-  opacity: 0.34;
+  filter: blur(12px);
+  opacity: 0.22;
   pointer-events: none;
+  transition:
+    opacity 0.22s ease,
+    transform 0.22s ease;
 }
 
 :root[data-theme="dark"] .social-mini-shadow {
-  background: rgba(0, 0, 0, 0.45);
+  background: color-mix(in srgb, var(--accent) 18%, rgba(0, 0, 0, 0.52));
 }
 
 :root[data-theme="light"] .social-mini-shadow {
-  background: rgba(15, 23, 42, 0.12);
+  background: color-mix(in srgb, var(--accent) 12%, rgba(15, 23, 42, 0.14));
+}
+
+.social-mini-card:hover .social-mini-shadow {
+  opacity: 0.3;
+  transform: translateY(1px);
 }
 
 /* ==========================================================================
@@ -614,14 +716,6 @@
   opacity: 1;
   text-shadow: none;
   filter: none;
-}
-
-:root[data-theme="dark"] .social-mini-card:hover .social-mini-front {
-  border-color: rgba(255, 255, 255, 0.22);
-}
-
-:root[data-theme="light"] .social-mini-card:hover .social-mini-front {
-  border-color: rgba(100, 116, 139, 0.34);
 }
 
 /* ==========================================================================
@@ -649,13 +743,14 @@
   }
 
   .contact-card {
-    flex: 0 0 40%;
+    flex: 0 0 34%;
+    max-width: 380px;
   }
 
   .neo-terminal {
     flex: 1;
+    min-width: 0;
   }
-
   .social-mini-grid {
     grid-template-columns: 1fr;
     gap: 10px;
@@ -663,7 +758,6 @@
     margin-left: auto;
     margin-right: auto;
   }
-
   .term-content-area {
     flex: 0 0 auto;
     min-height: 0;
@@ -671,12 +765,16 @@
 }
 
 @media (min-width: 992px) and (hover: hover) and (pointer: fine) {
-  .social-mini-card {
+  /* .social-mini-card {
     transform-origin: center top;
     transform: rotateX(2deg) rotateY(12deg);
+  } */
+
+  .social-mini-card {
+    transform: translateY(0);
   }
 
   .social-mini-card:hover {
-    transform: rotateX(2deg) rotateY(12deg) scale(1.015);
+    transform: translateY(-3px);
   }
 }

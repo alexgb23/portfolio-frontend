@@ -1,8 +1,8 @@
 import ProjectCard from "../../components/cards/ProjectCard";
-import { usePortfolioData } from "../../hooks/usePortfolioData";
+import { useProjects } from "../../hooks/usePortfolioData";
 
 function Projects() {
-  const { projects, loading, error } = usePortfolioData();
+  const { projects, loading, error } = useProjects();
   const hasProjects = Array.isArray(projects) && projects.length > 0;
 
   if (loading) {

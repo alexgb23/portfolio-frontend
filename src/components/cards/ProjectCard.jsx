@@ -65,12 +65,14 @@ function getProjectIcon(project, techList) {
 export default function ProjectCard({ project, index = 0 }) {
   if (!project) return null;
 
-  const techList = project.technologies
-    ? project.technologies
-        .split(",")
-        .map((tech) => tech.trim())
-        .filter(Boolean)
-    : [];
+  const techList = Array.isArray(project.technologies)
+    ? project.technologies.filter(Boolean)
+    : typeof project.technologies === "string"
+      ? project.technologies
+          .split(",")
+          .map((tech) => tech.trim())
+          .filter(Boolean)
+      : [];
 
   const displayDate = project.created_at
     ? project.created_at.split(" ")[0]

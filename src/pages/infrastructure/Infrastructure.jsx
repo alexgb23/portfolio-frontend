@@ -1,10 +1,10 @@
 import ServerCard from "../../components/cards/ServerCard";
 import MetricCard from "../../components/cards/MetricCard";
-import { usePortfolioData } from "../../hooks/usePortfolioData";
+import { useInfrastructureData } from "../../hooks/usePortfolioData";
 import { FaServer, FaChartLine, FaNetworkWired } from "react-icons/fa";
 
 function Infrastructure() {
-  const { servers, metrics, loading, error } = usePortfolioData();
+  const { servers, metrics, loading, error } = useInfrastructureData();
 
   const hasServers = Array.isArray(servers) && servers.length > 0;
   const hasMetrics = Array.isArray(metrics) && metrics.length > 0;

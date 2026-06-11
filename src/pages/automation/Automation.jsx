@@ -1,10 +1,10 @@
 import NodeCard from "../../components/cards/NodeCard";
-import { usePortfolioData } from "../../hooks/usePortfolioData";
+import { useNodes } from "../../hooks/usePortfolioData";
 import { FaMicrochip, FaSlidersH, FaBroadcastTower } from "react-icons/fa";
 import "./Automation.css";
 
 function Automation() {
-  const { nodes, loading, error } = usePortfolioData();
+  const { nodes, loading, error } = useNodes();
   const hasNodes = Array.isArray(nodes) && nodes.length > 0;
 
   if (loading) {

@@ -3,7 +3,7 @@ import { FaArrowRight, FaMicrochip } from "react-icons/fa";
 import NodeCard from "../cards/NodeCard";
 import "./sectionsGlobals.css";
 
-function FeaturedAutomation({ nodes = [] }) {
+function FeaturedAutomation({ nodes = [], loading = false }) {
   const hasNodes = nodes.length > 0;
 
   return (
@@ -28,7 +28,25 @@ function FeaturedAutomation({ nodes = [] }) {
         </div>
 
         <div className="automation-band-body">
-          {hasNodes ? (
+          {loading ? (
+            <div className="list-linear">
+              {Array.from({ length: 2 }).map((_, index) => (
+                <div
+                  className="node-skeleton-card"
+                  key={`node-skeleton-${index}`}
+                >
+                  <div className="sk sk-badge"></div>
+                  <div className="sk sk-title"></div>
+                  <div className="sk sk-text"></div>
+                  <div className="sk sk-text short"></div>
+                  <div className="sk sk-row">
+                    <span className="sk sk-chip"></span>
+                    <span className="sk sk-chip"></span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : hasNodes ? (
             <div className="list-linear">
               {nodes.map((node, index) => (
                 <NodeCard

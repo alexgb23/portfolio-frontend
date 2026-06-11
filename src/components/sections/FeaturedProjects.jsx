@@ -3,7 +3,7 @@ import { FaArrowRight } from "react-icons/fa";
 import ProjectCard from "../cards/ProjectCard";
 import "./sectionsGlobals.css";
 
-function FeaturedProjects({ projects = [] }) {
+function FeaturedProjects({ projects = [], loading = false }) {
   const hasProjects = projects.length > 0;
 
   return (
@@ -20,7 +20,26 @@ function FeaturedProjects({ projects = [] }) {
         </p>
       </div>
 
-      {hasProjects ? (
+      {loading ? (
+        <div className="grid-cards">
+          {Array.from({ length: 3 }).map((_, index) => (
+            <div
+              className="project-skeleton-card"
+              key={`project-skeleton-${index}`}
+            >
+              <div className="sk sk-badge"></div>
+              <div className="sk sk-title"></div>
+              <div className="sk sk-text"></div>
+              <div className="sk sk-text short"></div>
+              <div className="sk sk-row">
+                <span className="sk sk-chip"></span>
+                <span className="sk sk-chip"></span>
+                <span className="sk sk-chip"></span>
+              </div>
+            </div>
+          ))}
+        </div>
+      ) : hasProjects ? (
         <div className="grid-cards">
           {projects.map((project, index) => (
             <ProjectCard
