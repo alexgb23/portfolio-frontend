@@ -17,12 +17,27 @@ function useAsyncResource(fetcher, initialValue = [], deps = []) {
 
         const result = await fetcher();
 
+        const result = await fetcher();
+
         if (!ignore) {
-          setData(
-            Array.isArray(initialValue)
-              ? (result ?? [])
-              : (result ?? initialValue),
-          );
+          // Verificamos si el resultado de la API es el array directo
+          if (Array.isArray(result)) {
+            setData(result);
+          }
+          // Si la API envolvió el array en una propiedad común (data, servers, projects, etc)
+          else if (result && typeof result === "object") {
+            const internalArray =
+              result.data ||
+              result.servers ||
+              result.projects ||
+              result.nodes ||
+              result.metrics;
+            setData(
+              Array.isArray(internalArray) ? internalArray : initialValue,
+            );
+          } else {
+            setData(initialValue);
+          }
         }
       } catch (err) {
         if (!ignore) {
@@ -125,19 +140,29 @@ export function useHomeData() {
         setLoading(true);
         setError("");
 
-        const [projectsData, nodesData, serversData, metricsData] =
-          await Promise.all([
-            getProjects(),
-            getNodes(),
-            getServers(),
-            getMetrics(),
-          ]);
+        const responses = await Promise.allSettled([
+          getProjects(),
+          getNodes(),
+          getServers(),
+          getMetrics(),
+        ]);
 
         if (!ignore) {
-          setProjects(projectsData ?? []);
-          setNodes(nodesData ?? []);
-          setServers(serversData ?? []);
-          setMetrics(metricsData ?? []);
+          // ✅ SOLUCIÓN EN JS: Extraemos el valor usando el índice numérico de cada promesa ejecutada
+          const projectsRes =
+            responses[0].status === "fulfilled" ? responses[0].value : [];
+          const nodesRes =
+            responses[1].status === "fulfilled" ? responses[1].value : [];
+          const serversRes =
+            responses[2].status === "fulfilled" ? responses[2].value : [];
+          const metricsRes =
+            responses[3].status === "fulfilled" ? responses[3].value : [];
+
+          // Forzamos que siempre sean arrays limpios antes de guardarlos en el estado
+          setProjects(Array.isArray(projectsRes) ? projectsRes : []);
+          setNodes(Array.isArray(nodesRes) ? nodesRes : []);
+          setServers(Array.isArray(serversRes) ? serversRes : []);
+          setMetrics(Array.isArray(metricsRes) ? metricsRes : []);
         }
       } catch (err) {
         if (!ignore) {

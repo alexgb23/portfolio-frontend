@@ -6,8 +6,12 @@ import { FaServer, FaChartLine, FaNetworkWired } from "react-icons/fa";
 function Infrastructure() {
   const { servers, metrics, loading, error } = useInfrastructureData();
 
-  const hasServers = Array.isArray(servers) && servers.length > 0;
-  const hasMetrics = Array.isArray(metrics) && metrics.length > 0;
+  // Aseguramos que trabajamos con arrays nativos de JavaScript
+  const validServers = Array.isArray(servers) ? servers : [];
+  const validMetrics = Array.isArray(metrics) ? metrics : [];
+
+  const hasServers = validServers.length > 0;
+  const hasMetrics = validMetrics.length > 0;
 
   if (loading) {
     return (
@@ -96,9 +100,10 @@ function Infrastructure() {
           <div className="infra-block-body">
             {hasServers ? (
               <div className="list-linear">
-                {servers.map((server, index) => (
+                {validServers.map((server, index) => (
+                  /* ✅ SOLUCIÓN: Cadena de texto unívoca para la colección de servidores */
                   <ServerCard
-                    key={server.id ?? `${server.hostname}-${index}`}
+                    key={`infra-srv-${server.id || index}`}
                     server={server}
                     index={index}
                   />
@@ -122,9 +127,10 @@ function Infrastructure() {
           <div className="infra-block-body">
             {hasMetrics ? (
               <div className="grid-telemetry">
-                {metrics.map((metric, index) => (
+                {validMetrics.map((metric, index) => (
+                  /* ✅ SOLUCIÓN: Cadena de texto unívoca para la colección de métricas */
                   <MetricCard
-                    key={metric.id ?? `${metric.parameter}-${index}`}
+                    key={`infra-met-${metric.id || index}`}
                     metric={metric}
                     index={index}
                   />

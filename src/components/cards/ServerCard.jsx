@@ -1,11 +1,14 @@
-import { FaServer, FaMicrochip, FaMemory } from "react-icons/fa";
+import { FaServer, FaMicrochip, FaMemory, FaClock } from "react-icons/fa";
 
 export default function ServerCard({ server, index = 0 }) {
   if (!server) return null;
 
   const tone = index % 3;
-  const status = (server.status || "ACTIVE").toUpperCase();
-  const statusClass = `status-${(server.status || "ok").toLowerCase()}`;
+
+  // 🟢 SOLUCIÓN: Validamos dinámicamente según el uptime si la API no manda status
+  const hasUptime = server.uptime && server.uptime !== "0%";
+  const status = hasUptime ? "ACTIVE" : "DOWN";
+  const statusClass = hasUptime ? "status-ok" : "status-down";
 
   return (
     <article className={`card card-hover card-server tone-${tone}`}>
@@ -41,6 +44,15 @@ export default function ServerCard({ server, index = 0 }) {
               <FaMemory />
               RAM {server.ram_usage ?? "0MB"}
             </span>
+          </div>
+
+          {/* 🟢 NUEVO: Añadimos el Uptime real que viene de tu API */}
+          <div
+            className="server-meta-row"
+            style={{ marginTop: "8px", fontSize: "0.85rem", opacity: 0.8 }}
+          >
+            <FaClock style={{ marginRight: "5px", verticalAlign: "middle" }} />
+            <span>Uptime: {server.uptime ?? "N/A"}</span>
           </div>
         </div>
 
