@@ -59,7 +59,7 @@ function Contact() {
 
           <div className="social-mini-grid">
             <SocialCard
-              href="https://github.com"
+              href="https://github.com/alexgb23.com"
               icon={<FaGithub />}
               label="GitHub"
               title="AlexDev"
@@ -67,7 +67,7 @@ function Contact() {
             />
 
             <SocialCard
-              href="https://linkedin.com"
+              href="www.linkedin.com/in/alexander-galvez-benavides-450917281.com"
               icon={<FaLinkedin />}
               label="LinkedIn"
               title="Alex Fernández"
@@ -75,7 +75,7 @@ function Contact() {
             />
 
             <SocialCard
-              href="mailto:tu-correo@empresa.com"
+              href="mailto:alexandergalvez880208@gmail.com"
               icon={<FaEnvelope />}
               label="Correo"
               title="Email"
@@ -83,7 +83,7 @@ function Contact() {
             />
 
             <SocialCard
-              href="https://tuempresa.com"
+              //href="https://tuempresa.com"
               icon={<FaGlobe />}
               label="Web"
               title="Cubalinks"
