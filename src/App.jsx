@@ -27,9 +27,10 @@ function App() {
           <Route path="infraestructura" element={<Infrastructure />} />
           <Route path="contacto" element={<Contact />} />
           <Route path="card-prueba" element={<CardPrueba />} />
+          <Route path="/admin-login" element={<Login />} />
         </Route>
 
-        <Route path="/admin-login" element={<Login />} />
+        
         <Route path="/admin/dashboard" element={<Dashboard />} />
 
         <Route path="*" element={<Navigate to="/" replace />} />

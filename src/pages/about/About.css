@@ -470,6 +470,10 @@
 
   .about-right {
     position: relative;
+    margin-top: 40px;
+    width: 80%;
+    height: 80%;
+  }
   }
 
   /* TIMELINE DESKTOP */
