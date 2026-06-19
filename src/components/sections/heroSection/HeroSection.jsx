@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import {
-  FaCode,
   FaServer,
+  FaCode,
   FaNetworkWired,
   FaMicrochip,
   FaGithub,
@@ -9,6 +9,7 @@ import {
   FaEnvelope,
   FaArrowRight,
 } from "react-icons/fa";
+
 import "../sectionsGlobals.css";
 import "./HeroSection.css";
 
@@ -18,66 +19,98 @@ function HeroSection() {
       <div className="container hero-center-content">
         <div className="hero-top-row">
           <div className="hero-title-container">
+            <span className="hero-kicker">
+              IT SPECIALIST · FULL STACK DEVELOPER · SYSTEMS ENGINEER
+            </span>
+
             <h1 className="hero-main-title">
-              Construyo soluciones donde el software, la red y la automatización
-              trabajan juntas.
+              Creo ecosistemas tecnológicos donde 
+              <span> software, infraestructura y automatización </span>
+              trabajan juntos.
             </h1>
+
+            <p className="hero-intro">
+              Soy Alexander, profesional del sector tecnológico especializado en
+              desarrollo de aplicaciones, administración de sistemas y diseño de
+              infraestructuras IT. Trabajo creando soluciones completas que
+              conectan el mundo del software con servidores, redes,
+              virtualización, bases de datos y sistemas inteligentes.
+            </p>
           </div>
 
           <div className="avatar-block">
             <div className="avatar-wrapper">
               <img
                 src="/imagen_portfolio_mia_retocada.webp"
-                alt="Foto de Alex"
+                alt="Alex González"
                 className="profile-avatar"
-                width="420"
-                height="420"
-                loading="eager"
-                decoding="async"
               />
             </div>
 
             <div className="hero-badge-wrap">
-              <div className="hero-badge-glow">
-                <div className="hero-badge-inner">
-                  <span className="hero-badge-text">
-                    Informática · Redes · Sistemas · Domótica · Desarrollo
-                  </span>
-                </div>
+              <div className="hero-badge-inner">
+                Sistemas · Redes · Desarrollo · Automatización
               </div>
             </div>
           </div>
         </div>
 
         <div className="hero-bottom-block">
-          <p className="hero-text">
-            Técnico informático y desarrollador full-stack con experiencia en
-            sistemas, redes, domótica, inmótica, programación y diseño web.
-            Diseño entornos robustos para infraestructura, monitorización,
-            control y aplicaciones funcionales orientadas a resultados reales.
-          </p>
+          <section className="speciality-grid">
+            <article className="speciality-card">
+              <FaServer />
 
-          <div
-            className="hero-highlights"
-            aria-label="Especialidades principales"
-          >
-            <span>
-              <FaCode aria-hidden="true" /> Laravel / React
-            </span>
-            <span>
-              <FaNetworkWired aria-hidden="true" /> Redes
-            </span>
-            <span>
-              <FaServer aria-hidden="true" /> Infraestructura
-            </span>
-            <span>
-              <FaMicrochip aria-hidden="true" /> IoT / Automatización
-            </span>
-          </div>
+              <div>
+                <h3>Infraestructura IT</h3>
+
+                <p>
+                  Servidores Linux, virtualización, cloud, despliegues y
+                  administración de sistemas.
+                </p>
+              </div>
+            </article>
+
+            <article className="speciality-card">
+              <FaCode />
+
+              <div>
+                <h3>Desarrollo Full Stack</h3>
+
+                <p>
+                  Aplicaciones web modernas, APIs, bases de datos y soluciones
+                  empresariales.
+                </p>
+              </div>
+            </article>
+
+            <article className="speciality-card">
+              <FaNetworkWired />
+
+              <div>
+                <h3>Redes y Seguridad</h3>
+
+                <p>
+                  Diseño de redes, segmentación, conectividad y entornos
+                  profesionales.
+                </p>
+              </div>
+            </article>
+
+            <article className="speciality-card">
+              <FaMicrochip />
+
+              <div>
+                <h3>Automatización IoT</h3>
+
+                <p>Domótica, inmótica y sistemas inteligentes conectados.</p>
+              </div>
+            </article>
+          </section>
 
           <div className="hero-actions">
             <Link to="/proyectos" className="nav-cta">
-              Ver proyectos <FaArrowRight aria-hidden="true" />
+              Ver proyectos
+              <FaArrowRight />
             </Link>
 
             <Link to="/contacto" className="social-btn alt-btn">
@@ -85,33 +118,20 @@ function HeroSection() {
             </Link>
           </div>
 
-          <div className="social-center-links" aria-label="Perfiles y contacto">
-            <a
-              href="https://github.com/TU-USUARIO"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="social-btn"
-              aria-label="Abrir perfil de GitHub en una pestaña nueva"
-            >
-              <FaGithub aria-hidden="true" /> GitHub
+          <div className="social-center-links">
+            <a href="https://github.com/alexgb23" className="social-btn">
+              <FaGithub />
+              GitHub
             </a>
 
-            <a
-              href="https://www.linkedin.com/in/TU-USUARIO"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="social-btn"
-              aria-label="Abrir perfil de LinkedIn en una pestaña nueva"
-            >
-              <FaLinkedin aria-hidden="true" /> LinkedIn
+            <a href="#" className="social-btn">
+              <FaLinkedin />
+              LinkedIn
             </a>
 
-            <a
-              href="mailto:tuemail@dominio.com"
-              className="social-btn"
-              aria-label="Enviar correo electrónico a Alex"
-            >
-              <FaEnvelope aria-hidden="true" /> Email
+            <a href="mailto:tuemail@dominio.com" className="social-btn">
+              <FaEnvelope />
+              Email
             </a>
           </div>
         </div>
