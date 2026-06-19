@@ -63,7 +63,7 @@ function Contact() {
               href="https://github.com/alexgb23"
               icon={<FaGithub />}
               label="GitHub"
-              title="AlexDev"
+              title="Alexgb23"
               text="Repos y código"
             />
 
@@ -71,7 +71,7 @@ function Contact() {
               href="https://www.linkedin.com/in/alexander-galvez-benavides-450917281/"
               icon={<FaLinkedin />}
               label="LinkedIn"
-              title="Alex Fernández"
+              title="Alexander Galvez"
               text="Perfil profesional"
             />
 

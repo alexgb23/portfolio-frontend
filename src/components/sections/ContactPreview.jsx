@@ -55,7 +55,7 @@ function ContactPreview() {
               href="https://github.com"
               icon={<FaGithub />}
               label="GitHub"
-              title="AlexDev"
+              title="Alexgb23"
               text="Repos y código"
             />
 
@@ -63,7 +63,7 @@ function ContactPreview() {
               href="https://linkedin.com"
               icon={<FaLinkedin />}
               label="LinkedIn"
-              title="Alex Fernández"
+              title="Alexander Galvez"
               text="Perfil profesional"
             />
 
