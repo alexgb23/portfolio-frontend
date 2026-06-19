@@ -1,37 +1,27 @@
 /* =========================================================
-   HERO SECTION
-   MOBILE FIRST
+ HERO SECTION
 ========================================================= */
 
 .hero-centered-section {
   width: 100%;
-
-  padding: 70px 0 80px;
-
-  position: relative;
-
+  padding: 100px 0;
   overflow: hidden;
 }
 
 .hero-center-content {
   display: flex;
-
   flex-direction: column;
-
-  gap: 60px;
+  gap: 80px;
 }
 
 /* =========================================================
-   TOP
+ TOP
 ========================================================= */
 
 .hero-top-row {
   display: flex;
-
   flex-direction: column;
-
-  gap: 45px;
-
+  gap: 50px;
   align-items: center;
 }
 
@@ -48,23 +38,23 @@
 
   font-family: "JetBrains Mono", monospace;
 
-  font-size: 0.75rem;
+  font-size: 0.8rem;
 
   font-weight: 700;
 
-  letter-spacing: 0.12em;
+  letter-spacing: 0.15em;
 }
 
 .hero-main-title {
   margin: 0;
 
-  color: var(--text-main);
+  max-width: 950px;
 
   font-family: "Space Grotesk", sans-serif;
 
-  font-size: clamp(2.4rem, 7vw, 4rem);
+  color: var(--text-main);
 
-  font-weight: 700;
+  font-size: clamp(2.5rem, 7vw, 5rem);
 
   line-height: 1.08;
 
@@ -72,9 +62,7 @@
 }
 
 .hero-main-title span {
-  display: inline;
-
-  background: linear-gradient(90deg, var(--accent), #38bdf8);
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
 
   -webkit-background-clip: text;
 
@@ -84,19 +72,19 @@
 }
 
 .hero-intro {
-  margin-top: 28px;
+  margin-top: 30px;
 
-  max-width: 700px;
+  max-width: 780px;
 
   color: var(--text-sub);
 
-  font-size: 1.05rem;
-
   line-height: 1.8;
+
+  font-size: 1.08rem;
 }
 
 /* =========================================================
-   FOTO
+ FOTO
 ========================================================= */
 
 .avatar-block {
@@ -112,9 +100,9 @@
 .avatar-wrapper {
   position: relative;
 
-  width: 270px;
+  width: 300px;
 
-  height: 360px;
+  height: 400px;
 }
 
 .avatar-wrapper::before {
@@ -122,11 +110,13 @@
 
   position: absolute;
 
-  inset: 20px;
+  inset: 30px;
 
   background: var(--accent-glow);
 
-  filter: blur(45px);
+  filter: blur(60px);
+
+  opacity: 0.5;
 
   z-index: -1;
 }
@@ -142,21 +132,17 @@
 
   border-radius: 32px;
 
-  box-shadow: 0 35px 70px rgba(0, 0, 0, 0.45);
+  border: 1px solid var(--border);
 
-  transform: perspective(900px) rotateY(-5deg);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.35);
 
-  transition: 0.45s ease;
+  transform: perspective(1200px) rotateY(-6deg);
+
+  transition: 0.4s ease;
 }
 
 .profile-avatar:hover {
-  transform: perspective(900px) rotateY(0deg) translateY(-10px);
-}
-
-.hero-badge-wrap {
-  display: flex;
-
-  justify-content: center;
+  transform: perspective(1200px) rotateY(0) translateY(-10px);
 }
 
 .hero-badge-inner {
@@ -172,13 +158,12 @@
 
   font-family: "JetBrains Mono", monospace;
 
-  font-size: 0.72rem;
-
-  letter-spacing: 0.08em;
+  font-size: 0.75rem;
 }
 
 /* =========================================================
-   SPECIALITIES
+ SPECIALITY CARDS
+ AHORA USA TU SISTEMA CARD
 ========================================================= */
 
 .hero-bottom-block {
@@ -186,7 +171,7 @@
 
   flex-direction: column;
 
-  gap: 35px;
+  gap: 45px;
 }
 
 .speciality-grid {
@@ -194,80 +179,36 @@
 
   grid-template-columns: 1fr;
 
-  gap: 16px;
+  gap: 20px;
 }
 
-.speciality-card {
-  display: flex;
-
-  gap: 18px;
-
-  padding: 24px;
-
-  border-radius: 20px;
-
-  background: var(--bg-card);
-
-  border: 1px solid var(--border);
-
-  transition: 0.3s ease;
+.hero-speciality-card {
+  min-height: 210px;
 }
 
-.speciality-card:hover {
-  transform: translateY(-5px);
-
-  border-color: var(--accent);
-}
-
-.speciality-card svg {
-  flex-shrink: 0;
-
-  margin-top: 5px;
-
-  font-size: 1.8rem;
-
-  color: var(--accent);
-}
-
-.speciality-card h3 {
-  margin: 0 0 8px;
-
-  font-size: 1.1rem;
-
-  color: var(--text-main);
-}
-
-.speciality-card p {
-  margin: 0;
-
-  color: var(--text-sub);
-
-  font-size: 0.92rem;
-
-  line-height: 1.6;
+.hero-speciality-card p {
+  margin-top: auto;
 }
 
 /* =========================================================
-   BUTTONS
+ BUTTONS
 ========================================================= */
 
 .hero-actions {
-  display: grid;
+  display: flex;
 
-  grid-template-columns: 1fr;
+  flex-wrap: wrap;
 
-  gap: 12px;
-}
+  justify-content: center;
 
-.social-center-links {
-  display: none;
+  gap: 15px;
 }
 
 .nav-cta,
 .social-btn {
   min-height: 50px;
 
-  display: flex;
+  display: inline-flex;
 
   align-items: center;
 
@@ -275,9 +216,9 @@
 
   gap: 10px;
 
-  border-radius: 14px;
+  padding: 12px 24px;
 
-  padding: 12px 20px;
+  border-radius: 14px;
 
   border: 1px solid var(--border);
 
@@ -292,41 +233,31 @@
 
 .nav-cta:hover,
 .social-btn:hover {
-  border-color: var(--accent);
-
   transform: translateY(-3px);
+
+  border-color: var(--accent);
 }
 
-.alt-btn {
-  background: transparent;
+.social-center-links {
+  display: none;
+
+  justify-content: center;
+
+  gap: 15px;
 }
 
 /* =========================================================
-   TABLET
+ TABLET
 ========================================================= */
 
 @media (min-width: 768px) {
-  .hero-centered-section {
-    padding: 100px 0;
-  }
-
-  .hero-main-title {
-    font-size: 4.2rem;
-  }
-
   .speciality-grid {
     grid-template-columns: repeat(2, 1fr);
-  }
-
-  .hero-actions {
-    grid-template-columns: 220px 220px;
-
-    justify-content: center;
   }
 }
 
 /* =========================================================
-   DESKTOP
+ DESKTOP
 ========================================================= */
 
 @media (min-width: 1024px) {
@@ -337,23 +268,15 @@
       minmax(0, 1fr)
       420px;
 
+    gap: 80px;
+
     align-items: center;
-
-    gap: 70px;
-  }
-
-  .hero-main-title {
-    font-size: 5rem;
   }
 
   .avatar-wrapper {
-    width: 380px;
+    width: 400px;
 
-    height: 500px;
-  }
-
-  .hero-intro {
-    font-size: 1.1rem;
+    height: 520px;
   }
 
   .speciality-grid {
@@ -361,32 +284,22 @@
   }
 
   .social-center-links {
-    display: grid;
-
-    grid-template-columns: repeat(3, auto);
-
-    justify-content: center;
-
-    gap: 15px;
+    display: flex;
   }
 
-  .social-btn {
-    width: auto;
+  .hero-speciality-card {
+    min-height: 230px;
   }
 }
 
-/* =========================================================
-   LARGE DESKTOP
-========================================================= */
-
 @media (min-width: 1280px) {
-  .hero-main-title {
-    font-size: 5.6rem;
+  .avatar-wrapper {
+    width: 450px;
+
+    height: 580px;
   }
 
-  .avatar-wrapper {
-    width: 430px;
-
-    height: 560px;
+  .hero-main-title {
+    font-size: 5.5rem;
   }
 }

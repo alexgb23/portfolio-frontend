@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+
 import {
   FaServer,
   FaCode,
@@ -17,6 +18,10 @@ function HeroSection() {
   return (
     <header className="hero-centered-section" id="inicio">
       <div className="container hero-center-content">
+        {/* =========================
+            CABECERA HERO
+        ========================== */}
+
         <div className="hero-top-row">
           <div className="hero-title-container">
             <span className="hero-kicker">
@@ -24,7 +29,7 @@ function HeroSection() {
             </span>
 
             <h1 className="hero-main-title">
-              Creo ecosistemas tecnológicos donde 
+              Creo ecosistemas tecnológicos donde
               <span> software, infraestructura y automatización </span>
               trabajan juntos.
             </h1>
@@ -37,6 +42,8 @@ function HeroSection() {
               virtualización, bases de datos y sistemas inteligentes.
             </p>
           </div>
+
+          {/* FOTO */}
 
           <div className="avatar-block">
             <div className="avatar-wrapper">
@@ -55,57 +62,85 @@ function HeroSection() {
           </div>
         </div>
 
+        {/* =========================
+            BLOQUE INFERIOR
+        ========================== */}
+
         <div className="hero-bottom-block">
+          {/* =========================
+              ESPECIALIDADES
+          ========================== */}
+
           <section className="speciality-grid">
-            <article className="speciality-card">
-              <FaServer />
+            <article className="card card-hover tone-0 speciality-card">
+              <div className="card-head">
+                <div className="card-icon">
+                  <FaServer />
+                </div>
 
-              <div>
-                <h3>Infraestructura IT</h3>
-
-                <p>
-                  Servidores Linux, virtualización, cloud, despliegues y
-                  administración de sistemas.
-                </p>
+                <div className="card-title-wrap">
+                  <h3>Infraestructura IT</h3>
+                </div>
               </div>
+
+              <p>
+                Servidores Linux, virtualización, cloud, despliegues y
+                administración de sistemas.
+              </p>
             </article>
 
-            <article className="speciality-card">
-              <FaCode />
+            <article className="card card-hover tone-1 speciality-card">
+              <div className="card-head">
+                <div className="card-icon">
+                  <FaCode />
+                </div>
 
-              <div>
-                <h3>Desarrollo Full Stack</h3>
-
-                <p>
-                  Aplicaciones web modernas, APIs, bases de datos y soluciones
-                  empresariales.
-                </p>
+                <div className="card-title-wrap">
+                  <h3>Desarrollo Full Stack</h3>
+                </div>
               </div>
+
+              <p>
+                Aplicaciones web modernas, APIs, bases de datos y soluciones
+                empresariales.
+              </p>
             </article>
 
-            <article className="speciality-card">
-              <FaNetworkWired />
+            <article className="card card-hover tone-2 speciality-card">
+              <div className="card-head">
+                <div className="card-icon">
+                  <FaNetworkWired />
+                </div>
 
-              <div>
-                <h3>Redes y Seguridad</h3>
-
-                <p>
-                  Diseño de redes, segmentación, conectividad y entornos
-                  profesionales.
-                </p>
+                <div className="card-title-wrap">
+                  <h3>Redes y Seguridad</h3>
+                </div>
               </div>
+
+              <p>
+                Diseño de redes, segmentación, conectividad y entornos
+                profesionales.
+              </p>
             </article>
 
-            <article className="speciality-card">
-              <FaMicrochip />
+            <article className="card card-hover tone-0 speciality-card">
+              <div className="card-head">
+                <div className="card-icon">
+                  <FaMicrochip />
+                </div>
 
-              <div>
-                <h3>Automatización IoT</h3>
-
-                <p>Domótica, inmótica y sistemas inteligentes conectados.</p>
+                <div className="card-title-wrap">
+                  <h3>Automatización IoT</h3>
+                </div>
               </div>
+
+              <p>Domótica, inmótica y sistemas inteligentes conectados.</p>
             </article>
           </section>
+
+          {/* =========================
+              ACCIONES
+          ========================== */}
 
           <div className="hero-actions">
             <Link to="/proyectos" className="nav-cta">
@@ -117,6 +152,10 @@ function HeroSection() {
               Contactar
             </Link>
           </div>
+
+          {/* =========================
+              REDES
+          ========================== */}
 
           <div className="social-center-links">
             <a href="https://github.com/alexgb23" className="social-btn">

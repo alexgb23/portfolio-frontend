@@ -10,14 +10,14 @@ import {
 
 import "./Contact.css";
 
-function SocialCard({ href, icon, label, title, text, className = "" }) {
+function SocialCard({ href = "#", icon, label, title, text, className = "" }) {
   const isMail = href.startsWith("mailto:");
 
   return (
     <a
       href={href}
-      target={isMail ? undefined : "_blank"}
-      rel={isMail ? undefined : "noreferrer"}
+      target={isMail || href === "#" ? undefined : "_blank"}
+      rel={isMail || href === "#" ? undefined : "noreferrer"}
       className={`social-mini-card${className ? ` ${className}` : ""}`}
       aria-label={`${label}: ${title}`}
     >
@@ -30,6 +30,7 @@ function SocialCard({ href, icon, label, title, text, className = "" }) {
 
         <div className="social-mini-textbox">
           <span className="social-mini-name">{label}</span>
+
           <span className="social-mini-desc">{text}</span>
         </div>
 
@@ -59,7 +60,7 @@ function Contact() {
 
           <div className="social-mini-grid">
             <SocialCard
-              href="https://github.com/alexgb23.com"
+              href="https://github.com/alexgb23"
               icon={<FaGithub />}
               label="GitHub"
               title="AlexDev"
@@ -67,7 +68,7 @@ function Contact() {
             />
 
             <SocialCard
-              href="www.linkedin.com/in/alexander-galvez-benavides-450917281.com"
+              href="https://www.linkedin.com/in/alexander-galvez-benavides-450917281/"
               icon={<FaLinkedin />}
               label="LinkedIn"
               title="Alex Fernández"
@@ -83,7 +84,7 @@ function Contact() {
             />
 
             <SocialCard
-              //href="https://tuempresa.com"
+              href="#"
               icon={<FaGlobe />}
               label="Web"
               title="Cubalinks"
