@@ -1,9 +1,9 @@
 import HeroSection from "../../components/sections/heroSection/HeroSection";
 import AboutPreview from "../../components/sections/aboutPreview/AboutPreview";
 import FeaturedProjects from "../../components/sections/FeaturedProjects";
-import FeaturedAutomation from "../../components/sections/FeaturedAutomation";
-import FeaturedInfrastructure from "../../components/sections/FeaturedInfrastructure";
+import FeaturedLaboratory from "../../components/sections/FeaturedLaboratory";
 import ContactPreview from "../../components/sections/ContactPreview";
+
 import { useHomeData } from "../../hooks/usePortfolioData";
 
 function Home() {
@@ -12,11 +12,13 @@ function Home() {
   return (
     <>
       <HeroSection />
+
       <AboutPreview />
 
       {error ? (
         <div className="state-wrapper error centered">
           <h2>Error de conexión</h2>
+
           <p>{error}</p>
         </div>
       ) : (
@@ -25,13 +27,11 @@ function Home() {
             projects={projects?.slice(0, 3) ?? []}
             loading={loading}
           />
-          <FeaturedInfrastructure
-            servers={servers?.slice(0, 2) ?? []}
-            metrics={metrics?.slice(0, 4) ?? []}
-            loading={loading}
-          />
-          <FeaturedAutomation
-            nodes={nodes?.slice(0, 2) ?? []}
+
+          <FeaturedLaboratory
+            nodes={nodes}
+            servers={servers}
+            metrics={metrics}
             loading={loading}
           />
         </>

@@ -17,6 +17,7 @@ function Navbar({ isDarkMode, themeMode, toggleTheme }) {
   return (
     <nav className="navbar">
       <div className="nav-container">
+        {/* LOGO */}
         <Link to="/" className="nav-logo" onClick={closeMenu}>
           <div className="logo-avatar-wrapper">
             <img
@@ -30,11 +31,21 @@ function Navbar({ isDarkMode, themeMode, toggleTheme }) {
             <div className="logo-text">
               ALEX<span className="logo-accent">.SYS</span>
             </div>
+
             <span className="logo-subtext">PORTFOLIO</span>
           </div>
         </Link>
 
+        {/* NAVEGACIÓN */}
         <div className={`nav-links ${isOpen ? "active" : ""}`}>
+          <NavLink
+            to="/"
+            className={({ isActive }) => (isActive ? "active" : "")}
+            onClick={closeMenu}
+          >
+            Inicio
+          </NavLink>
+
           <NavLink
             to="/sobre-mi"
             className={({ isActive }) => (isActive ? "active" : "")}
@@ -42,6 +53,7 @@ function Navbar({ isDarkMode, themeMode, toggleTheme }) {
           >
             Sobre mí
           </NavLink>
+
           <NavLink
             to="/proyectos"
             className={({ isActive }) => (isActive ? "active" : "")}
@@ -49,40 +61,23 @@ function Navbar({ isDarkMode, themeMode, toggleTheme }) {
           >
             Proyectos
           </NavLink>
+
           <NavLink
-            to="/automatizacion"
+            to="/laboratorio"
             className={({ isActive }) => (isActive ? "active" : "")}
             onClick={closeMenu}
           >
-            Automatización
-          </NavLink>
-          <NavLink
-            to="/infraestructura"
-            className={({ isActive }) => (isActive ? "active" : "")}
-            onClick={closeMenu}
-          >
-            Infraestructura
-          </NavLink>
-          <NavLink
-            to="/contacto"
-            className={({ isActive }) => (isActive ? "active" : "")}
-            onClick={closeMenu}
-          >
-            Contacto
-          </NavLink>
-          <NavLink
-            to="/admin-login"
-            className={({ isActive }) => (isActive ? "active" : "")}
-            onClick={closeMenu}
-          >
-            Admin
+            Laboratorio
           </NavLink>
         </div>
 
+        {/* ACCIONES */}
         <div className="nav-actions">
           <button
             type="button"
-            className={`theme-toggle ${themeMode === "system" ? "is-system" : ""}`}
+            className={`theme-toggle ${
+              themeMode === "system" ? "is-system" : ""
+            }`}
             onClick={toggleTheme}
             aria-label={
               isDarkMode ? "Activar modo claro" : "Activar modo oscuro"
@@ -93,14 +88,17 @@ function Navbar({ isDarkMode, themeMode, toggleTheme }) {
             {isDarkMode ? <FaSun /> : <FaMoon />}
           </button>
 
-          <NavLink to="/contacto" className="nav-cta">
-            Contacto <FaArrowRight />
+          <NavLink to="/contacto" className="nav-cta" onClick={closeMenu}>
+            Contacto
+            <FaArrowRight />
           </NavLink>
 
           <button
+            type="button"
             className="mobile-menu-btn"
             onClick={() => setIsOpen(!isOpen)}
             aria-label="Menú de navegación"
+            aria-expanded={isOpen}
           >
             {isOpen ? <FaTimes /> : <FaBars />}
           </button>

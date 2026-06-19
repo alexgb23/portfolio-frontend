@@ -10,13 +10,13 @@
 }
 
 .nav-container {
-  width: min(var(--container), calc(100% - 24px));
+  width: min(var(--container), calc(100% - 40px));
   height: 100%;
   margin: 0 auto;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
+  gap: 32px;
 }
 
 .nav-logo {
@@ -49,7 +49,7 @@
 }
 
 .logo-text {
-  font-size: 1.15rem;
+  font-size: 1.25rem;
   font-weight: 900;
   letter-spacing: -0.04em;
   color: var(--text-main);
@@ -95,7 +95,7 @@
   backdrop-filter: blur(18px) saturate(140%);
   border-bottom: 1px solid var(--border);
   padding: 30px 24px;
-  gap: 24px;
+  gap: 30px;
   align-items: flex-start;
   transform: translateY(-150%);
   opacity: 0;
@@ -114,22 +114,36 @@
 
 .nav-links a {
   position: relative;
+
   width: 100%;
-  padding: 6px 0;
+  padding: 8px 0;
+
   color: var(--text-sub);
-  font-size: 1.1rem;
-  font-weight: 600;
-  transition: color 0.2s ease;
+
+  font-size: 1.05rem;
+  font-weight: 650;
+
+  letter-spacing: -0.01em;
+
+  transition:
+    color 0.2s ease,
+    transform 0.2s ease;
 }
 
 .nav-links a::after {
   content: "";
+
   position: absolute;
-  left: 0;
-  bottom: -8px;
+  left: 50%;
+  bottom: -10px;
+
   width: 0;
   height: 2px;
+
+  transform: translateX(-50%);
+
   background: linear-gradient(90deg, var(--accent), var(--accent-2));
+
   transition: width 0.25s ease;
 }
 
@@ -139,7 +153,7 @@
 
 .nav-links a:hover::after,
 .nav-links a.active::after {
-  width: 100%;
+  width: 60%;
 }
 
 .nav-links a.active {
@@ -234,7 +248,7 @@
     backdrop-filter: none;
     border-bottom: 0;
     padding: 0;
-    gap: 24px;
+    gap: 42px;
     align-items: center;
     flex-direction: row;
     transform: none;
@@ -247,12 +261,15 @@
     padding: 0;
     font-size: 0.94rem;
   }
-
+  .nav-actions {
+    gap: 18px;
+  }
   .mobile-menu-btn {
     display: none;
   }
 
   .nav-cta {
     display: inline-flex;
+    margin-left: 12px;
   }
 }
