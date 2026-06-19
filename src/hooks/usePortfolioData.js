@@ -17,8 +17,6 @@ function useAsyncResource(fetcher, initialValue = [], deps = []) {
 
         const result = await fetcher();
 
-        const result = await fetcher();
-
         if (!ignore) {
           // Verificamos si el resultado de la API es el array directo
           if (Array.isArray(result)) {
