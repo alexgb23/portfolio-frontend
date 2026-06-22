@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { loginAdmin } from "../../services/api";
-import "./Login.css";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -26,28 +25,49 @@ export default function Login() {
   };
 
   return (
-    <div className="admin-page-container">
-      <div className="admin-card">
+    <main className="admin-page-container">
+      <section
+        className="admin-card framed-card"
+        aria-labelledby="admin-login-title"
+      >
+        <div className="admin-card-glow" aria-hidden="true"></div>
+
         <div className="admin-header">
-          <div className="admin-login-icon">🔐</div>
-          <h2 className="admin-title">Panel de Control</h2>
+          <div className="admin-login-icon" aria-hidden="true">
+            🔐
+          </div>
+
+          <span className="admin-kicker">Acceso administrador</span>
+
+          <h1 id="admin-login-title" className="admin-title">
+            Panel de control
+          </h1>
+
           <p className="admin-subtitle">
-            Ingresa tus credenciales de administrador
+            Accede a tu entorno privado para gestionar contenido, métricas y
+            paneles internos.
           </p>
         </div>
 
         {error && (
-          <div className="admin-error-box">
-            <span>⚠️</span>
+          <div className="admin-error-box" role="alert">
+            <span className="admin-error-icon" aria-hidden="true">
+              ⚠️
+            </span>
             <p>{error}</p>
           </div>
         )}
 
         <form onSubmit={handleSubmit} className="admin-form">
           <div className="admin-input-group">
-            <label className="admin-label">Correo Electrónico</label>
+            <label htmlFor="admin-email" className="admin-label">
+              Correo electrónico
+            </label>
             <input
+              id="admin-email"
+              name="email"
               type="email"
+              autoComplete="username"
               placeholder="nombre@ejemplo.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -58,9 +78,14 @@ export default function Login() {
           </div>
 
           <div className="admin-input-group">
-            <label className="admin-label">Contraseña</label>
+            <label htmlFor="admin-password" className="admin-label">
+              Contraseña
+            </label>
             <input
+              id="admin-password"
+              name="password"
               type="password"
+              autoComplete="current-password"
               placeholder="••••••••"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
@@ -70,15 +95,21 @@ export default function Login() {
             />
           </div>
 
-          <button
-            type="submit"
-            disabled={loading}
-            className="admin-btn-primary"
-          >
-            {loading ? "Verificando..." : "Iniciar Sesión"}
-          </button>
+          <div className="admin-actions">
+            <button
+              type="submit"
+              disabled={loading}
+              className="admin-btn-primary"
+            >
+              {loading ? "Verificando..." : "Entrar"}
+            </button>
+
+            <p className="admin-enter-tip">
+              También puedes pulsar <kbd>Enter</kbd>
+            </p>
+          </div>
         </form>
-      </div>
-    </div>
+      </section>
+    </main>
   );
 }

@@ -47,7 +47,7 @@ function Contact() {
     <section className="section section-spaced section-separated">
       <div className="section-head-centered">
         <span className="section-kicker">Contacto</span>
-        <h2>Canales profesionales y colaboración</h2>
+        <h1>Canales profesionales y colaboración</h1>
         <p>
           Disponible para colaboraciones, soporte técnico, desarrollo,
           automatización, infraestructura y soluciones integradas.
@@ -56,7 +56,7 @@ function Contact() {
 
       <div className="contact-grid">
         <div className="contact-card">
-          <h3>Enlaces</h3>
+          <h2>Enlaces</h2>
 
           <div className="social-mini-grid">
             <SocialCard

@@ -99,9 +99,9 @@ function About() {
         <div className="about-left">
           <span className="about-kicker">// Sobre mí</span>
 
-          <h2 className="about-title">
+          <h1 className="about-title">
             Tecnología, infraestructura y desarrollo en una sola visión
-          </h2>
+          </h1>
 
           <p className="about-text">
             Soy <strong>Alexander Galvez</strong>, profesional del sector IT
@@ -161,7 +161,7 @@ function About() {
               <span className="stat-number">{item.number}</span>
 
               <div>
-                <h3>{item.title}</h3>
+                <h2>{item.title}</h2>
 
                 <p>{item.text}</p>
               </div>
@@ -183,7 +183,7 @@ function About() {
                 <div className="expertise-icon card-icon">{item.icon}</div>
 
                 <div className="card-title-wrap">
-                  <h3>{item.title}</h3>
+                  <h2>{item.title}</h2>
                 </div>
               </div>
 
