@@ -234,6 +234,10 @@
   .nav-links {
     top: 88px;
   }
+  .nav-cta {
+    display: inline-flex;
+    margin-left: 12px;
+  }
 }
 
 @media (min-width: 961px) {
