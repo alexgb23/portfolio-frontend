@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-
 import {
   FaServer,
   FaCode,
@@ -18,10 +17,6 @@ function HeroSection() {
   return (
     <header className="hero-centered-section" id="inicio">
       <div className="container hero-center-content">
-        {/* =========================
-            CABECERA HERO
-        ========================== */}
-
         <div className="hero-top-row">
           <div className="hero-title-container">
             <span className="hero-kicker">
@@ -43,26 +38,29 @@ function HeroSection() {
             </p>
           </div>
 
-          {/* FOTO */}
-
           <div className="avatar-block">
             <div className="avatar-wrapper">
-              <img
-                src="/imagen_portfolio_mia_retocada.webp"
-                srcSet="
-                    /imagen_portfolio_mia_retocada-480.webp 480w,
-                    /imagen_portfolio_mia_retocada-768.webp 768w,
-                    /imagen_portfolio_mia_retocada-960.webp 960w,
-                    /imagen_portfolio_mia_retocada-1280.webp 1280w
-                  "
-                sizes="(max-width: 767px) 300px, (max-width: 1279px) 400px, 450px"
-                alt="Alex González"
-                className="profile-avatar"
-                width="450"
-                height="580"
-                fetchPriority="high"
-                decoding="async"
-              />
+              <picture className="avatar-picture">
+                <source
+                  type="image/avif"
+                  srcSet="/imagen_portfolio_mia_retocada-480.avif 480w, /imagen_portfolio_mia_retocada-768.avif 768w, /imagen_portfolio_mia_retocada-960.avif 960w, /imagen_portfolio_mia_retocada-1280.avif 1280w" 
+                  sizes="(max-width: 767px) 300px, (max-width: 1279px) 400px, 450px"
+                />
+                <source
+                  type="image/webp"
+                  srcSet="/imagen_portfolio_mia_retocada-480.webp 480w, /imagen_portfolio_mia_retocada-768.webp 768w, /imagen_portfolio_mia_retocada-960.webp 960w, /imagen_portfolio_mia_retocada-1280.webp 1280w"
+                  sizes="(max-width: 767px) 300px, (max-width: 1279px) 400px, 450px"
+                />
+                <img
+                  src="/imagen_portfolio_mia_retocada-960.avif"
+                  alt="Alex González"
+                  className="profile-avatar"
+                  width="450"
+                  height="580"
+                  fetchPriority="high"
+                  decoding="async"
+                />
+              </picture>
             </div>
 
             <div className="hero-badge-wrap">
@@ -73,27 +71,17 @@ function HeroSection() {
           </div>
         </div>
 
-        {/* =========================
-            BLOQUE INFERIOR
-        ========================== */}
-
         <div className="hero-bottom-block">
-          {/* =========================
-              ESPECIALIDADES
-          ========================== */}
-
           <section className="speciality-grid">
             <article className="card card-hover tone-0 speciality-card">
               <div className="card-head">
                 <div className="card-icon">
                   <FaServer />
                 </div>
-
                 <div className="card-title-wrap">
                   <h3>Infraestructura IT</h3>
                 </div>
               </div>
-
               <p>
                 Servidores Linux, virtualización, cloud, despliegues y
                 administración de sistemas.
@@ -105,12 +93,10 @@ function HeroSection() {
                 <div className="card-icon">
                   <FaCode />
                 </div>
-
                 <div className="card-title-wrap">
                   <h3>Desarrollo Full Stack</h3>
                 </div>
               </div>
-
               <p>
                 Aplicaciones web modernas, APIs, bases de datos y soluciones
                 empresariales.
@@ -122,12 +108,10 @@ function HeroSection() {
                 <div className="card-icon">
                   <FaNetworkWired />
                 </div>
-
                 <div className="card-title-wrap">
                   <h3>Redes y Seguridad</h3>
                 </div>
               </div>
-
               <p>
                 Diseño de redes, segmentación, conectividad y entornos
                 profesionales.
@@ -139,19 +123,13 @@ function HeroSection() {
                 <div className="card-icon">
                   <FaMicrochip />
                 </div>
-
                 <div className="card-title-wrap">
                   <h3>Automatización IoT</h3>
                 </div>
               </div>
-
               <p>Domótica, inmótica y sistemas inteligentes conectados.</p>
             </article>
           </section>
-
-          {/* =========================
-              ACCIONES
-          ========================== */}
 
           <div className="hero-actions">
             <Link to="/proyectos" className="nav-cta">
@@ -164,12 +142,13 @@ function HeroSection() {
             </Link>
           </div>
 
-          {/* =========================
-              REDES
-          ========================== */}
-
           <div className="social-center-links">
-            <a href="https://github.com/alexgb23" className="social-btn">
+            <a
+              href="https://github.com/alexgb23"
+              className="social-btn"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               <FaGithub />
               GitHub
             </a>

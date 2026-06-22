@@ -1,9 +1,12 @@
 import { Link } from "react-router-dom";
 import { FaServer, FaMicrochip, FaArrowRight } from "react-icons/fa";
+import usePageTitle from "../../hooks/usePageTitle";
 
 // import "./Laboratory.css";
 
 function Laboratory() {
+  usePageTitle("Laboratorio Técnico | Alexander Galvez");
+
   return (
     <section className="section section-spaced">
       <div className="section-head-centered">

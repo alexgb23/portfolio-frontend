@@ -1,8 +1,11 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { loginAdmin } from "../../services/api";
+import usePageTitle from "../../hooks/usePageTitle";
 
 export default function Login() {
+  usePageTitle("Acceso administrador | Alexander Galvez");
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");

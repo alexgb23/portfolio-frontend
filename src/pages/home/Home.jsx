@@ -5,8 +5,11 @@ import FeaturedLaboratory from "../../components/sections/FeaturedLaboratory";
 import ContactPreview from "../../components/sections/ContactPreview";
 
 import { useHomeData } from "../../hooks/usePortfolioData";
+import usePageTitle from "../../hooks/usePageTitle";
 
 function Home() {
+  usePageTitle("Alexander Galvez | Portfolio IT y Desarrollo Full Stack");
+
   const { projects, nodes, servers, metrics, loading, error } = useHomeData();
 
   return (
@@ -18,7 +21,6 @@ function Home() {
       {error ? (
         <div className="state-wrapper error centered">
           <h2>Error de conexión</h2>
-
           <p>{error}</p>
         </div>
       ) : (

@@ -1,7 +1,10 @@
 import ProjectCard from "../../components/cards/ProjectCard";
 import { useProjects } from "../../hooks/usePortfolioData";
+import usePageTitle from "../../hooks/usePageTitle";
 
 function Projects() {
+  usePageTitle("Proyectos de Desarrollo e Integración | Alex González");
+
   const { projects, loading, error } = useProjects();
   const hasProjects = Array.isArray(projects) && projects.length > 0;
 

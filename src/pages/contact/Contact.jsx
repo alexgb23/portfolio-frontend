@@ -8,6 +8,7 @@ import {
   FaFacebook,
 } from "react-icons/fa";
 
+import usePageTitle from "../../hooks/usePageTitle";
 import "./Contact.css";
 
 function SocialCard({ href = "#", icon, label, title, text, className = "" }) {
@@ -43,6 +44,8 @@ function SocialCard({ href = "#", icon, label, title, text, className = "" }) {
 }
 
 function Contact() {
+  usePageTitle("Contacto | Alexander Galvez");
+
   return (
     <section className="section section-spaced section-separated">
       <div className="section-head-centered">

@@ -1,12 +1,14 @@
 import ServerCard from "../../components/cards/ServerCard";
 import MetricCard from "../../components/cards/MetricCard";
 import { useInfrastructureData } from "../../hooks/usePortfolioData";
+import usePageTitle from "../../hooks/usePageTitle";
 import { FaServer, FaChartLine, FaNetworkWired } from "react-icons/fa";
 
 function Infrastructure() {
+  usePageTitle("Infraestructura IT y Sistemas | Alexander Galvez");
+
   const { servers, metrics, loading, error } = useInfrastructureData();
 
-  // Aseguramos que trabajamos con arrays nativos de JavaScript
   const validServers = Array.isArray(servers) ? servers : [];
   const validMetrics = Array.isArray(metrics) ? metrics : [];
 
@@ -101,7 +103,6 @@ function Infrastructure() {
             {hasServers ? (
               <div className="list-linear">
                 {validServers.map((server, index) => (
-                  /* ✅ SOLUCIÓN: Cadena de texto unívoca para la colección de servidores */
                   <ServerCard
                     key={`infra-srv-${server.id || index}`}
                     server={server}
@@ -128,7 +129,6 @@ function Infrastructure() {
             {hasMetrics ? (
               <div className="grid-telemetry">
                 {validMetrics.map((metric, index) => (
-                  /* ✅ SOLUCIÓN: Cadena de texto unívoca para la colección de métricas */
                   <MetricCard
                     key={`infra-met-${metric.id || index}`}
                     metric={metric}

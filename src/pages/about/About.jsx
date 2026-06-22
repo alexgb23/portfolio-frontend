@@ -3,14 +3,14 @@ import {
   FaNetworkWired,
   FaMicrochip,
   FaDatabase,
-  FaServer,
-  FaDocker,
-  FaCloud,
 } from "react-icons/fa";
 
+import usePageTitle from "../../hooks/usePageTitle";
 import "./About.css";
 
 function About() {
+  usePageTitle("Sobre mí | Alexander Galvez");
+
   const technologies = [
     "React",
     "Laravel",
@@ -94,7 +94,6 @@ function About() {
 
   return (
     <section className="about-section" id="about">
-      {/* INTRO + FOTO */}
       <div className="container about-container">
         <div className="about-left">
           <span className="about-kicker">// Sobre mí</span>
@@ -135,22 +134,34 @@ function About() {
           </div>
         </div>
 
-        {/* FOTO */}
-
         <div className="about-right">
           <div className="photo-wrapper">
             <div className="photo-container">
-              <img
-                src="/imagen_portfolio_mia_retocada.webp"
-                alt="Alexander Galvez"
-                className="profile-photo"
-              />
+              <picture className="about-picture">
+                <source
+                  type="image/avif"
+                  srcSet="/imagen_portfolio_mia_retocada-480.avif 480w, /imagen_portfolio_mia_retocada-768.avif 768w, /imagen_portfolio_mia_retocada-960.avif 960w, /imagen_portfolio_mia_retocada-1280.avif 1280w"
+                  sizes="(max-width: 767px) 300px, (max-width: 1279px) 400px, 450px"
+                />
+                <source
+                  type="image/webp"
+                  srcSet="/imagen_portfolio_mia_retocada-480.webp 480w, /imagen_portfolio_mia_retocada-768.webp 768w, /imagen_portfolio_mia_retocada-960.webp 960w, /imagen_portfolio_mia_retocada-1280.webp 1280w"
+                  sizes="(max-width: 767px) 300px, (max-width: 1279px) 400px, 450px"
+                />
+                <img
+                  src="/imagen_portfolio_mia_retocada-960.avif"
+                  alt="Alexander Galvez"
+                  className="profile-photo"
+                  width="450"
+                  height="580"
+                  fetchPriority="high"
+                  decoding="async"
+                />
+              </picture>
             </div>
           </div>
         </div>
       </div>
-
-      {/* PERFIL TECNICO TIMELINE */}
 
       <section className="technical-section">
         <div className="technical-line"></div>
@@ -162,15 +173,12 @@ function About() {
 
               <div>
                 <h2>{item.title}</h2>
-
                 <p>{item.text}</p>
               </div>
             </article>
           ))}
         </div>
       </section>
-
-      {/* ESPECIALIDADES */}
 
       <section className="expertise-section">
         <div className="expertise-grid">

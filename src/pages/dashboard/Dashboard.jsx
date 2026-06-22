@@ -6,9 +6,12 @@ import {
   getServers,
   getMetrics,
 } from "../../services/api";
+import usePageTitle from "../../hooks/usePageTitle";
 import "./Dashboard.css";
 
 export default function Dashboard() {
+  usePageTitle("Dashboard administrador | Alexander Galvez");
+
   const [data, setData] = useState({
     projects: [],
     nodes: [],
@@ -20,7 +23,6 @@ export default function Dashboard() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // 🛡️ CONTROL DE ACCESO: Si no hay token, te expulsa al login de admin
     const token = localStorage.getItem("token_portfolio");
     if (!token) {
       navigate("/admin-login");
@@ -42,6 +44,7 @@ export default function Dashboard() {
         setLoading(false);
       }
     }
+
     fetchAllData();
   }, [navigate]);
 
@@ -60,7 +63,6 @@ export default function Dashboard() {
 
   return (
     <div className="dashboard-page-container">
-      {/* BARRA SUPERIOR */}
       <header className="dashboard-header">
         <div>
           <h1 className="admin-title" style={{ fontSize: "2rem" }}>
@@ -75,7 +77,6 @@ export default function Dashboard() {
         </button>
       </header>
 
-      {/* BOTONES DE PESTAÑAS (TABS) */}
       <div className="dashboard-tabs">
         <button
           onClick={() => setActiveTab("projects")}
@@ -103,10 +104,8 @@ export default function Dashboard() {
         </button>
       </div>
 
-      {/* PANEL DE TABLAS */}
       <div className="dashboard-panel-card">
         <div className="dashboard-table-wrapper">
-          {/* TABLA DE PROYECTOS */}
           {activeTab === "projects" && (
             <div>
               <div className="dashboard-table-title-area">
@@ -145,7 +144,6 @@ export default function Dashboard() {
             </div>
           )}
 
-          {/* TABLA DE NODOS */}
           {activeTab === "nodes" && (
             <div>
               <div className="dashboard-table-title-area">
@@ -180,7 +178,6 @@ export default function Dashboard() {
             </div>
           )}
 
-          {/* TABLA DE SERVIDORES */}
           {activeTab === "servers" && (
             <div>
               <div className="dashboard-table-title-area">
@@ -215,7 +212,6 @@ export default function Dashboard() {
             </div>
           )}
 
-          {/* TABLA DE MÉTRICAS */}
           {activeTab === "metrics" && (
             <div>
               <div className="dashboard-table-title-area">
