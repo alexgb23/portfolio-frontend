@@ -49,8 +49,19 @@ function HeroSection() {
             <div className="avatar-wrapper">
               <img
                 src="/imagen_portfolio_mia_retocada.webp"
+                srcSet="
+                    /imagen_portfolio_mia_retocada-480.webp 480w,
+                    /imagen_portfolio_mia_retocada-768.webp 768w,
+                    /imagen_portfolio_mia_retocada-960.webp 960w,
+                    /imagen_portfolio_mia_retocada-1280.webp 1280w
+                  "
+                sizes="(max-width: 767px) 300px, (max-width: 1279px) 400px, 450px"
                 alt="Alex González"
                 className="profile-avatar"
+                width="450"
+                height="580"
+                fetchPriority="high"
+                decoding="async"
               />
             </div>
 
