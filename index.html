@@ -3,6 +3,8 @@
 
 <head>
   <meta charset="UTF-8" />
+  <meta http-equiv="Content-Security-Policy"
+    content="default-src 'self'; img-src 'self' https: data:; style-src 'self' 'unsafe-inline' https:; script-src 'self' https:; font-src 'self' https: data:; connect-src 'self' https://portfolio-backend-d4iy.onrender.com; form-action 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; upgrade-insecure-requests;" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <meta name="google" content="notranslate" />
@@ -14,18 +16,12 @@
 
   <link rel="canonical" href="https://portfolioalexsys.netlify.app/" />
 
-  <!-- Favicons desde /public -->
   <link rel="icon" href="/favicon.ico" />
   <link rel="icon" type="image/png" sizes="32x32" href="/genfavicon-32.png" />
   <link rel="icon" type="image/png" sizes="16x16" href="/genfavicon-16.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png" />
   <link rel="manifest" href="/site.webmanifest" />
 
-  <!-- Seguridad básica -->
-  <meta http-equiv="Content-Security-Policy"
-    content="default-src 'self'; img-src 'self' https: data:; style-src 'self' 'unsafe-inline' https:; script-src 'self' https:; font-src 'self' https: data:; connect-src 'self' https://portfolio-backend-d4iy.onrender.com; form-action 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; upgrade-insecure-requests;" />
-
-  <!-- Open Graph -->
   <meta property="og:type" content="website" />
   <meta property="og:locale" content="es_ES" />
   <meta property="og:title" content="Alex | Desarrollador Web Frontend y Full-Stack" />
@@ -38,7 +34,6 @@
   <meta property="og:image:height" content="630" />
   <meta property="og:image:alt" content="Vista previa del portfolio de Alex" />
 
-  <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Alex | Desarrollador Web Frontend y Full-Stack" />
   <meta name="twitter:description"
