@@ -230,7 +230,6 @@
   transition: 0.3s ease;
 }
 
-.nav-cta:hover,
 .social-btn:hover {
   transform: translateY(-3px);
 

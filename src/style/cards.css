@@ -62,7 +62,6 @@ Contenedores de secciones:
 - .automation-band
 - .list-linear
 - .grid-telemetry
-- .expertise-grid
  */
 
 /* =========================================================
@@ -504,7 +503,7 @@ Contenedores de secciones:
   padding: 0.95rem 1rem;
   border-radius: var(--card-radius-sm);
   position: relative;
-  zindex: 1;
+  z-index: 1;
 }
 
 :root[data-theme="dark"] .metric-display,
@@ -953,10 +952,6 @@ Contenedores de secciones:
     gap: 1rem;
   }
 
-  .expertise-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 1rem;
-  }
 }
 
 /* =========================================================
@@ -1003,11 +998,6 @@ Contenedores de secciones:
   .grid-telemetry {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 1rem;
-  }
-
-  .expertise-grid {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 1.05rem;
   }
 
   .card-icon,

@@ -347,43 +347,8 @@
   padding-bottom: 80px;
 }
 
-.expertise-grid {
-  display: grid;
 
-  grid-template-columns: 1fr;
 
-  gap: 28px;
-}
-
-/* =========================================================
- EXPERTISE CARDS
-========================================================= */
-
-.expertise-card {
-  position: relative;
-
-  padding: 28px;
-
-  border-radius: 24px;
-
-  background: var(--bg-card);
-
-  border: 1px solid var(--border);
-
-  overflow: hidden;
-
-  transition: 0.35s ease;
-}
-
-.expertise-card:hover {
-  transform: translateY(-6px);
-
-  border-color: var(--accent);
-
-  box-shadow:
-    0 20px 40px rgba(0, 0, 0, 0.15),
-    0 0 20px var(--accent-glow);
-}
 
 /* ICONOS */
 
@@ -429,6 +394,7 @@
   line-height: 1.7;
 }
 
+
 /* =========================================================
  TABLET
 ========================================================= */
@@ -438,11 +404,6 @@
     gap: 100px;
   }
 
-  .expertise-grid {
-    grid-template-columns: repeat(2, 1fr);
-
-    gap: 30px;
-  }
 }
 
 /* =========================================================
@@ -506,11 +467,6 @@
     left: -52px;
   }
 
-  .expertise-grid {
-    grid-template-columns: repeat(4, 1fr);
-
-    gap: 25px;
-  }
 
 
 /* =========================================================
