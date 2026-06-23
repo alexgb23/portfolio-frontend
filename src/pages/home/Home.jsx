@@ -34,7 +34,12 @@ function Home() {
       "APIs",
       "Bases de datos",
     ],
-    sameAs: ["https://github.com/alexgb23"],
+    sameAs: [
+      "https://github.com/alexgb23",
+      "https://www.linkedin.com/in/alexander-galvez-benavides-450917281/",
+      "https://instagram.com/_aaleex_88",
+      "https://www.facebook.com/alexander.galvez.benavides",
+    ],
   };
 
   const safeJsonLd = JSON.stringify(personSchema).replace(/<\//g, "<\\/");
