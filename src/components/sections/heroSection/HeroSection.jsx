@@ -20,23 +20,23 @@ function HeroSection() {
         <div className="hero-top-row">
           <div className="hero-title-container">
             <span className="hero-kicker">
-              IT SPECIALIST · FULL STACK DEVELOPER · SYSTEMS ENGINEER
+              DESARROLLO WEB · INFRAESTRUCTURA IT · AUTOMATIZACIÓN
             </span>
 
             <h1 className="hero-main-title">
-              Creo ecosistemas tecnológicos donde
-              <span> software, infraestructura y automatización </span>
-              trabajan juntos.
+              Diseño soluciones donde
+              <span> software, sistemas y red </span>
+              trabajan como un solo ecosistema.
             </h1>
 
             <h2 className="sr-only">Especialidades principales</h2>
 
             <p className="hero-intro">
-              Soy Alexander, profesional del sector tecnológico especializado en
-              desarrollo de aplicaciones, administración de sistemas y diseño de
-              infraestructuras IT. Trabajo creando soluciones completas que
-              conectan el mundo del software con servidores, redes,
-              virtualización, bases de datos y sistemas inteligentes.
+              Soy Alex, desarrollador web y profesional IT con enfoque en
+              frontend moderno, backend, virtualización y redes. Trabajo con
+              React y Vite en la capa visual, Laravel y APIs para la gestión de
+              datos, y entornos cloud y homelab para desplegar soluciones más
+              completas, estables y escalables.
             </p>
           </div>
 
@@ -55,7 +55,7 @@ function HeroSection() {
                 />
                 <img
                   src="/imagen_portfolio_mia_retocada-960.avif"
-                  alt="Alex González"
+                  alt="Alexander Galvez"
                   className="profile-avatar"
                   width="450"
                   height="580"
@@ -67,7 +67,7 @@ function HeroSection() {
 
             <div className="hero-badge-wrap">
               <div className="hero-badge-inner">
-                Sistemas · Redes · Desarrollo · Automatización
+                React · Laravel · Proxmox · pfSense
               </div>
             </div>
           </div>
@@ -85,8 +85,8 @@ function HeroSection() {
                 </div>
               </div>
               <p>
-                Servidores Linux, virtualización, cloud, despliegues y
-                administración de sistemas.
+                Servidores Linux, virtualización con Proxmox, despliegues cloud
+                y administración técnica de entornos.
               </p>
             </article>
 
@@ -100,8 +100,8 @@ function HeroSection() {
                 </div>
               </div>
               <p>
-                Aplicaciones web modernas, APIs, bases de datos y soluciones
-                empresariales.
+                Frontend con React y Vite, backend con Laravel, APIs y
+                aplicaciones conectadas a datos reales.
               </p>
             </article>
 
@@ -115,8 +115,8 @@ function HeroSection() {
                 </div>
               </div>
               <p>
-                Diseño de redes, segmentación, conectividad y entornos
-                profesionales.
+                VLANs, pfSense, segmentación de red, conectividad y diseño de
+                entornos más seguros y organizados.
               </p>
             </article>
 
@@ -129,7 +129,10 @@ function HeroSection() {
                   <h3>Automatización IoT</h3>
                 </div>
               </div>
-              <p>Domótica, inmótica y sistemas inteligentes conectados.</p>
+              <p>
+                Domótica, inmótica y sistemas inteligentes orientados a control,
+                integración y eficiencia.
+              </p>
             </article>
           </section>
 
