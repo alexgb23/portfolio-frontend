@@ -27,7 +27,6 @@ function App() {
           <Route path="automatizacion" element={<Automation />} />
           <Route path="infraestructura" element={<Infrastructure />} />
           <Route path="contacto" element={<Contact />} />
-          <Route path="card-prueba" element={<CardPrueba />} />
           <Route path="laboratorio" element={<Laboratory />} />
         </Route>
 

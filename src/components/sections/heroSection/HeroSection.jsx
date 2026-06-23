@@ -155,12 +155,20 @@ function HeroSection() {
               GitHub
             </a>
 
-            <a href="#" className="social-btn">
+            <a
+              href="https://www.linkedin.com/in/alexander-galvez-benavides-450917281/"
+              className="social-btn"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               <FaLinkedin />
               LinkedIn
             </a>
 
-            <a href="mailto:tuemail@dominio.com" className="social-btn">
+            <a
+              href="mailto:alexandergalvez880208@gmail.com"
+              className="social-btn"
+            >
               <FaEnvelope />
               Email
             </a>

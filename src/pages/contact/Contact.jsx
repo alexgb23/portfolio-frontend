@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import {
   FaGithub,
   FaLinkedin,
@@ -11,17 +10,12 @@ import {
 import usePageTitle from "../../hooks/usePageTitle";
 import "./Contact.css";
 
-function SocialCard({ href = "#", icon, label, title, text, className = "" }) {
+function SocialCard({ href = "", icon, label, title, text, className = "" }) {
+  const isLink = Boolean(href);
   const isMail = href.startsWith("mailto:");
 
-  return (
-    <a
-      href={href}
-      target={isMail || href === "#" ? undefined : "_blank"}
-      rel={isMail || href === "#" ? undefined : "noreferrer"}
-      className={`social-mini-card${className ? ` ${className}` : ""}`}
-      aria-label={`${label}: ${title}`}
-    >
+  const content = (
+    <>
       <div className="social-mini-front">
         <div className="social-mini-shine" aria-hidden="true"></div>
 
@@ -31,7 +25,6 @@ function SocialCard({ href = "#", icon, label, title, text, className = "" }) {
 
         <div className="social-mini-textbox">
           <span className="social-mini-name">{label}</span>
-
           <span className="social-mini-desc">{text}</span>
         </div>
 
@@ -39,12 +32,75 @@ function SocialCard({ href = "#", icon, label, title, text, className = "" }) {
       </div>
 
       <div className="social-mini-shadow" aria-hidden="true"></div>
+    </>
+  );
+
+  if (!isLink) {
+    return null;
+  }
+
+  return (
+    <a
+      href={href}
+      target={isMail ? undefined : "_blank"}
+      rel={isMail ? undefined : "noopener noreferrer"}
+      className={`social-mini-card${className ? ` ${className}` : ""}`}
+      aria-label={`${label}: ${title}`}
+    >
+      {content}
     </a>
   );
 }
 
 function Contact() {
   usePageTitle("Contacto | Alexander Galvez");
+
+  const socialLinks = [
+    {
+      href: "https://github.com/alexgb23",
+      icon: <FaGithub />,
+      label: "GitHub",
+      title: "Alexgb23",
+      text: "Repos y código",
+    },
+    {
+      href: "https://www.linkedin.com/in/alexander-galvez-benavides-450917281/",
+      icon: <FaLinkedin />,
+      label: "LinkedIn",
+      title: "Alexander Galvez",
+      text: "Perfil profesional",
+    },
+    {
+      href: "mailto:alexandergalvez880208@gmail.com",
+      icon: <FaEnvelope />,
+      label: "Correo",
+      title: "Email",
+      text: "Contacto directo",
+    },
+    {
+      href: "",
+      icon: <FaGlobe />,
+      label: "Web",
+      title: "Cubalinks",
+      text: "Empresa y servicios",
+    },
+    {
+      href: "https://instagram.com/_aaleex_88",
+      icon: <FaInstagram />,
+      label: "Instagram",
+      title: "@_aaleex_88",
+      text: "Perfil personal",
+    },
+    {
+      href: "https://www.facebook.com/alexander.galvez.benavides",
+      icon: <FaFacebook />,
+      label: "Facebook",
+      title: "Alexander Galvez Benavides",
+      text: "Perfil personal",
+    },
+  ];
+
+  const visibleSocialLinks = socialLinks.filter((item) => item.href);
 
   return (
     <section className="section section-spaced section-separated">
@@ -62,59 +118,16 @@ function Contact() {
           <h2>Enlaces</h2>
 
           <div className="social-mini-grid">
-            <SocialCard
-              href="https://github.com/alexgb23"
-              icon={<FaGithub />}
-              label="GitHub"
-              title="Alexgb23"
-              text="Repos y código"
-            />
-
-            <SocialCard
-              href="https://www.linkedin.com/in/alexander-galvez-benavides-450917281/"
-              icon={<FaLinkedin />}
-              label="LinkedIn"
-              title="Alexander Galvez"
-              text="Perfil profesional"
-            />
-
-            <SocialCard
-              href="mailto:alexandergalvez880208@gmail.com"
-              icon={<FaEnvelope />}
-              label="Correo"
-              title="Email"
-              text="Contacto directo"
-            />
-
-            <SocialCard
-              href="#"
-              icon={<FaGlobe />}
-              label="Web"
-              title="Cubalinks"
-              text="Empresa y servicios"
-            />
-
-            <SocialCard
-              href="https://instagram.com"
-              icon={<FaInstagram />}
-              label="Instagram"
-              title="@alefgb"
-              text="Perfil personal"
-            />
-
-            <SocialCard
-              href="https://facebook.com"
-              icon={<FaFacebook />}
-              label="Facebook"
-              title="Alexander Galvez"
-              text="Perfil personal"
-            />
-          </div>
-
-          <div className="section-more left">
-            <Link to="/contacto" className="inline-link">
-              Ir a contacto
-            </Link>
+            {visibleSocialLinks.map((item) => (
+              <SocialCard
+                key={`${item.label}-${item.title}`}
+                href={item.href}
+                icon={item.icon}
+                label={item.label}
+                title={item.title}
+                text={item.text}
+              />
+            ))}
           </div>
         </div>
 
