@@ -21,9 +21,13 @@ function Navbar({ isDarkMode, themeMode, toggleTheme }) {
         <Link to="/" className="nav-logo" onClick={closeMenu}>
           <div className="logo-avatar-wrapper">
             <img
-              src="/imagen_portfolio_mia_retocada-480.webp"
+              src="/avatar-nav-72.webp"
+              srcSet="/avatar-nav-72.webp 1x, /avatar-nav-144.webp 2x"
               alt="Alex Avatar"
               className="logo-avatar"
+              width="36"
+              height="36"
+              decoding="async"
             />
           </div>
 

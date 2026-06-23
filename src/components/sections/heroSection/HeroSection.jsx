@@ -29,6 +29,8 @@ function HeroSection() {
               trabajan juntos.
             </h1>
 
+            <h2 className="sr-only">Especialidades principales</h2>
+
             <p className="hero-intro">
               Soy Alexander, profesional del sector tecnológico especializado en
               desarrollo de aplicaciones, administración de sistemas y diseño de
@@ -43,7 +45,7 @@ function HeroSection() {
               <picture className="avatar-picture">
                 <source
                   type="image/avif"
-                  srcSet="/imagen_portfolio_mia_retocada-480.avif 480w, /imagen_portfolio_mia_retocada-768.avif 768w, /imagen_portfolio_mia_retocada-960.avif 960w, /imagen_portfolio_mia_retocada-1280.avif 1280w" 
+                  srcSet="/imagen_portfolio_mia_retocada-480.avif 480w, /imagen_portfolio_mia_retocada-768.avif 768w, /imagen_portfolio_mia_retocada-960.avif 960w, /imagen_portfolio_mia_retocada-1280.avif 1280w"
                   sizes="(max-width: 767px) 300px, (max-width: 1279px) 400px, 450px"
                 />
                 <source

@@ -58,8 +58,24 @@ function MainLayout() {
     });
   };
 
+  const websiteSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "@id": "https://portfolioalexsys.netlify.app/#website",
+    name: "Alexander Galvez Portfolio",
+    url: "https://portfolioalexsys.netlify.app/",
+    inLanguage: "es",
+  };
+
+  const safeJsonLd = JSON.stringify(websiteSchema).replace(/<\//g, "<\\/");
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: safeJsonLd }}
+      />
+
       <Navbar
         isDarkMode={isDarkMode}
         themeMode={themeMode}

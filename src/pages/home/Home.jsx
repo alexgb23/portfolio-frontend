@@ -12,8 +12,40 @@ function Home() {
 
   const { projects, nodes, servers, metrics, loading, error } = useHomeData();
 
+  const personSchema = {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "@id": "https://portfolioalexsys.netlify.app/#alexander-galvez",
+    name: "Alexander Galvez",
+    url: "https://portfolioalexsys.netlify.app/",
+    image:
+      "https://portfolioalexsys.netlify.app/imagen_portfolio_mia_retocada-960.avif",
+    jobTitle: "IT Specialist · Full Stack Developer · Systems Engineer",
+    description:
+      "Profesional del sector tecnológico especializado en desarrollo de aplicaciones, administración de sistemas y diseño de infraestructuras IT.",
+    knowsAbout: [
+      "Desarrollo Full Stack",
+      "Infraestructura IT",
+      "Administración de sistemas",
+      "Virtualización",
+      "Redes y seguridad",
+      "Automatización IoT",
+      "Linux",
+      "APIs",
+      "Bases de datos",
+    ],
+    sameAs: ["https://github.com/alexgb23"],
+  };
+
+  const safeJsonLd = JSON.stringify(personSchema).replace(/<\//g, "<\\/");
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: safeJsonLd }}
+      />
+
       <HeroSection />
 
       <AboutPreview />
