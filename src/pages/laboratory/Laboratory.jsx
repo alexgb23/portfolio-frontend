@@ -20,6 +20,8 @@ function Laboratory() {
         </p>
       </div>
 
+      <h2 className="sr-only">Áreas del laboratorio</h2>
+
       <div className="laboratory-grid">
         <article className="expertise-card card-hover tone-1">
           <div className="card-head">

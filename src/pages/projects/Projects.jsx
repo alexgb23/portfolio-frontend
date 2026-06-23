@@ -38,15 +38,19 @@ function Projects() {
       </div>
 
       {hasProjects ? (
-        <div className="grid-cards">
-          {projects.map((project, index) => (
-            <ProjectCard
-              key={project.id ?? `${project.title}-${index}`}
-              project={project}
-              index={index}
-            />
-          ))}
-        </div>
+        <>
+          <h2 className="sr-only">Listado de proyectos</h2>
+
+          <div className="grid-cards">
+            {projects.map((project, index) => (
+              <ProjectCard
+                key={project.id ?? `${project.title}-${index}`}
+                project={project}
+                index={index}
+              />
+            ))}
+          </div>
+        </>
       ) : (
         <div className="empty-inline-state">
           <p>No hay proyectos cargados actualmente.</p>

@@ -44,6 +44,8 @@ function Infrastructure() {
         </p>
       </div>
 
+      <h2 className="sr-only">Resumen de infraestructura</h2>
+
       <div className="expertise-grid infra-intro-grid">
         <article className="expertise-card card-hover tone-1">
           <div className="card-head">
@@ -90,6 +92,8 @@ function Infrastructure() {
           </p>
         </article>
       </div>
+
+      <h2 className="sr-only">Detalle de infraestructura</h2>
 
       <div className="infra-preview-grid infra-page-grid">
         <div className="infra-block">

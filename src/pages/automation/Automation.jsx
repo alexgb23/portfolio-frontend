@@ -39,6 +39,8 @@ function Automation() {
         </p>
       </div>
 
+      <h2 className="sr-only">Resumen de automatización</h2>
+
       <div className="expertise-grid automation-intro-grid">
         <article className="expertise-card card-hover tone-1">
           <div className="card-head">
@@ -85,6 +87,8 @@ function Automation() {
           </p>
         </article>
       </div>
+
+      <h2 className="sr-only">Nodos desplegados</h2>
 
       <div className="automation-band automation-page-band">
         <div className="mini-head">
