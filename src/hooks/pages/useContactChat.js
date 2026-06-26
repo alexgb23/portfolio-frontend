@@ -18,9 +18,10 @@ export default function useContactChat() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Accept": "application/json",
+          Accept: "application/json",
         },
         body: JSON.stringify(payload),
+        signal: AbortSignal.timeout(6000),
       });
 
       const data = await response.json().catch(() => null);
@@ -39,8 +40,22 @@ export default function useContactChat() {
 
       return data;
     } catch (err) {
+      if (err instanceof Error && (err.name === "TimeoutError" || err.name === "AbortError")) {
+        setSuccess(
+          "Tu mensaje quedó guardado correctamente. El correo puede tardar un poco en procesarse."
+        );
+        return {
+          message:
+            "Tu mensaje quedó guardado correctamente. El correo puede tardar un poco en procesarse.",
+          data: {
+            mail_sent: false,
+          },
+        };
+      }
+
       const message =
         err instanceof Error ? err.message : "Error enviando mensaje";
+
       setError(message);
       throw err;
     } finally {

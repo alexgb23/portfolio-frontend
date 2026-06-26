@@ -297,8 +297,8 @@ function Contact() {
                 ></textarea>
               </div>
 
-              {error && <p className="cmd-output">{error}</p>}
-              {success && <p className="cmd-output">{success}</p>}
+              {error && <p className="cmd-feedback cmd-feedback-error">{error}</p>}
+              {success && <p className="cmd-feedback cmd-feedback-success">{success}</p>} 
 
               <button type="submit" className="cmd-submit-btn" disabled={loading}>
                 {loading ? "enviando()" : "enviar()"}
