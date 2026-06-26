@@ -3,94 +3,41 @@ import {
   FaNetworkWired,
   FaMicrochip,
   FaDatabase,
+  FaServer,
 } from "react-icons/fa";
 
 import usePageTitle from "../../hooks/usePageTitle";
+import usePortfolioHome from "../../hooks/pages/usePortfolioHome";
 import "./About.css";
+
+const expertiseIconMap = {
+  code: FaCode,
+  database: FaDatabase,
+  network: FaNetworkWired,
+  networking: FaNetworkWired,
+  microchip: FaMicrochip,
+  automation: FaMicrochip,
+  server: FaServer,
+  infrastructure: FaServer,
+};
 
 function About() {
   usePageTitle("Sobre mí | Alexander Galvez");
 
-  const technologies = [
-    "React",
-    "Laravel",
-    "JavaScript",
-    "Python",
-    "Java",
-    "PostgreSQL",
-    "Linux",
-    "Docker",
-    "Proxmox",
-    "Redes",
-    "Domótica",
-    "Virtualización",
-  ];
+  const { profile, skills, highlights, expertise, loading } = usePortfolioHome();
 
-  const profileData = [
-    {
-      number: "01",
-      title: "Full Stack",
-      text: "Desarrollo frontend y backend, aplicaciones web modernas y APIs empresariales.",
-      side: "left",
-    },
-    {
-      number: "02",
-      title: "Sistemas IT",
-      text: "Administración Linux, servidores, servicios y entornos profesionales.",
-      side: "right",
-    },
-    {
-      number: "03",
-      title: "Bases de Datos",
-      text: "Diseño, modelado y optimización SQL, PostgreSQL y sistemas empresariales.",
-      side: "left",
-    },
-    {
-      number: "04",
-      title: "Redes",
-      text: "VLANs, routing, segmentación, seguridad y conectividad profesional.",
-      side: "right",
-    },
-    {
-      number: "05",
-      title: "Automatización",
-      text: "Domótica, inmótica e integración de dispositivos inteligentes.",
-      side: "left",
-    },
-    {
-      number: "06",
-      title: "Virtualización",
-      text: "Proxmox, Docker, laboratorios IT y despliegues escalables.",
-      side: "right",
-    },
-  ];
+  const technologies = (skills ?? []).map((skill) => skill.name);
 
-  const expertise = [
-    {
-      icon: <FaCode />,
-      title: "Desarrollo Full Stack",
-      text: "Aplicaciones modernas con React, Laravel, JavaScript, Python y Java.",
-      tone: "tone-0",
-    },
-    {
-      icon: <FaDatabase />,
-      title: "Bases de Datos",
-      text: "Diseño y optimización de bases SQL y PostgreSQL para aplicaciones profesionales.",
-      tone: "tone-1",
-    },
-    {
-      icon: <FaNetworkWired />,
-      title: "Infraestructura y Redes",
-      text: "Servidores Linux, virtualización, redes empresariales y despliegues IT.",
-      tone: "tone-2",
-    },
-    {
-      icon: <FaMicrochip />,
-      title: "Domótica e Inmótica",
-      text: "Automatización de viviendas y edificios inteligentes conectados.",
-      tone: "tone-0",
-    },
-  ];
+  const aboutTitle =
+    profile?.about_title || "Tecnología, infraestructura y desarrollo en una sola visión";
+
+  const aboutIntro =
+    profile?.about_intro ||
+    "Soy Alexander Galvez, profesional del sector IT especializado en desarrollo de software, sistemas informáticos, redes y automatización.";
+
+  const aboutParagraphs = profile?.bio_long
+    ? profile.bio_long.split("\n\n").filter(Boolean)
+    : [];
 
   return (
     <section className="about-section" id="about">
@@ -99,31 +46,16 @@ function About() {
           <span className="about-kicker">// Sobre mí</span>
 
           <h1 className="about-title">
-            Tecnología, infraestructura y desarrollo en una sola visión
+            {loading ? "Cargando..." : aboutTitle}
           </h1>
 
-          <p className="about-text">
-            Soy <strong>Alexander Galvez</strong>, profesional del sector IT
-            especializado en desarrollo de software, sistemas informáticos,
-            redes y automatización.
-          </p>
+          <p className="about-text">{aboutIntro}</p>
 
-          <p className="about-text">
-            Mi formación en informática, microinformática y domótica me ha
-            permitido comprender la tecnología desde una visión global:
-            hardware, servidores, redes, bases de datos y aplicaciones.
-          </p>
-
-          <p className="about-text">
-            Me gusta crear soluciones completas donde software e infraestructura
-            trabajen juntos: desde una aplicación React hasta servidores Linux,
-            virtualización y redes profesionales.
-          </p>
-
-          <p className="about-text">
-            Actualmente sigo ampliando conocimientos en cloud computing,
-            automatización e infraestructura IT mediante proyectos reales.
-          </p>
+          {aboutParagraphs.map((paragraph, index) => (
+            <p key={index} className="about-text">
+              {paragraph}
+            </p>
+          ))}
 
           <div className="tech-badges">
             {technologies.map((tech) => (
@@ -150,7 +82,7 @@ function About() {
                 />
                 <img
                   src="/imagen_portfolio_mia_retocada-960.avif"
-                  alt="Alexander Galvez"
+                  alt={profile?.display_name || "Alexander Galvez"}
                   className="profile-photo"
                   width="450"
                   height="580"
@@ -167,8 +99,11 @@ function About() {
         <div className="technical-line"></div>
 
         <div className="technical-timeline">
-          {profileData.map((item) => (
-            <article key={item.number} className={`stat-card ${item.side}`}>
+          {(highlights ?? []).map((item, index) => (
+            <article
+              key={item.id || item.number || index}
+              className={`stat-card ${item.side || "left"}`}
+            >
               <span className="stat-number">{item.number}</span>
 
               <div>
@@ -182,22 +117,29 @@ function About() {
 
       <section className="expertise-section">
         <div className="expertise-grid">
-          {expertise.map((item) => (
-            <article
-              key={item.title}
-              className={`expertise-card card-hover ${item.tone}`}
-            >
-              <div className="card-head">
-                <div className="expertise-icon card-icon">{item.icon}</div>
+          {(expertise ?? []).map((item, index) => {
+            const Icon =
+              expertiseIconMap[(item.icon_key || "").toLowerCase()] || FaCode;
 
-                <div className="card-title-wrap">
-                  <h2>{item.title}</h2>
+            return (
+              <article
+                key={item.id || item.title || index}
+                className={`expertise-card card-hover ${item.tone || "tone-0"}`}
+              >
+                <div className="card-head">
+                  <div className="expertise-icon card-icon">
+                    <Icon />
+                  </div>
+
+                  <div className="card-title-wrap">
+                    <h2>{item.title}</h2>
+                  </div>
                 </div>
-              </div>
 
-              <p>{item.text}</p>
-            </article>
-          ))}
+                <p>{item.text}</p>
+              </article>
+            );
+          })}
         </div>
       </section>
     </section>

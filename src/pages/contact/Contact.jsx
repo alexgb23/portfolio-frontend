@@ -1,3 +1,4 @@
+import { useEffect, useMemo, useState } from "react";
 import {
   FaGithub,
   FaLinkedin,
@@ -8,7 +9,10 @@ import {
 } from "react-icons/fa";
 
 import usePageTitle from "../../hooks/usePageTitle";
+import useContactChat from "../../hooks/pages/useContactChat";
 import "./Contact.css";
+
+const API_URL = import.meta.env.VITE_API_URL ?? "http://localhost:8000";
 
 function SocialCard({ href = "", icon, label, title, text, className = "" }) {
   const isLink = Boolean(href);
@@ -35,9 +39,7 @@ function SocialCard({ href = "", icon, label, title, text, className = "" }) {
     </>
   );
 
-  if (!isLink) {
-    return null;
-  }
+  if (!isLink) return null;
 
   return (
     <a
@@ -45,62 +47,146 @@ function SocialCard({ href = "", icon, label, title, text, className = "" }) {
       target={isMail ? undefined : "_blank"}
       rel={isMail ? undefined : "noopener noreferrer"}
       className={`social-mini-card${className ? ` ${className}` : ""}`}
-      aria-label={`${label}: ${title}`}
+      aria-label={`${label}: ${title ?? text ?? href}`}
     >
       {content}
     </a>
   );
 }
 
+function getSocialIcon(item) {
+  const key = `${item.icon_key ?? ""} ${item.platform ?? ""}`.toLowerCase();
+
+  if (key.includes("github")) return <FaGithub />;
+  if (key.includes("linkedin")) return <FaLinkedin />;
+  if (key.includes("email") || key.includes("mail")) return <FaEnvelope />;
+  if (key.includes("instagram")) return <FaInstagram />;
+  if (key.includes("facebook")) return <FaFacebook />;
+  return <FaGlobe />;
+}
+
+function normalizeHref(item) {
+  const raw = item?.url?.trim() ?? "";
+  if (!raw) return "";
+
+  const platform = (item?.platform ?? "").toLowerCase();
+  const iconKey = (item?.icon_key ?? "").toLowerCase();
+
+  if (
+    raw.includes("@") &&
+    !raw.startsWith("http://") &&
+    !raw.startsWith("https://") &&
+    !raw.startsWith("mailto:")
+  ) {
+    return `mailto:${raw}`;
+  }
+
+  if (platform.includes("email") || iconKey.includes("email")) {
+    return raw.startsWith("mailto:") ? raw : `mailto:${raw}`;
+  }
+
+  return raw;
+}
+
 function Contact() {
   usePageTitle("Contacto | Alexander Galvez");
 
-  const socialLinks = [
-    {
-      href: "https://github.com/alexgb23",
-      icon: <FaGithub />,
-      label: "GitHub",
-      title: "Alexgb23",
-      text: "Repos y código",
-    },
-    {
-      href: "https://www.linkedin.com/in/alexander-galvez-benavides-450917281/",
-      icon: <FaLinkedin />,
-      label: "LinkedIn",
-      title: "Alexander Galvez",
-      text: "Perfil profesional",
-    },
-    {
-      href: "mailto:alexandergalvez880208@gmail.com",
-      icon: <FaEnvelope />,
-      label: "Correo",
-      title: "Email",
-      text: "Contacto directo",
-    },
-    {
-      href: "",
-      icon: <FaGlobe />,
-      label: "Web",
-      title: "Cubalinks",
-      text: "Empresa y servicios",
-    },
-    {
-      href: "https://instagram.com/_aaleex_88",
-      icon: <FaInstagram />,
-      label: "Instagram",
-      title: "@_aaleex_88",
-      text: "Perfil personal",
-    },
-    {
-      href: "https://www.facebook.com/alexander.galvez.benavides",
-      icon: <FaFacebook />,
-      label: "Facebook",
-      title: "Alexander Galvez Benavides",
-      text: "Perfil personal",
-    },
-  ];
+  const [socialLinks, setSocialLinks] = useState([]);
+  const [loadingLinks, setLoadingLinks] = useState(true);
+  const [linksError, setLinksError] = useState("");
 
-  const visibleSocialLinks = socialLinks.filter((item) => item.href);
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    subject: "",
+    message: "",
+  });
+
+  const { loading, error, success, sendMessage } = useContactChat();
+
+  useEffect(() => {
+    let cancelled = false;
+
+    async function loadPortfolioHome() {
+      try {
+        setLoadingLinks(true);
+        setLinksError("");
+
+       
+        const response = await fetch(`${API_URL}/api/portfolio-home`, {
+          headers: {
+            Accept: "application/json",
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error("No se pudieron cargar los enlaces");
+        }
+
+        const data = await response.json();
+        const items = Array.isArray(data?.social_links) ? data.social_links : [];
+
+        if (!cancelled) {
+          setSocialLinks(items);
+        }
+      } catch (err) {
+        if (!cancelled) {
+          setLinksError(
+            err instanceof Error ? err.message : "Error cargando enlaces"
+          );
+        }
+      } finally {
+        if (!cancelled) {
+          setLoadingLinks(false);
+        }
+      }
+    }
+
+    loadPortfolioHome();
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const visibleSocialLinks = useMemo(() => {
+    return socialLinks
+      .map((item) => ({
+        href: normalizeHref(item),
+        icon: getSocialIcon(item),
+        label: item.label || item.platform || "Enlace",
+        title: item.title || item.platform || "",
+        text: item.text || item.url || "",
+      }))
+      .filter((item) => item.href);
+  }, [socialLinks]);
+
+  function handleChange(event) {
+    const { name, value } = event.target;
+    setForm((current) => ({ ...current, [name]: value }));
+  }
+
+  async function handleSubmit(event) {
+    event.preventDefault();
+
+    try {
+      await sendMessage({
+        name: form.name.trim(),
+        email: form.email.trim(),
+        subject: form.subject.trim(),
+        message: form.message.trim(),
+      });
+
+      setForm({
+        name: "",
+        email: "",
+        subject: "",
+        message: "",
+      });
+    } catch {
+      // El error ya lo gestiona el hook.
+    }
+  }
 
   return (
     <section className="section section-spaced section-separated">
@@ -117,10 +203,13 @@ function Contact() {
         <div className="contact-card">
           <h2>Enlaces</h2>
 
+          {loadingLinks && <p>Cargando enlaces...</p>}
+          {linksError && <p>{linksError}</p>}
+
           <div className="social-mini-grid">
             {visibleSocialLinks.map((item) => (
               <SocialCard
-                key={`${item.label}-${item.title}`}
+                key={`${item.label}-${item.title}-${item.href}`}
                 href={item.href}
                 icon={item.icon}
                 label={item.label}
@@ -156,29 +245,63 @@ function Contact() {
               automatización.
             </p>
 
-            <form className="cmd-form" onSubmit={(e) => e.preventDefault()}>
+            <form className="cmd-form" onSubmit={handleSubmit}>
               <div className="cmd-input-line">
-                <label htmlFor="email">EMAIL</label>
+                <label htmlFor="name">NOMBRE</label>
                 <input
-                  type="email"
-                  id="email"
-                  placeholder="tu-correo@empresa.com"
+                  type="text"
+                  id="name"
+                  name="name"
+                  placeholder="Tu nombre"
+                  value={form.name}
+                  onChange={handleChange}
                   required
                 />
               </div>
 
               <div className="cmd-input-line">
-                <label htmlFor="msg">MENSAJE</label>
+                <label htmlFor="email">EMAIL</label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  placeholder="tu-correo@empresa.com"
+                  value={form.email}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+
+              <div className="cmd-input-line">
+                <label htmlFor="subject">ASUNTO</label>
+                <input
+                  type="text"
+                  id="subject"
+                  name="subject"
+                  placeholder="Consulta, propuesta o proyecto"
+                  value={form.subject}
+                  onChange={handleChange}
+                />
+              </div>
+
+              <div className="cmd-input-line">
+                <label htmlFor="message">MENSAJE</label>
                 <textarea
-                  id="msg"
+                  id="message"
+                  name="message"
                   placeholder="Describe brevemente el proyecto"
                   rows="4"
+                  value={form.message}
+                  onChange={handleChange}
                   required
                 ></textarea>
               </div>
 
-              <button type="submit" className="cmd-submit-btn">
-                enviar()
+              {error && <p className="cmd-output">{error}</p>}
+              {success && <p className="cmd-output">{success}</p>}
+
+              <button type="submit" className="cmd-submit-btn" disabled={loading}>
+                {loading ? "enviando()" : "enviar()"}
               </button>
             </form>
           </div>

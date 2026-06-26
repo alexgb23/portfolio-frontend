@@ -8,36 +8,77 @@ import {
   FaLinkedin,
   FaEnvelope,
   FaArrowRight,
+  FaDatabase,
 } from "react-icons/fa";
 
+import usePortfolioHome from "../../../hooks/pages/usePortfolioHome";
 import "../sectionsGlobals.css";
 import "./HeroSection.css";
 
+const expertiseIconMap = {
+  server: FaServer,
+  infrastructure: FaServer,
+  code: FaCode,
+  development: FaCode,
+  network: FaNetworkWired,
+  networking: FaNetworkWired,
+  microchip: FaMicrochip,
+  automation: FaMicrochip,
+  database: FaDatabase,
+};
+
+const socialIconMap = {
+  github: FaGithub,
+  linkedin: FaLinkedin,
+  email: FaEnvelope,
+  envelope: FaEnvelope,
+};
+
 function HeroSection() {
+  const { profile, expertise, socialLinks, loading } = usePortfolioHome();
+
+  const displayedExpertise = (expertise ?? []).slice(0, 4);
+
+  const displayedSocialLinks = (socialLinks ?? []).filter((item) =>
+    ["github", "linkedin", "email", "envelope"].includes(
+      (item.platform || item.icon_key || "").toLowerCase()
+    )
+  );
+
+  const heroKicker =
+    profile?.hero_kicker ||
+    "DESARROLLO WEB · INFRAESTRUCTURA IT · AUTOMATIZACIÓN";
+
+  const heroTitlePrefix = profile?.hero_title_prefix || "Diseño soluciones donde";
+  const heroTitleHighlight =
+    profile?.hero_title_highlight || "software, sistemas y red";
+  const heroTitleSuffix =
+    profile?.hero_title_suffix || "trabajan como un solo ecosistema.";
+
+  const heroIntro =
+    profile?.bio_short ||
+    "Desarrollador web y perfil técnico IT con enfoque en frontend moderno, backend, virtualización, redes y automatización.";
+
+  const heroBadge =
+    profile?.hero_stack_badge || "React · Laravel · Proxmox · pfSense";
+
   return (
     <header className="hero-centered-section" id="inicio">
       <div className="container hero-center-content">
         <div className="hero-top-row">
           <div className="hero-title-container">
             <span className="hero-kicker">
-              DESARROLLO WEB · INFRAESTRUCTURA IT · AUTOMATIZACIÓN
+              {loading ? "Cargando..." : heroKicker}
             </span>
 
             <h1 className="hero-main-title">
-              Diseño soluciones donde
-              <span> software, sistemas y red </span>
-              trabajan como un solo ecosistema.
+              {heroTitlePrefix} <span>{heroTitleHighlight}</span>{" "}
+              {heroTitleSuffix}
             </h1>
 
             <h2 className="sr-only">Especialidades principales</h2>
 
-            <p className="hero-intro">
-              Soy Alex, desarrollador web y profesional IT con enfoque en
-              frontend moderno, backend, virtualización y redes. Trabajo con
-              React y Vite en la capa visual, Laravel y APIs para la gestión de
-              datos, y entornos cloud y homelab para desplegar soluciones más
-              completas, estables y escalables.
-            </p>
+            <p className="hero-intro">{loading ? "Cargando perfil..." : heroIntro}</p>
           </div>
 
           <div className="avatar-block">
@@ -55,7 +96,7 @@ function HeroSection() {
                 />
                 <img
                   src="/imagen_portfolio_mia_retocada-960.avif"
-                  alt="Alexander Galvez"
+                  alt={profile?.display_name || "Alexander Galvez"}
                   className="profile-avatar"
                   width="450"
                   height="580"
@@ -66,74 +107,34 @@ function HeroSection() {
             </div>
 
             <div className="hero-badge-wrap">
-              <div className="hero-badge-inner">
-                React · Laravel · Proxmox · pfSense
-              </div>
+              <div className="hero-badge-inner">{heroBadge}</div>
             </div>
           </div>
         </div>
 
         <div className="hero-bottom-block">
           <section className="speciality-grid">
-            <article className="card card-hover tone-0 speciality-card">
-              <div className="card-head">
-                <div className="card-icon">
-                  <FaServer />
-                </div>
-                <div className="card-title-wrap">
-                  <h3>Infraestructura IT</h3>
-                </div>
-              </div>
-              <p>
-                Servidores Linux, virtualización con Proxmox, despliegues cloud
-                y administración técnica de entornos.
-              </p>
-            </article>
+            {displayedExpertise.map((item, index) => {
+              const Icon =
+                expertiseIconMap[(item.icon_key || "").toLowerCase()] || FaCode;
 
-            <article className="card card-hover tone-1 speciality-card">
-              <div className="card-head">
-                <div className="card-icon">
-                  <FaCode />
-                </div>
-                <div className="card-title-wrap">
-                  <h3>Desarrollo Full Stack</h3>
-                </div>
-              </div>
-              <p>
-                Frontend con React y Vite, backend con Laravel, APIs y
-                aplicaciones conectadas a datos reales.
-              </p>
-            </article>
-
-            <article className="card card-hover tone-2 speciality-card">
-              <div className="card-head">
-                <div className="card-icon">
-                  <FaNetworkWired />
-                </div>
-                <div className="card-title-wrap">
-                  <h3>Redes y Seguridad</h3>
-                </div>
-              </div>
-              <p>
-                VLANs, pfSense, segmentación de red, conectividad y diseño de
-                entornos más seguros y organizados.
-              </p>
-            </article>
-
-            <article className="card card-hover tone-0 speciality-card">
-              <div className="card-head">
-                <div className="card-icon">
-                  <FaMicrochip />
-                </div>
-                <div className="card-title-wrap">
-                  <h3>Automatización IoT</h3>
-                </div>
-              </div>
-              <p>
-                Domótica, inmótica y sistemas inteligentes orientados a control,
-                integración y eficiencia.
-              </p>
-            </article>
+              return (
+                <article
+                  key={item.id || item.title || index}
+                  className={`card card-hover ${item.tone || "tone-0"} speciality-card`}
+                >
+                  <div className="card-head">
+                    <div className="card-icon">
+                      <Icon />
+                    </div>
+                    <div className="card-title-wrap">
+                      <h3>{item.title}</h3>
+                    </div>
+                  </div>
+                  <p>{item.text}</p>
+                </article>
+              );
+            })}
           </section>
 
           <div className="hero-actions">
@@ -148,33 +149,27 @@ function HeroSection() {
           </div>
 
           <div className="social-center-links">
-            <a
-              href="https://github.com/alexgb23"
-              className="social-btn"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <FaGithub />
-              GitHub
-            </a>
+            {displayedSocialLinks.map((item, index) => {
+              const key = (item.platform || item.icon_key || "").toLowerCase();
+              const Icon = socialIconMap[key] || FaEnvelope;
 
-            <a
-              href="https://www.linkedin.com/in/alexander-galvez-benavides-450917281/"
-              className="social-btn"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <FaLinkedin />
-              LinkedIn
-            </a>
-
-            <a
-              href="mailto:alexandergalvez880208@gmail.com"
-              className="social-btn"
-            >
-              <FaEnvelope />
-              Email
-            </a>
+              return (
+                <a
+                  key={item.id || item.platform || index}
+                  href={item.url}
+                  className="social-btn"
+                  target={item.url?.startsWith("mailto:") ? undefined : "_blank"}
+                  rel={
+                    item.url?.startsWith("mailto:")
+                      ? undefined
+                      : "noopener noreferrer"
+                  }
+                >
+                  <Icon />
+                  {item.label || item.platform}
+                </a>
+              );
+            })}
           </div>
         </div>
       </div>
