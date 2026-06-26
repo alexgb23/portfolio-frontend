@@ -4,18 +4,24 @@ export default function ServerCard({ server, index = 0 }) {
   if (!server) return null;
 
   const tone = index % 3;
+  const rawStatus = server.status || "unknown";
+  const normalizedStatus = rawStatus.toLowerCase();
+  const statusClass = `status-${normalizedStatus}`;
 
-  // 🟢 SOLUCIÓN: Validamos dinámicamente según el uptime si la API no manda status
-  const hasUptime = server.uptime && server.uptime !== "0%";
-  const status = hasUptime ? "ACTIVE" : "DOWN";
-  const statusClass = hasUptime ? "status-ok" : "status-down";
+  const name = server.display_name || server.hostname || "Servidor";
+  const role = server.role || "general";
+  const os = server.os || "Sistema operativo N/D";
+  const ip = server.public_ip || "N/D";
+  const cpu = server.cpu_usage || "N/A";
+  const ram = server.ram_usage || "N/A";
+  const uptime = server.uptime || "N/A";
 
   return (
     <article className={`card card-hover card-server tone-${tone}`}>
       <div className="server-card-inner">
         <div className="card-top">
-          <span className="card-badge">Infraestructura</span>
-          <span className="date">{server.os ?? "Linux OS"}</span>
+          <span className="card-badge">{role}</span>
+          <span className="date">{server.location_name || os}</span>
         </div>
 
         <div className="card-head">
@@ -24,39 +30,43 @@ export default function ServerCard({ server, index = 0 }) {
           </div>
 
           <div className="card-title-wrap">
-            <h3>{server.hostname ?? "vps-server"}</h3>
+            <h3>{name}</h3>
           </div>
         </div>
 
         <div className="server-panel">
           <div className="server-meta-row">
             <span>IP:</span>
-            <code className="server-code">{server.public_ip ?? "0.0.0.0"}</code>
+            <code className="server-code">{ip}</code>
+          </div>
+
+          <div className="server-meta-row">
+            <span>Sistema:</span>
+            <span>{os}</span>
           </div>
 
           <div className="server-stats">
             <span className="server-stat-chip">
               <FaMicrochip />
-              CPU {server.cpu_usage ?? "0%"}
+              CPU {cpu}
             </span>
 
             <span className="server-stat-chip">
               <FaMemory />
-              RAM {server.ram_usage ?? "0MB"}
+              RAM {ram}
             </span>
           </div>
 
-          {/* 🟢 NUEVO: Añadimos el Uptime real que viene de tu API */}
           <div
             className="server-meta-row"
             style={{ marginTop: "8px", fontSize: "0.85rem", opacity: 0.8 }}
           >
             <FaClock style={{ marginRight: "5px", verticalAlign: "middle" }} />
-            <span>Uptime: {server.uptime ?? "N/A"}</span>
+            <span>Uptime: {uptime}</span>
           </div>
         </div>
 
-        <span className={`status ${statusClass}`}>{status}</span>
+        <span className={`status ${statusClass}`}>{rawStatus}</span>
       </div>
     </article>
   );

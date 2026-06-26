@@ -9,33 +9,105 @@ import {
   FaBrain,
   FaDatabase,
   FaSearch,
+  FaMapMarkerAlt,
+  FaLayerGroup,
+  FaCircle,
 } from "react-icons/fa";
 
-import ServerCard from "../../components/cards/ServerCard";
-import MetricCard from "../../components/cards/MetricCard";
-import NodeCard from "../../components/cards/NodeCard";
-import { useInfrastructureData, useNodes } from "../../hooks/usePortfolioData";
+import { useLaboratoryHome } from "../../hooks/usePortfolioData";
 import usePageTitle from "../../hooks/usePageTitle";
 import "./Laboratory.css";
+
+function getCategoryLabel(category) {
+  const map = {
+    automation: "Automatización",
+    monitoring: "Observabilidad",
+    ai: "IA local",
+    research: "Research",
+    virtualization: "Virtualización",
+    networking: "Redes",
+    backup: "Backups",
+  };
+
+  return map[category] || "Laboratorio";
+}
+
+function getStatusLabel(status) {
+  const map = {
+    active: "Activo",
+    building: "En construcción",
+    paused: "Pausado",
+    draft: "Borrador",
+    online: "Online",
+    normal: "Normal",
+    ok: "OK",
+  };
+
+  return map[status] || status || "Sin estado";
+}
+
+function LabItemCard({ item, icon }) {
+  return (
+    <article className="lab-story-card">
+      <div className="lab-story-head">
+        <div className="lab-float-icon">{icon}</div>
+
+        <div>
+          <h3>{item.name}</h3>
+          <p>{item.description}</p>
+        </div>
+      </div>
+
+      <div className="lab-chip-row">
+        <span>
+          <FaLayerGroup /> {getCategoryLabel(item.category)}
+        </span>
+        <span>
+          <FaMapMarkerAlt /> {item.location_name || "Sin ubicación"}
+        </span>
+        <span>
+          <FaCircle /> {getStatusLabel(item.status)}
+        </span>
+        <span>{item.item_type || "item"}</span>
+      </div>
+    </article>
+  );
+}
 
 function Laboratory() {
   usePageTitle("Laboratorio Técnico | Alexander Galvez");
 
   const {
-    servers = [],
-    metrics = [],
-    loading: infraLoading,
-    error: infraError,
-  } = useInfrastructureData();
+    summary,
+    featuredItems,
+    clusters,
+    servers,
+    nodes,
+    metrics,
+    homeAssistant,
+    localAi,
+    capabilities,
+    loading,
+    error,
+  } = useLaboratoryHome();
 
-  const { nodes = [], loading: nodesLoading, error: nodesError } = useNodes();
+  const automationItems = featuredItems.filter(
+    (item) => item.category === "automation",
+  );
 
-  const loading = infraLoading || nodesLoading;
-  const error = infraError || nodesError;
+  const infrastructureItems = featuredItems.filter((item) =>
+    ["monitoring", "research", "ai"].includes(item.category),
+  );
 
-  const previewServers = Array.isArray(servers) ? servers.slice(0, 3) : [];
-  const previewMetrics = Array.isArray(metrics) ? metrics.slice(0, 4) : [];
-  const previewNodes = Array.isArray(nodes) ? nodes.slice(0, 3) : [];
+  const homeAssistantMain = homeAssistant[0] ?? null;
+  const homeAssistantUseCases = Array.isArray(homeAssistantMain?.use_cases)
+    ? homeAssistantMain.use_cases
+    : [];
+
+  const localAiMain = localAi[0] ?? null;
+  const mainCluster = clusters[0] ?? null;
+  const firstMetric = metrics[0] ?? null;
+  const secondMetric = metrics[1] ?? null;
 
   if (loading) {
     return (
@@ -77,7 +149,10 @@ function Laboratory() {
           </div>
           <div>
             <h2>Infraestructura</h2>
-            <p>Servicios, virtualización, red y telemetría del entorno.</p>
+            <p>
+              {summary?.servers_count ?? 0} servidores,{" "}
+              {summary?.clusters_count ?? 0} clúster y telemetría del entorno.
+            </p>
           </div>
         </article>
 
@@ -87,7 +162,9 @@ function Laboratory() {
           </div>
           <div>
             <h2>Automatización</h2>
-            <p>Nodos, sensores y lógica operativa conectada.</p>
+            <p>
+              {summary?.nodes_count ?? 0} nodos y flujos conectados al entorno.
+            </p>
           </div>
         </article>
 
@@ -97,7 +174,10 @@ function Laboratory() {
           </div>
           <div>
             <h2>Home Assistant</h2>
-            <p>Domótica doméstica, integraciones y observación del hogar.</p>
+            <p>
+              {homeAssistantMain?.description ||
+                "Domótica doméstica, integraciones y observación del hogar."}
+            </p>
           </div>
         </article>
 
@@ -107,7 +187,10 @@ function Laboratory() {
           </div>
           <div>
             <h2>IA local</h2>
-            <p>Modelos, pruebas aplicadas y flujos experimentales.</p>
+            <p>
+              {localAiMain?.description ||
+                "Modelos, pruebas aplicadas y flujos experimentales."}
+            </p>
           </div>
         </article>
       </section>
@@ -116,10 +199,10 @@ function Laboratory() {
         <div className="lab-section-top">
           <div className="lab-section-intro">
             <span className="lab-label">Infraestructura</span>
-            <h2>Servidores, servicios y lectura operativa</h2>
+            <h2>Servicios, observabilidad y plataformas del entorno</h2>
             <p>
               Base técnica del laboratorio donde organizo despliegues,
-              conectividad, disponibilidad y observación del estado del sistema.
+              conectividad, disponibilidad y seguimiento operativo del sistema.
             </p>
           </div>
         </div>
@@ -128,24 +211,26 @@ function Laboratory() {
           <div className="lab-panel">
             <div className="lab-panel-head">
               <h3>
-                <FaServer /> Servidores destacados
+                <FaServer /> Elementos destacados
               </h3>
             </div>
 
             <div className="lab-panel-body">
-              {previewServers.length > 0 ? (
-                <div className="list-linear lab-list">
-                  {previewServers.map((server, index) => (
-                    <ServerCard
-                      key={`lab-srv-${server.id || index}`}
-                      server={server}
-                      index={index}
+              {infrastructureItems.length > 0 ? (
+                <div className="lab-story-grid">
+                  {infrastructureItems.slice(0, 3).map((item) => (
+                    <LabItemCard
+                      key={item.id}
+                      item={item}
+                      icon={<FaServer />}
                     />
                   ))}
                 </div>
               ) : (
                 <div className="empty-inline-state compact">
-                  <p>No hay servidores cargados actualmente.</p>
+                  <p>
+                    No hay elementos de infraestructura cargados actualmente.
+                  </p>
                 </div>
               )}
             </div>
@@ -154,26 +239,26 @@ function Laboratory() {
           <div className="lab-panel">
             <div className="lab-panel-head">
               <h3>
-                <FaChartLine /> Métricas destacadas
+                <FaChartLine /> Vista rápida del laboratorio
               </h3>
             </div>
 
             <div className="lab-panel-body">
-              {previewMetrics.length > 0 ? (
-                <div className="grid-telemetry lab-metrics">
-                  {previewMetrics.map((metric, index) => (
-                    <MetricCard
-                      key={`lab-met-${metric.id || index}`}
-                      metric={metric}
-                      index={index}
-                    />
-                  ))}
-                </div>
-              ) : (
+              <div className="lab-chip-row">
+                <span>Items: {summary?.featured_items_count ?? 0}</span>
+                <span>Servidores: {summary?.servers_count ?? 0}</span>
+                <span>Nodos: {summary?.nodes_count ?? 0}</span>
+                <span>Métricas: {summary?.metrics_count ?? 0}</span>
+              </div>
+
+              {mainCluster ? (
                 <div className="empty-inline-state compact">
-                  <p>No hay métricas cargadas actualmente.</p>
+                  <p>
+                    Clúster principal: {mainCluster.name} · Estado:{" "}
+                    {getStatusLabel(mainCluster.status)}
+                  </p>
                 </div>
-              )}
+              ) : null}
             </div>
           </div>
         </div>
@@ -201,29 +286,36 @@ function Laboratory() {
         <div className="lab-panel">
           <div className="lab-panel-head">
             <h3>
-              <FaMicrochip /> Nodos desplegados
+              <FaMicrochip /> Automatizaciones destacadas
             </h3>
           </div>
 
           <div className="lab-panel-body">
-            {previewNodes.length > 0 ? (
-              <div className="list-linear lab-list">
-                {previewNodes.map((node, index) => (
-                  <NodeCard
-                    key={
-                      node.id ??
-                      `${node.node_name || node.nombre_nodo}-${index}`
-                    }
-                    node={node}
-                    index={index}
+            {automationItems.length > 0 ? (
+              <div className="lab-story-grid">
+                {automationItems.slice(0, 3).map((item) => (
+                  <LabItemCard
+                    key={item.id}
+                    item={item}
+                    icon={<FaMicrochip />}
                   />
                 ))}
               </div>
             ) : (
               <div className="empty-inline-state compact">
-                <p>No hay nodos cargados actualmente.</p>
+                <p>No hay automatizaciones cargadas actualmente.</p>
               </div>
             )}
+
+            {nodes.length > 0 ? (
+              <div className="lab-chip-row">
+                {nodes.slice(0, 4).map((node) => (
+                  <span key={node.id}>
+                    {node.node_name}: {node.current_value}
+                  </span>
+                ))}
+              </div>
+            ) : null}
           </div>
         </div>
 
@@ -255,19 +347,19 @@ function Laboratory() {
                 <FaHome />
               </div>
               <div>
-                <h3>Estado del sistema</h3>
+                <h3>{homeAssistantMain?.name || "Estado del sistema"}</h3>
                 <p>
-                  Vista pensada para mostrar instancia, uptime, integraciones y
-                  automatizaciones activas.
+                  {homeAssistantMain?.description ||
+                    "Vista pensada para mostrar instancia, uptime, integraciones y automatizaciones activas."}
                 </p>
               </div>
             </div>
 
             <div className="lab-chip-row">
-              <span>Instancia: —</span>
-              <span>Integraciones: —</span>
-              <span>Automatizaciones: —</span>
-              <span>Dispositivos: —</span>
+              <span>Instancia: {homeAssistantMain?.name || "—"}</span>
+              <span>Versión: {homeAssistantMain?.version || "—"}</span>
+              <span>Automatizaciones: {homeAssistantUseCases.length || 0}</span>
+              <span>Estado: {getStatusLabel(homeAssistantMain?.status)}</span>
             </div>
           </article>
 
@@ -286,10 +378,20 @@ function Laboratory() {
             </div>
 
             <div className="lab-chip-row">
-              <span>Escenas: —</span>
-              <span>Sensores: —</span>
-              <span>Zonas: —</span>
-              <span>Eventos: —</span>
+              {homeAssistantUseCases.length > 0 ? (
+                homeAssistantUseCases
+                  .slice(0, 4)
+                  .map((useCase) => (
+                    <span key={useCase.id}>{useCase.title}</span>
+                  ))
+              ) : (
+                <>
+                  <span>Escenas: —</span>
+                  <span>Sensores: —</span>
+                  <span>Zonas: —</span>
+                  <span>Eventos: —</span>
+                </>
+              )}
             </div>
           </article>
         </div>
@@ -314,14 +416,14 @@ function Laboratory() {
             </div>
             <h3>Banco de pruebas</h3>
             <p>
-              Espacio reservado para modelos, runtimes, tiempos de respuesta,
-              uso de recursos y calidad de resultados.
+              {localAiMain?.description ||
+                "Espacio reservado para modelos, runtimes, tiempos de respuesta, uso de recursos y calidad de resultados."}
             </p>
             <ul className="lab-data-list" role="list">
-              <li>Modelo: —</li>
-              <li>Runtime: —</li>
-              <li>VRAM/RAM: —</li>
-              <li>Estado: —</li>
+              <li>Modelo: {localAiMain?.model_name || "—"}</li>
+              <li>Runtime: {localAiMain?.provider || "—"}</li>
+              <li>Tamaño: {localAiMain?.model_size || "—"}</li>
+              <li>Estado: {getStatusLabel(localAiMain?.status)}</li>
             </ul>
           </article>
 
@@ -331,14 +433,14 @@ function Laboratory() {
             </div>
             <h3>Casos de estudio</h3>
             <p>
-              Preparado para documentar clasificación, síntesis, extracción de
-              señales y apoyo a investigación técnica o comercial.
+              {localAiMain?.hardware_notes ||
+                "Preparado para documentar clasificación, síntesis, extracción de señales y apoyo a investigación técnica o comercial."}
             </p>
             <ul className="lab-data-list" role="list">
-              <li>Clasificación: —</li>
-              <li>Resúmenes: —</li>
-              <li>Extracción: —</li>
-              <li>Comparativas: —</li>
+              <li>Interfaz: {localAiMain?.interface_name || "—"}</li>
+              <li>Proveedor: {localAiMain?.provider || "—"}</li>
+              <li>Base URL: {localAiMain?.base_url || "—"}</li>
+              <li>Estado: {getStatusLabel(localAiMain?.status)}</li>
             </ul>
           </article>
         </div>
@@ -366,14 +468,15 @@ function Laboratory() {
               <h3>Observación de mercado</h3>
             </div>
             <p>
-              Preparado para incorporar datasets, fuentes externas, paneles y
-              resultados de análisis todavía en construcción.
+              {featuredItems.find((item) => item.category === "research")
+                ?.description ||
+                "Preparado para incorporar datasets, fuentes externas, paneles y resultados de análisis todavía en construcción."}
             </p>
             <div className="lab-chip-row">
-              <span>Fuente A: —</span>
-              <span>Fuente B: —</span>
-              <span>Panel: —</span>
-              <span>Insight: —</span>
+              <span>Fuentes: APIs externas</span>
+              <span>Panel: En evolución</span>
+              <span>Estado: Building</span>
+              <span>Enfoque: Research</span>
             </div>
           </article>
 
@@ -385,14 +488,22 @@ function Laboratory() {
               <h3>Métricas futuras</h3>
             </div>
             <p>
-              Espacio reservado para indicadores, tendencias, scoring, alertas y
-              comparativas servidas desde la API.
+              Espacio para indicadores, tendencias y señales servidas desde la
+              API del laboratorio.
             </p>
             <div className="lab-chip-row">
-              <span>Tendencia: —</span>
-              <span>Score: —</span>
-              <span>Alertas: —</span>
-              <span>Estado API: —</span>
+              <span>
+                {firstMetric
+                  ? `${firstMetric.display_name}: ${firstMetric.value}${firstMetric.unit}`
+                  : "Tendencia: —"}
+              </span>
+              <span>
+                {secondMetric
+                  ? `${secondMetric.display_name}: ${secondMetric.value}${secondMetric.unit}`
+                  : "Score: —"}
+              </span>
+              <span>Alertas: En preparación</span>
+              <span>Estado API: Activa</span>
             </div>
           </article>
         </div>
@@ -412,16 +523,26 @@ function Laboratory() {
         </div>
 
         <div className="lab-capabilities">
-          <span className="lab-tag">Virtualización</span>
-          <span className="lab-tag">Servicios self-hosted</span>
-          <span className="lab-tag">Telemetría</span>
-          <span className="lab-tag">Home Assistant</span>
-          <span className="lab-tag">IoT</span>
-          <span className="lab-tag">Automatización</span>
-          <span className="lab-tag">IA local</span>
-          <span className="lab-tag">APIs</span>
-          <span className="lab-tag">Análisis experimental</span>
-          <span className="lab-tag">Market research</span>
+          {capabilities.length > 0 ? (
+            capabilities.map((capability) => (
+              <span className="lab-tag" key={capability.id}>
+                {capability.title}
+              </span>
+            ))
+          ) : (
+            <>
+              <span className="lab-tag">Virtualización</span>
+              <span className="lab-tag">Servicios self-hosted</span>
+              <span className="lab-tag">Telemetría</span>
+              <span className="lab-tag">Home Assistant</span>
+              <span className="lab-tag">IoT</span>
+              <span className="lab-tag">Automatización</span>
+              <span className="lab-tag">IA local</span>
+              <span className="lab-tag">APIs</span>
+              <span className="lab-tag">Análisis experimental</span>
+              <span className="lab-tag">Market research</span>
+            </>
+          )}
         </div>
       </section>
     </section>

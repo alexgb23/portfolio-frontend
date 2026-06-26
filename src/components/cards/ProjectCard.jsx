@@ -9,7 +9,7 @@ import {
 
 function getProjectIcon(project, techList) {
   const text =
-    `${project?.title || ""} ${project?.description || ""} ${techList.join(" ")}`.toLowerCase();
+    `${project?.title || ""} ${project?.short_description || ""} ${project?.stack_summary || ""} ${techList.join(" ")}`.toLowerCase();
 
   if (
     text.includes("api") ||
@@ -74,10 +74,6 @@ export default function ProjectCard({ project, index = 0 }) {
           .filter(Boolean)
       : [];
 
-  const displayDate = project.created_at
-    ? project.created_at.split(" ")[0]
-    : "2026";
-
   const tone = index % 3;
   const icon = getProjectIcon(project, techList);
 
@@ -85,8 +81,10 @@ export default function ProjectCard({ project, index = 0 }) {
     <article className={`card card-hover card-project tone-${tone}`}>
       <div className="project-card-inner">
         <div className="card-top">
-          <span className="card-badge">Software</span>
-          <span className="date">{displayDate}</span>
+          <span className="card-badge">
+            {project.is_featured ? "Destacado" : "Proyecto"}
+          </span>
+          <span className="date">{project.stack_summary || "Software"}</span>
         </div>
 
         <div className="card-head">
@@ -99,7 +97,7 @@ export default function ProjectCard({ project, index = 0 }) {
 
         <div className="project-card-divider" />
 
-        <p>{project.description ?? "Sin descripción"}</p>
+        <p>{project.short_description ?? "Sin descripción"}</p>
 
         {techList.length > 0 && (
           <div className="tags">

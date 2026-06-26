@@ -4,24 +4,45 @@ import FeaturedProjects from "../../components/sections/FeaturedProjects";
 import FeaturedLaboratory from "../../components/sections/FeaturedLaboratory";
 import ContactPreview from "../../components/sections/ContactPreview";
 
-import { useHomeData } from "../../hooks/usePortfolioData";
+import {
+  usePortfolioHome,
+  useLaboratoryHome,
+} from "../../hooks/usePortfolioData";
 import usePageTitle from "../../hooks/usePageTitle";
 
 function Home() {
   usePageTitle("Alexander Galvez | Portfolio IT y Desarrollo Full Stack");
 
-  const { projects, nodes, servers, metrics, loading, error } = useHomeData();
+  const {
+    profile,
+    projects,
+    loading: homeLoading,
+    error: homeError,
+  } = usePortfolioHome();
+
+  const {
+    summary,
+    loading: laboratoryLoading,
+    error: laboratoryError,
+  } = useLaboratoryHome();
+
+  const error = homeError || laboratoryError;
+
+  const featuredProjects = (projects ?? [])
+    .filter((project) => project.is_featured)
+    .slice(0, 3);
 
   const personSchema = {
     "@context": "https://schema.org",
     "@type": "Person",
     "@id": "https://portfolioalexsys.netlify.app/#alexander-galvez",
-    name: "Alexander Galvez",
+    name: profile?.full_name || "Alexander Galvez",
     url: "https://portfolioalexsys.netlify.app/",
     image:
       "https://portfolioalexsys.netlify.app/imagen_portfolio_mia_retocada-960.avif",
-    jobTitle: "IT Specialist · Full Stack Developer · Systems Engineer",
+    jobTitle: profile?.headline || "IT Specialist · Full Stack Developer",
     description:
+      profile?.bio_short ||
       "Profesional del sector tecnológico especializado en desarrollo de aplicaciones, administración de sistemas y diseño de infraestructuras IT.",
     knowsAbout: [
       "Desarrollo Full Stack",
@@ -52,7 +73,6 @@ function Home() {
       />
 
       <HeroSection />
-
       <AboutPreview />
 
       {error ? (
@@ -62,16 +82,13 @@ function Home() {
         </div>
       ) : (
         <>
-          <FeaturedProjects
-            projects={projects?.slice(0, 3) ?? []}
-            loading={loading}
-          />
+          <FeaturedProjects projects={featuredProjects} loading={homeLoading} />
 
           <FeaturedLaboratory
-            nodes={nodes}
-            servers={servers}
-            metrics={metrics}
-            loading={loading}
+            serversCount={summary?.servers_count ?? 0}
+            metricsCount={summary?.metrics_count ?? 0}
+            nodesCount={summary?.nodes_count ?? 0}
+            loading={laboratoryLoading}
           />
         </>
       )}

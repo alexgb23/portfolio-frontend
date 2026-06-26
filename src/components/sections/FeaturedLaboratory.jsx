@@ -4,15 +4,14 @@ import {
   FaServer,
   FaChartLine,
   FaMicrochip,
-  FaNetworkWired,
 } from "react-icons/fa";
 
 import "./sectionsGlobals.css";
 
 function FeaturedLaboratory({
-  servers = [],
-  metrics = [],
-  nodes = [],
+  serversCount = 0,
+  metricsCount = 0,
+  nodesCount = 0,
   loading = false,
 }) {
   return (
@@ -49,8 +48,7 @@ function FeaturedLaboratory({
           </p>
 
           <div className="laboratory-counter">
-            <strong>{loading ? "..." : servers.length}</strong>
-
+            <strong>{loading ? "..." : serversCount}</strong>
             <span>servidores</span>
           </div>
         </article>
@@ -72,8 +70,7 @@ function FeaturedLaboratory({
           </p>
 
           <div className="laboratory-counter">
-            <strong>{loading ? "..." : metrics.length}</strong>
-
+            <strong>{loading ? "..." : metricsCount}</strong>
             <span>métricas</span>
           </div>
         </article>
@@ -95,8 +92,7 @@ function FeaturedLaboratory({
           </p>
 
           <div className="laboratory-counter">
-            <strong>{loading ? "..." : nodes.length}</strong>
-
+            <strong>{loading ? "..." : nodesCount}</strong>
             <span>nodos</span>
           </div>
         </article>
@@ -105,7 +101,6 @@ function FeaturedLaboratory({
       <div className="section-more">
         <Link to="/laboratorio" className="inline-link">
           <span>Explorar laboratorio completo</span>
-
           <FaArrowRight />
         </Link>
       </div>

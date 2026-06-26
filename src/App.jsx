@@ -6,10 +6,8 @@ import Projects from "./pages/projects/Projects";
 import Automation from "./pages/automation/Automation";
 import Infrastructure from "./pages/infrastructure/Infrastructure";
 import Contact from "./pages/contact/Contact";
-import Login from "./pages/login/Login";
-import CardPrueba from "./pages/tarjetas_de_prueba/card_prua";
-import Dashboard from "./pages/dashboard/Dashboard";
 import Laboratory from "./pages/laboratory/Laboratory";
+import LaboratoryDetail from "./pages/laboratory/LaboratoryDetail";
 
 function App() {
   return (
@@ -28,10 +26,8 @@ function App() {
           <Route path="infraestructura" element={<Infrastructure />} />
           <Route path="contacto" element={<Contact />} />
           <Route path="laboratorio" element={<Laboratory />} />
+          <Route path="laboratorio/:id" element={<LaboratoryDetail />} />
         </Route>
-
-        <Route path="/admin-login" element={<Login />} />
-        <Route path="/admin/dashboard" element={<Dashboard />} />
 
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>

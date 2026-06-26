@@ -1,16 +1,32 @@
 import ServerCard from "../../components/cards/ServerCard";
 import MetricCard from "../../components/cards/MetricCard";
-import { useInfrastructureData } from "../../hooks/usePortfolioData";
+import { useLaboratoryHome } from "../../hooks/usePortfolioData";
 import usePageTitle from "../../hooks/usePageTitle";
 import { FaServer, FaChartLine, FaNetworkWired } from "react-icons/fa";
 
 function Infrastructure() {
   usePageTitle("Infraestructura IT y Sistemas | Alexander Galvez");
 
-  const { servers, metrics, loading, error } = useInfrastructureData();
+  const { servers = [], metrics = [], loading, error } = useLaboratoryHome();
 
   const validServers = Array.isArray(servers) ? servers : [];
-  const validMetrics = Array.isArray(metrics) ? metrics : [];
+  const validMetrics = Array.isArray(metrics)
+    ? metrics.map((metric) => ({
+        id: metric.id,
+        room:
+          metric.location_name ||
+          metric.room ||
+          metric.group_name ||
+          "Ubicación N/D",
+        parameter:
+          metric.display_name ||
+          metric.parameter ||
+          metric.metric_key ||
+          "Sensor",
+        value: metric.value ?? "0",
+        unit: metric.unit ?? "",
+      }))
+    : [];
 
   const hasServers = validServers.length > 0;
   const hasMetrics = validMetrics.length > 0;
@@ -108,7 +124,7 @@ function Infrastructure() {
               <div className="list-linear">
                 {validServers.map((server, index) => (
                   <ServerCard
-                    key={`infra-srv-${server.id || index}`}
+                    key={`infra-srv-${server.id || server.hostname || index}`}
                     server={server}
                     index={index}
                   />

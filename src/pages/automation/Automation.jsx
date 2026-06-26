@@ -1,5 +1,5 @@
 import NodeCard from "../../components/cards/NodeCard";
-import { useNodes } from "../../hooks/usePortfolioData";
+import { useLaboratoryHome } from "../../hooks/usePortfolioData";
 import usePageTitle from "../../hooks/usePageTitle";
 import { FaMicrochip, FaSlidersH, FaBroadcastTower } from "react-icons/fa";
 import "./Automation.css";
@@ -7,7 +7,7 @@ import "./Automation.css";
 function Automation() {
   usePageTitle("Automatización e IoT | Alexander Galvez");
 
-  const { nodes, loading, error } = useNodes();
+  const { nodes = [], loading, error } = useLaboratoryHome();
   const hasNodes = Array.isArray(nodes) && nodes.length > 0;
 
   if (loading) {
