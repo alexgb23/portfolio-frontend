@@ -10,6 +10,7 @@ import {
   usePortfolioHome,
   useLaboratoryHome,
 } from "../../hooks/usePortfolioData";
+import useProjects from "../../hooks/pages/useProjects";
 import usePageTitle from "../../hooks/usePageTitle";
 
 function Home() {
@@ -25,17 +26,22 @@ function Home() {
     error: heroError,
   } = usePortfolioHero();
 
-const {
-  projects,
-  loading: homeLoading,
-  error: homeError,
-} = usePortfolioHome(showDeferredSections);
+  const {
+    loading: homeLoading,
+    error: homeError,
+  } = usePortfolioHome(showDeferredSections);
 
-const {
-  summary,
-  loading: laboratoryLoading,
-  error: laboratoryError,
-} = useLaboratoryHome(showDeferredSections);
+  const {
+    projects,
+    loading: projectsLoading,
+    error: projectsError,
+  } = useProjects();
+
+  const {
+    summary,
+    loading: laboratoryLoading,
+    error: laboratoryError,
+  } = useLaboratoryHome(showDeferredSections);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -122,10 +128,18 @@ const {
 
           {showDeferredSections ? (
             <>
-              <FeaturedProjects
-                projects={featuredProjects}
-                loading={homeLoading}
-              />
+              {projectsError ? (
+                <section className="section section-spaced section-separated">
+                  <div className="empty-inline-state">
+                    <p>No se pudieron cargar los proyectos en este momento.</p>
+                  </div>
+                </section>
+              ) : (
+                <FeaturedProjects
+                  projects={featuredProjects}
+                  loading={projectsLoading || homeLoading}
+                />
+              )}
 
               {laboratoryError ? (
                 <section className="section section-spaced section-separated">
