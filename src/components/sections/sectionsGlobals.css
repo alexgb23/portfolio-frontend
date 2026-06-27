@@ -5,6 +5,10 @@
    =========================================================
    Esqueletons de FeaturedProjectCards
    ========================================================= */
+
+
+
+
 .project-skeleton-card {
   position: relative;
   overflow: hidden;
@@ -551,13 +555,15 @@
     margin-bottom: 2.7rem;
   }
 
-  .grid-cards {
-    grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr));
+    .grid-cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 1rem;
-    grid-auto-rows: 1fr;
+    align-items: stretch;
   }
 
   .grid-cards > * {
+    width: 100%;
+    min-width: 0;
     height: 100%;
   }
 
@@ -598,7 +604,8 @@
     gap: 1.05rem;
   }
 
-  .grid-cards {
+ .grid-cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 1.05rem;
   }
 

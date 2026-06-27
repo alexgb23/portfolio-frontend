@@ -1,12 +1,13 @@
 import useAsyncResource from "../core/useAsyncResource";
 import { portfolioService } from "../../services/api";
 
-export default function useProjects() {
+export default function useProjects(enabled = true) {
   const { data, loading, error } = useAsyncResource(
     portfolioService.getProjects,
     [],
     [],
-    "Projects"
+    "Projects",
+    enabled
   );
 
   return {

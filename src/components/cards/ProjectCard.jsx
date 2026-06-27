@@ -77,32 +77,35 @@ export default function ProjectCard({ project, index = 0 }) {
   const tone = index % 3;
   const icon = getProjectIcon(project, techList);
 
+  const badgeText = project.is_featured ? "Destacado" : "Proyecto";
+  const summaryText = project.stack_summary || "Software";
+  const titleText = project.title || "Sin título";
+  const descriptionText = project.short_description || "Sin descripción";
+
   return (
     <article className={`card card-hover card-project tone-${tone}`}>
       <div className="project-card-inner">
         <div className="card-top">
-          <span className="card-badge">
-            {project.is_featured ? "Destacado" : "Proyecto"}
-          </span>
-          <span className="date">{project.stack_summary || "Software"}</span>
+          <span className="card-badge">{badgeText}</span>
+          <span className="date">{summaryText}</span>
         </div>
 
         <div className="card-head">
           <div className="card-icon">{icon}</div>
 
           <div className="card-title-wrap">
-            <h3>{project.title ?? "Sin título"}</h3>
+            <h3>{titleText}</h3>
           </div>
         </div>
 
         <div className="project-card-divider" />
 
-        <p>{project.short_description ?? "Sin descripción"}</p>
+        <p>{descriptionText}</p>
 
         {techList.length > 0 && (
           <div className="tags">
             {techList.map((tech, i) => (
-              <span key={i} className="tag">
+              <span key={`${tech}-${i}`} className="tag">
                 {tech}
               </span>
             ))}

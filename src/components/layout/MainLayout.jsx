@@ -1,9 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Outlet } from "react-router-dom";
 import Navbar from "./Navbar/Navbar";
-import { useProjects, usePortfolioHome } from "../../hooks/usePortfolioData";
-
-
 
 function MainLayout() {
   const [themeMode, setThemeMode] = useState("system");
@@ -11,13 +8,6 @@ function MainLayout() {
     if (typeof window === "undefined") return false;
     return window.matchMedia("(prefers-color-scheme: dark)").matches;
   });
-
-  // Prefetch bootstrap general
-  usePortfolioHome();
-
-  // Prefetch proyectos para que /proyectos vaya suave
-  useProjects();
-
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -28,7 +18,6 @@ function MainLayout() {
       setSystemPrefersDark(event.matches);
     };
 
-    // Suscribirse a cambios del sistema
     if (mediaQuery.addEventListener) {
       mediaQuery.addEventListener("change", handleChange);
     } else {
@@ -91,6 +80,7 @@ function MainLayout() {
         themeMode={themeMode}
         toggleTheme={toggleTheme}
       />
+
       <main className="container">
         <Outlet />
       </main>

@@ -7,7 +7,6 @@ import ContactPreview from "../../components/sections/ContactPreview";
 
 import {
   usePortfolioHero,
-  usePortfolioHome,
   useLaboratoryHome,
 } from "../../hooks/usePortfolioData";
 import useProjects from "../../hooks/pages/useProjects";
@@ -27,15 +26,10 @@ function Home() {
   } = usePortfolioHero();
 
   const {
-    loading: homeLoading,
-    error: homeError,
-  } = usePortfolioHome(showDeferredSections);
-
-  const {
     projects,
     loading: projectsLoading,
     error: projectsError,
-  } = useProjects();
+  } = useProjects(true);
 
   const {
     summary,
@@ -61,9 +55,10 @@ function Home() {
     return () => cancelRaf(id);
   }, []);
 
-  const featuredProjects = (projects ?? [])
-    .filter((project) => project.is_featured)
-    .slice(0, 3);
+  const safeProjects = Array.isArray(projects) ? projects : [];
+  const featuredOnly = safeProjects.filter((project) => project.is_featured);
+  const nonFeatured = safeProjects.filter((project) => !project.is_featured);
+  const featuredProjects = [...featuredOnly, ...nonFeatured].slice(0, 2);
 
   const personSchema = {
     "@context": "https://schema.org",
@@ -98,7 +93,7 @@ function Home() {
 
   const safeJsonLd = JSON.stringify(personSchema).replace(/<\//g, "<\\/");
 
-  const pageError = heroError || homeError;
+  const pageError = heroError;
 
   return (
     <>
@@ -126,21 +121,21 @@ function Home() {
             loading={heroLoading}
           />
 
+          {projectsError ? (
+            <section className="section section-spaced section-separated">
+              <div className="empty-inline-state">
+                <p>No se pudieron cargar los proyectos en este momento.</p>
+              </div>
+            </section>
+          ) : (
+            <FeaturedProjects
+              projects={featuredProjects}
+              loading={projectsLoading}
+            />
+          )}
+
           {showDeferredSections ? (
             <>
-              {projectsError ? (
-                <section className="section section-spaced section-separated">
-                  <div className="empty-inline-state">
-                    <p>No se pudieron cargar los proyectos en este momento.</p>
-                  </div>
-                </section>
-              ) : (
-                <FeaturedProjects
-                  projects={featuredProjects}
-                  loading={projectsLoading || homeLoading}
-                />
-              )}
-
               {laboratoryError ? (
                 <section className="section section-spaced section-separated">
                   <div className="empty-inline-state">

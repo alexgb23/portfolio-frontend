@@ -1,10 +1,73 @@
 import { Link } from "react-router-dom";
-import { FaArrowRight } from "react-icons/fa";
-import ProjectCard from "../cards/ProjectCard";
+import {
+  FaArrowRight,
+  FaCode,
+  FaServer,
+  FaDatabase,
+  FaNetworkWired,
+  FaShieldAlt,
+  FaCloud,
+} from "react-icons/fa";
 import "./sectionsGlobals.css";
 
+function getProjectIcon(project, techList) {
+  const text =
+    `${project?.title || ""} ${project?.short_description || ""} ${project?.stack_summary || ""} ${techList.join(" ")}`.toLowerCase();
+
+  if (
+    text.includes("api") ||
+    text.includes("backend") ||
+    text.includes("laravel") ||
+    text.includes("node") ||
+    text.includes("server")
+  ) {
+    return <FaServer />;
+  }
+
+  if (
+    text.includes("postgres") ||
+    text.includes("mysql") ||
+    text.includes("database") ||
+    text.includes("sql")
+  ) {
+    return <FaDatabase />;
+  }
+
+  if (
+    text.includes("red") ||
+    text.includes("network") ||
+    text.includes("firewall") ||
+    text.includes("pfsense") ||
+    text.includes("dns") ||
+    text.includes("vlan")
+  ) {
+    return <FaNetworkWired />;
+  }
+
+  if (
+    text.includes("security") ||
+    text.includes("seguridad") ||
+    text.includes("auth") ||
+    text.includes("jwt")
+  ) {
+    return <FaShieldAlt />;
+  }
+
+  if (
+    text.includes("cloud") ||
+    text.includes("docker") ||
+    text.includes("deploy") ||
+    text.includes("proxmox")
+  ) {
+    return <FaCloud />;
+  }
+
+  return <FaCode />;
+}
+
 function FeaturedProjects({ projects = [], loading = false }) {
-  const hasProjects = projects.length > 0;
+  const safeProjects = Array.isArray(projects) ? projects : [];
+  const hasProjects = safeProjects.length > 0;
 
   return (
     <section
@@ -21,33 +84,83 @@ function FeaturedProjects({ projects = [], loading = false }) {
       </div>
 
       {loading && !hasProjects ? (
-        <div className="grid-cards">
-          {Array.from({ length: 3 }).map((_, index) => (
-            <div
-              className="project-skeleton-card"
+        <div className="expertise-grid">
+          {Array.from({ length: 2 }).map((_, index) => (
+            <article
+              className={`expertise-card tone-${index % 3}`}
               key={`project-skeleton-${index}`}
+              aria-hidden="true"
             >
-              <div className="sk sk-badge"></div>
-              <div className="sk sk-title"></div>
-              <div className="sk sk-text"></div>
-              <div className="sk sk-text short"></div>
-              <div className="sk sk-row">
-                <span className="sk sk-chip"></span>
-                <span className="sk sk-chip"></span>
-                <span className="sk sk-chip"></span>
+              <div className="card-head">
+                <div className="expertise-icon skeleton-block skeleton-icon" />
+                <div className="card-title-wrap" style={{ width: "100%" }}>
+                  <div className="skeleton-block skeleton-text-md w-80" />
+                </div>
               </div>
-            </div>
+
+              <div className="skeleton-block skeleton-text-sm w-100" />
+              <div className="skeleton-block skeleton-text-sm w-90" />
+              <div className="skeleton-block skeleton-text-sm w-70" />
+
+              <div style={{ display: "flex", gap: "8px", flexWrap: "wrap", marginTop: "12px" }}>
+                <span className="skeleton-block skeleton-pill" />
+                <span className="skeleton-block skeleton-pill" />
+                <span className="skeleton-block skeleton-pill" />
+              </div>
+            </article>
           ))}
         </div>
       ) : hasProjects ? (
-        <div className="grid-cards">
-          {projects.map((project, index) => (
-            <ProjectCard
-              key={project.id ?? `${project.title}-${index}`}
-              project={project}
-              index={index}
-            />
-          ))}
+        <div className="expertise-grid">
+          {safeProjects.map((project, index) => {
+            const techList = Array.isArray(project?.technologies)
+              ? project.technologies.filter(Boolean)
+              : typeof project?.technologies === "string"
+                ? project.technologies
+                    .split(",")
+                    .map((tech) => tech.trim())
+                    .filter(Boolean)
+                : [];
+
+            const icon = getProjectIcon(project, techList);
+            const tone = index % 3;
+
+            return (
+              <article
+                key={project.id ?? `${project.title}-${index}`}
+                className={`expertise-card card-hover tone-${tone}`}
+              >
+                <div className="card-head">
+                  <div className="expertise-icon">
+                    {icon}
+                  </div>
+
+                  <div className="card-title-wrap">
+                    <h3>{project.title || "Sin título"}</h3>
+                  </div>
+                </div>
+
+                <p>
+                  {project.short_description || "Sin descripción"}
+                </p>
+
+                <div className="laboratory-counter" style={{ alignItems: "flex-start" }}>
+                  <strong>{project.stack_summary || "Software"}</strong>
+                  <span>{project.is_featured ? "destacado" : "proyecto"}</span>
+                </div>
+
+                {techList.length > 0 ? (
+                  <div style={{ display: "flex", gap: "8px", flexWrap: "wrap", marginTop: "12px" }}>
+                    {techList.slice(0, 3).map((tech, techIndex) => (
+                      <span key={`${tech}-${techIndex}`} className="tag">
+                        {tech}
+                      </span>
+                    ))}
+                  </div>
+                ) : null}
+              </article>
+            );
+          })}
         </div>
       ) : (
         <div className="empty-inline-state">
