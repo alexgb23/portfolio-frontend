@@ -195,6 +195,7 @@ function Laboratory() {
         </article>
       </section>
 
+      {/* INFRAESTRUCTURA */}
       <section className="lab-section">
         <div className="lab-section-top">
           <div className="lab-section-intro">
@@ -208,6 +209,7 @@ function Laboratory() {
         </div>
 
         <div className="lab-feature-grid">
+          {/* Elementos destacados */}
           <div className="lab-panel">
             <div className="lab-panel-head">
               <h3>
@@ -236,6 +238,48 @@ function Laboratory() {
             </div>
           </div>
 
+          {/* Servidores del laboratorio */}
+          <div className="lab-panel">
+            <div className="lab-panel-head">
+              <h3>
+                <FaServer /> Servidores del laboratorio
+              </h3>
+            </div>
+
+            <div className="lab-panel-body">
+              {servers && servers.length > 0 ? (
+                <div className="lab-story-grid">
+                  {servers.map((server) => (
+                    <LabItemCard
+                      key={server.id || server.name}
+                      item={{
+                        name: server.name || server.hostname || "Servidor",
+                        description:
+                          server.description ||
+                          `Servidor operativo${
+                            server.role ? ` · Rol: ${server.role}` : ""
+                          }`,
+                        category: server.category || "virtualization",
+                        location_name:
+                          server.location_name ||
+                          server.location ||
+                          "Sin ubicación",
+                        status: server.status || "active",
+                        item_type: server.type || "server",
+                      }}
+                      icon={<FaServer />}
+                    />
+                  ))}
+                </div>
+              ) : (
+                <div className="empty-inline-state compact">
+                  <p>No se han registrado servidores en el laboratorio todavía.</p>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Vista rápida del laboratorio */}
           <div className="lab-panel">
             <div className="lab-panel-head">
               <h3>
@@ -271,6 +315,7 @@ function Laboratory() {
         </div>
       </section>
 
+      {/* AUTOMATIZACIÓN */}
       <section className="lab-section lab-section-divider">
         <div className="lab-section-top">
           <div className="lab-section-intro">
@@ -327,6 +372,7 @@ function Laboratory() {
         </div>
       </section>
 
+      {/* HOME ASSISTANT */}
       <section className="lab-section lab-section-divider">
         <div className="lab-section-top">
           <div className="lab-section-intro">
@@ -379,11 +425,9 @@ function Laboratory() {
 
             <div className="lab-chip-row">
               {homeAssistantUseCases.length > 0 ? (
-                homeAssistantUseCases
-                  .slice(0, 4)
-                  .map((useCase) => (
-                    <span key={useCase.id}>{useCase.title}</span>
-                  ))
+                homeAssistantUseCases.slice(0, 4).map((useCase) => (
+                  <span key={useCase.id}>{useCase.title}</span>
+                ))
               ) : (
                 <>
                   <span>Escenas: —</span>
@@ -397,6 +441,7 @@ function Laboratory() {
         </div>
       </section>
 
+      {/* IA LOCAL */}
       <section className="lab-section lab-section-divider">
         <div className="lab-section-top">
           <div className="lab-section-intro">
@@ -446,6 +491,7 @@ function Laboratory() {
         </div>
       </section>
 
+      {/* RESEARCH LAB */}
       <section className="lab-section lab-section-divider">
         <div className="lab-section-top">
           <div className="lab-section-intro">
@@ -509,6 +555,7 @@ function Laboratory() {
         </div>
       </section>
 
+      {/* CAPACIDADES */}
       <section className="lab-section lab-section-divider">
         <div className="lab-section-top">
           <div className="lab-section-intro">
