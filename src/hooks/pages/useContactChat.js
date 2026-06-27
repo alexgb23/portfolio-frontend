@@ -12,7 +12,7 @@ export default function useContactChat() {
     try {
       setLoading(true);
       setError("");
-      setSuccess("");
+      setSuccess(""); // Limpia éxitos anteriores al iniciar una nueva petición
 
       const response = await fetch(`${API_URL}/api/contact-messages`, {
         method: "POST",
@@ -36,6 +36,11 @@ export default function useContactChat() {
 
       setMessages((current) => [...current, payload]);
       setSuccess(data?.message ?? "Mensaje enviado correctamente");
+
+      // Opcional: Auto-limpiar el mensaje de éxito después de 5 segundos
+      setTimeout(() => {
+        setSuccess("");
+      }, 5000);
 
       return data;
     } catch (err) {

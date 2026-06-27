@@ -112,7 +112,6 @@ function Contact() {
         setLoadingLinks(true);
         setLinksError("");
 
-       
         const response = await fetch(`${API_URL}/api/portfolio-home`, {
           headers: {
             Accept: "application/json",
