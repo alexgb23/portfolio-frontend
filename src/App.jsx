@@ -5,7 +5,7 @@ import AboutSkeleton from "./pages/about/AboutSkeleton";
 import LaboratorySkeleton from "./pages/laboratory/LaboratorySkeleton";
 import ProjectsSkeleton from "./pages/projects/ProjectsSkeleton";
 import ContactSkeleton from "./pages/contact/ContactSkeleton";
-import HomeSkeleton from "./pages/home/HomeSkeleton"; // 👈 nuevo
+import HomeSkeleton from "./pages/home/HomeSkeleton";
 
 // 🚀 Carga perezosa (lazy) de las páginas
 const Home = lazy(() => import("./pages/home/Home"));
@@ -27,15 +27,17 @@ function App() {
     >
       <Routes>
         <Route path="/" element={<MainLayout />}>
+          {/* Home con skeleton */}
           <Route
             index
             element={
-              <Suspense fallback={null}>
+              <Suspense fallback={<HomeSkeleton />}>
                 <Home />
               </Suspense>
             }
           />
 
+          {/* Sobre mí */}
           <Route
             path="sobre-mi"
             element={
@@ -45,7 +47,8 @@ function App() {
             }
           />
 
-                 <Route
+          {/* Proyectos */}
+          <Route
             path="proyectos"
             element={
               <Suspense fallback={<ProjectsSkeleton />}>
@@ -54,6 +57,7 @@ function App() {
             }
           />
 
+          {/* Automatización */}
           <Route
             path="automatizacion"
             element={
@@ -63,6 +67,7 @@ function App() {
             }
           />
 
+          {/* Infraestructura */}
           <Route
             path="infraestructura"
             element={
@@ -72,16 +77,17 @@ function App() {
             }
           />
 
+          {/* Contacto con skeleton */}
           <Route
-  path="contacto"
-  element={
-    <Suspense fallback={<ContactSkeleton />}>
-      <Contact />
-    </Suspense>
-  }
-/>
+            path="contacto"
+            element={
+              <Suspense fallback={<ContactSkeleton />}>
+                <Contact />
+              </Suspense>
+            }
+          />
 
-          {/* laboratorio con skeleton */}
+          {/* Laboratorio con skeleton */}
           <Route
             path="laboratorio"
             element={
@@ -91,6 +97,7 @@ function App() {
             }
           />
 
+          {/* Detalle de laboratorio */}
           <Route
             path="laboratorio/:id"
             element={

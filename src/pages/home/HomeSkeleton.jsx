@@ -1,3 +1,5 @@
+// src/pages/home/HomeSkeleton.jsx
+
 function HomeSkeleton() {
   return (
     <>
@@ -36,7 +38,7 @@ function HomeSkeleton() {
         </div>
       </section>
 
-      {/* Featured projects skeleton (similar a ProjectsSkeleton) */}
+      {/* Featured projects skeleton */}
       <section className="section section-spaced section-separated skeleton">
         <div className="section-head-centered">
           <span className="section-kicker skeleton-block skeleton-text-sm" />
