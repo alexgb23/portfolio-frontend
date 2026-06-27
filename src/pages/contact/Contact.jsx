@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import {
   FaGithub,
   FaLinkedin,
@@ -10,9 +10,8 @@ import {
 
 import usePageTitle from "../../hooks/usePageTitle";
 import useContactChat from "../../hooks/pages/useContactChat";
+import { usePortfolioHome } from "../../hooks/usePortfolioData";
 import "./Contact.css";
-
-const API_URL = import.meta.env.VITE_API_URL ?? "http://localhost:8000";
 
 function SocialCard({ href = "", icon, label, title, text, className = "" }) {
   const isLink = Boolean(href);
@@ -91,9 +90,9 @@ function normalizeHref(item) {
 function Contact() {
   usePageTitle("Contacto | Alexander Galvez");
 
-  const [socialLinks, setSocialLinks] = useState([]);
-  const [loadingLinks, setLoadingLinks] = useState(true);
-  const [linksError, setLinksError] = useState("");
+  // Social links vienen del mismo home que ya usas en la landing (cacheados por useAsyncResource)
+  const { socialLinks, loading: homeLoading, error: homeError } =
+    usePortfolioHome();
 
   const [form, setForm] = useState({
     name: "",
@@ -104,52 +103,8 @@ function Contact() {
 
   const { loading, error, success, sendMessage } = useContactChat();
 
-  useEffect(() => {
-    let cancelled = false;
-
-    async function loadPortfolioHome() {
-      try {
-        setLoadingLinks(true);
-        setLinksError("");
-
-        const response = await fetch(`${API_URL}/api/portfolio-home`, {
-          headers: {
-            Accept: "application/json",
-          },
-        });
-
-        if (!response.ok) {
-          throw new Error("No se pudieron cargar los enlaces");
-        }
-
-        const data = await response.json();
-        const items = Array.isArray(data?.social_links) ? data.social_links : [];
-
-        if (!cancelled) {
-          setSocialLinks(items);
-        }
-      } catch (err) {
-        if (!cancelled) {
-          setLinksError(
-            err instanceof Error ? err.message : "Error cargando enlaces"
-          );
-        }
-      } finally {
-        if (!cancelled) {
-          setLoadingLinks(false);
-        }
-      }
-    }
-
-    loadPortfolioHome();
-
-    return () => {
-      cancelled = true;
-    };
-  }, []);
-
   const visibleSocialLinks = useMemo(() => {
-    return socialLinks
+    return (socialLinks ?? [])
       .map((item) => ({
         href: normalizeHref(item),
         icon: getSocialIcon(item),
@@ -200,24 +155,46 @@ function Contact() {
 
       <div className="contact-grid">
         <div className="contact-card">
-          <h2>Enlaces</h2>
+  <h2>Enlaces</h2>
 
-          {loadingLinks && <p>Cargando enlaces...</p>}
-          {linksError && <p>{linksError}</p>}
+  {/* Solo mostramos el error si falla la carga */}
+  {homeError && <p>{homeError}</p>}
 
-          <div className="social-mini-grid">
-            {visibleSocialLinks.map((item) => (
-              <SocialCard
-                key={`${item.label}-${item.title}-${item.href}`}
-                href={item.href}
-                icon={item.icon}
-                label={item.label}
-                title={item.title}
-                text={item.text}
-              />
-            ))}
+  <div className="social-mini-grid">
+    {/* Skeleton de enlaces cuando NO hay datos todavía */}
+    {homeLoading && visibleSocialLinks.length === 0 && (
+      <>
+        {Array.from({ length: 4 }).map((_, i) => (
+          <div
+            key={i}
+            className="social-mini-card skeleton-block skeleton-card"
+          >
+            <div className="social-mini-front">
+              <div className="social-mini-icon skeleton-block skeleton-icon" />
+              <div className="social-mini-textbox">
+                <span className="skeleton-block skeleton-text-sm" />
+                <span className="skeleton-block skeleton-text-sm" />
+              </div>
+              <span className="social-mini-meta skeleton-block skeleton-text-sm" />
+            </div>
           </div>
-        </div>
+        ))}
+      </>
+    )}
+
+    {/* Enlaces reales cuando ya hay datos */}
+    {visibleSocialLinks.map((item) => (
+      <SocialCard
+        key={`${item.label}-${item.title}-${item.href}`}
+        href={item.href}
+        icon={item.icon}
+        label={item.label}
+        title={item.title}
+        text={item.text}
+      />
+    ))}
+  </div>
+</div>
 
         <div className="neo-terminal">
           <div className="term-top-bar">
@@ -296,10 +273,18 @@ function Contact() {
                 ></textarea>
               </div>
 
-              {error && <p className="cmd-feedback cmd-feedback-error">{error}</p>}
-              {success && <p className="cmd-feedback cmd-feedback-success">{success}</p>} 
+              {error && (
+                <p className="cmd-feedback cmd-feedback-error">{error}</p>
+              )}
+              {success && (
+                <p className="cmd-feedback cmd-feedback-success">{success}</p>
+              )}
 
-              <button type="submit" className="cmd-submit-btn" disabled={loading}>
+              <button
+                type="submit"
+                className="cmd-submit-btn"
+                disabled={loading}
+              >
                 {loading ? "enviando()" : "enviar()"}
               </button>
             </form>

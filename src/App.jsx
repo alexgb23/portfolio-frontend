@@ -1,9 +1,13 @@
 import { lazy, Suspense } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import MainLayout from "./components/layout/MainLayout";
+import AboutSkeleton from "./pages/about/AboutSkeleton";
+import LaboratorySkeleton from "./pages/laboratory/LaboratorySkeleton";
+import ProjectsSkeleton from "./pages/projects/ProjectsSkeleton";
+import ContactSkeleton from "./pages/contact/ContactSkeleton";
+import HomeSkeleton from "./pages/home/HomeSkeleton"; // 👈 nuevo
 
-// 🚀 Carga Perezosa (Lazy Loading) de las páginas
-// Se empaquetan por separado y solo se descargan cuando el usuario entra a esa sección
+// 🚀 Carga perezosa (lazy) de las páginas
 const Home = lazy(() => import("./pages/home/Home"));
 const About = lazy(() => import("./pages/about/About"));
 const Projects = lazy(() => import("./pages/projects/Projects"));
@@ -22,58 +26,79 @@ function App() {
       }}
     >
       <Routes>
-        {/* Tu Layout se mantiene fijo e intacto para heredar los estilos e importar los CSS correspondientes */}
         <Route path="/" element={<MainLayout />}>
-          
-          {/* Envolvemos las páginas secundarias en un Suspense para gestionar su carga asíncrona */}
-          <Route index element={
-            <Suspense fallback={null}>
-              <Home />
-            </Suspense>
-          } />
-          
-          <Route path="sobre-mi" element={
-            <Suspense fallback={null}>
-              <About />
-            </Suspense>
-          } />
-          
-          <Route path="proyectos" element={
-            <Suspense fallback={null}>
-              <Projects />
-            </Suspense>
-          } />
-          
-          <Route path="automatizacion" element={
-            <Suspense fallback={null}>
-              <Automation />
-            </Suspense>
-          } />
-          
-          <Route path="infraestructura" element={
-            <Suspense fallback={null}>
-              <Infrastructure />
-            </Suspense>
-          } />
-          
-          <Route path="contacto" element={
-            <Suspense fallback={null}>
-              <Contact />
-            </Suspense>
-          } />
-          
-          <Route path="laboratorio" element={
-            <Suspense fallback={null}>
-              <Laboratory />
-            </Suspense>
-          } />
-          
-          <Route path="laboratorio/:id" element={
-            <Suspense fallback={null}>
-              <LaboratoryDetail />
-            </Suspense>
-          } />
-          
+          <Route
+            index
+            element={
+              <Suspense fallback={null}>
+                <Home />
+              </Suspense>
+            }
+          />
+
+          <Route
+            path="sobre-mi"
+            element={
+              <Suspense fallback={<AboutSkeleton />}>
+                <About />
+              </Suspense>
+            }
+          />
+
+                 <Route
+            path="proyectos"
+            element={
+              <Suspense fallback={<ProjectsSkeleton />}>
+                <Projects />
+              </Suspense>
+            }
+          />
+
+          <Route
+            path="automatizacion"
+            element={
+              <Suspense fallback={null}>
+                <Automation />
+              </Suspense>
+            }
+          />
+
+          <Route
+            path="infraestructura"
+            element={
+              <Suspense fallback={null}>
+                <Infrastructure />
+              </Suspense>
+            }
+          />
+
+          <Route
+  path="contacto"
+  element={
+    <Suspense fallback={<ContactSkeleton />}>
+      <Contact />
+    </Suspense>
+  }
+/>
+
+          {/* laboratorio con skeleton */}
+          <Route
+            path="laboratorio"
+            element={
+              <Suspense fallback={<LaboratorySkeleton />}>
+                <Laboratory />
+              </Suspense>
+            }
+          />
+
+          <Route
+            path="laboratorio/:id"
+            element={
+              <Suspense fallback={null}>
+                <LaboratoryDetail />
+              </Suspense>
+            }
+          />
         </Route>
 
         <Route path="*" element={<Navigate to="/" replace />} />

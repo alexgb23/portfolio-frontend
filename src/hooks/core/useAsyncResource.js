@@ -1,3 +1,4 @@
+// src/hooks/core/useAsyncResource.js
 import { useEffect, useState } from "react";
 
 function buildHookErrorMessage(label, error) {
@@ -8,37 +9,79 @@ function buildHookErrorMessage(label, error) {
   return `${label} error al cargar datos`;
 }
 
+// Caché en memoria por clave (label + deps)
+const resourceCache = new Map();
+const CACHE_TTL = 5 * 60 * 1000; // 5 minutos
+
 export default function useAsyncResource(
   fetcher,
   initialValue,
   deps = [],
-  label = "Resource"
+  label = "Resource",
 ) {
-  const [data, setData] = useState(initialValue);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+  const cacheKey = JSON.stringify([label, ...deps]);
+
+  const [state, setState] = useState(() => {
+    const cached = resourceCache.get(cacheKey);
+    const isFresh =
+      cached && Date.now() - cached.time < CACHE_TTL;
+
+    if (isFresh) {
+      return {
+        data: cached.data,
+        loading: false,
+        error: "",
+      };
+    }
+
+    return {
+      data: initialValue,
+      loading: true,
+      error: "",
+    };
+  });
 
   useEffect(() => {
+    const cached = resourceCache.get(cacheKey);
+    const isFresh =
+      cached && Date.now() - cached.time < CACHE_TTL;
+
+    if (isFresh) return;
+
     let ignore = false;
 
     async function load() {
       try {
-        setLoading(true);
-        setError("");
+        setState((prev) => ({
+          ...prev,
+          loading: !cached,
+          error: "",
+        }));
 
         const result = await fetcher();
 
-        if (!ignore) {
-          setData(result ?? initialValue);
-        }
+        if (ignore) return;
+
+        const data = result ?? initialValue;
+
+        resourceCache.set(cacheKey, {
+          data,
+          time: Date.now(),
+        });
+
+        setState({
+          data,
+          loading: false,
+          error: "",
+        });
       } catch (err) {
-        if (!ignore) {
-          setError(buildHookErrorMessage(label, err));
-        }
-      } finally {
-        if (!ignore) {
-          setLoading(false);
-        }
+        if (ignore) return;
+
+        setState((prev) => ({
+          ...prev,
+          loading: false,
+          error: buildHookErrorMessage(label, err),
+        }));
       }
     }
 
@@ -47,7 +90,8 @@ export default function useAsyncResource(
     return () => {
       ignore = true;
     };
-  }, deps);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cacheKey]);
 
-  return { data, loading, error };
+  return state;
 }
