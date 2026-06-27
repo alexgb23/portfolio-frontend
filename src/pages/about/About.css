@@ -4,26 +4,25 @@
 
 .photo-container.is-skeleton:hover,
 .stat-card.is-skeleton:hover,
-.expertise-card.is-skeleton:hover {
+.about-section .expertise-card.is-skeleton:hover {
   transform: none;
   box-shadow: inherit;
 }
 
 .stat-card.is-skeleton::before,
-.expertise-card.is-skeleton::before,
-.expertise-card.is-skeleton::after {
+.about-section .expertise-card.is-skeleton::before,
+.about-section .expertise-card.is-skeleton::after {
   display: none;
 }
 
 .stat-card.is-skeleton .stat-number,
 .stat-card.is-skeleton h2,
 .stat-card.is-skeleton p,
-.expertise-card.is-skeleton h2,
-.expertise-card.is-skeleton p,
+.about-section .expertise-card.is-skeleton h2,
+.about-section .expertise-card.is-skeleton p,
 .about-section .skeleton-block {
   color: transparent;
 }
-
 
 /* =========================================================
  ABOUT SECTION
@@ -96,9 +95,9 @@
 
 .badge {
   padding: 9px 17px;
+  border: 1px solid var(--border);
   border-radius: 999px;
   background: var(--bg-card);
-  border: 1px solid var(--border);
   color: var(--text-soft);
   font-family: "JetBrains Mono", monospace;
   font-size: 0.75rem;
@@ -117,8 +116,8 @@
 
 .about-right {
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   width: 100%;
 }
 
@@ -131,9 +130,9 @@
   width: 100%;
   height: 100%;
   overflow: hidden;
+  border: 1px solid var(--border);
   border-radius: 34px;
   background: var(--bg-card);
-  border: 1px solid var(--border);
   box-shadow: 0 35px 70px rgba(0, 0, 0, 0.28);
   transform: perspective(1200px) rotateY(-7deg);
   transition: 0.4s ease;
@@ -174,14 +173,11 @@
   gap: 70px;
 }
 
-/* LINEA CENTRAL */
-
 .technical-line {
   position: absolute;
   top: 0;
   bottom: 0;
   left: 50%;
-  transform: translateX(-50%);
   width: 2px;
   border-radius: 999px;
   background: linear-gradient(
@@ -194,6 +190,7 @@
   );
   box-shadow: 0 0 5px var(--accent-glow);
   opacity: 0.75;
+  transform: translateX(-50%);
 }
 
 /* =========================================================
@@ -207,9 +204,9 @@
   gap: 25px;
   width: calc(50% - 70px);
   padding: 30px;
+  border: 1px solid var(--border);
   border-radius: 24px;
   background: var(--bg-card);
-  border: 1px solid var(--border);
   transition:
     transform 0.35s ease,
     border-color 0.35s ease,
@@ -222,8 +219,6 @@
   box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
 }
 
-/* TARJETA IZQUIERDA */
-
 .stat-card.left {
   align-self: flex-start;
   margin-right: auto;
@@ -231,15 +226,11 @@
   text-align: right;
 }
 
-/* TARJETA DERECHA */
-
 .stat-card.right {
   align-self: flex-end;
   margin-left: auto;
   text-align: left;
 }
-
-/* PUNTOS DE UNION */
 
 .stat-card::before {
   content: "";
@@ -247,11 +238,11 @@
   top: 50%;
   width: 14px;
   height: 14px;
+  border: 3px solid var(--bg-card);
   border-radius: 50%;
   background: var(--accent);
-  border: 3px solid var(--bg-card);
-  transform: translateY(-50%);
   box-shadow: 0 0 8px var(--accent-glow);
+  transform: translateY(-50%);
 }
 
 .stat-card.left::before {
@@ -263,10 +254,10 @@
 }
 
 .stat-number {
+  color: var(--accent);
   font-family: "JetBrains Mono", monospace;
   font-size: 2rem;
   font-weight: 900;
-  color: var(--accent);
 }
 
 .stat-card h2 {
@@ -289,33 +280,21 @@
   padding-bottom: 80px;
 }
 
-/* ICONOS */
+/* Ajustes locales de contenido, sin pisar la card global */
 
-.expertise-icon {
-  width: 50px;
-  height: 50px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 20px;
-  border-radius: 16px;
-  color: var(--accent);
-  background: linear-gradient(145deg, rgba(255, 255, 255, 0.08), transparent);
-  border: 1px solid var(--border);
-  font-size: 1.3rem;
-}
-
-.expertise-card h2 {
+.about-section .expertise-card h2 {
   margin: 0 0 12px;
   color: var(--text-main);
   font-family: "Space Grotesk", sans-serif;
   font-size: 1.15rem;
 }
 
-.expertise-card p {
-  margin: 0;
-  color: var(--text-sub);
+.about-section .expertise-card p {
   line-height: 1.7;
+}
+
+.about-section .expertise-icon {
+  margin-bottom: 20px;
 }
 
 /* =========================================================
@@ -345,11 +324,12 @@
 
   .about-right {
     position: relative;
-    margin-top: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: 100%;
     height: auto;
-    justify-content: center;
-    align-items: center;
+    margin-top: 40px;
   }
 
   .photo-wrapper {
@@ -405,8 +385,7 @@
  LIGHT MODE
 ========================================================= */
 
-:root[data-theme="light"] .stat-card,
-:root[data-theme="light"] .expertise-card {
+:root[data-theme="light"] .stat-card {
   background: linear-gradient(
     145deg,
     rgba(255, 255, 255, 0.95),
@@ -432,13 +411,11 @@
   border-color: #fff;
 }
 
-:root[data-theme="light"] .stat-card p,
-:root[data-theme="light"] .expertise-card p {
+:root[data-theme="light"] .stat-card p {
   color: #475569;
 }
 
-:root[data-theme="light"] .stat-card:hover,
-:root[data-theme="light"] .expertise-card:hover {
+:root[data-theme="light"] .stat-card:hover {
   box-shadow:
     0 20px 45px rgba(15, 23, 42, 0.15),
     0 0 18px rgba(0, 150, 255, 0.18);
@@ -459,13 +436,13 @@
     width: 100%;
     margin: 0;
     padding: 25px 25px 25px 55px;
-    text-align: left;
     justify-content: flex-start;
+    text-align: left;
   }
 
   .stat-card.left::before,
   .stat-card.right::before {
-    left: 1px;
     right: auto;
+    left: 1px;
   }
 }

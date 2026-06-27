@@ -7,7 +7,6 @@ import {
   FaCloud,
 } from "react-icons/fa";
 
-import "./Cards.css";
 
 function getProjectIcon(project, techList) {
   const text =

@@ -1,5 +1,4 @@
 import { FaServer, FaMicrochip, FaMemory, FaClock } from "react-icons/fa";
-import "./Cards.css";
 
 export default function ServerCard({ server, index = 0 }) {
   if (!server) return null;

@@ -5,6 +5,7 @@ import "./style/globals.css";
 import "./style/GlobalTarget.css";
 import "./style/Skeletons.css";
 import "./style/Sections.css";
+import "./style/Cards.css";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <App />,
