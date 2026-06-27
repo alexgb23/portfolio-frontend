@@ -6,7 +6,7 @@ import {
   FaMicrochip,
   FaArrowRight,
 } from "react-icons/fa";
-import "../sectionsGlobals.css";
+
 
 function AboutPreview({ profile = null }) {
   const title =

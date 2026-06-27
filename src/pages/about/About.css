@@ -1,4 +1,31 @@
 /* =========================================================
+  ABOUT SKELETON OVERRIDES — LOCALES
+  ========================================================= */
+
+.photo-container.is-skeleton:hover,
+.stat-card.is-skeleton:hover,
+.expertise-card.is-skeleton:hover {
+  transform: none;
+  box-shadow: inherit;
+}
+
+.stat-card.is-skeleton::before,
+.expertise-card.is-skeleton::before,
+.expertise-card.is-skeleton::after {
+  display: none;
+}
+
+.stat-card.is-skeleton .stat-number,
+.stat-card.is-skeleton h2,
+.stat-card.is-skeleton p,
+.expertise-card.is-skeleton h2,
+.expertise-card.is-skeleton p,
+.about-section .skeleton-block {
+  color: transparent;
+}
+
+
+/* =========================================================
  ABOUT SECTION
 ========================================================= */
 

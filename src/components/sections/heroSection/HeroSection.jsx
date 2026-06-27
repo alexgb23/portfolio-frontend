@@ -12,7 +12,6 @@ import {
   FaDatabase,
 } from "react-icons/fa";
 
-import "../sectionsGlobals.css";
 import "./HeroSection.css";
 
 const expertiseIconMap = {

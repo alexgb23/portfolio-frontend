@@ -6,7 +6,6 @@ import {
   FaMicrochip,
 } from "react-icons/fa";
 
-import "./sectionsGlobals.css";
 
 function FeaturedLaboratory({
   serversCount = 0,

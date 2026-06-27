@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import { FaGithub, FaLinkedin, FaEnvelope, FaArrowRight } from "react-icons/fa";
 import "../../pages/contact/Contact.css";
-import "../sections/sectionsGlobals.css";
 
 function SocialCard({
   href = "#",

@@ -8,7 +8,6 @@ import {
   FaShieldAlt,
   FaCloud,
 } from "react-icons/fa";
-import "./sectionsGlobals.css";
 
 function getProjectIcon(project, techList) {
   const text =

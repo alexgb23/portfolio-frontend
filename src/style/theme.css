@@ -1,3 +1,7 @@
+/* =========================================================
+  TOKENS GLOBALES
+  ========================================================= */
+
 :root[data-theme="dark"] {
   --navbar-height: 82px;
   --bg-app: #0f131a;
@@ -30,7 +34,7 @@
   --navbar-height: 82px;
   --bg-app: #f4f8fb;
   --bg-app-rgb: 244, 248, 251;
-  --bg-elevated: #ffffff;
+  --bg-elevated: #fff;
   --bg-card: rgba(255, 255, 255, 0.94);
   --bg-card-2: rgba(238, 244, 251, 0.98);
   --bg-soft: rgba(15, 23, 42, 0.05);
@@ -46,13 +50,16 @@
   --shadow-sm: 0 10px 25px rgba(15, 23, 42, 0.05);
   --shadow-md: 0 20px 55px rgba(15, 23, 42, 0.08);
   --shadow-lg: 0 30px 80px rgba(15, 23, 42, 0.12);
-  --terminal-bg: #ffffff;
+  --terminal-bg: #fff;
   --console-bg: #1e2530;
   --radius-sm: 12px;
   --radius-md: 18px;
   --radius-lg: 26px;
   --container: 1360px;
 }
+
+
+
 
 @media (min-width: 721px) {
   :root[data-theme="dark"],

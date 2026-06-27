@@ -1,3 +1,44 @@
+/* =========================================================
+  CONTACT SKELETON OVERRIDES — LOCALES
+  ========================================================= */
+
+.contact-card.is-skeleton,
+.neo-terminal.is-skeleton,
+.social-mini-card.is-skeleton {
+  pointer-events: none;
+}
+
+.contact-card.is-skeleton h2,
+.contact-card.is-skeleton p,
+.neo-terminal.is-skeleton .term-tab-title,
+.neo-terminal.is-skeleton .cmd-input,
+.neo-terminal.is-skeleton .cmd-output,
+.neo-terminal.is-skeleton label,
+.social-mini-card.is-skeleton .social-mini-meta,
+.social-mini-card.is-skeleton .social-mini-textbox span {
+  color: transparent;
+}
+
+.social-mini-card.is-skeleton:hover,
+.contact-card.is-skeleton:hover,
+.neo-terminal.is-skeleton:hover {
+  transform: none;
+}
+
+.social-mini-card.is-skeleton::before,
+.social-mini-card.is-skeleton .social-mini-icon::after {
+  display: none;
+}
+
+.social-mini-card.is-skeleton .social-mini-front {
+  box-shadow: none;
+}
+
+.neo-terminal.is-skeleton .cmd-submit-btn {
+  border-color: transparent;
+}
+
+
 /* ==========================================================================
    1. CONFIGURACIÓN BASE & VARIABLES LOCALES (MOBILE-FIRST)
    ========================================================================== */

@@ -12,8 +12,7 @@ function ContactSkeleton() {
       </div>
 
       <div className="contact-grid">
-        {/* Tarjeta de enlaces */}
-        <div className="contact-card">
+        <div className="contact-card is-skeleton">
           <h2 className="skeleton-block skeleton-text-md" />
 
           <p className="skeleton-block skeleton-text-sm" />
@@ -22,7 +21,7 @@ function ContactSkeleton() {
             {Array.from({ length: 4 }).map((_, i) => (
               <div
                 key={i}
-                className="social-mini-card skeleton-block skeleton-card"
+                className="social-mini-card is-skeleton"
               >
                 <div className="social-mini-front">
                   <div className="social-mini-icon skeleton-block skeleton-icon" />
@@ -37,8 +36,7 @@ function ContactSkeleton() {
           </div>
         </div>
 
-        {/* Terminal de contacto */}
-        <div className="neo-terminal skeleton-block skeleton-card">
+        <div className="neo-terminal is-skeleton">
           <div className="term-top-bar">
             <div className="term-controls">
               <span className="c-red"></span>

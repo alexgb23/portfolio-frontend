@@ -3,7 +3,6 @@
 function HomeSkeleton() {
   return (
     <>
-      {/* Hero */}
       <section className="section hero-section skeleton">
         <div className="hero-grid">
           <div className="hero-main">
@@ -18,13 +17,12 @@ function HomeSkeleton() {
             </div>
           </div>
 
-          <div className="hero-side">
+          <div className="hero-side is-skeleton">
             <div className="skeleton-block skeleton-photo" />
           </div>
         </div>
       </section>
 
-      {/* About preview */}
       <section className="section section-spaced skeleton">
         <div className="section-head">
           <span className="section-kicker skeleton-block skeleton-text-sm" />
@@ -38,7 +36,6 @@ function HomeSkeleton() {
         </div>
       </section>
 
-      {/* Featured projects skeleton */}
       <section className="section section-spaced section-separated skeleton">
         <div className="section-head-centered">
           <span className="section-kicker skeleton-block skeleton-text-sm" />
@@ -50,7 +47,7 @@ function HomeSkeleton() {
           {Array.from({ length: 3 }).map((_, i) => (
             <article
               key={i}
-              className="card card-project skeleton-block skeleton-card"
+              className="card card-project is-skeleton"
             >
               <div className="card-top">
                 <span className="skeleton-block skeleton-text-sm" />
@@ -79,7 +76,6 @@ function HomeSkeleton() {
         </div>
       </section>
 
-      {/* Featured laboratory skeleton */}
       <section className="section section-spaced section-separated skeleton">
         <div className="section-head-centered">
           <span className="section-kicker skeleton-block skeleton-text-sm" />
@@ -89,7 +85,7 @@ function HomeSkeleton() {
 
         <div className="lab-feature-grid">
           {Array.from({ length: 2 }).map((_, i) => (
-            <div key={i} className="lab-panel skeleton-block skeleton-card">
+            <div key={i} className="lab-panel is-skeleton">
               <div className="lab-panel-head">
                 <h3 className="skeleton-block skeleton-text-md" />
               </div>
@@ -105,7 +101,6 @@ function HomeSkeleton() {
         </div>
       </section>
 
-      {/* Contact preview skeleton */}
       <section className="section section-spaced skeleton">
         <div className="section-head">
           <span className="section-kicker skeleton-block skeleton-text-sm" />

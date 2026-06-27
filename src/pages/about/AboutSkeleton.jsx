@@ -25,14 +25,13 @@ function AboutSkeleton() {
 
         <div className="about-right">
           <div className="photo-wrapper">
-            <div className="photo-container">
+            <div className="photo-container is-skeleton">
               <div className="profile-photo skeleton-block skeleton-photo" />
             </div>
           </div>
         </div>
       </div>
 
-      {/* Línea y tarjetas técnicas en skeleton */}
       <section className="technical-section">
         <div className="technical-line skeleton-block skeleton-line" />
 
@@ -40,7 +39,7 @@ function AboutSkeleton() {
           {Array.from({ length: 3 }).map((_, i) => (
             <article
               key={i}
-              className={`stat-card skeleton-block skeleton-card`}
+              className={`stat-card ${i % 2 === 0 ? "left" : "right"} is-skeleton`}
             >
               <span className="stat-number skeleton-block skeleton-text-lg" />
               <div>
@@ -57,7 +56,7 @@ function AboutSkeleton() {
           {Array.from({ length: 4 }).map((_, i) => (
             <article
               key={i}
-              className="expertise-card card-hover skeleton-block skeleton-card"
+              className="expertise-card card-hover is-skeleton"
             >
               <div className="card-head">
                 <div className="expertise-icon card-icon skeleton-block skeleton-icon" />
