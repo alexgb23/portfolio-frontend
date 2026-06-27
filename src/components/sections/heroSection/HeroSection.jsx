@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
 import {
   FaServer,
   FaCode,
@@ -46,6 +47,24 @@ function HeroSection({
     )
   );
 
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const raf =
+      window.requestAnimationFrame ||
+      ((callback) => window.setTimeout(callback, 16));
+
+    const cancelRaf =
+      window.cancelAnimationFrame ||
+      ((id) => window.clearTimeout(id));
+
+    const id = raf(() => {
+      setIsVisible(true);
+    });
+
+    return () => cancelRaf(id);
+  }, []);
+
   const heroKicker =
     profile?.hero_kicker ||
     "DESARROLLO WEB · INFRAESTRUCTURA IT · AUTOMATIZACIÓN";
@@ -65,7 +84,10 @@ function HeroSection({
     profile?.hero_stack_badge || "React · Laravel · Proxmox · pfSense";
 
   return (
-    <header className="hero-centered-section" id="inicio">
+    <header
+      className={`hero-centered-section ${isVisible ? "hero-mounted" : ""}`}
+      id="inicio"
+    >
       <div className="container hero-center-content">
         <div className="hero-top-row">
           <div className="hero-title-container">
@@ -78,9 +100,7 @@ function HeroSection({
 
             <h2 className="sr-only">Especialidades principales</h2>
 
-            <p className="hero-intro">
-              {heroIntro}
-            </p>
+            <p className="hero-intro">{heroIntro}</p>
           </div>
 
           <div className="avatar-block">

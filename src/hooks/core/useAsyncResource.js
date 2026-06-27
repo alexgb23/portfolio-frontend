@@ -1,4 +1,3 @@
-// src/hooks/core/useAsyncResource.js
 import { useEffect, useState } from "react";
 
 function buildHookErrorMessage(label, error) {
@@ -9,22 +8,29 @@ function buildHookErrorMessage(label, error) {
   return `${label} error al cargar datos`;
 }
 
-// Caché en memoria por clave (label + deps)
 const resourceCache = new Map();
-const CACHE_TTL = 5 * 60 * 1000; // 5 minutos
+const CACHE_TTL = 5 * 60 * 1000;
 
 export default function useAsyncResource(
   fetcher,
   initialValue,
   deps = [],
   label = "Resource",
+  enabled = true
 ) {
-  const cacheKey = JSON.stringify([label, ...deps]);
+  const cacheKey = JSON.stringify([label, enabled, ...deps]);
 
   const [state, setState] = useState(() => {
+    if (!enabled) {
+      return {
+        data: initialValue,
+        loading: false,
+        error: "",
+      };
+    }
+
     const cached = resourceCache.get(cacheKey);
-    const isFresh =
-      cached && Date.now() - cached.time < CACHE_TTL;
+    const isFresh = cached && Date.now() - cached.time < CACHE_TTL;
 
     if (isFresh) {
       return {
@@ -42,11 +48,19 @@ export default function useAsyncResource(
   });
 
   useEffect(() => {
-    const cached = resourceCache.get(cacheKey);
-    const isFresh =
-      cached && Date.now() - cached.time < CACHE_TTL;
+    if (!enabled) return;
 
-    if (isFresh) return;
+    const cached = resourceCache.get(cacheKey);
+    const isFresh = cached && Date.now() - cached.time < CACHE_TTL;
+
+    if (isFresh) {
+      setState({
+        data: cached.data,
+        loading: false,
+        error: "",
+      });
+      return;
+    }
 
     let ignore = false;
 
@@ -54,7 +68,7 @@ export default function useAsyncResource(
       try {
         setState((prev) => ({
           ...prev,
-          loading: !cached,
+          loading: true,
           error: "",
         }));
 
@@ -91,7 +105,7 @@ export default function useAsyncResource(
       ignore = true;
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [cacheKey]);
+  }, [cacheKey, enabled]);
 
   return state;
 }

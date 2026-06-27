@@ -1,19 +1,22 @@
 import useAsyncResource from "../core/useAsyncResource";
 import { portfolioService } from "../../services/api";
 
-export default function usePortfolioHome() {
+const initialValue = {
+  profile: null,
+  skills: [],
+  projects: [],
+  social_links: [],
+  highlights: [],
+  expertise: [],
+};
+
+export default function usePortfolioHome(enabled = true) {
   const { data, loading, error } = useAsyncResource(
     portfolioService.getHomeData,
-    {
-      profile: null,
-      skills: [],
-      projects: [],
-      social_links: [],
-      highlights: [],
-      expertise: [],
-    },
+    initialValue,
     [],
-    "Home"
+    "Home",
+    enabled
   );
 
   return {

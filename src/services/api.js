@@ -52,6 +52,7 @@ async function postRequest(url, data, label) {
 }
 
 export const portfolioService = {
+  getHeroData: () => getRequest("/portfolio-home/hero", "Portfolio Hero"),
   getHomeData: () => getRequest("/portfolio-home", "Portfolio Home"),
   getProjects: () => getRequest("/projects", "Projects"),
   getProjectDetail: (id) => getRequest(`/projects/${id}`, "Project Detail"),

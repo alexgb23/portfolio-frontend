@@ -1,22 +1,25 @@
 import useAsyncResource from "../core/useAsyncResource";
 import { laboratoryService } from "../../services/api";
 
-export default function useLaboratoryHome() {
+const initialValue = {
+  summary: {},
+  featured_items: [],
+  clusters: [],
+  servers: [],
+  nodes: [],
+  metrics: [],
+  home_assistant: [],
+  local_ai: [],
+  capabilities: [],
+};
+
+export default function useLaboratoryHome(enabled = true) {
   const { data, loading, error } = useAsyncResource(
     laboratoryService.getLaboratoryHome,
-    {
-      summary: {},
-      featured_items: [],
-      clusters: [],
-      servers: [],
-      nodes: [],
-      metrics: [],
-      home_assistant: [],
-      local_ai: [],
-      capabilities: [],
-    },
+    initialValue,
     [],
-    "Laboratory home"
+    "Laboratory home",
+    enabled
   );
 
   return {

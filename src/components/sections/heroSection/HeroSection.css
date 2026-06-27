@@ -1,9 +1,78 @@
+/* =========================================================
+  Efecto de transicion al cargar la pagina de l hero
+========================================================= */
+.hero-enter {
+  opacity: 0;
+  transform: translate3d(0, 22px, 0);
+  transition:
+    opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.95s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+
+.hero-enter.is-visible {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-enter,
+  .hero-enter.is-visible {
+    opacity: 1;
+    transform: none;
+    filter: none;
+    transition: none;
+  }
+}
+/* =========================================================
+  Efecto de transición al cargar la hero
+========================================================= */
 .hero-centered-section {
   width: 100%;
   padding: 100px 0;
   overflow: hidden;
+  opacity: 0;
+  transform: translate3d(0, 18px, 0);
+  transition:
+    opacity 0.72s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.82s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
 }
 
+.hero-centered-section.hero-mounted {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-centered-section,
+  .hero-centered-section.hero-mounted {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .profile-avatar {
+    transition: none;
+    transform: none;
+  }
+
+  .profile-avatar:hover {
+    transform: none;
+  }
+
+  .social-btn {
+    transition: none;
+  }
+
+  .social-btn:hover {
+    transform: none;
+  }
+}
+
+/* =========================================================
+  HERO SECTION
+========================================================= */
 .hero-center-content {
   display: flex;
   flex-direction: column;
@@ -95,11 +164,18 @@
   border: 1px solid var(--border);
   box-shadow: 0 30px 80px rgba(0, 0, 0, 0.35);
   transform: perspective(1200px) rotateY(-6deg);
-  transition: 0.4s ease;
+  transition:
+    transform 0.4s ease,
+    box-shadow 0.4s ease;
 }
 
 .profile-avatar:hover {
   transform: perspective(1200px) rotateY(0) translateY(-10px);
+}
+
+.hero-badge-wrap {
+  display: flex;
+  justify-content: center;
 }
 
 .hero-badge-inner {
@@ -124,11 +200,12 @@
   gap: 20px;
 }
 
-.hero-speciality-card {
+/* corregido: esta es la clase que usas en JSX */
+.speciality-card {
   min-height: 210px;
 }
 
-.hero-speciality-card p {
+.speciality-card p {
   margin-top: auto;
 }
 
@@ -151,7 +228,11 @@
   background: var(--bg-card);
   color: var(--text-main);
   font-weight: 700;
-  transition: 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    border-color 0.3s ease,
+    background 0.3s ease,
+    color 0.3s ease;
 }
 
 .social-btn:hover {
@@ -165,12 +246,18 @@
   gap: 15px;
 }
 
+/* =========================================================
+  RESPONSIVE TABLET
+========================================================= */
 @media (min-width: 768px) {
   .speciality-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
+/* =========================================================
+  RESPONSIVE DESKTOP
+========================================================= */
 @media (min-width: 1024px) {
   .hero-top-row {
     display: grid;
@@ -192,11 +279,14 @@
     display: flex;
   }
 
-  .hero-speciality-card {
+  .speciality-card {
     min-height: 230px;
   }
 }
 
+/* =========================================================
+  RESPONSIVE LARGE DESKTOP
+========================================================= */
 @media (min-width: 1280px) {
   .avatar-wrapper {
     width: 450px;

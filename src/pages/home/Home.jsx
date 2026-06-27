@@ -6,6 +6,7 @@ import FeaturedLaboratory from "../../components/sections/FeaturedLaboratory";
 import ContactPreview from "../../components/sections/ContactPreview";
 
 import {
+  usePortfolioHero,
   usePortfolioHome,
   useLaboratoryHome,
 } from "../../hooks/usePortfolioData";
@@ -18,25 +19,40 @@ function Home() {
 
   const {
     profile,
-    projects,
     expertise,
     socialLinks,
-    loading: homeLoading,
-    error: homeError,
-  } = usePortfolioHome();
+    loading: heroLoading,
+    error: heroError,
+  } = usePortfolioHero();
 
-  const {
-    summary,
-    loading: laboratoryLoading,
-    error: laboratoryError,
-  } = useLaboratoryHome();
+const {
+  projects,
+  loading: homeLoading,
+  error: homeError,
+} = usePortfolioHome(showDeferredSections);
+
+const {
+  summary,
+  loading: laboratoryLoading,
+  error: laboratoryError,
+} = useLaboratoryHome(showDeferredSections);
 
   useEffect(() => {
-    const id = window.requestAnimationFrame(() => {
+    if (typeof window === "undefined") return;
+
+    const raf =
+      window.requestAnimationFrame ||
+      ((callback) => window.setTimeout(callback, 16));
+
+    const cancelRaf =
+      window.cancelAnimationFrame ||
+      ((id) => window.clearTimeout(id));
+
+    const id = raf(() => {
       setShowDeferredSections(true);
     });
 
-    return () => window.cancelAnimationFrame(id);
+    return () => cancelRaf(id);
   }, []);
 
   const featuredProjects = (projects ?? [])
@@ -76,6 +92,8 @@ function Home() {
 
   const safeJsonLd = JSON.stringify(personSchema).replace(/<\//g, "<\\/");
 
+  const pageError = heroError || homeError;
+
   return (
     <>
       <script
@@ -83,10 +101,10 @@ function Home() {
         dangerouslySetInnerHTML={{ __html: safeJsonLd }}
       />
 
-      {homeError ? (
+      {pageError ? (
         <div className="state-wrapper error centered">
           <h2>Error de conexión</h2>
-          <p>{homeError}</p>
+          <p>{pageError}</p>
         </div>
       ) : (
         <>
@@ -94,9 +112,13 @@ function Home() {
             profile={profile}
             expertise={expertise}
             socialLinks={socialLinks}
+            loading={heroLoading}
           />
 
-          <AboutPreview profile={profile} />
+          <AboutPreview
+            profile={profile}
+            loading={heroLoading}
+          />
 
           {showDeferredSections ? (
             <>
