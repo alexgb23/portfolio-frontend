@@ -218,16 +218,18 @@
 .grid-cards,
 .expertise-grid {
   display: grid;
-  grid-template-columns: 1fr;
-  gap: 0.95rem;
+  gap: 1rem;
 }
 
 .grid-cards {
+  grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr));
   margin-top: 1.2rem;
 }
 
 .expertise-grid {
-  margin-top: 1.4rem;
+  grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr));
+  margin-top: 1.6rem;
+  align-items: stretch;
 }
 
 .grid-cards > *,
@@ -264,22 +266,13 @@
     margin-bottom: 2.7rem;
   }
 
-    .grid-cards {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 1rem;
-    align-items: stretch;
-  }
 
   .grid-cards > * {
     width: 100%;
     min-width: 0;
     height: 100%;
-  }
-
-  .expertise-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 1rem;
-    margin-top: 1.6rem;
+    align-items: stretch;
   }
 
   .section-more {
@@ -309,12 +302,6 @@
   }
 
   .expertise-grid {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 1.05rem;
-  }
-
- .grid-cards {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 1.05rem;
   }
 
