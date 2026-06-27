@@ -221,6 +221,14 @@
   box-shadow: var(--shadow-lg);
 }
 
+.nav-contact-mobile {
+  display: inline-flex;
+}
+
+.nav-contact-desktop {
+  display: none;
+}
+
 /* TABLET Y DESKTOP */
 @media (min-width: 721px) {
   .navbar {
@@ -275,5 +283,12 @@
   .nav-cta {
     display: inline-flex;
     margin-left: 12px;
+  }
+    .nav-contact-mobile {
+    display: none;
+  }
+
+  .nav-contact-desktop {
+    display: inline-flex;
   }
 }

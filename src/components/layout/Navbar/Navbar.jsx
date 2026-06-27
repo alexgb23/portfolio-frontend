@@ -73,6 +73,17 @@ function Navbar({ isDarkMode, themeMode, toggleTheme }) {
           >
             Laboratorio
           </NavLink>
+
+          {/* LINK CONTACTO SOLO EN MÓVIL */}
+          <NavLink
+            to="/contacto"
+            className={({ isActive }) =>
+              `nav-contact-mobile ${isActive ? "active" : ""}`
+            }
+            onClick={closeMenu}
+          >
+            Contacto
+          </NavLink>
         </div>
 
         {/* ACCIONES */}
@@ -92,7 +103,12 @@ function Navbar({ isDarkMode, themeMode, toggleTheme }) {
             {isDarkMode ? <FaSun /> : <FaMoon />}
           </button>
 
-          <NavLink to="/contacto" className="nav-cta" onClick={closeMenu}>
+          {/* BOTÓN CONTACTO SOLO ESCRITORIO */}
+          <NavLink
+            to="/contacto"
+            className="nav-cta nav-contact-desktop"
+            onClick={closeMenu}
+          >
             Contacto
             <FaArrowRight />
           </NavLink>
