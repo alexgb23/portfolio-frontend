@@ -8,18 +8,22 @@ import {
 } from "react-icons/fa";
 import "../sectionsGlobals.css";
 
-function AboutPreview() {
+function AboutPreview({ profile = null }) {
+  const title =
+    profile?.headline ||
+    "Desarrollo, infraestructura y automatización en una sola visión";
+
+  const description =
+    profile?.bio_short ||
+    "Mi trabajo une software, redes, servidores, electrónica aplicada y visualización de datos. Me interesan los proyectos donde hay que integrar sistemas reales y hacerlos útiles, mantenibles y estables.";
+
   return (
     <section className="section section-spaced section-separated" id="sobre-mi">
       <div className="section-head-centered narrow">
         <span className="section-kicker">Perfil técnico</span>
 
-        <h2>Desarrollo, infraestructura y automatización en una sola visión</h2>
-        <p>
-          Mi trabajo une software, redes, servidores, electrónica aplicada y
-          visualización de datos. Me interesan los proyectos donde hay que
-          integrar sistemas reales y hacerlos útiles, mantenibles y estables.
-        </p>
+        <h2>{title}</h2>
+        <p>{description}</p>
       </div>
 
       <div className="expertise-grid">

@@ -15,6 +15,73 @@
   border-radius: 4px;
 }
 
+.hero-sk-kicker {
+  width: 240px;
+}
+
+.hero-sk-title,
+.hero-sk-intro {
+  display: flex;
+  flex-direction: column;
+}
+
+.hero-sk-line {
+  display: block;
+}
+
+.hero-sk-photo {
+  width: 100%;
+  max-width: 450px;
+}
+
+.hero-sk-badge {
+  width: 220px;
+  height: 1.8rem;
+}
+
+.hero-sk-card {
+  pointer-events: none;
+}
+
+.hero-sk-social {
+  pointer-events: none;
+}
+
+.hero-sk-social-icon {
+  width: 18px;
+  height: 18px;
+  min-width: 18px;
+}
+
+.hero-sk-social-text {
+  width: 90px;
+  margin-bottom: 0;
+}
+
+.w-100 {
+  width: 100%;
+}
+
+.w-90 {
+  width: 90%;
+}
+
+.w-80 {
+  width: 80%;
+}
+
+.w-75 {
+  width: 75%;
+}
+
+.w-70 {
+  width: 70%;
+}
+
+.w-65 {
+  width: 65%;
+}
+
 .skeleton-text-sm {
   height: 0.8rem;
   margin-bottom: 0.5rem;

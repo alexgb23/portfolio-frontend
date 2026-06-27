@@ -3,12 +3,20 @@ import { FaGithub, FaLinkedin, FaEnvelope, FaArrowRight } from "react-icons/fa";
 import "../../pages/contact/Contact.css";
 import "../sections/sectionsGlobals.css";
 
-function SocialCard({ href, icon, label, title, text, className = "" }) {
-  const isMail = href.startsWith("mailto:");
+function SocialCard({
+  href = "#",
+  icon,
+  label,
+  title,
+  text,
+  className = "",
+}) {
+  const safeHref = typeof href === "string" && href.trim() ? href : "#";
+  const isMail = safeHref.startsWith("mailto:");
 
   return (
     <a
-      href={href}
+      href={safeHref}
       target={isMail ? undefined : "_blank"}
       rel={isMail ? undefined : "noreferrer"}
       className={`social-mini-card${className ? ` ${className}` : ""}`}
@@ -34,15 +42,31 @@ function SocialCard({ href, icon, label, title, text, className = "" }) {
   );
 }
 
-function ContactPreview() {
+function ContactPreview({ profile = null, socialLinks = [] }) {
+  const safeLinks = Array.isArray(socialLinks) ? socialLinks : [];
+
+  const github = safeLinks.find(
+    (item) => (item?.platform || item?.icon_key || "").toLowerCase() === "github"
+  );
+
+  const linkedin = safeLinks.find(
+    (item) => (item?.platform || item?.icon_key || "").toLowerCase() === "linkedin"
+  );
+
+  const email = safeLinks.find((item) =>
+    ["email", "envelope"].includes(
+      (item?.platform || item?.icon_key || "").toLowerCase()
+    )
+  );
+
   return (
     <section className="section section-spaced section-separated">
       <div className="section-head-centered">
         <span className="section-kicker">Contacto</span>
-        <h2>Hablemos de tu proyecto</h2>
+        <h2>{profile?.contact_title || "Hablemos de tu proyecto"}</h2>
         <p>
-          Desarrollo, infraestructura, automatización y soporte técnico para
-          proyectos reales.
+          {profile?.contact_intro ||
+            "Desarrollo, infraestructura, automatización y soporte técnico para proyectos reales."}
         </p>
       </div>
 
@@ -51,29 +75,35 @@ function ContactPreview() {
           <h3>Canales principales</h3>
 
           <div className="social-mini-grid">
-            <SocialCard
-              href="https://github.com"
-              icon={<FaGithub />}
-              label="GitHub"
-              title="Alexgb23"
-              text="Repos y código"
-            />
+            {github?.url ? (
+              <SocialCard
+                href={github.url}
+                icon={<FaGithub />}
+                label="GitHub"
+                title={github.label || github.username || "GitHub"}
+                text="Repos y código"
+              />
+            ) : null}
 
-            <SocialCard
-              href="https://linkedin.com"
-              icon={<FaLinkedin />}
-              label="LinkedIn"
-              title="Alexander Galvez"
-              text="Perfil profesional"
-            />
+            {linkedin?.url ? (
+              <SocialCard
+                href={linkedin.url}
+                icon={<FaLinkedin />}
+                label="LinkedIn"
+                title={linkedin.label || "LinkedIn"}
+                text="Perfil profesional"
+              />
+            ) : null}
 
-            <SocialCard
-              href="mailto:tu-correo@empresa.com"
-              icon={<FaEnvelope />}
-              label="Correo"
-              title="Email"
-              text="Contacto directo"
-            />
+            {email?.url ? (
+              <SocialCard
+                href={email.url}
+                icon={<FaEnvelope />}
+                label="Correo"
+                title={email.label || profile?.email || "Email"}
+                text="Contacto directo"
+              />
+            ) : null}
           </div>
 
           <div className="section-more left">

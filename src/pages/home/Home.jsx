@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import HeroSection from "../../components/sections/heroSection/HeroSection";
 import AboutPreview from "../../components/sections/aboutPreview/AboutPreview";
 import FeaturedProjects from "../../components/sections/FeaturedProjects";
@@ -13,9 +14,13 @@ import usePageTitle from "../../hooks/usePageTitle";
 function Home() {
   usePageTitle("Alexander Galvez | Portfolio IT y Desarrollo Full Stack");
 
+  const [showDeferredSections, setShowDeferredSections] = useState(false);
+
   const {
     profile,
     projects,
+    expertise,
+    socialLinks,
     loading: homeLoading,
     error: homeError,
   } = usePortfolioHome();
@@ -26,7 +31,13 @@ function Home() {
     error: laboratoryError,
   } = useLaboratoryHome();
 
-  const error = homeError || laboratoryError;
+  useEffect(() => {
+    const id = window.requestAnimationFrame(() => {
+      setShowDeferredSections(true);
+    });
+
+    return () => window.cancelAnimationFrame(id);
+  }, []);
 
   const featuredProjects = (projects ?? [])
     .filter((project) => project.is_featured)
@@ -72,28 +83,51 @@ function Home() {
         dangerouslySetInnerHTML={{ __html: safeJsonLd }}
       />
 
-      <HeroSection />
-      <AboutPreview />
-
-      {error ? (
+      {homeError ? (
         <div className="state-wrapper error centered">
           <h2>Error de conexión</h2>
-          <p>{error}</p>
+          <p>{homeError}</p>
         </div>
       ) : (
         <>
-          <FeaturedProjects projects={featuredProjects} loading={homeLoading} />
-
-          <FeaturedLaboratory
-            serversCount={summary?.servers_count ?? 0}
-            metricsCount={summary?.metrics_count ?? 0}
-            nodesCount={summary?.nodes_count ?? 0}
-            loading={laboratoryLoading}
+          <HeroSection
+            profile={profile}
+            expertise={expertise}
+            socialLinks={socialLinks}
           />
+
+          <AboutPreview profile={profile} />
+
+          {showDeferredSections ? (
+            <>
+              <FeaturedProjects
+                projects={featuredProjects}
+                loading={homeLoading}
+              />
+
+              {laboratoryError ? (
+                <section className="section section-spaced section-separated">
+                  <div className="empty-inline-state">
+                    <p>No se pudo cargar el resumen del laboratorio en este momento.</p>
+                  </div>
+                </section>
+              ) : (
+                <FeaturedLaboratory
+                  serversCount={summary?.servers_count ?? 0}
+                  metricsCount={summary?.metrics_count ?? 0}
+                  nodesCount={summary?.nodes_count ?? 0}
+                  loading={laboratoryLoading}
+                />
+              )}
+
+              <ContactPreview
+                profile={profile}
+                socialLinks={socialLinks}
+              />
+            </>
+          ) : null}
         </>
       )}
-
-      <ContactPreview />
     </>
   );
 }

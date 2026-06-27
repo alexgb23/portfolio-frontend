@@ -11,7 +11,6 @@ import {
   FaDatabase,
 } from "react-icons/fa";
 
-import usePortfolioHome from "../../../hooks/pages/usePortfolioHome";
 import "../sectionsGlobals.css";
 import "./HeroSection.css";
 
@@ -34,14 +33,16 @@ const socialIconMap = {
   envelope: FaEnvelope,
 };
 
-function HeroSection() {
-  const { profile, expertise, socialLinks, loading } = usePortfolioHome();
-
+function HeroSection({
+  profile = null,
+  expertise = [],
+  socialLinks = [],
+}) {
   const displayedExpertise = (expertise ?? []).slice(0, 4);
 
   const displayedSocialLinks = (socialLinks ?? []).filter((item) =>
     ["github", "linkedin", "email", "envelope"].includes(
-      (item.platform || item.icon_key || "").toLowerCase()
+      (item?.platform || item?.icon_key || "").toLowerCase()
     )
   );
 
@@ -49,7 +50,8 @@ function HeroSection() {
     profile?.hero_kicker ||
     "DESARROLLO WEB · INFRAESTRUCTURA IT · AUTOMATIZACIÓN";
 
-  const heroTitlePrefix = profile?.hero_title_prefix || "Diseño soluciones donde";
+  const heroTitlePrefix =
+    profile?.hero_title_prefix || "Diseño soluciones donde";
   const heroTitleHighlight =
     profile?.hero_title_highlight || "software, sistemas y red";
   const heroTitleSuffix =
@@ -67,9 +69,7 @@ function HeroSection() {
       <div className="container hero-center-content">
         <div className="hero-top-row">
           <div className="hero-title-container">
-            <span className="hero-kicker">
-              {loading ? "Cargando..." : heroKicker}
-            </span>
+            <span className="hero-kicker">{heroKicker}</span>
 
             <h1 className="hero-main-title">
               {heroTitlePrefix} <span>{heroTitleHighlight}</span>{" "}
@@ -78,7 +78,9 @@ function HeroSection() {
 
             <h2 className="sr-only">Especialidades principales</h2>
 
-            <p className="hero-intro">{loading ? "Cargando perfil..." : heroIntro}</p>
+            <p className="hero-intro">
+              {heroIntro}
+            </p>
           </div>
 
           <div className="avatar-block">
@@ -96,7 +98,7 @@ function HeroSection() {
                 />
                 <img
                   src="/imagen_portfolio_mia_retocada-960.avif"
-                  alt={profile?.display_name || "Alexander Galvez"}
+                  alt={profile?.display_name || profile?.full_name || "Alexander Galvez"}
                   className="profile-avatar"
                   width="450"
                   height="580"
@@ -114,27 +116,79 @@ function HeroSection() {
 
         <div className="hero-bottom-block">
           <section className="speciality-grid">
-            {displayedExpertise.map((item, index) => {
-              const Icon =
-                expertiseIconMap[(item.icon_key || "").toLowerCase()] || FaCode;
+            {displayedExpertise.length > 0 ? (
+              displayedExpertise.map((item, index) => {
+                const Icon =
+                  expertiseIconMap[(item?.icon_key || "").toLowerCase()] || FaCode;
 
-              return (
-                <article
-                  key={item.id || item.title || index}
-                  className={`card card-hover ${item.tone || "tone-0"} speciality-card`}
-                >
+                return (
+                  <article
+                    key={item.id || item.title || index}
+                    className={`card card-hover ${item.tone || "tone-0"} speciality-card`}
+                  >
+                    <div className="card-head">
+                      <div className="card-icon">
+                        <Icon />
+                      </div>
+                      <div className="card-title-wrap">
+                        <h3>{item.title}</h3>
+                      </div>
+                    </div>
+                    <p>{item.text}</p>
+                  </article>
+                );
+              })
+            ) : (
+              <>
+                <article className="card card-hover tone-0 speciality-card">
                   <div className="card-head">
                     <div className="card-icon">
-                      <Icon />
+                      <FaCode />
                     </div>
                     <div className="card-title-wrap">
-                      <h3>{item.title}</h3>
+                      <h3>Desarrollo</h3>
                     </div>
                   </div>
-                  <p>{item.text}</p>
+                  <p>Frontend moderno, backend y APIs orientadas a soluciones reales.</p>
                 </article>
-              );
-            })}
+
+                <article className="card card-hover tone-1 speciality-card">
+                  <div className="card-head">
+                    <div className="card-icon">
+                      <FaServer />
+                    </div>
+                    <div className="card-title-wrap">
+                      <h3>Infraestructura</h3>
+                    </div>
+                  </div>
+                  <p>Servidores, virtualización y servicios técnicos en entornos reales.</p>
+                </article>
+
+                <article className="card card-hover tone-2 speciality-card">
+                  <div className="card-head">
+                    <div className="card-icon">
+                      <FaNetworkWired />
+                    </div>
+                    <div className="card-title-wrap">
+                      <h3>Redes</h3>
+                    </div>
+                  </div>
+                  <p>Segmentación, routing, seguridad y conectividad estable.</p>
+                </article>
+
+                <article className="card card-hover tone-0 speciality-card">
+                  <div className="card-head">
+                    <div className="card-icon">
+                      <FaMicrochip />
+                    </div>
+                    <div className="card-title-wrap">
+                      <h3>Automatización</h3>
+                    </div>
+                  </div>
+                  <p>IoT, sensores, controladores y lógica aplicada a sistemas físicos.</p>
+                </article>
+              </>
+            )}
           </section>
 
           <div className="hero-actions">
@@ -150,20 +204,18 @@ function HeroSection() {
 
           <div className="social-center-links">
             {displayedSocialLinks.map((item, index) => {
-              const key = (item.platform || item.icon_key || "").toLowerCase();
+              const key = (item?.platform || item?.icon_key || "").toLowerCase();
               const Icon = socialIconMap[key] || FaEnvelope;
+              const href = item?.url || "#";
+              const isMail = href.startsWith("mailto:");
 
               return (
                 <a
                   key={item.id || item.platform || index}
-                  href={item.url}
+                  href={href}
                   className="social-btn"
-                  target={item.url?.startsWith("mailto:") ? undefined : "_blank"}
-                  rel={
-                    item.url?.startsWith("mailto:")
-                      ? undefined
-                      : "noopener noreferrer"
-                  }
+                  target={isMail ? undefined : "_blank"}
+                  rel={isMail ? undefined : "noopener noreferrer"}
                 >
                   <Icon />
                   {item.label || item.platform}

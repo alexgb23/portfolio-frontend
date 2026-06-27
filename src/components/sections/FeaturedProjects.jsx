@@ -20,7 +20,7 @@ function FeaturedProjects({ projects = [], loading = false }) {
         </p>
       </div>
 
-      {loading ? (
+      {loading && !hasProjects ? (
         <div className="grid-cards">
           {Array.from({ length: 3 }).map((_, index) => (
             <div
