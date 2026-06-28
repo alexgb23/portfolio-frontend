@@ -24,7 +24,7 @@ function SocialCard({
       <div className="social-mini-front">
         <div className="social-mini-shine" aria-hidden="true"></div>
 
-        <div className="social-mini-icon" aria-hidden="true">
+        <div className=" expertise-icon" aria-hidden="true">
           {icon}
         </div>
 
