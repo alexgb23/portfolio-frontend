@@ -1,5 +1,5 @@
 import { FaNetworkWired, FaWaveSquare } from "react-icons/fa";
-
+import "./Cards.css";
 
 export default function NodeCard({ node, index = 0 }) {
   if (!node) return null;

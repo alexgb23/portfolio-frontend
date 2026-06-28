@@ -60,6 +60,7 @@
   font-size: 1rem;
   line-height: 1.8;
 }
+
 /* =========================================================
    CTA FINAL DE SECCIÓN
    ========================================================= */
@@ -138,6 +139,10 @@
 .inline-link:hover svg {
   transform: translateX(3px);
 }
+
+/* =========================================================
+   EMPTY / STATE BLOCKS
+   ========================================================= */
 
 .empty-inline-state {
   display: flex;
@@ -237,7 +242,65 @@
   min-width: 0;
 }
 
+/* =========================================================
+   FEATURED PROJECTS
+   Variantes locales de proyectos y skeleton
+   ========================================================= */
 
+.project-card-tags,
+.project-card-skeleton-tags {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 12px;
+}
+
+.project-card-stack,
+.project-card-skeleton-counter {
+  align-items: flex-start;
+}
+
+.project-card-skeleton-counter strong {
+  display: block;
+  height: 12px;
+  border-radius: 999px;
+}
+
+.project-card-skeleton-title {
+  width: 100%;
+}
+
+.skeleton .expertise-grid .skeleton-copy {
+  margin-top: 0.15rem;
+}
+
+.skeleton .project-card-skeleton-tags .skeleton-pill {
+  width: 74px;
+  height: 30px;
+}
+
+.project-tech-tag {
+  display: inline-flex;
+  align-items: center;
+  min-height: 30px;
+  padding: 0.35rem 0.65rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1;
+}
+
+:root[data-theme="dark"] .project-tech-tag {
+  border: 1px solid rgb(255 255 255 / 8%);
+  background: rgb(255 255 255 / 4%);
+  color: var(--text-soft, rgb(255 255 255 / 78%));
+}
+
+:root[data-theme="light"] .project-tech-tag {
+  border: 1px solid rgb(15 23 42 / 8%);
+  background: rgb(255 255 255 / 72%);
+  color: var(--text-soft, rgb(15 23 42 / 72%));
+}
 
 /* =========================================================
    LISTADOS LINEALES
@@ -266,12 +329,11 @@
     margin-bottom: 2.7rem;
   }
 
-
-  .grid-cards > * {
+  .grid-cards > *,
+  .expertise-grid > * {
     width: 100%;
     min-width: 0;
     height: 100%;
-    gap: 1rem;
     align-items: stretch;
   }
 
@@ -326,10 +388,5 @@
 
   .inline-link:hover svg {
     transform: none;
-  }
-  .sk::after {
-    animation: none;
-    transform: none;
-    background: none;
   }
 }

@@ -4,15 +4,32 @@ import {
   FaExternalLinkAlt,
   FaGithub,
   FaTag,
+  FaLayerGroup,
+  FaCircle,
 } from "react-icons/fa";
 
 import { useLaboratoryDetail } from "../../hooks/usePortfolioData";
 import usePageTitle from "../../hooks/usePageTitle";
 import "./Laboratory.css";
 
+function getDetailTone(item) {
+  const value = item?.category || item?.type || "";
+
+  const map = {
+    automation: "tone-0",
+    monitoring: "tone-1",
+    ai: "tone-2",
+    research: "tone-1",
+    virtualization: "tone-1",
+    networking: "tone-2",
+    backup: "tone-0",
+  };
+
+  return map[value] || "tone-1";
+}
+
 function LaboratoryDetail() {
   const { id } = useParams();
-
   const { laboratoryItem, loading, error } = useLaboratoryDetail(id);
 
   const title =
@@ -42,20 +59,14 @@ function LaboratoryDetail() {
     return (
       <div className="state-wrapper centered">
         <h2>Proyecto no encontrado</h2>
-        <p>
-          No se ha encontrado información para este elemento del laboratorio.
-        </p>
+        <p>No se ha encontrado información para este elemento del laboratorio.</p>
       </div>
     );
   }
 
   const tags = Array.isArray(laboratoryItem?.tags) ? laboratoryItem.tags : [];
-  const stack = Array.isArray(laboratoryItem?.stack)
-    ? laboratoryItem.stack
-    : [];
-  const links = Array.isArray(laboratoryItem?.links)
-    ? laboratoryItem.links
-    : [];
+  const stack = Array.isArray(laboratoryItem?.stack) ? laboratoryItem.stack : [];
+  const links = Array.isArray(laboratoryItem?.links) ? laboratoryItem.links : [];
 
   const summary =
     laboratoryItem?.summary ||
@@ -69,6 +80,8 @@ function LaboratoryDetail() {
     laboratoryItem?.body ||
     laboratoryItem?.details ||
     "";
+
+  const toneClass = getDetailTone(laboratoryItem);
 
   return (
     <section className="section section-spaced laboratory-page">
@@ -93,8 +106,17 @@ function LaboratoryDetail() {
 
       <section className="laboratory-detail-layout">
         <article className="laboratory-detail-main">
-          <div className="lab-detail-card">
-            <h2>Descripción</h2>
+          <div className={`expertise-card card-hover laboratory-card lab-detail-card ${toneClass}`}>
+            <div className="card-head">
+              <div className="expertise-icon">
+                <FaLayerGroup />
+              </div>
+
+              <div className="card-title-wrap">
+                <h3>Descripción</h3>
+              </div>
+            </div>
+
             <p>
               {description ||
                 "Este proyecto todavía no tiene una descripción detallada disponible."}
@@ -104,8 +126,16 @@ function LaboratoryDetail() {
           {laboratoryItem?.demo_url ||
           laboratoryItem?.repository_url ||
           links.length > 0 ? (
-            <div className="lab-detail-card">
-              <h2>Recursos</h2>
+            <div className={`expertise-card card-hover laboratory-card lab-detail-card ${toneClass}`}>
+              <div className="card-head">
+                <div className="expertise-icon">
+                  <FaExternalLinkAlt />
+                </div>
+
+                <div className="card-title-wrap">
+                  <h3>Recursos</h3>
+                </div>
+              </div>
 
               <div className="lab-detail-links">
                 {laboratoryItem?.demo_url ? (
@@ -158,8 +188,16 @@ function LaboratoryDetail() {
         </article>
 
         <aside className="laboratory-detail-side">
-          <div className="lab-detail-card">
-            <h2>Metadatos</h2>
+          <div className={`expertise-card card-hover laboratory-card lab-detail-card ${toneClass}`}>
+            <div className="card-head">
+              <div className="expertise-icon">
+                <FaCircle />
+              </div>
+
+              <div className="card-title-wrap">
+                <h3>Metadatos</h3>
+              </div>
+            </div>
 
             <div className="lab-detail-meta">
               <div>
@@ -178,19 +216,26 @@ function LaboratoryDetail() {
 
               <div>
                 <span>Slug / ID</span>
-                <strong>
-                  {laboratoryItem?.slug || laboratoryItem?.id || id}
-                </strong>
+                <strong>{laboratoryItem?.slug || laboratoryItem?.id || id}</strong>
               </div>
             </div>
           </div>
 
           {tags.length > 0 ? (
-            <div className="lab-detail-card">
-              <h2>Tags</h2>
+            <div className={`expertise-card card-hover laboratory-card lab-detail-card ${toneClass}`}>
+              <div className="card-head">
+                <div className="expertise-icon">
+                  <FaTag />
+                </div>
+
+                <div className="card-title-wrap">
+                  <h3>Tags</h3>
+                </div>
+              </div>
+
               <div className="lab-project-tags">
                 {tags.map((tag, index) => (
-                  <span key={`tag-${index}`}>
+                  <span className="tag" key={`tag-${index}`}>
                     <FaTag />
                     {tag}
                   </span>
@@ -200,11 +245,22 @@ function LaboratoryDetail() {
           ) : null}
 
           {stack.length > 0 ? (
-            <div className="lab-detail-card">
-              <h2>Stack</h2>
+            <div className={`expertise-card card-hover laboratory-card lab-detail-card ${toneClass}`}>
+              <div className="card-head">
+                <div className="expertise-icon">
+                  <FaLayerGroup />
+                </div>
+
+                <div className="card-title-wrap">
+                  <h3>Stack</h3>
+                </div>
+              </div>
+
               <div className="lab-project-tags">
                 {stack.map((item, index) => (
-                  <span key={`stack-${index}`}>{item}</span>
+                  <span className="tag" key={`stack-${index}`}>
+                    {item}
+                  </span>
                 ))}
               </div>
             </div>

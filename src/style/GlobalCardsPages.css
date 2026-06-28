@@ -1,32 +1,33 @@
 /* =========================================================
-   GLOBAL CARDS
-   Tarjetas reutilizables fuera de tech cards
+   TARJETAS GLOBALES DE BLOQUES DESTACADOS
+   Base reutilizable para:
+   HeroSection / FeaturedProjects / FeaturedLaboratory / bloques expertise
    ========================================================= */
 
 :root {
-  --card-radius: 18px;
-  --card-pad: 1rem;
-  --card-border: var(--border, rgb(255 255 255 / 10%));
+  --gt-card-radius: 18px;
+  --gt-card-pad: 1rem;
+  --gt-card-border: var(--border, rgb(255 255 255 / 10%));
 
-  --card-bg-dark: linear-gradient(
+  --gt-card-bg-dark: linear-gradient(
     180deg,
     rgb(255 255 255 / 4.5%) 0%,
     rgb(255 255 255 / 2%) 100%
   );
-  --card-bg-light: linear-gradient(
+  --gt-card-bg-light: linear-gradient(
     180deg,
     rgb(255 255 255 / 86%) 0%,
     rgb(255 255 255 / 72%) 100%
   );
 
-  --card-shadow-dark:
+  --gt-card-shadow-dark:
     0 14px 34px rgb(0 0 0 / 18%),
     0 4px 12px rgb(0 0 0 / 12%);
-  --card-shadow-light:
+  --gt-card-shadow-light:
     0 16px 30px rgb(15 23 42 / 8%),
     0 4px 12px rgb(15 23 42 / 5%);
 
-  --card-line-fade: linear-gradient(
+  --gt-card-line-fade: linear-gradient(
     90deg,
     transparent 0%,
     color-mix(in srgb, var(--card-tone-accent, var(--accent)) 22%, transparent) 16%,
@@ -41,7 +42,7 @@
 }
 
 /* =========================================================
-   EXPERTISE CARD
+   BASE DE LA TARJETA
    ========================================================= */
 
 .expertise-card {
@@ -50,9 +51,9 @@
   flex-direction: column;
   gap: 0.15rem;
   min-height: 100%;
-  padding: var(--card-pad);
-  border: 1px solid var(--card-border);
-  border-radius: var(--card-radius);
+  padding: var(--gt-card-pad);
+  border: 1px solid var(--gt-card-border);
+  border-radius: var(--gt-card-radius);
   overflow: hidden;
   isolation: isolate;
   transition:
@@ -83,33 +84,39 @@
   width: 72%;
   height: 1px;
   margin: 0.95rem 0;
-  background: var(--card-line-fade);
+  background: var(--gt-card-line-fade);
   opacity: 0.95;
 }
 
 :root[data-theme="dark"] .expertise-card {
-  background: var(--card-bg-dark);
+  background: var(--gt-card-bg-dark);
   box-shadow:
-    0 14px 30px rgb(0 0 0 / 18%),
+    var(--gt-card-shadow-dark),
     0 0 18px color-mix(in srgb, var(--card-tone-accent, var(--accent)) 9%, transparent),
     inset 0 1px 0 rgb(255 255 255 / 4%);
   backdrop-filter: blur(14px);
 }
 
 :root[data-theme="light"] .expertise-card {
-  background: var(--card-bg-light);
+  background: var(--gt-card-bg-light);
   box-shadow:
-    0 14px 26px rgb(15 23 42 / 8%),
+    var(--gt-card-shadow-light),
     0 0 14px color-mix(in srgb, var(--card-tone-accent, var(--accent)) 8%, transparent),
     inset 0 1px 0 rgb(255 255 255 / 55%);
   backdrop-filter: blur(12px);
 }
 
-.expertise-card:hover {
+/* =========================================================
+   VARIANTE HOVER
+   Añade esta clase solo cuando quieras efecto hover:
+   class="expertise-card expertise-card-hover ..."
+   ========================================================= */
+
+.expertise-card-hover:hover {
   transform: translateY(-4px);
 }
 
-:root[data-theme="dark"] .expertise-card:hover {
+:root[data-theme="dark"] .expertise-card-hover:hover {
   border-color: color-mix(
     in srgb,
     var(--card-tone-accent, var(--accent)) 20%,
@@ -121,7 +128,7 @@
     0 0 18px color-mix(in srgb, var(--card-tone-accent, var(--accent)) 10%, transparent);
 }
 
-:root[data-theme="light"] .expertise-card:hover {
+:root[data-theme="light"] .expertise-card-hover:hover {
   border-color: color-mix(
     in srgb,
     var(--card-tone-accent, var(--accent)) 16%,
@@ -134,10 +141,29 @@
 }
 
 /* =========================================================
-   EXPERTISE HEAD / TEXT
+   ESTRUCTURA INTERNA DE LA TARJETA
    ========================================================= */
 
-.expertise-card h3 {
+.card-head {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.9rem;
+}
+
+.card-title-wrap {
+  flex: 1;
+  min-width: 0;
+}
+
+/* =========================================================
+   TÍTULOS Y TEXTO
+   ========================================================= */
+
+.expertise-card h3,
+.card-title-wrap h3 {
   position: relative;
   z-index: 1;
   margin: 0;
@@ -155,7 +181,7 @@
 }
 
 /* =========================================================
-   EXPERTISE ICON
+   ICONO DE LA TARJETA
    ========================================================= */
 
 .expertise-icon {
@@ -166,7 +192,7 @@
   width: 44px;
   height: 44px;
   flex-shrink: 0;
-  border: 1px solid var(--card-icon-border, var(--card-border));
+  border: 1px solid var(--card-icon-border, var(--gt-card-border));
   border-radius: 14px;
   overflow: hidden;
   color: var(--card-icon-color, var(--card-tone-accent, var(--accent)));
@@ -229,29 +255,85 @@
   filter: drop-shadow(0 1px 1px rgb(0 0 0 / 12%));
 }
 
-.expertise-card:hover .expertise-icon {
+.expertise-card-hover:hover .expertise-icon {
   transform: translateY(-1px) scale(1.02);
+}
+
+/* =========================================================
+   CONTADOR / RESUMEN INFERIOR
+   Útil para FeaturedProjects y bloques parecidos
+   ========================================================= */
+
+.laboratory-counter {
+  display: flex;
+  justify-content: flex-end;
+  align-items: baseline;
+  gap: 1.5rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.laboratory-counter span {
+  font-size: 0.92rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  color: var(--laboratory-counter-label);
+}
+
+.laboratory-counter strong {
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--laboratory-counter-value);
+}
+
+:root[data-theme="dark"] .expertise-card {
+  --laboratory-counter-label: color-mix(
+    in srgb,
+    var(--card-tone-accent, var(--accent)) 52%,
+    var(--accent-green) 48%
+  );
+  --laboratory-counter-value: color-mix(
+    in srgb,
+    var(--card-tone-accent, var(--accent)) 58%,
+    var(--accent-green) 42%
+  );
+}
+
+:root[data-theme="light"] .expertise-card {
+  --laboratory-counter-label: color-mix(
+    in srgb,
+    var(--card-tone-accent, var(--accent)) 58%,
+    var(--accent-green) 42%
+  );
+  --laboratory-counter-value: color-mix(
+    in srgb,
+    var(--card-tone-accent, var(--accent)) 66%,
+    var(--accent-green) 34%
+  );
 }
 
 /* =========================================================
    TONOS COMPARTIDOS
    ========================================================= */
 
-.tone-0 {
-  --card-tone-accent: var(--accent);
-}
-
-.tone-1 {
-  --card-tone-accent: var(--accent-2);
-}
-
-.tone-2 {
-  --card-tone-accent: var(--accent-green);
-}
+.tone-0 { --card-tone-accent: var(--accent); }
+.tone-1 { --card-tone-accent: var(--accent-2); }
+.tone-2 { --card-tone-accent: var(--accent-green); }
+.tone-3 { --card-tone-accent: var(--accent-pink); }
+.tone-4 { --card-tone-accent: var(--accent-orange); }
+.tone-5 { --card-tone-accent: var(--accent-coral); }
+.tone-6 { --card-tone-accent: var(--accent-purple); }
+.tone-7 { --card-tone-accent: var(--accent-indigo); }
 
 :root[data-theme="dark"] .tone-0,
 :root[data-theme="dark"] .tone-1,
-:root[data-theme="dark"] .tone-2 {
+:root[data-theme="dark"] .tone-2,
+:root[data-theme="dark"] .tone-3,
+:root[data-theme="dark"] .tone-4,
+:root[data-theme="dark"] .tone-5,
+:root[data-theme="dark"] .tone-6,
+:root[data-theme="dark"] .tone-7 {
   --card-icon-color: var(--card-tone-accent);
   --card-icon-border: color-mix(
     in srgb,
@@ -262,7 +344,12 @@
 
 :root[data-theme="light"] .tone-0,
 :root[data-theme="light"] .tone-1,
-:root[data-theme="light"] .tone-2 {
+:root[data-theme="light"] .tone-2,
+:root[data-theme="light"] .tone-3,
+:root[data-theme="light"] .tone-4,
+:root[data-theme="light"] .tone-5,
+:root[data-theme="light"] .tone-6,
+:root[data-theme="light"] .tone-7 {
   --card-icon-color: var(--card-tone-accent);
   --card-icon-border: color-mix(
     in srgb,
@@ -277,8 +364,13 @@
 
 @media (width >= 768px) {
   :root {
-    --card-radius: 20px;
-    --card-pad: 1.1rem;
+    --gt-card-radius: 20px;
+    --gt-card-pad: 1.1rem;
+  }
+
+  .card-head {
+    gap: 0.85rem;
+    margin-bottom: 1rem;
   }
 
   .expertise-icon {
@@ -290,8 +382,8 @@
 
 @media (width >= 1024px) {
   :root {
-    --card-radius: 22px;
-    --card-pad: 1.15rem;
+    --gt-card-radius: 22px;
+    --gt-card-pad: 1.15rem;
   }
 
   .expertise-icon {
@@ -302,7 +394,7 @@
 }
 
 /* =========================================================
-   REDUCED MOTION
+   MOVIMIENTO REDUCIDO
    ========================================================= */
 
 @media (prefers-reduced-motion: reduce) {
@@ -311,8 +403,8 @@
     transition: none;
   }
 
-  .expertise-card:hover,
-  .expertise-card:hover .expertise-icon {
+  .expertise-card-hover:hover,
+  .expertise-card-hover:hover .expertise-icon {
     transform: none;
   }
 }

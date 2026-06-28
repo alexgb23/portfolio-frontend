@@ -1,4 +1,5 @@
 import { FaBroadcastTower } from "react-icons/fa";
+import "./Cards.css";
 
 export default function MetricCard({ metric, index = 0 }) {
   if (!metric) return null;

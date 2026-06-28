@@ -1,3 +1,4 @@
+import "./Cards.css";
 import {
   FaCode,
   FaServer,

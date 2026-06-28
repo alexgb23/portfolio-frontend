@@ -8,7 +8,7 @@ import {
   FaShieldAlt,
   FaCloud,
 } from "react-icons/fa";
-import "./FeaturedProjects.css";
+import "./sectionsGlobals.css";
 
 function getProjectIcon(project, techList) {
   const text =
@@ -163,7 +163,10 @@ function FeaturedProjects({ projects = [], loading = false }) {
                 {techList.length > 0 ? (
                   <div className="project-card-tags">
                     {techList.slice(0, 3).map((tech, techIndex) => (
-                      <span key={`${tech}-${techIndex}`} className="project-tech-tag">
+                      <span
+                        key={`${tech}-${techIndex}`}
+                        className="project-tech-tag"
+                      >
                         {tech}
                       </span>
                     ))}
