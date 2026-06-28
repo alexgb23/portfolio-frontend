@@ -12,20 +12,20 @@ import { useLaboratoryDetail } from "../../hooks/usePortfolioData";
 import usePageTitle from "../../hooks/usePageTitle";
 import "./Laboratory.css";
 
-function getDetailTone(item) {
+function getDetailSectionClass(item) {
   const value = item?.category || item?.type || "";
 
   const map = {
-    automation: "tone-0",
-    monitoring: "tone-1",
-    ai: "tone-2",
-    research: "tone-1",
-    virtualization: "tone-1",
-    networking: "tone-2",
-    backup: "tone-0",
+    automation: "lab-section-automation",
+    monitoring: "lab-section-infra",
+    virtualization: "lab-section-infra",
+    networking: "lab-section-infra",
+    ai: "lab-section-ai",
+    research: "lab-section-research",
+    backup: "lab-section-automation",
   };
 
-  return map[value] || "tone-1";
+  return map[value] || "lab-section-infra";
 }
 
 function LaboratoryDetail() {
@@ -81,10 +81,12 @@ function LaboratoryDetail() {
     laboratoryItem?.details ||
     "";
 
-  const toneClass = getDetailTone(laboratoryItem);
+  const sectionClass = getDetailSectionClass(laboratoryItem);
 
   return (
-    <section className="section section-spaced laboratory-page">
+    <section
+      className={`section section-spaced laboratory-page laboratory-detail-page ${sectionClass}`}
+    >
       <div className="lab-back-link-wrap">
         <Link to="/laboratorio" className="inline-link">
           <FaArrowLeft />
@@ -106,7 +108,7 @@ function LaboratoryDetail() {
 
       <section className="laboratory-detail-layout">
         <article className="laboratory-detail-main">
-          <div className={`expertise-card card-hover laboratory-card lab-detail-card ${toneClass}`}>
+          <div className="expertise-card expertise-card-hover laboratory-card lab-detail-card">
             <div className="card-head">
               <div className="expertise-icon">
                 <FaLayerGroup />
@@ -126,7 +128,7 @@ function LaboratoryDetail() {
           {laboratoryItem?.demo_url ||
           laboratoryItem?.repository_url ||
           links.length > 0 ? (
-            <div className={`expertise-card card-hover laboratory-card lab-detail-card ${toneClass}`}>
+            <div className="expertise-card expertise-card-hover laboratory-card lab-detail-card">
               <div className="card-head">
                 <div className="expertise-icon">
                   <FaExternalLinkAlt />
@@ -188,7 +190,7 @@ function LaboratoryDetail() {
         </article>
 
         <aside className="laboratory-detail-side">
-          <div className={`expertise-card card-hover laboratory-card lab-detail-card ${toneClass}`}>
+          <div className="expertise-card expertise-card-hover laboratory-card lab-detail-card">
             <div className="card-head">
               <div className="expertise-icon">
                 <FaCircle />
@@ -222,7 +224,7 @@ function LaboratoryDetail() {
           </div>
 
           {tags.length > 0 ? (
-            <div className={`expertise-card card-hover laboratory-card lab-detail-card ${toneClass}`}>
+            <div className="expertise-card expertise-card-hover laboratory-card lab-detail-card">
               <div className="card-head">
                 <div className="expertise-icon">
                   <FaTag />
@@ -245,7 +247,7 @@ function LaboratoryDetail() {
           ) : null}
 
           {stack.length > 0 ? (
-            <div className={`expertise-card card-hover laboratory-card lab-detail-card ${toneClass}`}>
+            <div className="expertise-card expertise-card-hover laboratory-card lab-detail-card">
               <div className="card-head">
                 <div className="expertise-icon">
                   <FaLayerGroup />

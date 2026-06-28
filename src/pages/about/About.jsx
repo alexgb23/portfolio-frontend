@@ -21,15 +21,52 @@ const expertiseIconMap = {
   infrastructure: FaServer,
 };
 
+const defaultExpertise = [
+  {
+    id: "about-development",
+    title: "Desarrollo",
+    text: "Frontend, backend y soluciones orientadas a producto y experiencia real.",
+    icon_key: "code",
+    tone: "tone-0",
+  },
+  {
+    id: "about-infrastructure",
+    title: "Infraestructura",
+    text: "Servidores, virtualización y despliegues técnicos con enfoque estable y escalable.",
+    icon_key: "server",
+    tone: "tone-1",
+  },
+  {
+    id: "about-networking",
+    title: "Redes",
+    text: "Segmentación, conectividad, routing y seguridad aplicados a entornos reales.",
+    icon_key: "network",
+    tone: "tone-2",
+  },
+  {
+    id: "about-automation",
+    title: "Automatización",
+    text: "Sistemas físicos, sensores e integración técnica para procesos inteligentes.",
+    icon_key: "automation",
+    tone: "tone-0",
+  },
+];
+
 function About() {
   usePageTitle("Sobre mí | Alexander Galvez");
 
   const { profile, skills, highlights, expertise, loading } = usePortfolioHome();
 
-  const technologies = (skills ?? []).map((skill) => skill.name);
+  const technologies = (skills ?? []).map((skill) => skill.name).filter(Boolean);
+
+  const visibleExpertise =
+    Array.isArray(expertise) && expertise.length > 0
+      ? expertise
+      : defaultExpertise;
 
   const aboutTitle =
-    profile?.about_title || "Tecnología, infraestructura y desarrollo en una sola visión";
+    profile?.about_title ||
+    "Tecnología, infraestructura y desarrollo en una sola visión";
 
   const aboutIntro =
     profile?.about_intro ||
@@ -57,13 +94,15 @@ function About() {
             </p>
           ))}
 
-          <div className="tech-badges">
-            {technologies.map((tech) => (
-              <span key={tech} className="badge">
-                {tech}
-              </span>
-            ))}
-          </div>
+          {technologies.length > 0 ? (
+            <div className="tech-badges">
+              {technologies.map((tech) => (
+                <span key={tech} className="badge">
+                  {tech}
+                </span>
+              ))}
+            </div>
+          ) : null}
         </div>
 
         <div className="about-right">
@@ -117,26 +156,26 @@ function About() {
 
       <section className="expertise-section">
         <div className="expertise-grid">
-          {(expertise ?? []).map((item, index) => {
+          {visibleExpertise.map((item, index) => {
             const Icon =
-              expertiseIconMap[(item.icon_key || "").toLowerCase()] || FaCode;
+              expertiseIconMap[(item?.icon_key || "").toLowerCase()] || FaCode;
 
             return (
               <article
                 key={item.id || item.title || index}
-                className={`expertise-card card-hover ${item.tone || "tone-0"}`}
+                className={`expertise-card expertise-card-hover ${item.tone || "tone-0"}`}
               >
                 <div className="card-head">
-                  <div className="expertise-icon card-icon">
+                  <div className="expertise-icon">
                     <Icon />
                   </div>
 
                   <div className="card-title-wrap">
-                    <h2>{item.title}</h2>
+                    <h3>{item.title || "Especialidad"}</h3>
                   </div>
                 </div>
 
-                <p>{item.text}</p>
+                <p>{item.text || "Descripción no disponible."}</p>
               </article>
             );
           })}

@@ -45,25 +45,9 @@ function getStatusLabel(status) {
   return map[status] || status || "Sin estado";
 }
 
-function getLabTone(category) {
-  const map = {
-    automation: "tone-0",
-    monitoring: "tone-1",
-    ai: "tone-2",
-    research: "tone-1",
-    virtualization: "tone-1",
-    networking: "tone-2",
-    backup: "tone-0",
-  };
-
-  return map[category] || "tone-1";
-}
-
 function LabItemCard({ item, icon }) {
-  const toneClass = getLabTone(item?.category);
-
   return (
-    <article className={`expertise-card card-hover laboratory-card ${toneClass}`}>
+    <article className="expertise-card expertise-card-hover laboratory-card">
       <div className="card-head">
         <div className="expertise-icon">{icon}</div>
 
@@ -93,9 +77,18 @@ function LabItemCard({ item, icon }) {
   );
 }
 
-function OverviewCard({ icon, title, description, countLabel, countValue, tone }) {
+function OverviewCard({
+  sectionClass,
+  icon,
+  title,
+  description,
+  countLabel,
+  countValue,
+}) {
   return (
-    <article className={`expertise-card card-hover laboratory-card ${tone}`}>
+    <article
+      className={`lab-overview-card ${sectionClass} expertise-card expertise-card-hover laboratory-card`}
+    >
       <div className="card-head">
         <div className="expertise-icon">{icon}</div>
 
@@ -184,24 +177,25 @@ function Laboratory() {
         aria-label="Resumen del laboratorio"
       >
         <OverviewCard
+          sectionClass="lab-section-infra"
           icon={<FaServer />}
           title="Infraestructura"
           description="Servidores, virtualización y telemetría del entorno técnico."
           countLabel="servidores"
           countValue={summary?.servers_count ?? 0}
-          tone="tone-1"
         />
 
         <OverviewCard
+          sectionClass="lab-section-automation"
           icon={<FaMicrochip />}
           title="Automatización"
           description="Nodos, flujos y controladores conectados al entorno."
           countLabel="nodos"
           countValue={summary?.nodes_count ?? 0}
-          tone="tone-0"
         />
 
         <OverviewCard
+          sectionClass="lab-section-home"
           icon={<FaHome />}
           title="Home Assistant"
           description={
@@ -210,10 +204,10 @@ function Laboratory() {
           }
           countLabel="automatizaciones"
           countValue={homeAssistantUseCases.length || 0}
-          tone="tone-1"
         />
 
         <OverviewCard
+          sectionClass="lab-section-ai"
           icon={<FaBrain />}
           title="IA local"
           description={
@@ -222,11 +216,10 @@ function Laboratory() {
           }
           countLabel="métricas"
           countValue={summary?.metrics_count ?? 0}
-          tone="tone-2"
         />
       </section>
 
-      <section className="lab-section">
+      <section className="lab-section lab-section-divider lab-section-infra">
         <div className="lab-section-top">
           <div className="lab-section-intro">
             <span className="lab-label">Infraestructura</span>
@@ -314,7 +307,7 @@ function Laboratory() {
 
             <div className="lab-panel-body">
               <div className="lab-story-grid">
-                <article className="expertise-card card-hover laboratory-card tone-1">
+                <article className="expertise-card expertise-card-hover laboratory-card">
                   <div className="card-head">
                     <div className="expertise-icon">
                       <FaChartLine />
@@ -353,7 +346,7 @@ function Laboratory() {
         </div>
       </section>
 
-      <section className="lab-section lab-section-divider">
+      <section className="lab-section lab-section-divider lab-section-automation">
         <div className="lab-section-top">
           <div className="lab-section-intro">
             <span className="lab-label">Automatización</span>
@@ -409,7 +402,7 @@ function Laboratory() {
         </div>
       </section>
 
-      <section className="lab-section lab-section-divider">
+      <section className="lab-section lab-section-divider lab-section-home">
         <div className="lab-section-top">
           <div className="lab-section-intro">
             <span className="lab-label">Home Assistant</span>
@@ -422,66 +415,76 @@ function Laboratory() {
           </div>
         </div>
 
-        <div className="lab-story-grid">
-          <article className="expertise-card card-hover laboratory-card tone-1">
-            <div className="card-head">
-              <div className="expertise-icon">
-                <FaHome />
-              </div>
-              <div className="card-title-wrap">
-                <h3>{homeAssistantMain?.name || "Estado del sistema"}</h3>
-              </div>
+        <div className="lab-panel">
+          <div className="lab-panel-head">
+            <h3>
+              <FaHome /> Estado e integraciones
+            </h3>
+          </div>
+
+          <div className="lab-panel-body">
+            <div className="lab-story-grid">
+              <article className="expertise-card expertise-card-hover laboratory-card">
+                <div className="card-head">
+                  <div className="expertise-icon">
+                    <FaHome />
+                  </div>
+                  <div className="card-title-wrap">
+                    <h3>{homeAssistantMain?.name || "Estado del sistema"}</h3>
+                  </div>
+                </div>
+
+                <p>
+                  {homeAssistantMain?.description ||
+                    "Vista pensada para mostrar instancia, uptime, integraciones y automatizaciones activas."}
+                </p>
+
+                <div className="lab-chip-row">
+                  <span className="tag">Instancia: {homeAssistantMain?.name || "—"}</span>
+                  <span className="tag">Versión: {homeAssistantMain?.version || "—"}</span>
+                  <span className="tag">Automatizaciones: {homeAssistantUseCases.length || 0}</span>
+                  <span className="tag">Estado: {getStatusLabel(homeAssistantMain?.status)}</span>
+                </div>
+              </article>
+
+              <article className="expertise-card expertise-card-hover laboratory-card">
+                <div className="card-head">
+                  <div className="expertise-icon">
+                    <FaNetworkWired />
+                  </div>
+                  <div className="card-title-wrap">
+                    <h3>Casos de uso en casa</h3>
+                  </div>
+                </div>
+
+                <p>
+                  Escenas, sensores, consumos y eventos conectados a futuras
+                  integraciones y APIs.
+                </p>
+
+                <div className="lab-chip-row">
+                  {homeAssistantUseCases.length > 0 ? (
+                    homeAssistantUseCases.slice(0, 4).map((useCase) => (
+                      <span className="tag" key={useCase.id}>
+                        {useCase.title}
+                      </span>
+                    ))
+                  ) : (
+                    <>
+                      <span className="tag">Escenas: —</span>
+                      <span className="tag">Sensores: —</span>
+                      <span className="tag">Zonas: —</span>
+                      <span className="tag">Eventos: —</span>
+                    </>
+                  )}
+                </div>
+              </article>
             </div>
-
-            <p>
-              {homeAssistantMain?.description ||
-                "Vista pensada para mostrar instancia, uptime, integraciones y automatizaciones activas."}
-            </p>
-
-            <div className="lab-chip-row">
-              <span className="tag">Instancia: {homeAssistantMain?.name || "—"}</span>
-              <span className="tag">Versión: {homeAssistantMain?.version || "—"}</span>
-              <span className="tag">Automatizaciones: {homeAssistantUseCases.length || 0}</span>
-              <span className="tag">Estado: {getStatusLabel(homeAssistantMain?.status)}</span>
-            </div>
-          </article>
-
-          <article className="expertise-card card-hover laboratory-card tone-2">
-            <div className="card-head">
-              <div className="expertise-icon">
-                <FaNetworkWired />
-              </div>
-              <div className="card-title-wrap">
-                <h3>Casos de uso en casa</h3>
-              </div>
-            </div>
-
-            <p>
-              Escenas, sensores, consumos y eventos conectados a futuras
-              integraciones y APIs.
-            </p>
-
-            <div className="lab-chip-row">
-              {homeAssistantUseCases.length > 0 ? (
-                homeAssistantUseCases.slice(0, 4).map((useCase) => (
-                  <span className="tag" key={useCase.id}>
-                    {useCase.title}
-                  </span>
-                ))
-              ) : (
-                <>
-                  <span className="tag">Escenas: —</span>
-                  <span className="tag">Sensores: —</span>
-                  <span className="tag">Zonas: —</span>
-                  <span className="tag">Eventos: —</span>
-                </>
-              )}
-            </div>
-          </article>
+          </div>
         </div>
       </section>
 
-      <section className="lab-section lab-section-divider">
+      <section className="lab-section lab-section-divider lab-section-ai">
         <div className="lab-section-top">
           <div className="lab-section-intro">
             <span className="lab-label">IA local</span>
@@ -493,56 +496,66 @@ function Laboratory() {
           </div>
         </div>
 
-        <div className="lab-column-cards">
-          <article className="expertise-card card-hover laboratory-card tone-2">
-            <div className="card-head">
-              <div className="expertise-icon">
-                <FaBrain />
-              </div>
-              <div className="card-title-wrap">
-                <h3>Banco de pruebas</h3>
-              </div>
+        <div className="lab-panel">
+          <div className="lab-panel-head">
+            <h3>
+              <FaBrain /> Modelos y casos de estudio
+            </h3>
+          </div>
+
+          <div className="lab-panel-body">
+            <div className="lab-column-cards">
+              <article className="expertise-card expertise-card-hover laboratory-card">
+                <div className="card-head">
+                  <div className="expertise-icon">
+                    <FaBrain />
+                  </div>
+                  <div className="card-title-wrap">
+                    <h3>Banco de pruebas</h3>
+                  </div>
+                </div>
+
+                <p>
+                  {localAiMain?.description ||
+                    "Espacio reservado para modelos, runtimes, tiempos de respuesta, uso de recursos y calidad de resultados."}
+                </p>
+
+                <ul className="lab-data-list" role="list">
+                  <li>Modelo: {localAiMain?.model_name || "—"}</li>
+                  <li>Runtime: {localAiMain?.provider || "—"}</li>
+                  <li>Tamaño: {localAiMain?.model_size || "—"}</li>
+                  <li>Estado: {getStatusLabel(localAiMain?.status)}</li>
+                </ul>
+              </article>
+
+              <article className="expertise-card expertise-card-hover laboratory-card">
+                <div className="card-head">
+                  <div className="expertise-icon">
+                    <FaDatabase />
+                  </div>
+                  <div className="card-title-wrap">
+                    <h3>Casos de estudio</h3>
+                  </div>
+                </div>
+
+                <p>
+                  {localAiMain?.hardware_notes ||
+                    "Preparado para documentar clasificación, síntesis, extracción de señales y apoyo a investigación técnica o comercial."}
+                </p>
+
+                <ul className="lab-data-list" role="list">
+                  <li>Interfaz: {localAiMain?.interface_name || "—"}</li>
+                  <li>Proveedor: {localAiMain?.provider || "—"}</li>
+                  <li>Base URL: {localAiMain?.base_url || "—"}</li>
+                  <li>Estado: {getStatusLabel(localAiMain?.status)}</li>
+                </ul>
+              </article>
             </div>
-
-            <p>
-              {localAiMain?.description ||
-                "Espacio reservado para modelos, runtimes, tiempos de respuesta, uso de recursos y calidad de resultados."}
-            </p>
-
-            <ul className="lab-data-list" role="list">
-              <li>Modelo: {localAiMain?.model_name || "—"}</li>
-              <li>Runtime: {localAiMain?.provider || "—"}</li>
-              <li>Tamaño: {localAiMain?.model_size || "—"}</li>
-              <li>Estado: {getStatusLabel(localAiMain?.status)}</li>
-            </ul>
-          </article>
-
-          <article className="expertise-card card-hover laboratory-card tone-1">
-            <div className="card-head">
-              <div className="expertise-icon">
-                <FaDatabase />
-              </div>
-              <div className="card-title-wrap">
-                <h3>Casos de estudio</h3>
-              </div>
-            </div>
-
-            <p>
-              {localAiMain?.hardware_notes ||
-                "Preparado para documentar clasificación, síntesis, extracción de señales y apoyo a investigación técnica o comercial."}
-            </p>
-
-            <ul className="lab-data-list" role="list">
-              <li>Interfaz: {localAiMain?.interface_name || "—"}</li>
-              <li>Proveedor: {localAiMain?.provider || "—"}</li>
-              <li>Base URL: {localAiMain?.base_url || "—"}</li>
-              <li>Estado: {getStatusLabel(localAiMain?.status)}</li>
-            </ul>
-          </article>
+          </div>
         </div>
       </section>
 
-      <section className="lab-section lab-section-divider">
+      <section className="lab-section lab-section-divider lab-section-research">
         <div className="lab-section-top">
           <div className="lab-section-intro">
             <span className="lab-label">Research lab</span>
@@ -555,65 +568,75 @@ function Laboratory() {
           </div>
         </div>
 
-        <div className="lab-research-grid">
-          <article className="expertise-card card-hover laboratory-card tone-1">
-            <div className="card-head">
-              <div className="expertise-icon">
-                <FaSearch />
-              </div>
-              <div className="card-title-wrap">
-                <h3>Observación de mercado</h3>
-              </div>
+        <div className="lab-panel">
+          <div className="lab-panel-head">
+            <h3>
+              <FaSearch /> Observación y métricas
+            </h3>
+          </div>
+
+          <div className="lab-panel-body">
+            <div className="lab-research-grid">
+              <article className="expertise-card expertise-card-hover laboratory-card">
+                <div className="card-head">
+                  <div className="expertise-icon">
+                    <FaSearch />
+                  </div>
+                  <div className="card-title-wrap">
+                    <h3>Observación de mercado</h3>
+                  </div>
+                </div>
+
+                <p>
+                  {featuredItems.find((item) => item.category === "research")
+                    ?.description ||
+                    "Preparado para incorporar datasets, fuentes externas, paneles y resultados de análisis todavía en construcción."}
+                </p>
+
+                <div className="lab-chip-row">
+                  <span className="tag">Fuentes: APIs externas</span>
+                  <span className="tag">Panel: En evolución</span>
+                  <span className="tag">Estado: Building</span>
+                  <span className="tag">Enfoque: Research</span>
+                </div>
+              </article>
+
+              <article className="expertise-card expertise-card-hover laboratory-card">
+                <div className="card-head">
+                  <div className="expertise-icon">
+                    <FaChartLine />
+                  </div>
+                  <div className="card-title-wrap">
+                    <h3>Métricas futuras</h3>
+                  </div>
+                </div>
+
+                <p>
+                  Espacio para indicadores, tendencias y señales servidas desde la
+                  API del laboratorio.
+                </p>
+
+                <div className="lab-chip-row">
+                  <span className="tag">
+                    {firstMetric
+                      ? `${firstMetric.display_name}: ${firstMetric.value}${firstMetric.unit}`
+                      : "Tendencia: —"}
+                  </span>
+                  <span className="tag">
+                    {secondMetric
+                      ? `${secondMetric.display_name}: ${secondMetric.value}${secondMetric.unit}`
+                      : "Score: —"}
+                  </span>
+                  <span className="tag">Alertas: En preparación</span>
+                  <span className="tag">Estado API: Activa</span>
+                </div>
+              </article>
             </div>
-
-            <p>
-              {featuredItems.find((item) => item.category === "research")
-                ?.description ||
-                "Preparado para incorporar datasets, fuentes externas, paneles y resultados de análisis todavía en construcción."}
-            </p>
-
-            <div className="lab-chip-row">
-              <span className="tag">Fuentes: APIs externas</span>
-              <span className="tag">Panel: En evolución</span>
-              <span className="tag">Estado: Building</span>
-              <span className="tag">Enfoque: Research</span>
-            </div>
-          </article>
-
-          <article className="expertise-card card-hover laboratory-card tone-2">
-            <div className="card-head">
-              <div className="expertise-icon">
-                <FaChartLine />
-              </div>
-              <div className="card-title-wrap">
-                <h3>Métricas futuras</h3>
-              </div>
-            </div>
-
-            <p>
-              Espacio para indicadores, tendencias y señales servidas desde la
-              API del laboratorio.
-            </p>
-
-            <div className="lab-chip-row">
-              <span className="tag">
-                {firstMetric
-                  ? `${firstMetric.display_name}: ${firstMetric.value}${firstMetric.unit}`
-                  : "Tendencia: —"}
-              </span>
-              <span className="tag">
-                {secondMetric
-                  ? `${secondMetric.display_name}: ${secondMetric.value}${secondMetric.unit}`
-                  : "Score: —"}
-              </span>
-              <span className="tag">Alertas: En preparación</span>
-              <span className="tag">Estado API: Activa</span>
-            </div>
-          </article>
+          </div>
         </div>
       </section>
 
-      <section className="lab-section lab-section-divider">
+      <section className="lab-section lab-section-divider lab-section-capabilities">
         <div className="lab-section-top">
           <div className="lab-section-intro">
             <span className="lab-label">Capacidades</span>

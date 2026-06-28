@@ -22,7 +22,7 @@ function SocialCard({ href = "", icon, label, title, text, className = "" }) {
       <div className="social-mini-front">
         <div className="social-mini-shine" aria-hidden="true"></div>
 
-        <div className="social-mini-icon" aria-hidden="true">
+        <div className="social-mini-icon expertise-icon" aria-hidden="true">
           {icon}
         </div>
 
@@ -144,7 +144,7 @@ function Contact() {
 
   return (
     <section className="section section-spaced section-separated">
-      <div className="section-head-centered">
+      <div className="section-head-centered contact-page-head">
         <span className="section-kicker">Contacto</span>
         <h1>Canales profesionales y colaboración</h1>
         <p>

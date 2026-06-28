@@ -1,24 +1,125 @@
+/* =========================================================
+   PALETA CONTEXTUAL DE LABORATORY
+   ========================================================= */
+
 .laboratory-page {
+  --lab-accent: var(--lab-quantum);
+  --lab-accent-strong: var(--lab-neon);
+
   display: grid;
   gap: clamp(3rem, 6vw, 5.4rem);
 }
+
+/* Contextos reales donde la paleta debe recalcularse */
+.lab-section,
+.lab-overview-card,
+.laboratory-detail-page {
+   --lab-accent-soft: color-mix(in srgb, var(--lab-accent) 10%, transparent);
+  --lab-accent-soft-2: color-mix(in srgb, var(--lab-accent) 16%, transparent);
+
+  --lab-border-accent: color-mix(in srgb, var(--lab-accent) 24%, var(--border));
+  --lab-border-strong: color-mix(in srgb, var(--lab-accent-strong) 28%, var(--border));
+
+  --lab-surface: color-mix(in srgb, var(--bg-card) 92%, var(--lab-accent) 8%);
+  --lab-surface-2: color-mix(in srgb, var(--bg-card-2) 88%, var(--lab-accent-strong) 12%);
+
+  --lab-icon-bg: color-mix(in srgb, var(--lab-accent) 12%, transparent);
+  --lab-icon-border: color-mix(in srgb, var(--lab-accent) 24%, var(--border));
+  --lab-icon-color: var(--lab-accent);
+
+  --lab-pill-bg: color-mix(in srgb, var(--lab-accent) 10%, transparent);
+  --lab-pill-border: color-mix(in srgb, var(--lab-accent) 18%, var(--border));
+  --lab-pill-text: color-mix(in srgb, var(--lab-accent-strong) 74%, var(--text-main) 26%);
+
+  --lab-link-border: color-mix(in srgb, var(--lab-accent) 20%, var(--border));
+  --lab-link-bg: color-mix(in srgb, var(--lab-accent) 8%, transparent);
+  --lab-link-text: var(--text-main);
+
+  --lab-counter-label: color-mix(in srgb, var(--lab-accent) 64%, var(--text-soft) 36%);
+  --lab-counter-value: color-mix(in srgb, var(--lab-accent-strong) 82%, var(--text-main) 18%);
+
+  --lab-glow: color-mix(in srgb, var(--lab-accent) 16%, transparent);
+  --lab-glow-strong: color-mix(in srgb, var(--lab-accent-strong) 18%, transparent);
+}
+
+/* 🖥 Infraestructura */
+.lab-section-infra{
+  background:
+radial-gradient(circle at top right,
+rgba(0,217,255,.08),
+transparent 60%);
+    --lab-accent: var(--lab-quantum);
+    --lab-accent-strong: var(--lab-neon);
+}
+
+/* ⚙ Automatización */
+.lab-section-automation{
+  background:
+radial-gradient(circle at top right,
+rgba(255,138,0,.08),
+transparent 60%);
+    --lab-accent: var(--lab-plasma);
+    --lab-accent-strong: var(--lab-cyber);
+}
+
+/* 🏠 Home Assistant */
+.lab-section-home{
+  background:
+radial-gradient(circle at top right,
+rgba(0,245,180,.08),
+transparent 60%);
+    --lab-accent: var(--lab-neon);
+    --lab-accent-strong: var(--lab-quantum);
+}
+
+/* 🤖 IA */
+.lab-section-ai{
+  background:
+radial-gradient(circle at top right,
+rgba(122,92,255,.09),
+transparent 60%);
+    --lab-accent: var(--lab-violet);
+    --lab-accent-strong: var(--lab-magenta);
+}
+
+/* 🔬 Research */
+.lab-section-research{
+  background:
+radial-gradient(circle at top right,
+rgba(64, 255, 0, 0.111),
+transparent 60%);
+    --lab-accent: var(--lab-lime);
+    --lab-accent-strong: var(--lab-yellow); 
+}
+
+/* 🚀 Capacidades */
+.lab-section-capabilities{
+    --lab-accent: var(--accent-green);
+    --lab-accent-strong: var(--accent-2);
+}
+
+/* =========================================================
+   TIPOGRAFÍA BASE
+   ========================================================= */
 
 .laboratory-page h1,
 .laboratory-page h2,
 .laboratory-page h3 {
   margin: 0;
   color: var(--text-main);
-  font-family: "Space Grotesk", sans-serif;
   text-wrap: balance;
 }
 
 .laboratory-page p {
   margin: 0;
   color: var(--text-sub);
-  font-family: "Inter", sans-serif;
   line-height: 1.75;
   max-width: 68ch;
 }
+
+/* =========================================================
+   HERO
+   ========================================================= */
 
 .laboratory-hero {
   gap: 1rem;
@@ -36,11 +137,22 @@
   margin: 0 auto;
 }
 
+/* =========================================================
+   OVERVIEW
+   ========================================================= */
+
 .laboratory-overview {
-  display: grid;
   grid-template-columns: 1fr;
   gap: 1rem;
 }
+
+.lab-overview-card {
+  min-width: 0;
+}
+
+/* =========================================================
+   SECCIONES
+   ========================================================= */
 
 .lab-section {
   display: grid;
@@ -59,8 +171,8 @@
   left: 0;
   width: min(220px, 38%);
   height: 1px;
-  background: linear-gradient(90deg, var(--accent), transparent);
-  opacity: 0.28;
+  background: linear-gradient(90deg, var(--lab-accent), transparent);
+  opacity: 0.92;
 }
 
 .lab-section-top {
@@ -82,13 +194,20 @@
   min-height: 30px;
   padding: 0 0.8rem;
   border-radius: 999px;
-  border: 1px solid color-mix(in srgb, var(--accent) 18%, var(--border));
-  background: color-mix(in srgb, var(--accent) 8%, transparent);
-  color: var(--accent);
   font-size: 0.74rem;
   font-weight: 800;
   letter-spacing: 0.14em;
   text-transform: uppercase;
+  color: var(--lab-accent);
+  border: 1px solid var(--lab-border-accent);
+  background: linear-gradient(
+    180deg,
+    var(--lab-accent-soft),
+    var(--lab-accent-soft-2)
+  );
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.04),
+    0 10px 24px color-mix(in srgb, var(--lab-glow) 42%, transparent);
 }
 
 .lab-section-intro h2 {
@@ -102,6 +221,10 @@
   max-width: 56ch;
 }
 
+/* =========================================================
+   PANELES
+   ========================================================= */
+
 .lab-feature-grid {
   display: grid;
   grid-template-columns: 1fr;
@@ -114,24 +237,11 @@
   gap: 0;
   padding: 1.2rem;
   border-radius: 24px;
-  border: 1px solid var(--border);
-  box-shadow: var(--shadow-sm);
-}
-
-:root[data-theme="light"] .lab-panel {
-  background: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 0.92),
-    rgba(255, 255, 255, 0.78)
-  );
-}
-
-:root[data-theme="dark"] .lab-panel {
-  background: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 0.045),
-    rgba(255, 255, 255, 0.02)
-  );
+  border: 1px solid var(--lab-border-accent);
+  background: linear-gradient(180deg, var(--lab-surface), var(--lab-surface-2));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.04),
+    var(--shadow-sm);
 }
 
 .lab-panel-head {
@@ -151,27 +261,20 @@
 }
 
 .lab-panel-head svg {
-  color: var(--accent);
   flex-shrink: 0;
+}
+
+.lab-panel-head h3 svg {
+  color: var(--lab-accent);
 }
 
 .lab-panel-body {
   min-width: 0;
 }
 
-.lab-actions {
-  display: flex;
-  justify-content: flex-start;
-  padding-top: 0.3rem;
-}
-
-.lab-actions .inline-link,
-.lab-back-link-wrap .inline-link,
-.lab-detail-links .inline-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.55rem;
-}
+/* =========================================================
+   GRIDS INTERNOS
+   ========================================================= */
 
 .lab-story-grid,
 .lab-column-cards,
@@ -196,8 +299,6 @@
   margin-top: 0.75rem;
 }
 
-/* overrides estructurales para reusable cards */
-
 .laboratory-overview > *,
 .lab-story-grid > *,
 .lab-column-cards > *,
@@ -216,27 +317,113 @@
   height: 100%;
 }
 
+/* =========================================================
+   TARJETAS DE LABORATORY
+   ========================================================= */
+
 .laboratory-card {
   min-width: 0;
+
+  /* Alias internos forzados para que esta card NO use fallbacks viejos */
+  --card-tone-accent: var(--lab-accent);
+  --card-tone-accent-strong: var(--lab-accent-strong);
+  --card-accent: var(--lab-accent);
+  --card-accent-strong: var(--lab-accent-strong);
+  --card-icon-color: var(--lab-icon-color);
+  --card-icon-border: var(--lab-icon-border);
+  --card-line-fade: linear-gradient(
+    90deg,
+    transparent 0%,
+    color-mix(in srgb, var(--lab-accent) 22%, transparent) 16%,
+    color-mix(
+      in srgb,
+      var(--lab-accent) 62%,
+      rgb(255 255 255 / 18%)
+    ) 50%,
+    color-mix(in srgb, var(--lab-accent) 22%, transparent) 84%,
+    transparent 100%
+  );
 }
 
-.laboratory-card .card-head {
-  align-items: flex-start;
+.lab-section .laboratory-card,
+.lab-overview-card {
+  border-color: var(--lab-border-accent);
 }
 
-.laboratory-card .card-title-wrap {
-  min-width: 0;
+:root[data-theme="dark"] .laboratory-card {
+  background:
+    radial-gradient(
+      circle at 100% 0%,
+      color-mix(in srgb, var(--lab-accent) 14%, transparent),
+      transparent 34%
+    ),
+    radial-gradient(
+      circle at 0% 100%,
+      color-mix(in srgb, var(--lab-accent-strong) 8%, transparent),
+      transparent 40%
+    ),
+    var(--gt-card-bg-dark);
+  box-shadow:
+    var(--gt-card-shadow-dark),
+    0 0 20px color-mix(in srgb, var(--lab-accent) 10%, transparent),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  border-color: var(--lab-border-accent);
 }
 
-.laboratory-card .card-title-wrap h3 {
-  font-size: 1.12rem;
-  line-height: 1.1;
-  letter-spacing: -0.03em;
+:root[data-theme="light"] .laboratory-card {
+  background:
+    radial-gradient(
+      circle at 100% 0%,
+      color-mix(in srgb, var(--lab-accent) 10%, white),
+      transparent 34%
+    ),
+    radial-gradient(
+      circle at 0% 100%,
+      color-mix(in srgb, var(--lab-accent-strong) 7%, white),
+      transparent 40%
+    ),
+    var(--gt-card-bg-light);
+  box-shadow:
+    var(--gt-card-shadow-light),
+    0 0 16px color-mix(in srgb, var(--lab-accent) 8%, transparent),
+    inset 0 1px 0 rgba(255, 255, 255, 0.55);
+  border-color: var(--lab-border-accent);
+}
+
+/* =========================================================
+   CONTADOR
+   ========================================================= */
+
+.laboratory-counter {
+  display: flex;
+  justify-content: flex-end;
+  align-items: baseline;
+  gap: 1.5rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.laboratory-counter span {
+  font-size: 0.92rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  color: var(--lab-counter-label);
+}
+
+.laboratory-counter strong {
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--lab-counter-value);
 }
 
 .laboratory-counter-inline {
   align-items: flex-start;
 }
+
+/* =========================================================
+   TAGS / CHIPS
+   ========================================================= */
 
 .lab-chip-row,
 .lab-capabilities,
@@ -257,11 +444,18 @@
   display: inline-flex;
   align-items: center;
   gap: 0.45rem;
+  border: 1px solid var(--lab-pill-border);
+  background: var(--lab-pill-bg);
+  color: var(--lab-pill-text);
 }
 
 .lab-chip-row-spaced {
   padding-top: 0.75rem;
 }
+
+/* =========================================================
+   LISTAS DE DATOS
+   ========================================================= */
 
 .lab-data-list {
   display: grid;
@@ -274,9 +468,7 @@
 .lab-data-list li {
   position: relative;
   padding: 0.9rem 0 0.05rem 1rem;
-  border-top: 1px solid color-mix(in srgb, var(--border) 82%, transparent);
   color: var(--text-sub);
-  font-family: "Inter", sans-serif;
   line-height: 1.6;
 }
 
@@ -288,11 +480,71 @@
   width: 6px;
   height: 6px;
   border-radius: 999px;
-  background: var(--accent);
-  box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 12%, transparent);
+  background: var(--lab-accent);
+  box-shadow: 0 0 0 6px color-mix(in srgb, var(--lab-accent) 12%, transparent);
 }
 
-/* detail */
+/* =========================================================
+   LINKS / ACCIONES
+   ========================================================= */
+
+.lab-actions {
+  display: flex;
+  justify-content: flex-start;
+  padding-top: 0.3rem;
+}
+
+.lab-actions .inline-link,
+.lab-back-link-wrap .inline-link,
+.lab-detail-links .inline-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  color: var(--lab-link-text);
+  border-color: var(--lab-link-border);
+  background: var(--lab-link-bg);
+}
+
+.lab-actions .inline-link:hover,
+.lab-back-link-wrap .inline-link:hover,
+.lab-detail-links .inline-link:hover {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.05),
+    0 12px 24px rgba(0, 0, 0, 0.16),
+    0 0 18px color-mix(in srgb, var(--lab-accent) 16%, transparent);
+}
+
+/* =========================================================
+   EMPTY STATES
+   ========================================================= */
+
+.lab-section .empty-inline-state {
+  border-color: color-mix(in srgb, var(--lab-accent) 10%, var(--border));
+}
+
+:root[data-theme="dark"] .lab-section .empty-inline-state {
+  background:
+    radial-gradient(
+      circle at 100% 0%,
+      color-mix(in srgb, var(--lab-accent) 7%, transparent),
+      transparent 38%
+    ),
+    rgba(255, 255, 255, 0.03);
+}
+
+:root[data-theme="light"] .lab-section .empty-inline-state {
+  background:
+    radial-gradient(
+      circle at 100% 0%,
+      color-mix(in srgb, var(--lab-accent) 6%, white),
+      transparent 38%
+    ),
+    rgba(255, 255, 255, 0.76);
+}
+
+/* =========================================================
+   DETAIL
+   ========================================================= */
 
 .lab-back-link-wrap {
   display: flex;
@@ -339,7 +591,7 @@
   display: grid;
   gap: 0.25rem;
   padding-top: 0.9rem;
-  border-top: 1px solid color-mix(in srgb, var(--border) 82%, transparent);
+  border-top: 1px solid var(--lab-meta-border);
 }
 
 .lab-detail-meta > div:first-child {
@@ -348,7 +600,7 @@
 }
 
 .lab-detail-meta span {
-  color: var(--text-soft);
+  color: var(--lab-counter-label);
   font-size: 0.82rem;
   letter-spacing: 0.02em;
 }
@@ -357,14 +609,30 @@
   color: var(--text-main);
 }
 
+.lab-project-tags .tag svg,
+.lab-chip-row .tag svg,
+.lab-detail-links .inline-link svg {
+  color: var(--lab-accent);
+  flex-shrink: 0;
+}
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
 @media (prefers-reduced-motion: reduce) {
   .lab-panel,
   .lab-chip-row .tag,
   .lab-tag,
-  .lab-project-tags span {
+  .lab-project-tags span,
+  .laboratory-card {
     transition: none;
   }
 }
+
+/* =========================================================
+   TABLET
+   ========================================================= */
 
 @media (min-width: 768px) {
   .laboratory-overview {
@@ -391,6 +659,10 @@
     gap: 1.35rem;
   }
 }
+
+/* =========================================================
+   DESKTOP
+   ========================================================= */
 
 @media (min-width: 1024px) {
   .laboratory-page {

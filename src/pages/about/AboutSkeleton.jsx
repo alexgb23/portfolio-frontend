@@ -56,16 +56,22 @@ function AboutSkeleton() {
           {Array.from({ length: 4 }).map((_, i) => (
             <article
               key={i}
-              className="expertise-card card-hover is-skeleton"
+              className={`expertise-card tone-${i % 3} is-skeleton`}
+              aria-hidden="true"
             >
               <div className="card-head">
-                <div className="expertise-icon card-icon skeleton-block skeleton-icon" />
+                <div className="expertise-icon skeleton-block skeleton-icon" />
+
                 <div className="card-title-wrap">
-                  <h2 className="skeleton-block skeleton-text-md" />
+                  <div className="skeleton-block skeleton-text-md w-80" />
                 </div>
               </div>
 
-              <p className="skeleton-block skeleton-text-sm" />
+              <div className="skeleton-copy">
+                <div className="skeleton-block skeleton-text-sm w-100" />
+                <div className="skeleton-block skeleton-text-sm w-90" />
+                <div className="skeleton-block skeleton-text-sm w-70" />
+              </div>
             </article>
           ))}
         </div>

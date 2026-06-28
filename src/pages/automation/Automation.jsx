@@ -12,7 +12,7 @@ function Automation() {
 
   if (loading) {
     return (
-      <div className="state-wrapper centered">
+      <div className="state-wrapper state-wrapper-page centered">
         <div className="sys-loader"></div>
         <h2>Cargando automatización...</h2>
       </div>
@@ -21,7 +21,7 @@ function Automation() {
 
   if (error) {
     return (
-      <div className="state-wrapper error centered">
+      <div className="state-wrapper error state-wrapper-page centered">
         <h2>Error al cargar nodos</h2>
         <p>{error}</p>
       </div>
@@ -42,7 +42,7 @@ function Automation() {
       <h2 className="sr-only">Resumen de automatización</h2>
 
       <div className="expertise-grid automation-intro-grid">
-        <article className="expertise-card card-hover tone-1">
+        <article className="expertise-card expertise-card-hover tone-1">
           <div className="card-head">
             <div className="expertise-icon">
               <FaMicrochip />
@@ -57,7 +57,7 @@ function Automation() {
           </p>
         </article>
 
-        <article className="expertise-card card-hover tone-2">
+        <article className="expertise-card expertise-card-hover tone-2">
           <div className="card-head">
             <div className="expertise-icon">
               <FaSlidersH />
@@ -72,7 +72,7 @@ function Automation() {
           </p>
         </article>
 
-        <article className="expertise-card card-hover tone-0">
+        <article className="expertise-card expertise-card-hover tone-0">
           <div className="card-head">
             <div className="expertise-icon">
               <FaBroadcastTower />

@@ -1,32 +1,28 @@
 /* =========================================================
-  ABOUT SKELETON OVERRIDES — LOCALES
-  ========================================================= */
+   ABOUT SKELETON OVERRIDES — LOCALES
+   Solo para foto y timeline, no para la card global reutilizable
+   ========================================================= */
 
 .photo-container.is-skeleton:hover,
-.stat-card.is-skeleton:hover,
-.about-section .expertise-card.is-skeleton:hover {
+.stat-card.is-skeleton:hover {
   transform: none;
   box-shadow: inherit;
 }
 
-.stat-card.is-skeleton::before,
-.about-section .expertise-card.is-skeleton::before,
-.about-section .expertise-card.is-skeleton::after {
+.stat-card.is-skeleton::before {
   display: none;
 }
 
 .stat-card.is-skeleton .stat-number,
 .stat-card.is-skeleton h2,
 .stat-card.is-skeleton p,
-.about-section .expertise-card.is-skeleton h2,
-.about-section .expertise-card.is-skeleton p,
 .about-section .skeleton-block {
   color: transparent;
 }
 
 /* =========================================================
- ABOUT SECTION
-========================================================= */
+   ABOUT SECTION
+   ========================================================= */
 
 .about-section {
   width: 100%;
@@ -35,8 +31,8 @@
 }
 
 /* =========================================================
- INTRO + FOTO
-========================================================= */
+   INTRO + FOTO
+   ========================================================= */
 
 .about-container {
   display: grid;
@@ -82,8 +78,8 @@
 }
 
 /* =========================================================
- TECHNOLOGY BADGES
-========================================================= */
+   TECHNOLOGY BADGES
+   ========================================================= */
 
 .tech-badges {
   display: flex;
@@ -101,7 +97,10 @@
   color: var(--text-soft);
   font-family: "JetBrains Mono", monospace;
   font-size: 0.75rem;
-  transition: 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    color 0.3s ease,
+    border-color 0.3s ease;
 }
 
 .badge:hover {
@@ -111,8 +110,8 @@
 }
 
 /* =========================================================
- PHOTO
-========================================================= */
+   PHOTO
+   ========================================================= */
 
 .about-right {
   display: flex;
@@ -135,7 +134,9 @@
   background: var(--bg-card);
   box-shadow: 0 35px 70px rgba(0, 0, 0, 0.28);
   transform: perspective(1200px) rotateY(-7deg);
-  transition: 0.4s ease;
+  transition:
+    transform 0.4s ease,
+    box-shadow 0.4s ease;
 }
 
 .photo-container:hover {
@@ -157,8 +158,8 @@
 }
 
 /* =========================================================
- TECHNICAL TIMELINE
-========================================================= */
+   TECHNICAL TIMELINE
+   ========================================================= */
 
 .technical-section {
   position: relative;
@@ -194,8 +195,8 @@
 }
 
 /* =========================================================
- STAT CARDS
-========================================================= */
+   STAT CARDS
+   ========================================================= */
 
 .stat-card {
   position: relative;
@@ -272,34 +273,18 @@
 }
 
 /* =========================================================
- EXPERTISE SECTION
-========================================================= */
+   EXPERTISE SECTION
+   Solo layout de bloque; la card vive en el CSS global
+   ========================================================= */
 
 .expertise-section {
   margin-top: 150px;
   padding-bottom: 80px;
 }
 
-/* Ajustes locales de contenido, sin pisar la card global */
-
-.about-section .expertise-card h2 {
-  margin: 0 0 12px;
-  color: var(--text-main);
-  font-family: "Space Grotesk", sans-serif;
-  font-size: 1.15rem;
-}
-
-.about-section .expertise-card p {
-  line-height: 1.7;
-}
-
-.about-section .expertise-icon {
-  margin-bottom: 20px;
-}
-
 /* =========================================================
- TABLET
-========================================================= */
+   TABLET
+   ========================================================= */
 
 @media (min-width: 768px) {
   .about-container {
@@ -308,8 +293,8 @@
 }
 
 /* =========================================================
- DESKTOP
-========================================================= */
+   DESKTOP
+   ========================================================= */
 
 @media (min-width: 1024px) {
   .about-section {
@@ -367,8 +352,8 @@
 }
 
 /* =========================================================
- LARGE DESKTOP
-========================================================= */
+   LARGE DESKTOP
+   ========================================================= */
 
 @media (min-width: 1280px) {
   .photo-wrapper {
@@ -382,8 +367,8 @@
 }
 
 /* =========================================================
- LIGHT MODE
-========================================================= */
+   LIGHT MODE
+   ========================================================= */
 
 :root[data-theme="light"] .stat-card {
   background: linear-gradient(
@@ -422,8 +407,8 @@
 }
 
 /* =========================================================
- MOBILE AJUSTE TIMELINE
-========================================================= */
+   MOBILE AJUSTE TIMELINE
+   ========================================================= */
 
 @media (max-width: 1023px) {
   .technical-line {
