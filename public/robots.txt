@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://portfolioalexsys.netlify.app/sitemap.xml
+Sitemap: https://alex.syskovex.com/sitemap.xml
