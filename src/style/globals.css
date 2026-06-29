@@ -27,7 +27,6 @@
   --acent-neon: #00f5b4;
   --acent-matrix: #00ff88;
 
-
   --shadow-sm: 0 8px 32px rgba(0, 0, 0, 0.24);
   --shadow-md: 0 16px 48px rgba(0, 0, 0, 0.32);
   --shadow-lg: 0 24px 64px rgba(0, 0, 0, 0.4);
@@ -36,35 +35,31 @@
   --radius-sm: 12px;
   --radius-md: 18px;
   --radius-lg: 26px;
-  --container: 1360px;
-
-    /*Prueba para Lab*/
   
-  /* Base futurista */
+  /* BASE: Ajuste base fluido para pantallas estándar */
+  --container: 1280px;
+
+  /* Prueba para Lab */
   --lab-quantum: #00d9ff;
   --lab-neon: #00f5b4;
   --lab-violet: #7a5cff;
   --lab-magenta: #ff3cac;
   --lab-plasma: #ff8a00;
-  --lab-lime:#6DFF33;
-  --lab-yellow:#d8ff12;
+  --lab-lime: #6DFF33;
+  --lab-yellow: #d8ff12;
   --lab-matrix: #00ff88;
-
-
 
   /* Superficies */
   --lab-space: #101522;
   --lab-graphite: #1a2333;
-  --lab-glass: rgba(255,255,255,.05);
+  --lab-glass: rgba(255, 255, 255, .05);
 
   /* Glows */
-  --lab-glow-blue: rgba(0,217,255,.18);
-  --lab-glow-green: rgba(0,245,180,.18);
-  --lab-glow-violet: rgba(122,92,255,.18);
-  --lab-glow-magenta: rgba(255,60,172,.18);
-  --lab-glow-orange: rgba(255,138,0,.18);
-  
-  
+  --lab-glow-blue: rgba(0, 217, 255, .18);
+  --lab-glow-green: rgba(0, 245, 180, .18);
+  --lab-glow-violet: rgba(122, 92, 255, .18);
+  --lab-glow-magenta: rgba(255, 60, 172, .18);
+  --lab-glow-orange: rgba(255, 138, 0, .18);
 }
 
 :root[data-theme="light"] {
@@ -90,7 +85,6 @@
   --acent-neon: #00f5b4;
   --acent-matrix: #00ff88;
 
-
   --shadow-sm: 0 10px 25px rgba(15, 23, 42, 0.05);
   --shadow-md: 0 20px 55px rgba(15, 23, 42, 0.08);
   --shadow-lg: 0 30px 80px rgba(15, 23, 42, 0.12);
@@ -99,12 +93,11 @@
   --radius-sm: 12px;
   --radius-md: 18px;
   --radius-lg: 26px;
-  --container: 1360px;
-
-
-  /*Prueba para Lab*/
   
-  /* Base futurista */
+  /* BASE: Ajuste base fluido para pantallas estándar */
+  --container: 1280px;
+
+  /* Prueba para Lab */
   --lab-quantum: #00d9ff;
   --lab-neon: #00f5b4;
   --lab-violet: #7a5cff;
@@ -116,22 +109,28 @@
   /* Superficies */
   --lab-space: #101522;
   --lab-graphite: #1a2333;
-  --lab-glass: rgba(255,255,255,.05);
+  --lab-glass: rgba(255, 255, 255, .05);
 
   /* Glows */
-  --lab-glow-blue: rgba(0,217,255,.18);
-  --lab-glow-green: rgba(0,245,180,.18);
-  --lab-glow-violet: rgba(122,92,255,.18);
+  --lab-glow-blue: rgba(0, 217, 255, .18);
+  --lab-glow-green: rgba(0, 245, 180, .18);
+  --lab-glow-violet: rgba(122, 92, 255, .18);
   --lab-glow-magenta: rgba(255,60,172,.18);
-  --lab-glow-orange: rgba(255,138,0,.18);
-
+  --lab-glow-orange: rgba(255, 138, 0, .18);
 }
-
 
 @media (min-width: 721px) {
   :root[data-theme="dark"],
   :root[data-theme="light"] {
     --navbar-height: 88px;
+  }
+}
+
+/* CORRECCIÓN EXCLUSIVA PARA MONITORES ANCHOS Y 2K */
+@media (min-width: 1440px) {
+  :root[data-theme="dark"],
+  :root[data-theme="light"] {
+    --container: 1420px; /* Expandimos la rejilla para que quepan 4 columnas sin colapsar */
   }
 }
 
@@ -203,11 +202,12 @@ a {
   text-decoration: none;
 }
 
+/* REPARADO: Forzamos la herencia tipográfica limpia de Inter en formularios */
 button,
 input,
 textarea,
 select {
-  font: inherit;
+  font-family: "Inter", system-ui, sans-serif;
   color: inherit;
 }
 
@@ -246,12 +246,3 @@ button {
   white-space: nowrap;
   border: 0;
 }
-
-
-
-
-
-
-
-
-

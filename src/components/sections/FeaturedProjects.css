@@ -1,3 +1,7 @@
+/* =========================================================
+   ESTILOS BASE: MOBILE FIRST (0px a 767px)
+   ========================================================= */
+
 .project-card-tags,
 .project-card-skeleton-tags {
   display: flex;
@@ -52,3 +56,4 @@
   background: rgb(255 255 255 / 72%);
   color: var(--text-soft, rgb(15 23 42 / 72%));
 }
+

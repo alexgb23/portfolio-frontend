@@ -217,24 +217,16 @@
 }
 
 /* =========================================================
-   GRIDS GLOBALES
+   GRIDS GLOBALES (OPTIMIZADAS: MOBILE-FIRST CON FLEX-CENTER EN PC)
    ========================================================= */
 
 .grid-cards,
 .expertise-grid {
   display: grid;
-  gap: 1rem;
-}
-
-.grid-cards {
-  grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr));
-  margin-top: 1.2rem;
-}
-
-.expertise-grid {
-  grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr));
+  grid-template-columns: 1fr; /* 1 columna exacta y limpia en móviles */
+  gap: 1.25rem;
   margin-top: 1.6rem;
-  align-items: stretch;
+  width: 100%;
 }
 
 .grid-cards > *,
@@ -253,7 +245,7 @@
 }
 
 /* =========================================================
-   RESPONSIVE TABLET
+   RESPONSIVE TABLET (Desde 768px: Reorganización en 2 Columnas)
    ========================================================= */
 
 @media (min-width: 768px) {
@@ -269,12 +261,18 @@
     margin-bottom: 2.7rem;
   }
 
+  /* Formato 2x2 centrado y limpio para tablets medianas */
+  .grid-cards,
+  .expertise-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+  }
+
   .grid-cards > *,
   .expertise-grid > * {
     width: 100%;
     min-width: 0;
     height: 100%;
-    align-items: stretch;
   }
 
   .section-more {
@@ -287,7 +285,7 @@
 }
 
 /* =========================================================
-   RESPONSIVE DESKTOP
+   RESPONSIVE DESKTOP Y PANTALLAS ANCHAS 2K (Desde 1024px)
    ========================================================= */
 
 @media (min-width: 1024px) {
@@ -303,8 +301,25 @@
     margin-bottom: 3rem;
   }
 
+  /* 
+     CORRECCIÓN MAESTRA: Cambiamos a Flexbox inteligente centrado en PCs.
+     Si hay 4 se alinean las 4. Si hay 2 o 3, se centran de forma armónica.
+  */
+  .grid-cards,
   .expertise-grid {
-    gap: 1.05rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center; /* Centra las tarjetas del Lab y Proyectos de forma simétrica */
+    gap: 1.5rem; 
+  }
+
+  /* Distribución de anchos proporcionales para el contenedor premium de tu PC */
+  .grid-cards > *,
+  .expertise-grid > * {
+    flex: 1 1 calc(25% - 1.5rem);
+    min-width: 260px; /* Previene que colapsen en pantallas más ajustadas */
+    max-width: calc(25% - 1.1rem); /* Impide que se desparramen al ensancharse */
+    height: auto;
   }
 
   .list-linear {

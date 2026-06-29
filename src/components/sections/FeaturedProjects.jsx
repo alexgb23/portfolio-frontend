@@ -100,7 +100,7 @@ function ProjectCardSkeleton({ tone = 0 }) {
 
 function FeaturedProjects({ projects = [], loading = false }) {
   const safeProjects = Array.isArray(projects) ? projects : [];
-  const visibleProjects = safeProjects.slice(0, 2);
+  const visibleProjects = safeProjects.slice(0, 3);
   const hasProjects = visibleProjects.length > 0;
 
   return (

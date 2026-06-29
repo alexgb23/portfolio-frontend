@@ -39,32 +39,32 @@ const socialIconMap = {
 
 const staticExpertise = [
   {
-    id: "infrastructure",
-    title: "Infraestructura",
-    text: "Servidores Linux, virtualización, redes segmentadas y servicios técnicos en entornos reales.",
+    id: "networking-virtualization",
+    title: "Redes y Virtualización",
+    text: "Diseño de redes, segmentación y despliegue de entornos virtuales eficientes.",
     icon_key: "server",
     tone: "tone-1",
   },
   {
-    id: "software",
-    title: "Software",
-    text: "Aplicaciones web, backend, APIs y herramientas técnicas orientadas a necesidades reales.",
+    id: "linux-systems",
+    title: "Sistemas Linux",
+    text: "Administración, configuración y gestión de servidores robustos.",
     icon_key: "code",
     tone: "tone-0",
   },
   {
-    id: "networking",
-    title: "Redes",
-    text: "VLANs, routing, segmentación, seguridad y conectividad estable para entornos IT.",
-    icon_key: "network",
-    tone: "tone-2",
-  },
-  {
-    id: "automation",
-    title: "Automatización",
-    text: "Scripts, integración de sistemas, IoT y automatización aplicada a procesos reales.",
+    id: "automation-iot",
+    title: "Automatización e IoT",
+    text: "Scripts de optimización, domótica avanzada y conectividad inteligente.",
     icon_key: "microchip",
     tone: "tone-4",
+  },
+  {
+    id: "applied-ai",
+    title: "IA Aplicada",
+    text: "Integración de inteligencia artificial para resolver problemas reales.",
+    icon_key: "network",
+    tone: "tone-2",
   },
 ];
 
@@ -140,8 +140,6 @@ function HeroSection({
   const heroIntro =
     "Perfil técnico orientado a infraestructura IT, virtualización, redes, automatización y desarrollo de soluciones web y software.";
 
-  const heroBadge = "Infraestructura · Sistemas · Redes · Automatización";
-
   const avatarAlt = `Retrato profesional de ${displayName}`;
 
   return (
@@ -187,10 +185,6 @@ function HeroSection({
                   decoding="async"
                 />
               </picture>
-            </div>
-
-            <div className="hero-badge-wrap">
-              <div className="hero-badge-inner">{heroBadge}</div>
             </div>
           </div>
         </div>
@@ -250,7 +244,7 @@ function HeroSection({
                     rel={isMail ? undefined : "noopener noreferrer"}
                   >
                     <Icon />
-                    <span>{item.label || item.platform || "Contacto"}</span>
+                    <span>{item.platform || "Social"}</span>
                   </a>
                 );
               })}

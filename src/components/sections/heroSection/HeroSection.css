@@ -1,5 +1,5 @@
 /* =========================================================
-  Efecto de transicion al cargar la pagina de l hero
+  EFECTO DE TRANSICIÓN AL CARGAR LA PÁGINA DEL HERO
 ========================================================= */
 .hero-enter {
   opacity: 0;
@@ -24,13 +24,13 @@
     transition: none;
   }
 }
+
 /* =========================================================
    HERO: ANIMACIÓN DE ENTRADA
    ========================================================= */
-
 .hero-centered-section {
   width: 100%;
-  padding: 100px 0;
+  padding: 60px 0;
   overflow: hidden;
   opacity: 0;
   transform: translate3d(0, 18px, 0);
@@ -63,19 +63,20 @@
 }
 
 /* =========================================================
-  HERO SECTION
+  ESTRUCTURA BASE: MOBILE FIRST (0px a 767px)
 ========================================================= */
 .hero-center-content {
   display: flex;
   flex-direction: column;
-  gap: 80px;
+  gap: 48px;
 }
 
 .hero-top-row {
   display: flex;
   flex-direction: column;
-  gap: 50px;
+  gap: 32px;
   align-items: center;
+  text-align: center;
 }
 
 .hero-title-container {
@@ -84,22 +85,22 @@
 
 .hero-kicker {
   display: block;
-  margin-bottom: 22px;
+  margin-bottom: 16px;
   color: var(--accent);
   font-family: "JetBrains Mono", monospace;
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   font-weight: 700;
-  letter-spacing: 0.15em;
+  letter-spacing: 0.12em;
 }
 
 .hero-main-title {
   margin: 0;
-  max-width: 950px;
+  max-width: 100%;
   font-family: "Space Grotesk", sans-serif;
   color: var(--text-main);
-  font-size: clamp(2.5rem, 7vw, 5rem);
-  line-height: 1.08;
-  letter-spacing: -0.05em;
+  font-size: clamp(2.2rem, 8vw, 3.8rem);
+  line-height: 1.1;
+  letter-spacing: -0.04em;
 }
 
 .hero-main-title span {
@@ -110,33 +111,34 @@
 }
 
 .hero-intro {
-  margin-top: 30px;
-  max-width: 780px;
+  margin-top: 20px;
+  max-width: 100%;
   color: var(--text-sub);
-  line-height: 1.8;
-  font-size: 1.08rem;
+  line-height: 1.6;
+  font-size: 1rem;
 }
 
 .avatar-block {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 25px;
+  width: 100%;
 }
 
 .avatar-wrapper {
   position: relative;
-  width: 300px;
-  height: 400px;
+  width: 100%;
+  max-width: 280px;
+  aspect-ratio: 3 / 4;
 }
 
 .avatar-wrapper::before {
   content: "";
   position: absolute;
-  inset: 30px;
+  inset: 20px;
   background: var(--accent-glow);
-  filter: blur(60px);
-  opacity: 0.5;
+  filter: blur(40px);
+  opacity: 0.4;
   z-index: -1;
 }
 
@@ -152,77 +154,64 @@
   height: 100%;
   object-fit: cover;
   object-position: center top;
-  border-radius: 32px;
+  border-radius: 24px;
   border: 1px solid var(--border);
-  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.35);
-  transform: perspective(1200px) rotateY(-6deg);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+  transform: perspective(1200px) rotateY(-4deg);
   transition:
     transform 0.4s ease,
     box-shadow 0.4s ease;
 }
 
 .profile-avatar:hover {
-  transform: perspective(1200px) rotateY(0) translateY(-10px);
-}
-
-.hero-badge-wrap {
-  display: flex;
-  justify-content: center;
-}
-
-.hero-badge-inner {
-  padding: 10px 18px;
-  border-radius: 999px;
-  border: 1px solid var(--border);
-  background: var(--bg-card);
-  color: var(--accent);
-  font-family: "JetBrains Mono", monospace;
-  font-size: 0.75rem;
+  transform: perspective(1200px) rotateY(0) translateY(-6px);
 }
 
 .hero-bottom-block {
   display: flex;
   flex-direction: column;
-  gap: 45px;
+  gap: 40px;
 }
 
 /* =========================================================
-  HERO SPECIALITY CARDS
+  TARJETAS DE ESPECIALIDAD (BASE MÓVIL)
 ========================================================= */
-
 .speciality-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr));
-  gap: 20px;
+  grid-template-columns: 1fr;
+  gap: 16px;
 }
 
 .speciality-card {
-  min-height: 210px;
+  min-height: auto;
+  display: flex;
+  flex-direction: column;
 }
 
 .speciality-card p {
-  margin-top: auto;
+  margin-top: 12px;
 }
 
 .hero-actions {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 15px;
+  gap: 12px;
 }
 
 .social-btn {
-  min-height: 50px;
+  min-height: 48px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 10px;
-  padding: 12px 24px;
-  border-radius: 14px;
+  padding: 10px 20px;
+  border-radius: 12px;
   border: 1px solid var(--border);
   background: var(--bg-card);
   color: var(--text-main);
   font-weight: 700;
+  font-size: 0.95rem;
   transition:
     transform 0.3s ease,
     border-color 0.3s ease,
@@ -231,54 +220,217 @@
 }
 
 .social-btn:hover {
-  transform: translateY(-3px);
+  transform: translateY(-2px);
   border-color: var(--accent);
 }
 
 .social-center-links {
   display: none;
-  justify-content: center;
-  gap: 15px;
+}
+/* =========================================================
+   REDISEÑO MINIMALISTA: TARJETAS DEL HERO SIN MARCO NI COLOR
+   ========================================================= */
+
+/* Eliminamos los fondos, bordes, sombras y pseudoelementos globales de la tarjeta */
+#inicio .speciality-grid .speciality-card {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  min-height: auto !important; /* Altura totalmente fluida según el texto */
+  backdrop-filter: none !important;
+}
+
+
+
+/* Anulamos cualquier efecto hover de elevación o translación */
+#inicio .speciality-grid .speciality-card:hover {
+  transform: none !important;
+}
+
+/* Alineamos los textos un poco más cerca de la cabecera */
+#inicio .speciality-grid .speciality-card p {
+  margin-top: 8px !important;
+  font-size: 0.92rem;
+  line-height: 1.5;
+}
+
+/* Mantenemos el icono bonito flotando limpio */
+#inicio .speciality-grid .expertise-icon {
+  transform: none !important;
+  transition: color 0.25s ease;
+}
+
+/* Opcional: un leve cambio de color en el icono al pasar el ratón por la zona */
+#inicio .speciality-grid .speciality-card:hover .expertise-icon {
+  color: var(--card-tone-accent, var(--accent));
 }
 
 
 /* =========================================================
-  RESPONSIVE DESKTOP
+  RESPONSIVE TABLET (Breakpoints intermedios de 768px a 1023px)
 ========================================================= */
-@media (min-width: 1024px) {
+@media (min-width: 768px) {
+  .hero-centered-section {
+    padding: 80px 0;
+  }
+
+  .hero-center-content {
+    gap: 60px;
+  }
+
   .hero-top-row {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) 420px;
-    gap: 80px;
-    align-items: center;
+    text-align: left;
+    align-items: flex-start;
+    gap: 40px;
+  }
+
+  .hero-kicker {
+    margin-bottom: 20px;
+  }
+
+  .hero-intro {
+    margin-top: 24px;
+    font-size: 1.05rem;
   }
 
   .avatar-wrapper {
-    width: 400px;
-    height: 520px;
+    max-width: 320px;
+  }
+
+  .speciality-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+
+  .speciality-card {
+    min-height: 190px;
+  }
+  
+  .hero-actions {
+    gap: 16px;
+  }
+}
+
+/* =========================================================
+  RESPONSIVE DESKTOP (Desde 1024px en adelante)
+========================================================= */
+@media (min-width: 1024px) {
+  .hero-centered-section {
+    padding: 130px 0; /* Más separación superior e inferior de la pantalla */
+  }
+
+  .hero-center-content {
+    gap: 100px; /* Separación masiva entre el título/foto y las tarjetas */
+  }
+
+  .hero-top-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 380px;
+    gap: 70px;
+    align-items: center;
+  }
+
+  .hero-kicker {
+    margin-bottom: 28px; /* Más aire abajo del kicker superior */
+    font-size: 0.85rem;
+  }
+
+  .hero-main-title {
+    font-size: 4.5rem;
+    line-height: 1.08;
+  }
+
+  .hero-intro {
+    margin-top: 36px; /* Más espacio entre el título principal y la descripción */
+    font-size: 1.08rem;
+    line-height: 1.8;
+  }
+
+  .avatar-block {
+    align-items: flex-end;
+  }
+
+  .avatar-wrapper {
+    max-width: 380px;
+  }
+
+  .profile-avatar {
+    border-radius: 32px;
+  }
+
+  .speciality-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+  }
+
+  .speciality-card {
+    min-height: 220px;
+  }
+
+  .hero-actions {
+    gap: 20px; /* Más separación entre los botones principales (Ver lab y Contactar) */
+    margin-bottom: 20px; /* Separa los botones principales de la fila de redes sociales */
   }
 
   .social-center-links {
     display: flex;
-  }
-
-  .speciality-card {
-    min-height: 230px;
+    justify-content: center;
+    gap: 24px; /* Incrementada la separación entre los iconos de redes (GitHub, LinkedIn, etc.) */
+    margin-top: 15px;
   }
 }
 
 /* =========================================================
-  RESPONSIVE LARGE DESKTOP
+  RESPONSIVE LARGE DESKTOP (Pantallas anchas desde 1280px)
 ========================================================= */
 @media (min-width: 1280px) {
+  .hero-centered-section {
+    padding: 150px 0; /* Espacio premium total */
+  }
+
+  .hero-center-content {
+    gap: 120px; /* Máximo aire vertical entre bloques */
+  }
+
+  .hero-top-row {
+    grid-template-columns: minmax(0, 1fr) 440px;
+    gap: 110px;
+  }
+
+  .hero-kicker {
+    margin-bottom: 34px;
+    font-size: 0.9rem;
+  }
+
   .avatar-wrapper {
-    width: 450px;
-    height: 580px;
+    max-width: 440px;
   }
-    .speciality-card {
-    min-height: 230px;
-  }
+
   .hero-main-title {
-    font-size: 5.5rem;
+    font-size: 5.2rem;
+  }
+
+  .hero-intro {
+    font-size: 1.12rem;
+    margin-top: 42px; /* Espacio ultra amplio para evitar amontonamientos */
+  }
+
+  .speciality-grid {
+    gap: 28px;
+  }
+
+  .speciality-card {
+    min-height: 240px;
+    padding: 24px;
+  }
+
+  .hero-actions {
+    gap: 24px;
+  }
+
+  .social-center-links {
+    gap: 28px; /* Espaciado máximo para los enlaces de redes sociales en monitores gigantes */
+    margin-top: 20px;
   }
 }

@@ -58,7 +58,7 @@ function Home() {
   const safeProjects = Array.isArray(projects) ? projects : [];
   const featuredOnly = safeProjects.filter((project) => project.is_featured);
   const nonFeatured = safeProjects.filter((project) => !project.is_featured);
-  const featuredProjects = [...featuredOnly, ...nonFeatured].slice(0, 2);
+  const featuredProjects = [...featuredOnly, ...nonFeatured].slice(0, 3);
 
   const personSchema = {
     "@context": "https://schema.org",
