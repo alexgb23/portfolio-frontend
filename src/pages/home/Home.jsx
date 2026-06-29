@@ -6,7 +6,7 @@ import FeaturedLaboratory from "../../components/sections/FeaturedLaboratory";
 import ContactPreview from "../../components/sections/ContactPreview";
 
 import {
-  usePortfolioHero,
+  usePortfolioHome,
   useLaboratoryHome,
 } from "../../hooks/usePortfolioData";
 import useProjects from "../../hooks/pages/useProjects";
@@ -20,7 +20,10 @@ function Home() {
   const {
     profile,
     socialLinks,
-  } = usePortfolioHero();
+    expertise,
+    loading: homeLoading,
+    error: homeError,
+  } = usePortfolioHome();
 
   const {
     projects,
@@ -99,6 +102,9 @@ function Home() {
       <HeroSection
         profile={profile}
         socialLinks={socialLinks}
+        expertise={expertise}
+        loading={homeLoading}
+        error={homeError}
       />
 
       <AboutPreview />

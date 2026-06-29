@@ -19,11 +19,15 @@ const expertiseIconMap = {
   infrastructure: FaServer,
   code: FaCode,
   development: FaCode,
+  software: FaCode,
   network: FaNetworkWired,
   networking: FaNetworkWired,
+  shield: FaNetworkWired,
   microchip: FaMicrochip,
   automation: FaMicrochip,
+  ai: FaMicrochip,
   database: FaDatabase,
+  data: FaDatabase,
 };
 
 const socialIconMap = {
@@ -64,9 +68,12 @@ const staticExpertise = [
   },
 ];
 
+const toneFallbacks = ["tone-0", "tone-1", "tone-2", "tone-4"];
+
 function HeroSection({
   profile = null,
   socialLinks = [],
+  expertise = [],
 }) {
   const [isVisible, setIsVisible] = useState(false);
 
@@ -95,6 +102,7 @@ function HeroSection({
           (item?.platform || item?.icon_key || "").toLowerCase()
         )
       )
+      .sort((a, b) => (a?.sort_order ?? 999) - (b?.sort_order ?? 999))
       .map((item) => {
         const key = (item?.platform || item?.icon_key || "").toLowerCase();
         let url = item?.url || "#";
@@ -107,19 +115,32 @@ function HeroSection({
       });
   }, [socialLinks]);
 
+  const displayedExpertise = useMemo(() => {
+    const safeExpertise = Array.isArray(expertise) ? expertise : [];
+    const source = safeExpertise.length > 0 ? safeExpertise : staticExpertise;
+
+    return source.slice(0, 4).map((item, index) => ({
+      id: item?.id || item?.slug || item?.title || `expertise-${index}`,
+      title: item?.title || "Especialidad",
+      text: item?.text || item?.description || "",
+      icon_key: item?.icon_key || item?.iconName || "code",
+      tone: item?.tone || toneFallbacks[index % toneFallbacks.length],
+    }));
+  }, [expertise]);
+
   const displayName = profile?.display_name || profile?.full_name || "Alex Galvez";
 
   const heroKicker =
     "INFRAESTRUCTURA · SISTEMAS · SOFTWARE · AUTOMATIZACIÓN";
 
-  const heroTitlePrefix = "Diseño  soluciones donde";
+  const heroTitlePrefix = "Diseño soluciones donde";
   const heroTitleHighlight = "software, sistemas y redes";
   const heroTitleSuffix = "trabajan como un ecosistema.";
 
   const heroIntro =
     "Perfil técnico orientado a infraestructura IT, virtualización, redes, automatización y desarrollo de soluciones web y software.";
 
-  const heroBadge = "React · Laravel · Proxmox · pfSense · Docker";
+  const heroBadge = "Infraestructura · Sistemas · Redes · Automatización";
 
   const avatarAlt = `Retrato profesional de ${displayName}`;
 
@@ -176,7 +197,7 @@ function HeroSection({
 
         <div className="hero-bottom-block">
           <section className="speciality-grid" aria-label="Especialidades principales">
-            {staticExpertise.map((item, index) => {
+            {displayedExpertise.map((item, index) => {
               const Icon =
                 expertiseIconMap[(item?.icon_key || "").toLowerCase()] || FaCode;
 
