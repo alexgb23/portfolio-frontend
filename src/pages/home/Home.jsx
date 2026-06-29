@@ -13,16 +13,13 @@ import useProjects from "../../hooks/pages/useProjects";
 import usePageTitle from "../../hooks/usePageTitle";
 
 function Home() {
-  usePageTitle("Alexander Galvez | Portfolio IT y Desarrollo Full Stack");
+  usePageTitle("Alex Galvez | Sistemas, infraestructura y desarrollo de software");
 
   const [showDeferredSections, setShowDeferredSections] = useState(false);
 
   const {
     profile,
-    expertise,
     socialLinks,
-    loading: heroLoading,
-    error: heroError,
   } = usePortfolioHero();
 
   const {
@@ -63,25 +60,24 @@ function Home() {
   const personSchema = {
     "@context": "https://schema.org",
     "@type": "Person",
-    "@id": "https://portfolioalexsys.netlify.app/#alexander-galvez",
-    name: profile?.full_name || "Alexander Galvez",
-    url: "https://portfolioalexsys.netlify.app/",
-    image:
-      "https://portfolioalexsys.netlify.app/imagen_portfolio_mia_retocada-960.avif",
-    jobTitle: profile?.headline || "IT Specialist · Full Stack Developer",
+    "@id": "https://alex.syskovex.com/#alex-galvez",
+    name: profile?.full_name || "Alex Galvez",
+    url: "https://alex.syskovex.com/",
+    image: "https://alex.syskovex.com/imagen_portfolio_mia_retocada-960.avif",
+    jobTitle: "Systems, Infrastructure and Software Engineer",
     description:
-      profile?.bio_short ||
-      "Profesional del sector tecnológico especializado en desarrollo de aplicaciones, administración de sistemas y diseño de infraestructuras IT.",
+      "Perfil técnico especializado en infraestructura IT, redes, virtualización, automatización y desarrollo de software.",
     knowsAbout: [
-      "Desarrollo Full Stack",
       "Infraestructura IT",
       "Administración de sistemas",
       "Virtualización",
-      "Redes y seguridad",
-      "Automatización IoT",
+      "Redes",
+      "Seguridad perimetral",
+      "Automatización",
+      "IoT",
       "Linux",
       "APIs",
-      "Bases de datos",
+      "Desarrollo de software",
     ],
     sameAs: [
       "https://github.com/alexgb23",
@@ -93,8 +89,6 @@ function Home() {
 
   const safeJsonLd = JSON.stringify(personSchema).replace(/<\//g, "<\\/");
 
-  const pageError = heroError;
-
   return (
     <>
       <script
@@ -102,63 +96,49 @@ function Home() {
         dangerouslySetInnerHTML={{ __html: safeJsonLd }}
       />
 
-      {pageError ? (
-        <div className="state-wrapper error centered">
-          <h2>Error de conexión</h2>
-          <p>{pageError}</p>
-        </div>
+      <HeroSection
+        profile={profile}
+        socialLinks={socialLinks}
+      />
+
+      <AboutPreview />
+
+      {projectsError ? (
+        <section className="section section-spaced section-separated">
+          <div className="empty-inline-state">
+            <p>No se pudieron cargar los proyectos en este momento.</p>
+          </div>
+        </section>
       ) : (
+        <FeaturedProjects
+          projects={featuredProjects}
+          loading={projectsLoading}
+        />
+      )}
+
+      {showDeferredSections ? (
         <>
-          <HeroSection
-            profile={profile}
-            expertise={expertise}
-            socialLinks={socialLinks}
-            loading={heroLoading}
-          />
-
-          <AboutPreview
-            profile={profile}
-            loading={heroLoading}
-          />
-
-          {projectsError ? (
+          {laboratoryError ? (
             <section className="section section-spaced section-separated">
               <div className="empty-inline-state">
-                <p>No se pudieron cargar los proyectos en este momento.</p>
+                <p>No se pudo cargar el resumen del laboratorio en este momento.</p>
               </div>
             </section>
           ) : (
-            <FeaturedProjects
-              projects={featuredProjects}
-              loading={projectsLoading}
+            <FeaturedLaboratory
+              serversCount={summary?.servers_count ?? 0}
+              metricsCount={summary?.metrics_count ?? 0}
+              nodesCount={summary?.nodes_count ?? 0}
+              loading={laboratoryLoading}
             />
           )}
 
-          {showDeferredSections ? (
-            <>
-              {laboratoryError ? (
-                <section className="section section-spaced section-separated">
-                  <div className="empty-inline-state">
-                    <p>No se pudo cargar el resumen del laboratorio en este momento.</p>
-                  </div>
-                </section>
-              ) : (
-                <FeaturedLaboratory
-                  serversCount={summary?.servers_count ?? 0}
-                  metricsCount={summary?.metrics_count ?? 0}
-                  nodesCount={summary?.nodes_count ?? 0}
-                  loading={laboratoryLoading}
-                />
-              )}
-
-              <ContactPreview
-                profile={profile}
-                socialLinks={socialLinks}
-              />
-            </>
-          ) : null}
+          <ContactPreview
+            profile={profile}
+            socialLinks={socialLinks}
+          />
         </>
-      )}
+      ) : null}
     </>
   );
 }

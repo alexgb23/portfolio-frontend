@@ -269,11 +269,10 @@
 .tone-0 { --card-tone-accent: var(--accent); }
 .tone-1 { --card-tone-accent: var(--accent-2); }
 .tone-2 { --card-tone-accent: var(--accent-green); }
-/* .tone-3 { --card-tone-accent: var(--accent-pink); }
-.tone-4 { --card-tone-accent: var(--accent-orange); }
-.tone-5 { --card-tone-accent: var(--accent-coral); }
-.tone-6 { --card-tone-accent: var(--accent-purple); }
-.tone-7 { --card-tone-accent: var(--accent-indigo); } */
+.tone-3 { --card-tone-accent: var(--accent-quantum); }
+.tone-4 { --card-tone-accent: var(--accent-neon); }
+.tone-5 { --card-tone-accent: var(--accent-matrix); }
+
 
 /* =========================================================
    RESPONSIVE

@@ -7,91 +7,88 @@ import {
   FaArrowRight,
 } from "react-icons/fa";
 
-
-function AboutPreview({ profile = null }) {
+function AboutPreview() {
   const title =
-    profile?.headline ||
-    "Desarrollo, infraestructura y automatización en una sola visión";
+    "Perfil técnico orientado a sistemas, infraestructura, automatización y software";
 
   const description =
-    profile?.bio_short ||
-    "Mi trabajo une software, redes, servidores, electrónica aplicada y visualización de datos. Me interesan los proyectos donde hay que integrar sistemas reales y hacerlos útiles, mantenibles y estables.";
+    "Trabajo en la intersección entre software, redes, servidores, virtualización, automatización y sistemas conectados. Me interesan los proyectos donde hay que diseñar, integrar y mantener infraestructuras reales con una base técnica sólida.";
 
   return (
     <section className="section section-spaced section-separated" id="sobre-mi">
       <div className="section-head-centered narrow">
-        <span className="section-kicker">Perfil técnico</span>
+        <span className="section-kicker">Sobre mí</span>
 
         <h2>{title}</h2>
         <p>{description}</p>
       </div>
 
       <div className="expertise-grid">
-        <article className="expertise-card card-hover tone-0">
+        <article className="expertise-card expertise-card-hover tone-0">
           <div className="card-head">
             <div className="expertise-icon">
               <FaCode />
             </div>
 
             <div className="card-title-wrap">
-              <h3>Desarrollo</h3>
+              <h3>Software y desarrollo</h3>
             </div>
           </div>
 
           <p>
-            Laravel, JavaScript, React, APIs y lógica backend conectada a
-            frontend útil.
+            Desarrollo aplicaciones web, APIs, herramientas internas y soluciones
+            backend/frontend orientadas a necesidades reales.
           </p>
         </article>
 
-        <article className="expertise-card card-hover tone-1">
+        <article className="expertise-card expertise-card-hover tone-1">
           <div className="card-head">
             <div className="expertise-icon">
               <FaServer />
             </div>
 
             <div className="card-title-wrap">
-              <h3>Infraestructura</h3>
+              <h3>Infraestructura y virtualización</h3>
             </div>
           </div>
 
           <p>
-            Servidores, virtualización, servicios técnicos, monitorización y
-            laboratorio propio.
+            Trabajo con servidores Linux, servicios técnicos, virtualización,
+            laboratorio propio, despliegues y arquitectura de sistemas.
           </p>
         </article>
 
-        <article className="expertise-card card-hover tone-2">
+        <article className="expertise-card expertise-card-hover tone-2">
           <div className="card-head">
             <div className="expertise-icon">
               <FaNetworkWired />
             </div>
 
             <div className="card-title-wrap">
-              <h3>Redes</h3>
+              <h3>Redes y conectividad</h3>
             </div>
           </div>
 
           <p>
-            Conectividad, servicios perimetrales, segmentación, routing y visión
-            de sistemas.
+            Diseño entornos con segmentación, VLANs, routing, seguridad perimetral
+            y conectividad estable para distintos servicios.
           </p>
         </article>
 
-        <article className="expertise-card card-hover tone-0">
+        <article className="expertise-card expertise-card-hover tone-3">
           <div className="card-head">
             <div className="expertise-icon">
               <FaMicrochip />
             </div>
 
             <div className="card-title-wrap">
-              <h3>Domótica e inmótica</h3>
+              <h3>Automatización, IoT y domótica</h3>
             </div>
           </div>
 
           <p>
-            Sensores, nodos, integración de hardware y automatización aplicada a
-            espacios reales.
+            Integro sensores, nodos, automatizaciones y lógica aplicada a espacios,
+            dispositivos y procesos conectados.
           </p>
         </article>
       </div>

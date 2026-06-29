@@ -33,40 +33,39 @@ const socialIconMap = {
   envelope: FaEnvelope,
 };
 
-const defaultExpertise = [
+const staticExpertise = [
   {
-    id: "default-development",
-    title: "Desarrollo",
-    text: "Frontend moderno, backend y APIs orientadas a soluciones reales.",
-    icon_key: "code",
-    tone: "tone-0",
-  },
-  {
-    id: "default-infrastructure",
+    id: "infrastructure",
     title: "Infraestructura",
-    text: "Servidores, virtualización y servicios técnicos en entornos reales.",
+    text: "Servidores Linux, virtualización, redes segmentadas y servicios técnicos en entornos reales.",
     icon_key: "server",
     tone: "tone-1",
   },
   {
-    id: "default-networking",
+    id: "software",
+    title: "Software",
+    text: "Aplicaciones web, backend, APIs y herramientas técnicas orientadas a necesidades reales.",
+    icon_key: "code",
+    tone: "tone-0",
+  },
+  {
+    id: "networking",
     title: "Redes",
-    text: "Segmentación, routing, seguridad y conectividad estable.",
+    text: "VLANs, routing, segmentación, seguridad y conectividad estable para entornos IT.",
     icon_key: "network",
     tone: "tone-2",
   },
   {
-    id: "default-automation",
+    id: "automation",
     title: "Automatización",
-    text: "IoT, sensores, controladores y lógica aplicada a sistemas físicos.",
+    text: "Scripts, integración de sistemas, IoT y automatización aplicada a procesos reales.",
     icon_key: "microchip",
-    tone: "tone-0",
+    tone: "tone-4",
   },
 ];
 
 function HeroSection({
   profile = null,
-  expertise = [],
   socialLinks = [],
 }) {
   const [isVisible, setIsVisible] = useState(false);
@@ -87,41 +86,42 @@ function HeroSection({
     return () => cancelRaf(id);
   }, []);
 
-  const displayedExpertise = useMemo(() => {
-    const safeExpertise = Array.isArray(expertise) ? expertise.slice(0, 4) : [];
-    return safeExpertise.length > 0 ? safeExpertise : defaultExpertise;
-  }, [expertise]);
-
   const displayedSocialLinks = useMemo(() => {
     const safeSocialLinks = Array.isArray(socialLinks) ? socialLinks : [];
 
-    return safeSocialLinks.filter((item) =>
-      ["github", "linkedin", "email", "envelope"].includes(
-        (item?.platform || item?.icon_key || "").toLowerCase()
+    return safeSocialLinks
+      .filter((item) =>
+        ["github", "linkedin", "email", "envelope"].includes(
+          (item?.platform || item?.icon_key || "").toLowerCase()
+        )
       )
-    );
+      .map((item) => {
+        const key = (item?.platform || item?.icon_key || "").toLowerCase();
+        let url = item?.url || "#";
+
+        if ((key === "email" || key === "envelope") && url && !url.startsWith("mailto:")) {
+          url = `mailto:${url}`;
+        }
+
+        return { ...item, url };
+      });
   }, [socialLinks]);
 
-  const heroKicker =
-    profile?.hero_kicker ||
-    "DESARROLLO WEB · INFRAESTRUCTURA IT · AUTOMATIZACIÓN";
+  const displayName = profile?.display_name || profile?.full_name || "Alex Galvez";
 
-  const heroTitlePrefix =
-    profile?.hero_title_prefix || "Diseño soluciones donde";
-  const heroTitleHighlight =
-    profile?.hero_title_highlight || "software, sistemas y red";
-  const heroTitleSuffix =
-    profile?.hero_title_suffix || "trabajan como un solo ecosistema.";
+  const heroKicker =
+    "INFRAESTRUCTURA · SISTEMAS · SOFTWARE · AUTOMATIZACIÓN";
+
+  const heroTitlePrefix = "Diseño  soluciones donde";
+  const heroTitleHighlight = "software, sistemas y redes";
+  const heroTitleSuffix = "trabajan como un ecosistema.";
 
   const heroIntro =
-    profile?.bio_short ||
-    "Desarrollador web y perfil técnico IT con enfoque en frontend moderno, backend, virtualización, redes y automatización.";
+    "Perfil técnico orientado a infraestructura IT, virtualización, redes, automatización y desarrollo de soluciones web y software.";
 
-  const heroBadge =
-    profile?.hero_stack_badge || "React · Laravel · Proxmox · pfSense";
+  const heroBadge = "React · Laravel · Proxmox · pfSense · Docker";
 
-  const avatarAlt =
-    profile?.display_name || profile?.full_name || "Alexander Galvez";
+  const avatarAlt = `Retrato profesional de ${displayName}`;
 
   return (
     <header
@@ -176,7 +176,7 @@ function HeroSection({
 
         <div className="hero-bottom-block">
           <section className="speciality-grid" aria-label="Especialidades principales">
-            {displayedExpertise.map((item, index) => {
+            {staticExpertise.map((item, index) => {
               const Icon =
                 expertiseIconMap[(item?.icon_key || "").toLowerCase()] || FaCode;
 
@@ -191,19 +191,19 @@ function HeroSection({
                     </div>
 
                     <div className="card-title-wrap">
-                      <h3>{item.title || "Especialidad"}</h3>
+                      <h3>{item.title}</h3>
                     </div>
                   </div>
 
-                  <p>{item.text || "Descripción no disponible."}</p>
+                  <p>{item.text}</p>
                 </article>
               );
             })}
           </section>
 
           <div className="hero-actions">
-            <Link to="/proyectos" className="nav-cta">
-              <span>Ver proyectos</span>
+            <Link to="/laboratorio" className="nav-cta">
+              <span>Ver laboratorio</span>
               <FaArrowRight />
             </Link>
 

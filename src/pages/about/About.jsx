@@ -21,60 +21,64 @@ const expertiseIconMap = {
   infrastructure: FaServer,
 };
 
-const defaultExpertise = [
+const staticExpertise = [
   {
-    id: "about-development",
-    title: "Desarrollo",
-    text: "Frontend, backend y soluciones orientadas a producto y experiencia real.",
+    id: "about-software",
+    title: "Software y desarrollo",
+    text: "Aplicaciones, APIs y herramientas técnicas orientadas a necesidades reales, integración y mantenibilidad.",
     icon_key: "code",
     tone: "tone-0",
   },
   {
     id: "about-infrastructure",
-    title: "Infraestructura",
-    text: "Servidores, virtualización y despliegues técnicos con enfoque estable y escalable.",
+    title: "Infraestructura y virtualización",
+    text: "Servidores, entornos Linux, virtualización, despliegues y servicios técnicos con enfoque estable y escalable.",
     icon_key: "server",
     tone: "tone-1",
   },
   {
     id: "about-networking",
-    title: "Redes",
-    text: "Segmentación, conectividad, routing y seguridad aplicados a entornos reales.",
+    title: "Redes y conectividad",
+    text: "Segmentación, VLANs, routing, switching gestionado y servicios perimetrales para entornos reales.",
     icon_key: "network",
     tone: "tone-2",
   },
   {
     id: "about-automation",
-    title: "Automatización",
-    text: "Sistemas físicos, sensores e integración técnica para procesos inteligentes.",
+    title: "Automatización, IoT y sistemas conectados",
+    text: "Integración de sensores, nodos, dispositivos y automatizaciones aplicadas a procesos técnicos y espacios reales.",
     icon_key: "automation",
     tone: "tone-0",
   },
 ];
 
+const staticAboutTitle =
+  "Infraestructura, sistemas y automatización con visión integral";
+
+const staticAboutIntro =
+  "Soy Alex, perfil técnico especializado en infraestructura IT, redes, virtualización, automatización y sistemas conectados. Me enfoco en el diseño, integración y mantenimiento de soluciones tecnológicas reales, priorizando estabilidad, funcionalidad y coherencia entre servicios, red e infraestructura.";
+
+const staticParagraphs = [
+  "Trabajo con laboratorio propio y entornos prácticos donde desarrollo y valido configuraciones relacionadas con Linux, virtualización, segmentación de red, servicios perimetrales, switching gestionado, automatización y monitorización. Este enfoque me permite comprender los proyectos más allá de la capa visual o del desarrollo aislado, abordándolos desde una perspectiva global de arquitectura técnica.",
+  "Además, cuento con formación en domótica e inmótica, así como conocimientos de desarrollo de software, lo que me permite moverme con soltura entre la infraestructura física, la lógica de automatización y las aplicaciones que interactúan con esos entornos.",
+  "Mi objetivo es seguir consolidando un perfil técnico integral, con base sólida en sistemas, redes, virtualización, automatización e integración tecnológica.",
+];
+
 function About() {
-  usePageTitle("Sobre mí | Alexander Galvez");
+  usePageTitle("Sobre mí | Alex Galvez");
 
-  const { profile, skills, highlights, expertise, loading } = usePortfolioHome();
+  const { profile, skills, highlights } = usePortfolioHome();
 
-  const technologies = (skills ?? []).map((skill) => skill.name).filter(Boolean);
+  const technologies = (skills ?? [])
+    .map((skill) => skill.name)
+    .filter(Boolean);
 
-  const visibleExpertise =
-    Array.isArray(expertise) && expertise.length > 0
-      ? expertise
-      : defaultExpertise;
+  const aboutParagraphs =
+    profile?.bio_long?.trim()
+      ? profile.bio_long.split("\n\n").filter(Boolean)
+      : staticParagraphs;
 
-  const aboutTitle =
-    profile?.about_title ||
-    "Tecnología, infraestructura y desarrollo en una sola visión";
-
-  const aboutIntro =
-    profile?.about_intro ||
-    "Soy Alexander Galvez, profesional del sector IT especializado en desarrollo de software, sistemas informáticos, redes y automatización.";
-
-  const aboutParagraphs = profile?.bio_long
-    ? profile.bio_long.split("\n\n").filter(Boolean)
-    : [];
+  const displayName = profile?.display_name || "Alex Galvez";
 
   return (
     <section className="about-section" id="about">
@@ -82,11 +86,9 @@ function About() {
         <div className="about-left">
           <span className="about-kicker">// Sobre mí</span>
 
-          <h1 className="about-title">
-            {loading ? "Cargando..." : aboutTitle}
-          </h1>
+          <h1 className="about-title">{staticAboutTitle}</h1>
 
-          <p className="about-text">{aboutIntro}</p>
+          <p className="about-text">{staticAboutIntro}</p>
 
           {aboutParagraphs.map((paragraph, index) => (
             <p key={index} className="about-text">
@@ -121,7 +123,7 @@ function About() {
                 />
                 <img
                   src="/imagen_portfolio_mia_retocada-960.avif"
-                  alt={profile?.display_name || "Alexander Galvez"}
+                  alt={`Retrato profesional de ${displayName}`}
                   className="profile-photo"
                   width="450"
                   height="580"
@@ -134,29 +136,31 @@ function About() {
         </div>
       </div>
 
-      <section className="technical-section">
-        <div className="technical-line"></div>
+      {(highlights ?? []).length > 0 ? (
+        <section className="technical-section">
+          <div className="technical-line"></div>
 
-        <div className="technical-timeline">
-          {(highlights ?? []).map((item, index) => (
-            <article
-              key={item.id || item.number || index}
-              className={`stat-card ${item.side || "left"}`}
-            >
-              <span className="stat-number">{item.number}</span>
+          <div className="technical-timeline">
+            {highlights.map((item, index) => (
+              <article
+                key={item.id || item.number || index}
+                className={`stat-card ${item.side || "left"}`}
+              >
+                <span className="stat-number">{item.number}</span>
 
-              <div>
-                <h2>{item.title}</h2>
-                <p>{item.text}</p>
-              </div>
-            </article>
-          ))}
-        </div>
-      </section>
+                <div>
+                  <h2>{item.title}</h2>
+                  <p>{item.text}</p>
+                </div>
+              </article>
+            ))}
+          </div>
+        </section>
+      ) : null}
 
       <section className="expertise-section">
         <div className="expertise-grid">
-          {visibleExpertise.map((item, index) => {
+          {staticExpertise.map((item, index) => {
             const Icon =
               expertiseIconMap[(item?.icon_key || "").toLowerCase()] || FaCode;
 
@@ -171,11 +175,11 @@ function About() {
                   </div>
 
                   <div className="card-title-wrap">
-                    <h3>{item.title || "Especialidad"}</h3>
+                    <h3>{item.title}</h3>
                   </div>
                 </div>
 
-                <p>{item.text || "Descripción no disponible."}</p>
+                <p>{item.text}</p>
               </article>
             );
           })}

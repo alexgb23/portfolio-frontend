@@ -57,14 +57,14 @@ function MainLayout() {
     });
   };
 
-  const websiteSchema = {
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    "@id": "https://portfolioalexsys.netlify.app/#website",
-    name: "Alexander Galvez Portfolio",
-    url: "https://portfolioalexsys.netlify.app/",
-    inLanguage: "es",
-  };
+const websiteSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "@id": "https://alex.syskovex.com/#website",
+  name: "Portfolio técnico de Alex Galvez",
+  url: "https://alex.syskovex.com/",
+  inLanguage: "es-ES",
+};
 
   const safeJsonLd = JSON.stringify(websiteSchema).replace(/<\//g, "<\\/");
 
