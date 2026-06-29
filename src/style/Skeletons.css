@@ -84,9 +84,14 @@
 
 .skeleton-photo {
   width: 100%;
-  min-height: 280px;
+  height: 100%; /* Forzamos a que llene el 100% del contenedor padre 3:4 */
+  aspect-ratio: 3 / 4; /* Cambiamos 1/1 por la proporción real de tu avatar vertical */
   border-radius: 24px;
+  /* Eliminamos las alturas fijas que rompen el diseño adaptativo en móviles */
+  max-width: none;
+  min-height: auto;
 }
+
 
 .skeleton-line {
   width: 100%;

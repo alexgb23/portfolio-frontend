@@ -1,5 +1,3 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&family=Space+Grotesk:wght@500;600;700&display=swap");
-
 /* =========================================================
    TOKENS GLOBALES
    ========================================================= */
@@ -185,6 +183,21 @@ h1,
 h2,
 h3 {
   font-family: "Space Grotesk", sans-serif;
+}
+
+code,
+pre,
+kbd,
+samp {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+}
+
+button,
+input,
+textarea,
+select {
+  font-family: "Inter", system-ui, sans-serif;
+  color: inherit;
 }
 
 img,
