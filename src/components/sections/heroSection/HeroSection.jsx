@@ -70,11 +70,7 @@ const staticExpertise = [
 
 const toneFallbacks = ["tone-0", "tone-1", "tone-2", "tone-4"];
 
-function HeroSection({
-  profile = null,
-  socialLinks = [],
-  expertise = [],
-}) {
+function HeroSection({ profile = null, socialLinks = [], expertise = [] }) {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
@@ -83,8 +79,7 @@ function HeroSection({
       ((callback) => window.setTimeout(callback, 16));
 
     const cancelRaf =
-      window.cancelAnimationFrame ||
-      ((id) => window.clearTimeout(id));
+      window.cancelAnimationFrame || ((id) => window.clearTimeout(id));
 
     const id = raf(() => {
       setIsVisible(true);
@@ -99,15 +94,19 @@ function HeroSection({
     return safeSocialLinks
       .filter((item) =>
         ["github", "linkedin", "email", "envelope"].includes(
-          (item?.platform || item?.icon_key || "").toLowerCase()
-        )
+          (item?.platform || item?.icon_key || "").toLowerCase(),
+        ),
       )
       .sort((a, b) => (a?.sort_order ?? 999) - (b?.sort_order ?? 999))
       .map((item) => {
         const key = (item?.platform || item?.icon_key || "").toLowerCase();
         let url = item?.url || "#";
 
-        if ((key === "email" || key === "envelope") && url && !url.startsWith("mailto:")) {
+        if (
+          (key === "email" || key === "envelope") &&
+          url &&
+          !url.startsWith("mailto:")
+        ) {
           url = `mailto:${url}`;
         }
 
@@ -128,16 +127,23 @@ function HeroSection({
     }));
   }, [expertise]);
 
-  const displayName = profile?.display_name || profile?.full_name || "Alex Galvez";
+  // Se extraen de forma limpia los campos del json real sin inventar propiedades
+  const displayName =
+    profile?.display_name || profile?.full_name || "Alex Alexander Galvez";
 
   const heroKicker =
+    profile?.hero_kicker ||
     "INFRAESTRUCTURA · SISTEMAS · SOFTWARE · AUTOMATIZACIÓN";
 
-  const heroTitlePrefix = "Diseño soluciones donde";
-  const heroTitleHighlight = "software, sistemas y redes";
-  const heroTitleSuffix = "trabajan como un ecosistema.";
+  const heroTitlePrefix =
+    profile?.hero_title_prefix || "Diseño soluciones donde";
+  const heroTitleHighlight =
+    profile?.hero_title_highlight || "software, sistemas y redes";
+  const heroTitleSuffix =
+    profile?.hero_title_suffix || "trabajan como un ecosistema.";
 
   const heroIntro =
+    profile?.bio_short ||
     "Perfil técnico orientado a infraestructura IT, virtualización, redes, automatización y desarrollo de soluciones web y software.";
 
   const avatarAlt = `Retrato profesional de ${displayName}`;
@@ -190,10 +196,14 @@ function HeroSection({
         </div>
 
         <div className="hero-bottom-block">
-          <section className="speciality-grid" aria-label="Especialidades principales">
+          <section
+            className="speciality-grid"
+            aria-label="Especialidades principales"
+          >
             {displayedExpertise.map((item, index) => {
               const Icon =
-                expertiseIconMap[(item?.icon_key || "").toLowerCase()] || FaCode;
+                expertiseIconMap[(item?.icon_key || "").toLowerCase()] ||
+                FaCode;
 
               return (
                 <article
@@ -230,7 +240,11 @@ function HeroSection({
           {displayedSocialLinks.length > 0 ? (
             <div className="social-center-links">
               {displayedSocialLinks.map((item, index) => {
-                const key = (item?.platform || item?.icon_key || "").toLowerCase();
+                const key = (
+                  item?.platform ||
+                  item?.icon_key ||
+                  ""
+                ).toLowerCase();
                 const Icon = socialIconMap[key] || FaEnvelope;
                 const href = item?.url || "#";
                 const isMail = href.startsWith("mailto:");

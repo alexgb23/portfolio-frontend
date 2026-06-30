@@ -1,42 +1,32 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import HeroSection from "../../components/sections/heroSection/HeroSection";
 import AboutPreview from "../../components/sections/aboutPreview/AboutPreview";
 import FeaturedProjects from "../../components/sections/FeaturedProjects";
 import FeaturedLaboratory from "../../components/sections/FeaturedLaboratory";
 import ContactPreview from "../../components/sections/ContactPreview";
 
-import {
-  usePortfolioHome,
-  useLaboratoryHome,
-} from "../../hooks/usePortfolioData";
-import useProjects from "../../hooks/pages/useProjects";
+import { usePortfolioHome } from "../../hooks/usePortfolioData";
 import usePageTitle from "../../hooks/usePageTitle";
 
 function Home() {
-  usePageTitle("Alex Galvez | Sistemas, infraestructura y desarrollo de software");
+  usePageTitle(
+    "Alex Alexander Galvez | Sistemas, infraestructura y desarrollo de software",
+  );
 
   const [showDeferredSections, setShowDeferredSections] = useState(false);
 
+  // 1. UNA ÚNICA PETICIÓN: Extraemos todo del nuevo JSON unificado
   const {
-    profile,
     socialLinks,
-    expertise,
+    projects,
+    servers,
+    nodes,
+    metrics,
     loading: homeLoading,
     error: homeError,
   } = usePortfolioHome();
 
-  const {
-    projects,
-    loading: projectsLoading,
-    error: projectsError,
-  } = useProjects(true);
-
-  const {
-    summary,
-    loading: laboratoryLoading,
-    error: laboratoryError,
-  } = useLaboratoryHome(showDeferredSections);
-
+  // 2. Control de renderizado diferido para optimizar el hilo principal de la UI
   useEffect(() => {
     if (typeof window === "undefined") return;
 
@@ -45,8 +35,7 @@ function Home() {
       ((callback) => window.setTimeout(callback, 16));
 
     const cancelRaf =
-      window.cancelAnimationFrame ||
-      ((id) => window.clearTimeout(id));
+      window.cancelAnimationFrame || ((id) => window.clearTimeout(id));
 
     const id = raf(() => {
       setShowDeferredSections(true);
@@ -55,16 +44,28 @@ function Home() {
     return () => cancelRaf(id);
   }, []);
 
-  const safeProjects = Array.isArray(projects) ? projects : [];
-  const featuredOnly = safeProjects.filter((project) => project.is_featured);
-  const nonFeatured = safeProjects.filter((project) => !project.is_featured);
-  const featuredProjects = [...featuredOnly, ...nonFeatured].slice(0, 3);
+  // 3. Procesamiento local de proyectos destacados basado en los datos del endpoint
+  const featuredProjects = useMemo(() => {
+    const featuredOnly = projects.filter((project) => project.is_featured);
+    const nonFeatured = projects.filter((project) => !project.is_featured);
+    return [...featuredOnly, ...nonFeatured].slice(0, 3);
+  }, [projects]);
 
+  // 4. Conteo directo de arrays en tiempo de ejecución (Cero peticiones extra)
+  const laboratorySummary = useMemo(() => {
+    return {
+      servers_count: servers.length,
+      nodes_count: nodes.length,
+      metrics_count: metrics.length,
+    };
+  }, [servers, nodes, metrics]);
+
+  // Structured Data (SEO Schema) con datos estáticos seguros
   const personSchema = {
     "@context": "https://schema.org",
     "@type": "Person",
-    "@id": "https://alex.syskovex.com/#alex-galvez",
-    name: profile?.full_name || "Alex Galvez",
+    "@id": "https://alex.syskovex.com/#alexander-galvez",
+    name: "Alexander Galvez",
     url: "https://alex.syskovex.com/",
     image: "https://alex.syskovex.com/imagen_portfolio_mia_retocada-960.avif",
     jobTitle: "Systems, Infrastructure and Software Engineer",
@@ -99,50 +100,47 @@ function Home() {
         dangerouslySetInnerHTML={{ __html: safeJsonLd }}
       />
 
+      {/* Hero recibe las redes de la API. Datos de profile y expertise usarán los fallbacks estáticos internos */}
       <HeroSection
-        profile={profile}
+        profile={null}
         socialLinks={socialLinks}
-        expertise={expertise}
+        expertise={[]}
         loading={homeLoading}
         error={homeError}
       />
 
       <AboutPreview />
 
-      {projectsError ? (
+      {homeError ? (
         <section className="section section-spaced section-separated">
           <div className="empty-inline-state">
             <p>No se pudieron cargar los proyectos en este momento.</p>
           </div>
         </section>
       ) : (
-        <FeaturedProjects
-          projects={featuredProjects}
-          loading={projectsLoading}
-        />
+        <FeaturedProjects projects={featuredProjects} loading={homeLoading} />
       )}
 
       {showDeferredSections ? (
         <>
-          {laboratoryError ? (
+          {homeError ? (
             <section className="section section-spaced section-separated">
               <div className="empty-inline-state">
-                <p>No se pudo cargar el resumen del laboratorio en este momento.</p>
+                <p>
+                  No se pudo cargar el resumen del laboratorio en este momento.
+                </p>
               </div>
             </section>
           ) : (
             <FeaturedLaboratory
-              serversCount={summary?.servers_count ?? 0}
-              metricsCount={summary?.metrics_count ?? 0}
-              nodesCount={summary?.nodes_count ?? 0}
-              loading={laboratoryLoading}
+              serversCount={laboratorySummary.servers_count}
+              metricsCount={laboratorySummary.metrics_count}
+              nodesCount={laboratorySummary.nodes_count}
+              loading={homeLoading}
             />
           )}
 
-          <ContactPreview
-            profile={profile}
-            socialLinks={socialLinks}
-          />
+          <ContactPreview profile={null} socialLinks={socialLinks} />
         </>
       ) : null}
     </>
