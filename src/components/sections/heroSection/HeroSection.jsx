@@ -187,8 +187,9 @@ function HeroSection({ profile = null, socialLinks = [], expertise = [] }) {
                   className="profile-avatar"
                   width="450"
                   height="580"
-                  fetchPriority="high"
-                  decoding="async"
+                  fetchPriority="high" // Le dice al navegador que es la imagen más importante de la página
+                  decoding="sync" // CAMBIO: Forzamos decodificación síncrona para que se pinte de inmediato junto al layout
+                  loading="eager" // CAMBIO: Asegura que empiece la carga de inmediato ignorando el lazy-loading
                 />
               </picture>
             </div>
