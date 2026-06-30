@@ -1,4 +1,6 @@
+import React from "react";
 import ReactDOM from "react-dom/client";
+import { BrowserRouter } from "react-router-dom";
 import App from "./App";
 import "./style/globals.css";
 import "./style/Skeletons.css";
@@ -6,5 +8,14 @@ import "./style/GlobalSections.css";
 import "./style/GlobalCardsPages.css";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <App />,
+  <React.StrictMode>
+    <BrowserRouter
+      future={{
+        v7_relativeSplatPath: true,
+        v7_startTransition: true,
+      }}
+    >
+      <App />
+    </BrowserRouter>
+  </React.StrictMode>,
 );

@@ -49,22 +49,20 @@ function MainLayout() {
   const toggleTheme = () => {
     setThemeMode((currentMode) => {
       const currentIsDark =
-        currentMode === "system"
-          ? systemPrefersDark
-          : currentMode === "dark";
+        currentMode === "system" ? systemPrefersDark : currentMode === "dark";
 
       return currentIsDark ? "light" : "dark";
     });
   };
 
-const websiteSchema = {
-  "@context": "https://schema.org",
-  "@type": "WebSite",
-  "@id": "https://alex.syskovex.com/#website",
-  name: "Portfolio técnico de Alex Galvez",
-  url: "https://alex.syskovex.com/",
-  inLanguage: "es-ES",
-};
+  const websiteSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "@id": "https://alex.syskovex.com/#website",
+    name: "Portfolio técnico de Alex Galvez",
+    url: "https://alex.syskovex.com/",
+    inLanguage: "es-ES",
+  };
 
   const safeJsonLd = JSON.stringify(websiteSchema).replace(/<\//g, "<\\/");
 

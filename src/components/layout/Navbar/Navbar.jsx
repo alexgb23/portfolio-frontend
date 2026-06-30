@@ -17,7 +17,6 @@ function Navbar({ isDarkMode, themeMode, toggleTheme }) {
   return (
     <nav className="navbar">
       <div className="nav-container">
-        {/* LOGO */}
         <Link to="/" className="nav-logo" onClick={closeMenu}>
           <div className="logo-avatar-wrapper">
             <img
@@ -35,12 +34,10 @@ function Navbar({ isDarkMode, themeMode, toggleTheme }) {
             <div className="logo-text">
               ALEX<span className="logo-accent">.SYS</span>
             </div>
-
             <span className="logo-subtext">PORTFOLIO</span>
           </div>
         </Link>
 
-        {/* NAVEGACIÓN */}
         <div className={`nav-links ${isOpen ? "active" : ""}`}>
           <NavLink
             to="/"
@@ -74,7 +71,6 @@ function Navbar({ isDarkMode, themeMode, toggleTheme }) {
             Laboratorio
           </NavLink>
 
-          {/* LINK CONTACTO SOLO EN MÓVIL */}
           <NavLink
             to="/contacto"
             className={({ isActive }) =>
@@ -86,13 +82,10 @@ function Navbar({ isDarkMode, themeMode, toggleTheme }) {
           </NavLink>
         </div>
 
-        {/* ACCIONES */}
         <div className="nav-actions">
           <button
             type="button"
-            className={`theme-toggle ${
-              themeMode === "system" ? "is-system" : ""
-            }`}
+            className={`theme-toggle ${themeMode === "system" ? "is-system" : ""}`}
             onClick={toggleTheme}
             aria-label={
               isDarkMode ? "Activar modo claro" : "Activar modo oscuro"
@@ -103,7 +96,6 @@ function Navbar({ isDarkMode, themeMode, toggleTheme }) {
             {isDarkMode ? <FaSun /> : <FaMoon />}
           </button>
 
-          {/* BOTÓN CONTACTO SOLO ESCRITORIO */}
           <NavLink
             to="/contacto"
             className="nav-cta nav-contact-desktop"

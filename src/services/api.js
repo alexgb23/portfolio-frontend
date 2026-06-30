@@ -1,8 +1,9 @@
 import axios from "axios";
 
-const API_BASE_URL = `${
+const API_URL = (
   import.meta.env.VITE_API_URL || "http://localhost:8000"
-}/api`;
+).replace(/\/$/, "");
+const API_BASE_URL = `${API_URL}/api`;
 
 const apiClient = axios.create({
   baseURL: API_BASE_URL,
@@ -52,8 +53,8 @@ async function postRequest(url, data, label) {
 }
 
 export const portfolioService = {
-  getHeroData: () => getRequest("/portfolio-home/hero", "Portfolio Hero"),
   getHomeData: () => getRequest("/portfolio-home", "Portfolio Home"),
+  getAboutData: () => getRequest("/portfolio-home/about", "Portfolio About"),
   getProjects: () => getRequest("/projects", "Projects"),
   getProjectDetail: (id) => getRequest(`/projects/${id}`, "Project Detail"),
 };
@@ -63,6 +64,11 @@ export const laboratoryService = {
   getLaboratoryDetail: (id) =>
     getRequest(`/laboratorio/${id}`, "Laboratory Detail"),
   getLaboratoryHome: () => getRequest("/laboratorio/home", "Laboratory Home"),
+};
+
+export const contactService = {
+  sendMessage: (payload) =>
+    postRequest("/contact-messages", payload, "Contact Message"),
 };
 
 export { apiClient, getRequest, postRequest };
