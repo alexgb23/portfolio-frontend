@@ -1,4 +1,44 @@
 /* =========================================================
+   FUENTES LOCALES ULTRAOPTIMIZADAS
+   ========================================================= */
+
+/* Inter Regular */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('./assets/fonts/inter-v18-latin-regular.woff2') format('woff2');
+}
+
+/* Inter Bold */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('./assets/fonts/inter-v18-latin-700.woff2') format('woff2');
+}
+
+/* Space Grotesk Medium */
+@font-face {
+  font-family: 'Space Grotesk';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('./assets/fonts/space-grotesk-v16-latin-500.woff2') format('woff2');
+}
+
+/* Space Grotesk Bold */
+@font-face {
+  font-family: 'Space Grotesk';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('./assets/fonts/space-grotesk-v16-latin-700.woff2') format('woff2');
+}
+
+/* =========================================================
    TOKENS GLOBALES
    ========================================================= */
 
