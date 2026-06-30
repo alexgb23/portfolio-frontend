@@ -7,7 +7,7 @@ import {
 } from "react-icons/fa";
 
 import usePageTitle from "../../hooks/usePageTitle";
-import usePortfolioHome from "../../hooks/pages/usePortfolioHome";
+import { usePortfolioAbout } from "../../hooks/usePortfolioData";
 import "./About.css";
 
 const expertiseIconMap = {
@@ -67,18 +67,11 @@ const staticParagraphs = [
 function About() {
   usePageTitle("Sobre mí | Alex Galvez");
 
-  const { profile, skills, highlights } = usePortfolioHome();
-
-  const technologies = (skills ?? [])
-    .map((skill) => skill.name)
-    .filter(Boolean);
-
-  const aboutParagraphs =
-    profile?.bio_long?.trim()
-      ? profile.bio_long.split("\n\n").filter(Boolean)
-      : staticParagraphs;
-
-  const displayName = profile?.display_name || "Alex Galvez";
+  const {
+    highlights = [],
+    loading: aboutLoading,
+    error: aboutError,
+  } = usePortfolioAbout();
 
   return (
     <section className="about-section" id="about">
@@ -90,21 +83,11 @@ function About() {
 
           <p className="about-text">{staticAboutIntro}</p>
 
-          {aboutParagraphs.map((paragraph, index) => (
+          {staticParagraphs.map((paragraph, index) => (
             <p key={index} className="about-text">
               {paragraph}
             </p>
           ))}
-
-          {technologies.length > 0 ? (
-            <div className="tech-badges">
-              {technologies.map((tech) => (
-                <span key={tech} className="badge">
-                  {tech}
-                </span>
-              ))}
-            </div>
-          ) : null}
         </div>
 
         <div className="about-right">
@@ -123,7 +106,7 @@ function About() {
                 />
                 <img
                   src="/imagen_portfolio_mia_retocada-960.avif"
-                  alt={`Retrato profesional de ${displayName}`}
+                  alt="Retrato profesional de Alex Galvez"
                   className="profile-photo"
                   width="450"
                   height="580"
@@ -136,7 +119,16 @@ function About() {
         </div>
       </div>
 
-      {(highlights ?? []).length > 0 ? (
+      {aboutError ? (
+        <section className="technical-section">
+          <div className="technical-line"></div>
+          <div className="empty-inline-state">
+            <p>No se pudo cargar la sección técnica en este momento.</p>
+          </div>
+        </section>
+      ) : null}
+
+      {!aboutLoading && highlights.length > 0 ? (
         <section className="technical-section">
           <div className="technical-line"></div>
 
