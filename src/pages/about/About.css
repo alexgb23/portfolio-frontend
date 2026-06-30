@@ -205,7 +205,9 @@
   align-items: flex-start;
   flex-direction: column;
   gap: 12px;
-  width: calc(100% - 36px); /* Ocupa todo el ancho disponible restando la línea */
+  width: calc(
+    100% - 36px
+  ); /* Ocupa todo el ancho disponible restando la línea */
   margin-left: 36px !important; /* Desplazado a la derecha de la línea */
   margin-right: 0 !important;
   padding: 24px;
@@ -264,20 +266,12 @@
    EXPERTISE SECTION (BASE MÓVIL GRIDS)
    ========================================================= */
 
-.expertise-section {
-  margin-top: 80px;
-  padding-bottom: 40px;
-}
-
-.expertise-grid {
-  display: grid;
-  grid-template-columns: 1fr; /* Una columna limpia en móvil */
-  gap: 16px;
-}
-
-/* Evita que tus tarjetas globales se estiren demasiado verticalmente en esta sección */
 .expertise-section .expertise-card {
-  min-height: auto !important;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-width: 0; /* Evita que los elementos de la cuadrícula sean más anchos que su contenedor */
 }
 
 /* =========================================================
@@ -312,8 +306,19 @@
   /* Las 4 tarjetas finales se maquetan en 2 columnas muy ordenadas */
   .expertise-grid {
     grid-template-columns: repeat(2, 1fr);
+    grid-auto-rows: 1fr; /* ¡Clave! Fuerza igual altura por fila */
     gap: 20px;
+    min-height: 100%;
+  display: flex;
   }
+
+  .expertise-card p {
+  flex-grow: 1; 
+}
+.expertise-section{
+  margin-top:80px;
+}
+
 }
 
 /* =========================================================
@@ -451,19 +456,6 @@
   .stat-card p {
     font-size: 1rem;
   }
-
-  /* NUEVO: Frena el estiramiento horizontal gigante de tus 4 tarjetas en PC */
-  .expertise-section {
-    margin-top: 150px;
-    padding-bottom: 80px;
-  }
-
-  .expertise-grid {
-    grid-template-columns: repeat(2, 1fr); /* 2 columnas en lugar de 4 evita cajas vacías */
-    max-width: 980px; /* Compacta la grid en el centro haciéndola sutil */
-    margin: 0 auto;
-    gap: 24px;
-  }
 }
 
 /* =========================================================
@@ -479,20 +471,51 @@
   .technical-section {
     margin-top: 180px;
   }
+
   /* FORZAR 4 COLUMNAS EN ESCRITORIO Y MONITORES ANCHOS (2K) */
   .expertise-grid {
-    grid-template-columns: repeat(4, 1fr) !important; /* Fuerza 4 columnas exactas en paralelo */
+    grid-template-columns: repeat(
+      4,
+      1fr
+    ) !important; /* Fuerza 4 columnas exactas en paralelo */
     max-width: 1400px; /* Ampliado para que luzca simétrico y espaciado en pantallas 2K */
     margin: 0 auto;
     gap: 24px; /* Espaciado cómodo entre las 4 tarjetas */
   }
-  
+
   /* Ajuste local para equilibrar las tarjetas al ir en una sola fila */
   .expertise-section .expertise-card {
     min-height: 200px !important; /* Altura unificada para que se alineen perfectamente */
     padding: 24px;
   }
-
 }
 
 /* =========================================================
+   RESPONSIVE: EXTRA LARGE DESKTOP (Desde 1536px)
+   ========================================================= */
+
+@media (min-width: 1536px) {
+  .photo-wrapper {
+    width: 480px;
+    height: 640px;
+  }
+
+  .expertise-grid {
+    gap: 32px; /* Ajusta el espacio entre las tarjetas para pantallas extra largas */
+  }
+}
+
+/* =========================================================
+   RESPONSIVE: ULTRA LARGE DESKTOP (Desde 1792px)
+   ========================================================= */
+
+@media (min-width: 1792px) {
+  .photo-wrapper {
+    width: 500px;
+    height: 680px;
+  }
+
+  .expertise-grid {
+    gap: 40px; /* Ajusta el espacio entre las tarjetas para pantallas ultra largas */
+  }
+}
