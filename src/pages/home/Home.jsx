@@ -94,7 +94,8 @@ function Home() {
   const safeJsonLd = JSON.stringify(personSchema).replace(/<\//g, "<\\/");
 
   return (
-    <>
+    // CORREGIDO: Envoltura semántica estructural <main> obligatoria para lectores de pantalla
+    <main id="main-content">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: safeJsonLd }}
@@ -143,7 +144,7 @@ function Home() {
           <ContactPreview profile={null} socialLinks={socialLinks} />
         </>
       ) : null}
-    </>
+    </main>
   );
 }
 
