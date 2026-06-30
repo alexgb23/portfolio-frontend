@@ -1,22 +1,32 @@
 import { lazy, Suspense } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import MainLayout from "../components/layout/MainLayout";
-import AboutSkeleton from "../pages/about/AboutSkeleton";
 import LaboratorySkeleton from "../pages/laboratory/LaboratorySkeleton";
-import ProjectsSkeleton from "../pages/projects/ProjectsSkeleton";
-import ContactSkeleton from "../pages/contact/ContactSkeleton";
-import HomeSkeleton from "../pages/home/HomeSkeleton";
 
-const Home = lazy(() => import("../pages/home/Home"));
-const About = lazy(() => import("../pages/about/About"));
-const Projects = lazy(() => import("../pages/projects/Projects"));
-const Automation = lazy(() => import("../pages/automation/Automation"));
-const Infrastructure = lazy(
+function lazyWithPreload(importer) {
+  const Component = lazy(importer);
+  Component.preload = importer;
+  return Component;
+}
+
+export const Home = lazyWithPreload(() => import("../pages/home/Home"));
+export const About = lazyWithPreload(() => import("../pages/about/About"));
+export const Projects = lazyWithPreload(
+  () => import("../pages/projects/Projects"),
+);
+export const Automation = lazyWithPreload(
+  () => import("../pages/automation/Automation"),
+);
+export const Infrastructure = lazyWithPreload(
   () => import("../pages/infrastructure/Infrastructure"),
 );
-const Contact = lazy(() => import("../pages/contact/Contact"));
-const Laboratory = lazy(() => import("../pages/laboratory/Laboratory"));
-const LaboratoryDetail = lazy(
+export const Contact = lazyWithPreload(
+  () => import("../pages/contact/Contact"),
+);
+export const Laboratory = lazyWithPreload(
+  () => import("../pages/laboratory/Laboratory"),
+);
+export const LaboratoryDetail = lazyWithPreload(
   () => import("../pages/laboratory/LaboratoryDetail"),
 );
 
@@ -27,7 +37,7 @@ export default function AppRouter() {
         <Route
           index
           element={
-            <Suspense fallback={<HomeSkeleton />}>
+            <Suspense fallback={null}>
               <Home />
             </Suspense>
           }
@@ -36,7 +46,7 @@ export default function AppRouter() {
         <Route
           path="sobre-mi"
           element={
-            <Suspense fallback={<AboutSkeleton />}>
+            <Suspense fallback={null}>
               <About />
             </Suspense>
           }
@@ -45,7 +55,7 @@ export default function AppRouter() {
         <Route
           path="proyectos"
           element={
-            <Suspense fallback={<ProjectsSkeleton />}>
+            <Suspense fallback={null}>
               <Projects />
             </Suspense>
           }
@@ -54,7 +64,7 @@ export default function AppRouter() {
         <Route
           path="automatizacion"
           element={
-            <Suspense fallback={<div>Cargando...</div>}>
+            <Suspense fallback={null}>
               <Automation />
             </Suspense>
           }
@@ -63,7 +73,7 @@ export default function AppRouter() {
         <Route
           path="infraestructura"
           element={
-            <Suspense fallback={<div>Cargando...</div>}>
+            <Suspense fallback={null}>
               <Infrastructure />
             </Suspense>
           }
@@ -72,7 +82,7 @@ export default function AppRouter() {
         <Route
           path="contacto"
           element={
-            <Suspense fallback={<ContactSkeleton />}>
+            <Suspense fallback={null}>
               <Contact />
             </Suspense>
           }

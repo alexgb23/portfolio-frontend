@@ -7,14 +7,13 @@
   --lab-accent-strong: var(--lab-neon);
 
   display: grid;
-  gap: clamp(3rem, 6vw, 5.4rem);
+  gap: clamp(2.4rem, 5vw, 5rem);
 }
 
-/* Contextos reales donde la paleta debe recalcularse */
 .lab-section,
 .lab-overview-card,
 .laboratory-detail-page {
-   --lab-accent-soft: color-mix(in srgb, var(--lab-accent) 10%, transparent);
+  --lab-accent-soft: color-mix(in srgb, var(--lab-accent) 10%, transparent);
   --lab-accent-soft-2: color-mix(in srgb, var(--lab-accent) 16%, transparent);
 
   --lab-border-accent: color-mix(in srgb, var(--lab-accent) 24%, var(--border));
@@ -42,60 +41,39 @@
   --lab-glow-strong: color-mix(in srgb, var(--lab-accent-strong) 18%, transparent);
 }
 
-/* 🖥 Infraestructura */
-.lab-section-infra{
-  background:
-radial-gradient(circle at top right,
-rgba(0,217,255,.08),
-transparent 60%);
-    --lab-accent: var(--lab-quantum);
-    --lab-accent-strong: var(--lab-neon);
+.lab-section-infra {
+  background: radial-gradient(circle at top right, rgba(0, 217, 255, 0.08), transparent 60%);
+  --lab-accent: var(--lab-quantum);
+  --lab-accent-strong: var(--lab-neon);
 }
 
-/* ⚙ Automatización */
-.lab-section-automation{
-  background:
-radial-gradient(circle at top right,
-rgba(255,138,0,.08),
-transparent 60%);
-    --lab-accent: var(--lab-plasma);
-    --lab-accent-strong: var(--lab-cyber);
+.lab-section-automation {
+  background: radial-gradient(circle at top right, rgba(255, 138, 0, 0.08), transparent 60%);
+  --lab-accent: var(--lab-plasma);
+  --lab-accent-strong: var(--lab-cyber);
 }
 
-/* 🏠 Home Assistant */
-.lab-section-home{
-  background:
-radial-gradient(circle at top right,
-rgba(0,245,180,.08),
-transparent 60%);
-    --lab-accent: var(--lab-neon);
-    --lab-accent-strong: var(--lab-quantum);
+.lab-section-home {
+  background: radial-gradient(circle at top right, rgba(0, 245, 180, 0.08), transparent 60%);
+  --lab-accent: var(--lab-neon);
+  --lab-accent-strong: var(--lab-quantum);
 }
 
-/* 🤖 IA */
-.lab-section-ai{
-  background:
-radial-gradient(circle at top right,
-rgba(122,92,255,.09),
-transparent 60%);
-    --lab-accent: var(--lab-violet);
-    --lab-accent-strong: var(--lab-magenta);
+.lab-section-ai {
+  background: radial-gradient(circle at top right, rgba(122, 92, 255, 0.09), transparent 60%);
+  --lab-accent: var(--lab-violet);
+  --lab-accent-strong: var(--lab-magenta);
 }
 
-/* 🔬 Research */
-.lab-section-research{
-  background:
-radial-gradient(circle at top right,
-rgba(64, 255, 0, 0.111),
-transparent 60%);
-    --lab-accent: var(--lab-lime);
-    --lab-accent-strong: var(--lab-yellow); 
+.lab-section-research {
+  background: radial-gradient(circle at top right, rgba(64, 255, 0, 0.11), transparent 60%);
+  --lab-accent: var(--lab-lime);
+  --lab-accent-strong: var(--lab-yellow);
 }
 
-/* 🚀 Capacidades */
-.lab-section-capabilities{
-    --lab-accent: var(--accent-green);
-    --lab-accent-strong: var(--accent-2);
+.lab-section-capabilities {
+  --lab-accent: var(--accent-green);
+  --lab-accent-strong: var(--accent-2);
 }
 
 /* =========================================================
@@ -113,7 +91,7 @@ transparent 60%);
 .laboratory-page p {
   margin: 0;
   color: var(--text-sub);
-  line-height: 1.75;
+  line-height: 1.7;
   max-width: 68ch;
 }
 
@@ -122,19 +100,19 @@ transparent 60%);
    ========================================================= */
 
 .laboratory-hero {
-  gap: 1rem;
-  margin-bottom: 0.5rem;
+  display: grid;
+  gap: 0.9rem;
 }
 
 .laboratory-hero h1 {
-  font-size: clamp(2.2rem, 4.2vw, 3.7rem);
-  line-height: 1.02;
+  font-size: clamp(2rem, 7vw, 3.7rem);
+  line-height: 1.04;
   letter-spacing: -0.05em;
 }
 
 .laboratory-hero p {
   max-width: 780px;
-  margin: 0 auto;
+  margin-inline: auto;
 }
 
 /* =========================================================
@@ -142,12 +120,15 @@ transparent 60%);
    ========================================================= */
 
 .laboratory-overview {
+  display: grid;
   grid-template-columns: 1fr;
   gap: 1rem;
+  min-width: 0;
 }
 
 .lab-overview-card {
   min-width: 0;
+  align-self: start;
 }
 
 /* =========================================================
@@ -156,21 +137,27 @@ transparent 60%);
 
 .lab-section {
   display: grid;
-  gap: 1.55rem;
+  gap: 1.4rem;
+  padding: 1.15rem;
+  border-radius: 28px;
+  min-width: 0;
+  min-height: 0;
+  position: static;
+  z-index: auto;
+  overflow: visible;
+  isolation: auto;
 }
 
 .lab-section-divider {
-  position: relative;
-  padding-top: clamp(1.9rem, 3vw, 2.6rem);
+  padding-top: clamp(1.8rem, 3vw, 2.5rem);
 }
 
 .lab-section-divider::before {
   content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
+  display: block;
   width: min(220px, 38%);
   height: 1px;
+  margin-bottom: clamp(1rem, 2vw, 1.25rem);
   background: linear-gradient(90deg, var(--lab-accent), transparent);
   opacity: 0.92;
 }
@@ -178,13 +165,16 @@ transparent 60%);
 .lab-section-top {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 1rem;
+  gap: 0.9rem;
+  align-items: start;
+  min-width: 0;
 }
 
 .lab-section-intro {
   display: grid;
   gap: 0.7rem;
   max-width: 920px;
+  min-width: 0;
 }
 
 .lab-label {
@@ -200,18 +190,14 @@ transparent 60%);
   text-transform: uppercase;
   color: var(--lab-accent);
   border: 1px solid var(--lab-border-accent);
-  background: linear-gradient(
-    180deg,
-    var(--lab-accent-soft),
-    var(--lab-accent-soft-2)
-  );
+  background: linear-gradient(180deg, var(--lab-accent-soft), var(--lab-accent-soft-2));
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.04),
     0 10px 24px color-mix(in srgb, var(--lab-glow) 42%, transparent);
 }
 
 .lab-section-intro h2 {
-  font-size: clamp(1.5rem, 2.5vw, 2.15rem);
+  font-size: clamp(1.45rem, 4.6vw, 2.1rem);
   line-height: 1.08;
   letter-spacing: -0.045em;
   max-width: 18ch;
@@ -228,36 +214,42 @@ transparent 60%);
 .lab-feature-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 1.15rem;
+  gap: 1rem;
+  align-items: start;
+  min-width: 0;
 }
 
 .lab-panel {
   min-width: 0;
+  min-height: 0;
   display: grid;
   gap: 0;
-  padding: 1.2rem;
+  padding: 1rem;
   border-radius: 24px;
   border: 1px solid var(--lab-border-accent);
   background: linear-gradient(180deg, var(--lab-surface), var(--lab-surface-2));
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.04),
     var(--shadow-sm);
+  overflow: visible;
+  align-self: start;
 }
 
 .lab-panel-head {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 0.9rem;
-  margin-bottom: 1rem;
+  gap: 0.85rem;
+  margin-bottom: 0.9rem;
 }
 
 .lab-panel-head h3 {
   display: inline-flex;
   align-items: center;
   gap: 0.65rem;
-  font-size: 1.02rem;
+  font-size: 1rem;
   letter-spacing: -0.03em;
+  min-width: 0;
 }
 
 .lab-panel-head svg {
@@ -270,6 +262,7 @@ transparent 60%);
 
 .lab-panel-body {
   min-width: 0;
+  min-height: 0;
 }
 
 /* =========================================================
@@ -282,21 +275,24 @@ transparent 60%);
 .laboratory-detail-layout {
   display: grid;
   grid-template-columns: 1fr;
+  align-items: start;
+  min-width: 0;
+  min-height: 0;
 }
 
 .lab-story-grid {
-  gap: 1.5rem;
-  margin-top: 0.75rem;
+  gap: 1rem;
+  margin-top: 0.5rem;
 }
 
 .lab-column-cards {
-  gap: 1.6rem;
-  margin-top: 0.75rem;
+  gap: 1rem;
+  margin-top: 0.5rem;
 }
 
 .lab-research-grid {
-  gap: 1.7rem;
-  margin-top: 0.75rem;
+  gap: 1rem;
+  margin-top: 0.5rem;
 }
 
 .laboratory-overview > *,
@@ -304,8 +300,10 @@ transparent 60%);
 .lab-column-cards > *,
 .lab-research-grid > *,
 .laboratory-detail-layout > *,
-.lab-panel-body > * {
+.lab-panel-body > *,
+.lab-detail-meta > div {
   min-width: 0;
+  min-height: 0;
 }
 
 .laboratory-overview > .expertise-card,
@@ -314,17 +312,18 @@ transparent 60%);
 .lab-research-grid > .expertise-card,
 .laboratory-detail-main > .expertise-card,
 .laboratory-detail-side > .expertise-card {
-  height: 100%;
+  height: auto;
+  align-self: start;
 }
 
 /* =========================================================
-   TARJETAS DE LABORATORY
+   TARJETAS
    ========================================================= */
 
 .laboratory-card {
   min-width: 0;
+  overflow-wrap: anywhere;
 
-  /* Alias internos forzados para que esta card NO use fallbacks viejos */
   --card-tone-accent: var(--lab-accent);
   --card-tone-accent-strong: var(--lab-accent-strong);
   --card-accent: var(--lab-accent);
@@ -335,11 +334,7 @@ transparent 60%);
     90deg,
     transparent 0%,
     color-mix(in srgb, var(--lab-accent) 22%, transparent) 16%,
-    color-mix(
-      in srgb,
-      var(--lab-accent) 62%,
-      rgb(255 255 255 / 18%)
-    ) 50%,
+    color-mix(in srgb, var(--lab-accent) 62%, rgb(255 255 255 / 18%)) 50%,
     color-mix(in srgb, var(--lab-accent) 22%, transparent) 84%,
     transparent 100%
   );
@@ -352,16 +347,8 @@ transparent 60%);
 
 :root[data-theme="dark"] .laboratory-card {
   background:
-    radial-gradient(
-      circle at 100% 0%,
-      color-mix(in srgb, var(--lab-accent) 14%, transparent),
-      transparent 34%
-    ),
-    radial-gradient(
-      circle at 0% 100%,
-      color-mix(in srgb, var(--lab-accent-strong) 8%, transparent),
-      transparent 40%
-    ),
+    radial-gradient(circle at 100% 0%, color-mix(in srgb, var(--lab-accent) 14%, transparent), transparent 34%),
+    radial-gradient(circle at 0% 100%, color-mix(in srgb, var(--lab-accent-strong) 8%, transparent), transparent 40%),
     var(--gt-card-bg-dark);
   box-shadow:
     var(--gt-card-shadow-dark),
@@ -372,16 +359,8 @@ transparent 60%);
 
 :root[data-theme="light"] .laboratory-card {
   background:
-    radial-gradient(
-      circle at 100% 0%,
-      color-mix(in srgb, var(--lab-accent) 10%, white),
-      transparent 34%
-    ),
-    radial-gradient(
-      circle at 0% 100%,
-      color-mix(in srgb, var(--lab-accent-strong) 7%, white),
-      transparent 40%
-    ),
+    radial-gradient(circle at 100% 0%, color-mix(in srgb, var(--lab-accent) 10%, white), transparent 34%),
+    radial-gradient(circle at 0% 100%, color-mix(in srgb, var(--lab-accent-strong) 7%, white), transparent 40%),
     var(--gt-card-bg-light);
   box-shadow:
     var(--gt-card-shadow-light),
@@ -396,9 +375,10 @@ transparent 60%);
 
 .laboratory-counter {
   display: flex;
-  justify-content: flex-end;
+  flex-wrap: wrap;
+  justify-content: space-between;
   align-items: baseline;
-  gap: 1.5rem;
+  gap: 0.75rem;
   margin-top: 1rem;
   margin-bottom: 1rem;
 }
@@ -413,8 +393,9 @@ transparent 60%);
 .laboratory-counter strong {
   font-size: 1rem;
   font-weight: 700;
-  line-height: 1;
+  line-height: 1.1;
   color: var(--lab-counter-value);
+  min-width: 0;
 }
 
 .laboratory-counter-inline {
@@ -431,7 +412,8 @@ transparent 60%);
 .lab-detail-links {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.78rem;
+  gap: 0.7rem;
+  min-width: 0;
 }
 
 .lab-chip-row {
@@ -444,9 +426,11 @@ transparent 60%);
   display: inline-flex;
   align-items: center;
   gap: 0.45rem;
+  max-width: 100%;
   border: 1px solid var(--lab-pill-border);
   background: var(--lab-pill-bg);
   color: var(--lab-pill-text);
+  overflow-wrap: anywhere;
 }
 
 .lab-chip-row-spaced {
@@ -470,6 +454,7 @@ transparent 60%);
   padding: 0.9rem 0 0.05rem 1rem;
   color: var(--text-sub);
   line-height: 1.6;
+  overflow-wrap: anywhere;
 }
 
 .lab-data-list li::before {
@@ -491,7 +476,7 @@ transparent 60%);
 .lab-actions {
   display: flex;
   justify-content: flex-start;
-  padding-top: 0.3rem;
+  padding-top: 0.2rem;
 }
 
 .lab-actions .inline-link,
@@ -500,6 +485,7 @@ transparent 60%);
   display: inline-flex;
   align-items: center;
   gap: 0.55rem;
+  max-width: 100%;
   color: var(--lab-link-text);
   border-color: var(--lab-link-border);
   background: var(--lab-link-bg);
@@ -524,21 +510,13 @@ transparent 60%);
 
 :root[data-theme="dark"] .lab-section .empty-inline-state {
   background:
-    radial-gradient(
-      circle at 100% 0%,
-      color-mix(in srgb, var(--lab-accent) 7%, transparent),
-      transparent 38%
-    ),
+    radial-gradient(circle at 100% 0%, color-mix(in srgb, var(--lab-accent) 7%, transparent), transparent 38%),
     rgba(255, 255, 255, 0.03);
 }
 
 :root[data-theme="light"] .lab-section .empty-inline-state {
   background:
-    radial-gradient(
-      circle at 100% 0%,
-      color-mix(in srgb, var(--lab-accent) 6%, white),
-      transparent 38%
-    ),
+    radial-gradient(circle at 100% 0%, color-mix(in srgb, var(--lab-accent) 6%, white), transparent 38%),
     rgba(255, 255, 255, 0.76);
 }
 
@@ -553,13 +531,13 @@ transparent 60%);
 
 .laboratory-detail-hero {
   display: grid;
-  gap: 1rem;
+  gap: 0.9rem;
   max-width: 860px;
 }
 
 .laboratory-detail-hero h1 {
-  font-size: clamp(2rem, 4vw, 3.3rem);
-  line-height: 1.03;
+  font-size: clamp(1.9rem, 6.2vw, 3.3rem);
+  line-height: 1.04;
   letter-spacing: -0.045em;
 }
 
@@ -568,14 +546,18 @@ transparent 60%);
 }
 
 .laboratory-detail-layout {
-  gap: 1.2rem;
+  gap: 1rem;
 }
 
 .laboratory-detail-main,
 .laboratory-detail-side {
   display: grid;
-  gap: 1.2rem;
+  gap: 1rem;
   min-width: 0;
+}
+
+.laboratory-detail-side {
+  align-self: start;
 }
 
 .lab-detail-card {
@@ -591,7 +573,7 @@ transparent 60%);
   display: grid;
   gap: 0.25rem;
   padding-top: 0.9rem;
-  border-top: 1px solid var(--lab-meta-border);
+  border-top: 1px solid color-mix(in srgb, var(--lab-accent) 14%, var(--border));
 }
 
 .lab-detail-meta > div:first-child {
@@ -607,6 +589,7 @@ transparent 60%);
 
 .lab-detail-meta strong {
   color: var(--text-main);
+  overflow-wrap: anywhere;
 }
 
 .lab-project-tags .tag svg,
@@ -634,48 +617,57 @@ transparent 60%);
    TABLET
    ========================================================= */
 
-@media (min-width: 768px) {
+@media (min-width: 700px) {
   .laboratory-overview {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 1.15rem;
   }
 
   .lab-section {
-    gap: 1.75rem;
+    gap: 1.6rem;
+    padding: 1.35rem;
   }
 
   .lab-story-grid,
   .lab-column-cards,
   .lab-research-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 1.5rem;
-  }
-
-  .lab-section-intro p {
-    max-width: 60ch;
+    gap: 1.2rem;
   }
 
   .laboratory-detail-layout {
-    gap: 1.35rem;
+    gap: 1.2rem;
   }
 }
 
 /* =========================================================
-   DESKTOP
+   LAPTOP
    ========================================================= */
 
 @media (min-width: 1024px) {
   .laboratory-page {
-    gap: clamp(3.6rem, 6vw, 5.4rem);
+    gap: clamp(3.4rem, 6vw, 5.4rem);
   }
+
+  .laboratory-overview {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  min-width: 0;
+}
 
   .laboratory-overview {
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 
+  .lab-section {
+    padding: 1.6rem;
+  }
+
   .lab-section-top {
-    grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+    grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
     align-items: end;
+    gap: 1.2rem;
   }
 
   .lab-section-intro {
@@ -692,34 +684,45 @@ transparent 60%);
   }
 
   .lab-feature-grid {
-    grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr);
-    gap: 1.25rem;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 1.2rem;
     align-items: start;
   }
 
-  .lab-story-grid {
-    gap: 1.8rem;
-  }
-
-  .lab-column-cards {
-    gap: 1.8rem;
-  }
-
+  .lab-story-grid,
+  .lab-column-cards,
   .lab-research-grid {
-    gap: 1.9rem;
+    gap: 1.35rem;
   }
 
   .lab-section-divider {
-    padding-top: 2.35rem;
+    padding-top: 2.3rem;
   }
 
   .laboratory-detail-layout {
-    grid-template-columns: minmax(0, 1.2fr) minmax(320px, 0.8fr);
+    grid-template-columns: minmax(0, 1.15fr) minmax(280px, 0.85fr);
+    gap: 1.4rem;
     align-items: start;
+  }
+}
+
+/* =========================================================
+   LARGE DESKTOP
+   ========================================================= */
+
+@media (min-width: 1280px) {
+  .lab-feature-grid {
+    grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr);
+    gap: 1.25rem;
   }
 
   .laboratory-detail-side {
     position: sticky;
-    top: 110px;
+    top: 96px;
+    align-self: start;
+  }
+
+  .laboratory-detail-layout {
+    grid-template-columns: minmax(0, 1.2fr) minmax(320px, 0.8fr);
   }
 }

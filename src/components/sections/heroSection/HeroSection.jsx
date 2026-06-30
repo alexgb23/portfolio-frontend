@@ -74,18 +74,8 @@ function HeroSection({ profile = null, socialLinks = [], expertise = [] }) {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    const raf =
-      window.requestAnimationFrame ||
-      ((callback) => window.setTimeout(callback, 16));
-
-    const cancelRaf =
-      window.cancelAnimationFrame || ((id) => window.clearTimeout(id));
-
-    const id = raf(() => {
-      setIsVisible(true);
-    });
-
-    return () => cancelRaf(id);
+    const id = window.requestAnimationFrame(() => setIsVisible(true));
+    return () => window.cancelAnimationFrame(id);
   }, []);
 
   const displayedSocialLinks = useMemo(() => {
@@ -127,7 +117,6 @@ function HeroSection({ profile = null, socialLinks = [], expertise = [] }) {
     }));
   }, [expertise]);
 
-  // Se extraen de forma limpia los campos del json real sin inventar propiedades
   const displayName =
     profile?.display_name || profile?.full_name || "Alex Alexander Galvez";
 
@@ -187,9 +176,9 @@ function HeroSection({ profile = null, socialLinks = [], expertise = [] }) {
                   className="profile-avatar"
                   width="450"
                   height="580"
-                  fetchPriority="high" // Le dice al navegador que es la imagen más importante de la página
-                  decoding="sync" // CAMBIO: Forzamos decodificación síncrona para que se pinte de inmediato junto al layout
-                  loading="eager" // CAMBIO: Asegura que empiece la carga de inmediato ignorando el lazy-loading
+                  fetchPriority="high"
+                  decoding="async"
+                  loading="eager"
                 />
               </picture>
             </div>

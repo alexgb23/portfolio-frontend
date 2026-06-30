@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { useMemo } from "react";
 import {
   FaServer,
   FaMicrochip,
@@ -15,6 +16,7 @@ import {
 
 import { useLaboratoryHome } from "../../hooks/usePortfolioData";
 import usePageTitle from "../../hooks/usePageTitle";
+import LaboratorySkeleton from "./LaboratorySkeleton";
 import "./Laboratory.css";
 
 function getCategoryLabel(category) {
@@ -107,49 +109,73 @@ function OverviewCard({
   );
 }
 
+function normalizeServer(server) {
+  return {
+    name: server.name || server.hostname || "Servidor",
+    description:
+      server.description ||
+      `Servidor operativo${server.role ? ` · Rol: ${server.role}` : ""}`,
+    category: server.category || "virtualization",
+    location_name: server.location_name || server.location || "Sin ubicación",
+    status: server.status || "active",
+    item_type: server.type || "server",
+  };
+}
+
 function Laboratory() {
   usePageTitle("Laboratorio Técnico | Alexander Galvez");
 
   const {
     summary,
-    featuredItems,
-    clusters,
-    servers,
-    nodes,
-    metrics,
-    homeAssistant,
-    localAi,
-    capabilities,
+    featuredItems = [],
+    clusters = [],
+    servers = [],
+    nodes = [],
+    metrics = [],
+    homeAssistant = [],
+    localAi = [],
+    capabilities = [],
     loading,
     error,
   } = useLaboratoryHome();
 
-  const automationItems = featuredItems.filter(
-    (item) => item.category === "automation",
-  );
+  const {
+    automationItems,
+    infrastructureItems,
+    researchItem,
+    homeAssistantMain,
+    homeAssistantUseCases,
+    localAiMain,
+    mainCluster,
+    firstMetric,
+    secondMetric,
+    normalizedServers,
+  } = useMemo(() => {
+    const homeAssistantMainItem = homeAssistant[0] ?? null;
+    const localAiMainItem = localAi[0] ?? null;
 
-  const infrastructureItems = featuredItems.filter((item) =>
-    ["monitoring", "research", "ai"].includes(item.category),
-  );
+    return {
+      automationItems: featuredItems.filter(
+        (item) => item.category === "automation",
+      ),
+      infrastructureItems: featuredItems.filter((item) =>
+        ["monitoring", "research", "ai"].includes(item.category),
+      ),
+      researchItem:
+        featuredItems.find((item) => item.category === "research") ?? null,
+      homeAssistantMain: homeAssistantMainItem,
+      homeAssistantUseCases: Array.isArray(homeAssistantMainItem?.use_cases)
+        ? homeAssistantMainItem.use_cases
+        : [],
+      localAiMain: localAiMainItem,
+      mainCluster: clusters[0] ?? null,
+      firstMetric: metrics[0] ?? null,
+      secondMetric: metrics[1] ?? null,
+      normalizedServers: servers.map(normalizeServer),
+    };
+  }, [featuredItems, homeAssistant, localAi, clusters, metrics, servers]);
 
-  const homeAssistantMain = homeAssistant[0] ?? null;
-  const homeAssistantUseCases = Array.isArray(homeAssistantMain?.use_cases)
-    ? homeAssistantMain.use_cases
-    : [];
-
-  const localAiMain = localAi[0] ?? null;
-  const mainCluster = clusters[0] ?? null;
-  const firstMetric = metrics[0] ?? null;
-  const secondMetric = metrics[1] ?? null;
-
-  if (loading) {
-    return (
-      <div className="state-wrapper centered">
-        <div className="sys-loader"></div>
-        <h2>Cargando laboratorio...</h2>
-      </div>
-    );
-  }
+  if (loading) return <LaboratorySkeleton />;
 
   if (error) {
     return (
@@ -252,7 +278,9 @@ function Laboratory() {
                 </div>
               ) : (
                 <div className="empty-inline-state compact">
-                  <p>No hay elementos de infraestructura cargados actualmente.</p>
+                  <p>
+                    No hay elementos de infraestructura cargados actualmente.
+                  </p>
                 </div>
               )}
             </div>
@@ -266,33 +294,21 @@ function Laboratory() {
             </div>
 
             <div className="lab-panel-body">
-              {servers && servers.length > 0 ? (
+              {normalizedServers.length > 0 ? (
                 <div className="lab-story-grid">
-                  {servers.map((server) => (
+                  {normalizedServers.map((server, index) => (
                     <LabItemCard
-                      key={server.id || server.name}
-                      item={{
-                        name: server.name || server.hostname || "Servidor",
-                        description:
-                          server.description ||
-                          `Servidor operativo${
-                            server.role ? ` · Rol: ${server.role}` : ""
-                          }`,
-                        category: server.category || "virtualization",
-                        location_name:
-                          server.location_name ||
-                          server.location ||
-                          "Sin ubicación",
-                        status: server.status || "active",
-                        item_type: server.type || "server",
-                      }}
+                      key={servers[index]?.id || server.name}
+                      item={server}
                       icon={<FaServer />}
                     />
                   ))}
                 </div>
               ) : (
                 <div className="empty-inline-state compact">
-                  <p>No se han registrado servidores en el laboratorio todavía.</p>
+                  <p>
+                    No se han registrado servidores en el laboratorio todavía.
+                  </p>
                 </div>
               )}
             </div>
@@ -317,13 +333,23 @@ function Laboratory() {
                     </div>
                   </div>
 
-                  <p>Resumen rápido de actividad, inventario y estado general.</p>
+                  <p>
+                    Resumen rápido de actividad, inventario y estado general.
+                  </p>
 
                   <div className="lab-chip-row">
-                    <span className="tag">Items: {summary?.featured_items_count ?? 0}</span>
-                    <span className="tag">Servidores: {summary?.servers_count ?? 0}</span>
-                    <span className="tag">Nodos: {summary?.nodes_count ?? 0}</span>
-                    <span className="tag">Métricas: {summary?.metrics_count ?? 0}</span>
+                    <span className="tag">
+                      Items: {summary?.featured_items_count ?? 0}
+                    </span>
+                    <span className="tag">
+                      Servidores: {summary?.servers_count ?? 0}
+                    </span>
+                    <span className="tag">
+                      Nodos: {summary?.nodes_count ?? 0}
+                    </span>
+                    <span className="tag">
+                      Métricas: {summary?.metrics_count ?? 0}
+                    </span>
                   </div>
 
                   {mainCluster ? (
@@ -440,10 +466,18 @@ function Laboratory() {
                 </p>
 
                 <div className="lab-chip-row">
-                  <span className="tag">Instancia: {homeAssistantMain?.name || "—"}</span>
-                  <span className="tag">Versión: {homeAssistantMain?.version || "—"}</span>
-                  <span className="tag">Automatizaciones: {homeAssistantUseCases.length || 0}</span>
-                  <span className="tag">Estado: {getStatusLabel(homeAssistantMain?.status)}</span>
+                  <span className="tag">
+                    Instancia: {homeAssistantMain?.name || "—"}
+                  </span>
+                  <span className="tag">
+                    Versión: {homeAssistantMain?.version || "—"}
+                  </span>
+                  <span className="tag">
+                    Automatizaciones: {homeAssistantUseCases.length || 0}
+                  </span>
+                  <span className="tag">
+                    Estado: {getStatusLabel(homeAssistantMain?.status)}
+                  </span>
                 </div>
               </article>
 
@@ -588,8 +622,7 @@ function Laboratory() {
                 </div>
 
                 <p>
-                  {featuredItems.find((item) => item.category === "research")
-                    ?.description ||
+                  {researchItem?.description ||
                     "Preparado para incorporar datasets, fuentes externas, paneles y resultados de análisis todavía en construcción."}
                 </p>
 
@@ -612,8 +645,8 @@ function Laboratory() {
                 </div>
 
                 <p>
-                  Espacio para indicadores, tendencias y señales servidas desde la
-                  API del laboratorio.
+                  Espacio para indicadores, tendencias y señales servidas desde
+                  la API del laboratorio.
                 </p>
 
                 <div className="lab-chip-row">

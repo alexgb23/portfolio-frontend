@@ -7,9 +7,11 @@ import {
   FaLayerGroup,
   FaCircle,
 } from "react-icons/fa";
+import { useMemo } from "react";
 
 import { useLaboratoryDetail } from "../../hooks/usePortfolioData";
 import usePageTitle from "../../hooks/usePageTitle";
+import LaboratorySkeleton from "./LaboratorySkeleton";
 import "./Laboratory.css";
 
 function getDetailSectionClass(item) {
@@ -32,19 +34,33 @@ function LaboratoryDetail() {
   const { id } = useParams();
   const { laboratoryItem, loading, error } = useLaboratoryDetail(id);
 
-  const title =
-    laboratoryItem?.title || laboratoryItem?.name || "Detalle del laboratorio";
+  const normalized = useMemo(() => {
+    return {
+      title:
+        laboratoryItem?.title ||
+        laboratoryItem?.name ||
+        "Detalle del laboratorio",
+      tags: Array.isArray(laboratoryItem?.tags) ? laboratoryItem.tags : [],
+      stack: Array.isArray(laboratoryItem?.stack) ? laboratoryItem.stack : [],
+      links: Array.isArray(laboratoryItem?.links) ? laboratoryItem.links : [],
+      summary:
+        laboratoryItem?.summary ||
+        laboratoryItem?.excerpt ||
+        laboratoryItem?.description_short ||
+        "",
+      description:
+        laboratoryItem?.description ||
+        laboratoryItem?.content ||
+        laboratoryItem?.body ||
+        laboratoryItem?.details ||
+        "",
+      sectionClass: getDetailSectionClass(laboratoryItem),
+    };
+  }, [laboratoryItem]);
 
-  usePageTitle(`${title} | Laboratorio Técnico`);
+  usePageTitle(`${normalized.title} | Laboratorio Técnico`);
 
-  if (loading) {
-    return (
-      <div className="state-wrapper centered">
-        <div className="sys-loader"></div>
-        <h2>Cargando detalle del proyecto...</h2>
-      </div>
-    );
-  }
+  if (loading) return <LaboratorySkeleton />;
 
   if (error) {
     return (
@@ -59,33 +75,16 @@ function LaboratoryDetail() {
     return (
       <div className="state-wrapper centered">
         <h2>Proyecto no encontrado</h2>
-        <p>No se ha encontrado información para este elemento del laboratorio.</p>
+        <p>
+          No se ha encontrado información para este elemento del laboratorio.
+        </p>
       </div>
     );
   }
 
-  const tags = Array.isArray(laboratoryItem?.tags) ? laboratoryItem.tags : [];
-  const stack = Array.isArray(laboratoryItem?.stack) ? laboratoryItem.stack : [];
-  const links = Array.isArray(laboratoryItem?.links) ? laboratoryItem.links : [];
-
-  const summary =
-    laboratoryItem?.summary ||
-    laboratoryItem?.excerpt ||
-    laboratoryItem?.description_short ||
-    "";
-
-  const description =
-    laboratoryItem?.description ||
-    laboratoryItem?.content ||
-    laboratoryItem?.body ||
-    laboratoryItem?.details ||
-    "";
-
-  const sectionClass = getDetailSectionClass(laboratoryItem);
-
   return (
     <section
-      className={`section section-spaced laboratory-page laboratory-detail-page ${sectionClass}`}
+      className={`section section-spaced laboratory-page laboratory-detail-page ${normalized.sectionClass}`}
     >
       <div className="lab-back-link-wrap">
         <Link to="/laboratorio" className="inline-link">
@@ -101,9 +100,9 @@ function LaboratoryDetail() {
             "Proyecto técnico"}
         </span>
 
-        <h1>{title}</h1>
+        <h1>{normalized.title}</h1>
 
-        {summary ? <p>{summary}</p> : null}
+        {normalized.summary ? <p>{normalized.summary}</p> : null}
       </header>
 
       <section className="laboratory-detail-layout">
@@ -120,14 +119,14 @@ function LaboratoryDetail() {
             </div>
 
             <p>
-              {description ||
+              {normalized.description ||
                 "Este proyecto todavía no tiene una descripción detallada disponible."}
             </p>
           </div>
 
           {laboratoryItem?.demo_url ||
           laboratoryItem?.repository_url ||
-          links.length > 0 ? (
+          normalized.links.length > 0 ? (
             <div className="expertise-card expertise-card-hover laboratory-card lab-detail-card">
               <div className="card-head">
                 <div className="expertise-icon">
@@ -164,7 +163,7 @@ function LaboratoryDetail() {
                   </a>
                 ) : null}
 
-                {links.map((link, index) => {
+                {normalized.links.map((link, index) => {
                   const href = link?.url || link?.href;
                   const label =
                     link?.label || link?.title || `Enlace ${index + 1}`;
@@ -218,12 +217,14 @@ function LaboratoryDetail() {
 
               <div>
                 <span>Slug / ID</span>
-                <strong>{laboratoryItem?.slug || laboratoryItem?.id || id}</strong>
+                <strong>
+                  {laboratoryItem?.slug || laboratoryItem?.id || id}
+                </strong>
               </div>
             </div>
           </div>
 
-          {tags.length > 0 ? (
+          {normalized.tags.length > 0 ? (
             <div className="expertise-card expertise-card-hover laboratory-card lab-detail-card">
               <div className="card-head">
                 <div className="expertise-icon">
@@ -236,7 +237,7 @@ function LaboratoryDetail() {
               </div>
 
               <div className="lab-project-tags">
-                {tags.map((tag, index) => (
+                {normalized.tags.map((tag, index) => (
                   <span className="tag" key={`tag-${index}`}>
                     <FaTag />
                     {tag}
@@ -246,7 +247,7 @@ function LaboratoryDetail() {
             </div>
           ) : null}
 
-          {stack.length > 0 ? (
+          {normalized.stack.length > 0 ? (
             <div className="expertise-card expertise-card-hover laboratory-card lab-detail-card">
               <div className="card-head">
                 <div className="expertise-icon">
@@ -259,7 +260,7 @@ function LaboratoryDetail() {
               </div>
 
               <div className="lab-project-tags">
-                {stack.map((item, index) => (
+                {normalized.stack.map((item, index) => (
                   <span className="tag" key={`stack-${index}`}>
                     {item}
                   </span>

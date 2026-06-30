@@ -90,9 +90,7 @@ function normalizeHref(item) {
 function Contact() {
   usePageTitle("Contacto | Alexander Galvez");
 
-  // Social links vienen del mismo home que ya usas en la landing (cacheados por useAsyncResource)
-  const { socialLinks, loading: homeLoading, error: homeError } =
-    usePortfolioHome();
+  const { socialLinks, error: homeError } = usePortfolioHome();
 
   const [form, setForm] = useState({
     name: "",
@@ -137,9 +135,7 @@ function Contact() {
         subject: "",
         message: "",
       });
-    } catch {
-      // El error ya lo gestiona el hook.
-    }
+    } catch {}
   }
 
   return (
@@ -155,46 +151,23 @@ function Contact() {
 
       <div className="contact-grid">
         <div className="contact-card">
-  <h2>Enlaces</h2>
+          <h2>Enlaces</h2>
 
-  {/* Solo mostramos el error si falla la carga */}
-  {homeError && <p>{homeError}</p>}
+          {homeError && <p>{homeError}</p>}
 
-  <div className="social-mini-grid">
-    {/* Skeleton de enlaces cuando NO hay datos todavía */}
-    {homeLoading && visibleSocialLinks.length === 0 && (
-      <>
-        {Array.from({ length: 4 }).map((_, i) => (
-          <div
-            key={i}
-            className="social-mini-card skeleton-block skeleton-card"
-          >
-            <div className="social-mini-front">
-              <div className="social-mini-icon skeleton-block skeleton-icon" />
-              <div className="social-mini-textbox">
-                <span className="skeleton-block skeleton-text-sm" />
-                <span className="skeleton-block skeleton-text-sm" />
-              </div>
-              <span className="social-mini-meta skeleton-block skeleton-text-sm" />
-            </div>
+          <div className="social-mini-grid">
+            {visibleSocialLinks.map((item) => (
+              <SocialCard
+                key={`${item.label}-${item.title}-${item.href}`}
+                href={item.href}
+                icon={item.icon}
+                label={item.label}
+                title={item.title}
+                text={item.text}
+              />
+            ))}
           </div>
-        ))}
-      </>
-    )}
-
-    {/* Enlaces reales cuando ya hay datos */}
-    {visibleSocialLinks.map((item) => (
-      <SocialCard
-        key={`${item.label}-${item.title}-${item.href}`}
-        href={item.href}
-        icon={item.icon}
-        label={item.label}
-        title={item.title}
-        text={item.text}
-      />
-    ))}
-  </div>
-</div>
+        </div>
 
         <div className="neo-terminal">
           <div className="term-top-bar">

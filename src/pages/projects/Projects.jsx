@@ -8,6 +8,8 @@ function Projects() {
   const { projects, loading, error } = useProjects();
   const hasProjects = Array.isArray(projects) && projects.length > 0;
 
+  if (loading) return null;
+
   if (error) {
     return (
       <section className="section section-spaced">
@@ -39,33 +41,7 @@ function Projects() {
         </p>
       </div>
 
-      {/* estados:
-         - loading && !hasProjects  -> skeleton inline
-         - !loading && hasProjects  -> tarjetas reales
-         - !loading && !hasProjects -> mensaje vacío
-      */}
-      {loading && !hasProjects ? (
-        <div className="grid-cards">
-          {Array.from({ length: 4 }).map((_, i) => (
-            <article
-              key={i}
-              className="project-card skeleton-block skeleton-card"
-            >
-              <div className="project-card-head">
-                <div className="skeleton-block skeleton-text-md" />
-              </div>
-              <div className="project-card-body">
-                <p className="skeleton-block skeleton-text-sm" />
-                <p className="skeleton-block skeleton-text-sm" />
-              </div>
-              <div className="project-card-footer">
-                <span className="skeleton-block skeleton-pill" />
-                <span className="skeleton-block skeleton-pill" />
-              </div>
-            </article>
-          ))}
-        </div>
-      ) : hasProjects ? (
+      {hasProjects ? (
         <>
           <h2 className="sr-only">Listado de proyectos</h2>
 

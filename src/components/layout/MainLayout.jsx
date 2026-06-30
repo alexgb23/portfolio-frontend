@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Outlet } from "react-router-dom";
 import Navbar from "./Navbar/Navbar";
 
@@ -33,27 +33,23 @@ function MainLayout() {
     };
   }, []);
 
-  const isDarkMode = useMemo(() => {
-    if (themeMode === "dark") return true;
-    if (themeMode === "light") return false;
-    return systemPrefersDark;
-  }, [themeMode, systemPrefersDark]);
+  const isDarkMode =
+    themeMode === "dark" || (themeMode === "system" && systemPrefersDark);
 
   useEffect(() => {
-    document.documentElement.setAttribute(
-      "data-theme",
-      isDarkMode ? "dark" : "light",
-    );
+    const resolvedTheme = isDarkMode ? "dark" : "light";
+    document.documentElement.setAttribute("data-theme", resolvedTheme);
+    document.documentElement.style.colorScheme = resolvedTheme;
   }, [isDarkMode]);
 
-  const toggleTheme = () => {
+  const toggleTheme = useCallback(() => {
     setThemeMode((currentMode) => {
       const currentIsDark =
         currentMode === "system" ? systemPrefersDark : currentMode === "dark";
 
       return currentIsDark ? "light" : "dark";
     });
-  };
+  }, [systemPrefersDark]);
 
   const websiteSchema = {
     "@context": "https://schema.org",

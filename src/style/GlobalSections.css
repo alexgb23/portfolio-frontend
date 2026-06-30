@@ -4,15 +4,11 @@
 
 .section {
   position: relative;
-  padding: 3.9rem 0;
+  padding: 2.4rem 0;
 }
 
 .section-spaced {
-  padding: 4.15rem 0;
-}
-
-.section-separated {
-  position: relative;
+  padding: 3rem 0;
 }
 
 .section-separated::before {
@@ -20,15 +16,15 @@
   position: absolute;
   top: 0;
   left: 0;
-  width: min(220px, 38%);
+  width: min(250px, 50%);
   height: 1px;
   background: linear-gradient(90deg, var(--accent), transparent);
-  opacity: 0.78;
+  opacity: 0.85;
   pointer-events: none;
 }
 
 .narrow {
-  max-width: 780px;
+  max-width: 768px;
   margin-inline: auto;
 }
 
@@ -37,28 +33,28 @@
    ========================================================= */
 
 .section-head-centered {
-  max-width: 780px;
-  margin: 0 auto 2.25rem;
+  max-width: 768px;
+  margin: 0 auto 2rem;
   text-align: center;
 }
 
-.section-head-centered .section-kicker {
-  margin-bottom: 0.8rem;
+.section-kicker {
+  margin-bottom: 0.5rem;
 }
 
-.section-head-centered h2 {
-  margin: 0 0 0.9rem;
-  font-size: clamp(1.85rem, 3vw, 2.8rem);
+h2 {
+  margin: 0 0 1rem;
+  font-size: clamp(1.5rem, 3vw, 2.4rem);
   line-height: 1.08;
-  letter-spacing: -0.05em;
+  letter-spacing: -0.03em;
   color: var(--text-main);
 }
 
-.section-head-centered p {
+p {
   margin: 0;
   color: var(--text-sub);
   font-size: 1rem;
-  line-height: 1.8;
+  line-height: 1.75;
 }
 
 /* =========================================================
@@ -68,7 +64,7 @@
 .section-more {
   display: flex;
   justify-content: center;
-  margin-top: 1.35rem;
+  margin-top: 1rem;
 }
 
 .section-more.left {
@@ -79,32 +75,32 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.55rem;
-  min-height: 44px;
-  padding: 0.72rem 1rem;
+  gap: 0.4rem;
+  min-height: 40px;
+  padding: 0.6rem 0.8rem;
   border-radius: 999px;
   text-decoration: none;
   font-weight: 700;
   color: var(--text-main);
-  transition:
-    transform 0.22s ease,
-    color 0.22s ease,
-    border-color 0.22s ease,
-    background 0.22s ease,
-    box-shadow 0.22s ease;
+  transition: 
+    transform 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease,
+    background 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 :root[data-theme="dark"] .inline-link {
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.06);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.04),
-    0 8px 18px rgba(0, 0, 0, 0.14);
+    0 8px 18px rgba(0, 0, 0, 0.12);
 }
 
 :root[data-theme="light"] .inline-link {
-  border: 1px solid rgba(15, 23, 42, 0.08);
-  background: rgba(255, 255, 255, 0.78);
+  border: 1px solid rgba(15, 23, 42, 0.1);
+  background: rgba(255, 255, 255, 0.8);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.62),
     0 10px 18px rgba(15, 23, 42, 0.05);
@@ -112,32 +108,32 @@
 
 .inline-link svg {
   font-size: 0.9rem;
-  transition: transform 0.22s ease;
+  transition: transform 0.2s ease;
 }
 
 .inline-link:hover {
-  transform: translateY(-2px);
+  transform: translateY(-1.5px);
   color: var(--text-main);
 }
 
 :root[data-theme="dark"] .inline-link:hover {
-  border-color: color-mix(in srgb, var(--accent) 18%, rgba(255, 255, 255, 0.1));
+  border-color: color-mix(in srgb, var(--accent) 16%, rgba(255, 255, 255, 0.08));
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.05),
-    0 12px 24px rgba(0, 0, 0, 0.18),
-    0 0 16px color-mix(in srgb, var(--accent) 10%, transparent);
+    inset 0 1px 0 rgba(255, 255, 255, 0.04),
+    0 12px 26px rgba(0, 0, 0, 0.18),
+    0 0 18px color-mix(in srgb, var(--accent) 9%, transparent);
 }
 
 :root[data-theme="light"] .inline-link:hover {
   border-color: color-mix(in srgb, var(--accent) 14%, rgba(15, 23, 42, 0.08));
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.65),
-    0 12px 20px rgba(15, 23, 42, 0.08),
-    0 0 14px color-mix(in srgb, var(--accent) 8%, transparent);
+    inset 0 1px 0 rgba(255, 255, 255, 0.7),
+    0 12px 26px rgba(15, 23, 42, 0.08),
+    0 0 16px color-mix(in srgb, var(--accent) 8%, transparent);
 }
 
 .inline-link:hover svg {
-  transform: translateX(3px);
+  transform: translateX(2px);
 }
 
 /* =========================================================
@@ -149,14 +145,14 @@
   justify-content: center;
   align-items: center;
   min-height: 140px;
-  padding: 1.15rem;
+  padding: 1.2rem;
   border-radius: 20px;
   text-align: center;
 }
 
 :root[data-theme="dark"] .empty-inline-state {
   border: 1px solid rgba(255, 255, 255, 0.06);
-  background: rgba(255, 255, 255, 0.03);
+  background: rgba(255, 255, 255, 0.04);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.03),
     0 10px 24px rgba(0, 0, 0, 0.12);
@@ -164,7 +160,7 @@
 
 :root[data-theme="light"] .empty-inline-state {
   border: 1px solid rgba(15, 23, 42, 0.06);
-  background: rgba(255, 255, 255, 0.76);
+  background: rgba(255, 255, 255, 0.78);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.62),
     0 10px 20px rgba(15, 23, 42, 0.05);
@@ -173,7 +169,7 @@
 .empty-inline-state p {
   margin: 0;
   color: var(--text-sub);
-  line-height: 1.65;
+  line-height: 1.75;
 }
 
 .state-wrapper {
@@ -224,13 +220,13 @@
 .expertise-grid {
   display: grid;
   grid-template-columns: 1fr; /* 1 columna exacta y limpia en móviles */
-  gap: 1.25rem;
-  margin-top: 1.6rem;
+  gap: 1rem;
+  margin-top: 1.5rem;
   width: 100%;
 }
 
-.grid-cards > *,
-.expertise-grid > * {
+.grid-cards,
+.expertise-grid{
   min-width: 0;
 }
 
@@ -241,7 +237,7 @@
 .list-linear {
   display: flex;
   flex-direction: column;
-  gap: 0.95rem;
+  gap: 0.8rem;
 }
 
 /* =========================================================
@@ -250,15 +246,15 @@
 
 @media (min-width: 768px) {
   .section {
-    padding: 4.8rem 0;
+    padding: 3.5rem 0;
   }
 
   .section-spaced {
-    padding: 5rem 0;
+    padding: 4rem 0;
   }
 
   .section-head-centered {
-    margin-bottom: 2.7rem;
+    margin-bottom: 2.5rem;
   }
 
   /* Formato 2x2 centrado y limpio para tablets medianas */
@@ -268,15 +264,15 @@
     grid-template-columns: repeat(2, 1fr);
   }
 
-  .grid-cards > *,
-  .expertise-grid > * {
+  .grid-cards,
+  .expertise-grid{
     width: 100%;
     min-width: 0;
     height: 100%;
   }
 
   .section-more {
-    margin-top: 1.5rem;
+    margin-top: 1.3rem;
   }
 
   .list-linear {
@@ -290,35 +286,49 @@
 
 @media (min-width: 1024px) {
   .section {
-    padding: 5.3rem 0;
+    padding: 4.3rem 0;
   }
 
   .section-spaced {
-    padding: 5.6rem 0;
+    padding: 4.6rem 0;
   }
 
   .section-head-centered {
     margin-bottom: 3rem;
   }
 
-  /* 
-     CORRECCIÓN MAESTRA: Cambiamos a Flexbox inteligente centrado en PCs.
-     Si hay 4 se alinean las 4. Si hay 2 o 3, se centran de forma armónica.
-  */
   .grid-cards,
   .expertise-grid {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center; /* Centra las tarjetas del Lab y Proyectos de forma simétrica */
-    gap: 1.5rem; 
+    display: grid;
+    gap: 1.2rem;
+    width: 100%;
+    align-items: start;
   }
 
-  /* Distribución de anchos proporcionales para el contenedor premium de tu PC */
-  .grid-cards > *,
-  .expertise-grid > * {
-    flex: 1 1 calc(25% - 1.5rem);
-    min-width: 260px; /* Previene que colapsen en pantallas más ajustadas */
-    max-width: calc(25% - 1.1rem); /* Impide que se desparramen al ensancharse */
+ .grid-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Ajusta el tamaño mínimo según sea necesario */
+  gap: 1.2rem; /* Espacio entre las tarjetas */
+  justify-content: center; /* Centra la cuadrícula horizontalmente */
+  margin-top: 1.5rem;
+}
+
+.grid-cards > * {
+  min-width: 0; /* Evita que los elementos de la cuadrícula sean más anchos que su contenedor */
+}
+
+.expertise-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.5rem;
+  } 
+   
+
+  .grid-cards,
+  .expertise-grid{
+    min-width: 0;
+    max-width: none;
+    width: auto;
     height: auto;
   }
 

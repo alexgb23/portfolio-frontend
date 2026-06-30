@@ -1,0 +1,133 @@
+/* src/pages/laboratory/Skeletons.css */
+
+:root {
+  --skeleton-base-light: rgba(15, 23, 42, 0.08);
+  --skeleton-highlight-light: rgba(255, 255, 255, 0.42);
+  --skeleton-base-dark: rgba(255, 255, 255, 0.08);
+  --skeleton-highlight-dark: rgba(255, 255, 255, 0.12);
+  --skeleton-radius: 14px;
+  --skeleton-radius-pill: 999px;
+  --skeleton-shimmer-duration: 1.45s;
+}
+
+.skeleton {
+  --skeleton-base: var(--skeleton-base-light);
+  --skeleton-highlight: var(--skeleton-highlight-light);
+}
+
+:root[data-theme="dark"] .skeleton {
+  --skeleton-base: var(--skeleton-base-dark);
+  --skeleton-highlight: var(--skeleton-highlight-dark);
+}
+
+.skeleton-card {
+  pointer-events: none;
+  user-select: none;
+}
+
+.skeleton-card * {
+  pointer-events: none;
+}
+
+.skeleton-block {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  border-radius: var(--skeleton-radius);
+  background-color: var(--skeleton-base);
+}
+
+.skeleton-block::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--skeleton-highlight) 50%,
+    transparent 100%
+  );
+  animation: skeleton-shimmer var(--skeleton-shimmer-duration) linear infinite;
+}
+
+@keyframes skeleton-shimmer {
+  to {
+    transform: translateX(100%);
+  }
+}
+
+.skeleton-pill {
+  width: 84px;
+  min-width: 84px;
+  height: 34px;
+  border-radius: var(--skeleton-radius-pill);
+}
+
+.skeleton-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  flex-shrink: 0;
+}
+
+.skeleton-text-xs {
+  height: 12px;
+  border-radius: var(--skeleton-radius-pill);
+}
+
+.skeleton-text-sm {
+  height: 14px;
+  border-radius: var(--skeleton-radius-pill);
+}
+
+.skeleton-text-md {
+  height: 18px;
+  border-radius: var(--skeleton-radius-pill);
+}
+
+.skeleton-text-lg {
+  height: clamp(32px, 4vw, 56px);
+  border-radius: 20px;
+}
+
+.skeleton-copy {
+  display: grid;
+  gap: 10px;
+}
+
+.w-100 { width: 100%; }
+.w-90  { width: 90%; }
+.w-88  { width: 88%; }
+.w-85  { width: 85%; }
+.w-82  { width: 82%; }
+.w-80  { width: 80%; }
+.w-75  { width: 75%; }
+.w-72  { width: 72%; }
+.w-70  { width: 70%; }
+.w-68  { width: 68%; }
+.w-66  { width: 66%; }
+.w-65  { width: 65%; }
+.w-64  { width: 64%; }
+.w-62  { width: 62%; }
+.w-60  { width: 60%; }
+.w-58  { width: 58%; }
+.w-55  { width: 55%; }
+.w-52  { width: 52%; }
+.w-48  { width: 48%; }
+.w-42  { width: 42%; }
+.w-40  { width: 40%; }
+.w-34  { width: 34%; }
+.w-32  { width: 32%; }
+.w-30  { width: 30%; }
+.w-28  { width: 28%; }
+.w-24  { width: 24%; }
+.w-22  { width: 22%; }
+.w-20  { width: 20%; }
+
+@media (prefers-reduced-motion: reduce) {
+  .skeleton-block::after {
+    animation: none;
+    transform: none;
+  }
+}

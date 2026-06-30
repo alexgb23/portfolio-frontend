@@ -15,7 +15,6 @@ function Home() {
 
   const [showDeferredSections, setShowDeferredSections] = useState(false);
 
-  // 1. UNA ÚNICA PETICIÓN: Extraemos todo del nuevo JSON unificado
   const {
     socialLinks,
     projects,
@@ -26,7 +25,6 @@ function Home() {
     error: homeError,
   } = usePortfolioHome();
 
-  // 2. Control de renderizado diferido para optimizar el hilo principal de la UI
   useEffect(() => {
     if (typeof window === "undefined") return;
 
@@ -44,14 +42,12 @@ function Home() {
     return () => cancelRaf(id);
   }, []);
 
-  // 3. Procesamiento local de proyectos destacados basado en los datos del endpoint
   const featuredProjects = useMemo(() => {
     const featuredOnly = projects.filter((project) => project.is_featured);
     const nonFeatured = projects.filter((project) => !project.is_featured);
     return [...featuredOnly, ...nonFeatured].slice(0, 3);
   }, [projects]);
 
-  // 4. Conteo directo de arrays en tiempo de ejecución (Cero peticiones extra)
   const laboratorySummary = useMemo(() => {
     return {
       servers_count: servers.length,
@@ -60,7 +56,6 @@ function Home() {
     };
   }, [servers, nodes, metrics]);
 
-  // Structured Data (SEO Schema) con datos estáticos seguros
   const personSchema = {
     "@context": "https://schema.org",
     "@type": "Person",
@@ -94,19 +89,16 @@ function Home() {
   const safeJsonLd = JSON.stringify(personSchema).replace(/<\//g, "<\\/");
 
   return (
-    // CORREGIDO: Envoltura semántica estructural <main> obligatoria para lectores de pantalla
     <main id="main-content">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: safeJsonLd }}
       />
 
-      {/* Hero recibe las redes de la API. Datos de profile y expertise usarán los fallbacks estáticos internos */}
       <HeroSection
         profile={null}
         socialLinks={socialLinks}
         expertise={[]}
-        loading={homeLoading}
         error={homeError}
       />
 
@@ -119,7 +111,7 @@ function Home() {
           </div>
         </section>
       ) : (
-        <FeaturedProjects projects={featuredProjects} loading={homeLoading} />
+        <FeaturedProjects projects={featuredProjects} />
       )}
 
       {showDeferredSections ? (
@@ -137,7 +129,6 @@ function Home() {
               serversCount={laboratorySummary.servers_count}
               metricsCount={laboratorySummary.metrics_count}
               nodesCount={laboratorySummary.nodes_count}
-              loading={homeLoading}
             />
           )}
 

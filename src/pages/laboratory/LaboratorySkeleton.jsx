@@ -1,9 +1,13 @@
 // src/pages/laboratory/LaboratorySkeleton.jsx
 import "./Laboratory.css";
+import "./Skeletons.css";
 
 function SkeletonCard({ chips = 2, withCounter = true }) {
   return (
-    <article className="expertise-card card-hover laboratory-card skeleton-card" aria-hidden="true">
+    <article
+      className="expertise-card expertise-card-hover laboratory-card skeleton-card"
+      aria-hidden="true"
+    >
       <div className="card-head">
         <div className="expertise-icon skeleton-block skeleton-icon" />
 
@@ -61,8 +65,18 @@ function SkeletonPanel({ cards = 2, chips = 2, withCounter = true }) {
 
 function LaboratorySkeleton() {
   return (
-    <section className="section section-spaced laboratory-page skeleton">
-      <header className="section-head-centered laboratory-hero" aria-hidden="true">
+    <section
+      className="section section-spaced laboratory-page skeleton"
+      role="status"
+      aria-busy="true"
+      aria-label="Cargando laboratorio"
+    >
+      <span className="sr-only">Cargando laboratorio</span>
+
+      <header
+        className="section-head-centered laboratory-hero"
+        aria-hidden="true"
+      >
         <span className="section-kicker skeleton-block skeleton-text-sm w-24" />
         <div className="skeleton-block skeleton-text-lg w-85" />
         <div className="skeleton-block skeleton-text-md w-80" />
@@ -71,12 +85,12 @@ function LaboratorySkeleton() {
 
       <section
         className="laboratory-overview expertise-grid"
-        aria-label="Resumen del laboratorio"
+        aria-hidden="true"
       >
         {Array.from({ length: 4 }).map((_, index) => (
           <article
             key={`overview-${index}`}
-            className="expertise-card card-hover laboratory-card skeleton-card"
+            className="expertise-card expertise-card-hover laboratory-card skeleton-card"
             aria-hidden="true"
           >
             <div className="card-head">
@@ -99,8 +113,8 @@ function LaboratorySkeleton() {
         ))}
       </section>
 
-      <section className="lab-section">
-        <div className="lab-section-top" aria-hidden="true">
+      <section className="lab-section" aria-hidden="true">
+        <div className="lab-section-top">
           <div className="lab-section-intro">
             <span className="lab-label skeleton-block skeleton-text-sm w-24" />
             <div className="skeleton-block skeleton-text-md w-72" />
@@ -119,7 +133,7 @@ function LaboratorySkeleton() {
 
             <div className="lab-panel-body">
               <div className="lab-story-grid">
-                <article className="expertise-card card-hover laboratory-card skeleton-card">
+                <article className="expertise-card expertise-card-hover laboratory-card skeleton-card">
                   <div className="card-head">
                     <div className="expertise-icon skeleton-block skeleton-icon" />
                     <div className="card-title-wrap" style={{ width: "100%" }}>
@@ -151,13 +165,13 @@ function LaboratorySkeleton() {
           </div>
         </div>
 
-        <div className="lab-actions" aria-hidden="true">
+        <div className="lab-actions">
           <span className="inline-link skeleton-block skeleton-pill w-30" />
         </div>
       </section>
 
-      <section className="lab-section lab-section-divider">
-        <div className="lab-section-top" aria-hidden="true">
+      <section className="lab-section lab-section-divider" aria-hidden="true">
+        <div className="lab-section-top">
           <div className="lab-section-intro">
             <span className="lab-label skeleton-block skeleton-text-sm w-24" />
             <div className="skeleton-block skeleton-text-md w-68" />
@@ -167,13 +181,13 @@ function LaboratorySkeleton() {
 
         <SkeletonPanel cards={3} chips={3} withCounter />
 
-        <div className="lab-actions" aria-hidden="true">
+        <div className="lab-actions">
           <span className="inline-link skeleton-block skeleton-pill w-32" />
         </div>
       </section>
 
-      <section className="lab-section lab-section-divider">
-        <div className="lab-section-top" aria-hidden="true">
+      <section className="lab-section lab-section-divider" aria-hidden="true">
+        <div className="lab-section-top">
           <div className="lab-section-intro">
             <span className="lab-label skeleton-block skeleton-text-sm w-28" />
             <div className="skeleton-block skeleton-text-md w-62" />
@@ -187,8 +201,8 @@ function LaboratorySkeleton() {
         </div>
       </section>
 
-      <section className="lab-section lab-section-divider">
-        <div className="lab-section-top" aria-hidden="true">
+      <section className="lab-section lab-section-divider" aria-hidden="true">
+        <div className="lab-section-top">
           <div className="lab-section-intro">
             <span className="lab-label skeleton-block skeleton-text-sm w-20" />
             <div className="skeleton-block skeleton-text-md w-64" />
@@ -197,7 +211,10 @@ function LaboratorySkeleton() {
         </div>
 
         <div className="lab-column-cards">
-          <article className="expertise-card card-hover laboratory-card skeleton-card" aria-hidden="true">
+          <article
+            className="expertise-card expertise-card-hover laboratory-card skeleton-card"
+            aria-hidden="true"
+          >
             <div className="card-head">
               <div className="expertise-icon skeleton-block skeleton-icon" />
               <div className="card-title-wrap" style={{ width: "100%" }}>
@@ -220,7 +237,10 @@ function LaboratorySkeleton() {
             </ul>
           </article>
 
-          <article className="expertise-card card-hover laboratory-card skeleton-card" aria-hidden="true">
+          <article
+            className="expertise-card expertise-card-hover laboratory-card skeleton-card"
+            aria-hidden="true"
+          >
             <div className="card-head">
               <div className="expertise-icon skeleton-block skeleton-icon" />
               <div className="card-title-wrap" style={{ width: "100%" }}>
@@ -245,8 +265,8 @@ function LaboratorySkeleton() {
         </div>
       </section>
 
-      <section className="lab-section lab-section-divider">
-        <div className="lab-section-top" aria-hidden="true">
+      <section className="lab-section lab-section-divider" aria-hidden="true">
+        <div className="lab-section-top">
           <div className="lab-section-intro">
             <span className="lab-label skeleton-block skeleton-text-sm w-24" />
             <div className="skeleton-block skeleton-text-md w-66" />
@@ -260,8 +280,8 @@ function LaboratorySkeleton() {
         </div>
       </section>
 
-      <section className="lab-section lab-section-divider">
-        <div className="lab-section-top" aria-hidden="true">
+      <section className="lab-section lab-section-divider" aria-hidden="true">
+        <div className="lab-section-top">
           <div className="lab-section-intro">
             <span className="lab-label skeleton-block skeleton-text-sm w-22" />
             <div className="skeleton-block skeleton-text-md w-60" />
@@ -269,7 +289,7 @@ function LaboratorySkeleton() {
           </div>
         </div>
 
-        <div className="lab-capabilities" aria-hidden="true">
+        <div className="lab-capabilities">
           {Array.from({ length: 10 }).map((_, index) => (
             <span
               key={`capability-${index}`}
