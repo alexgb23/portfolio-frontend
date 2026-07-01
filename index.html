@@ -57,13 +57,6 @@
 <body>
   <div id="root"></div>
   <script type="module" src="/src/main.jsx"></script>
-  <script>
-    // Versión moderna y compatible para detectar el refresco con F5
-    const [navigation] = performance.getEntriesByType("navigation");
-    if (navigation && navigation.type === "reload") {
-      window.scrollTo(0, 0);
-    }
-  </script>
 </body>
 
 </html>

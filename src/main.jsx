@@ -6,6 +6,12 @@ import "./style/globals.css";
 import "./style/GlobalSections.css";
 import "./style/GlobalCardsPages.css";
 
+const [navigation] = performance.getEntriesByType("navigation");
+
+if (navigation && navigation.type === "reload") {
+  window.scrollTo(0, 0);
+}
+
 createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <BrowserRouter>
