@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom"; // 💡 CAMBIO: Importamos useNavigate junto a Link
 import {
   FaArrowRight,
   FaCode,
@@ -99,6 +99,7 @@ function ProjectCardSkeleton({ tone = 0 }) {
 }
 
 function FeaturedProjects({ projects = [], loading = false }) {
+  const navigate = useNavigate(); // 💡 Inicializamos el hook para cambiar de página programáticamente
   const safeProjects = Array.isArray(projects) ? projects : [];
   const visibleProjects = safeProjects.slice(0, 3);
   const hasProjects = visibleProjects.length > 0;
@@ -141,10 +142,22 @@ function FeaturedProjects({ projects = [], loading = false }) {
             const icon = getProjectIcon(project, techList);
             const tone = index % 3;
 
+            // 💡 Control de ID seguro por si llega nulo o indefinido temporalmente
+            const projectId =
+              project.id !== undefined && project.id !== null
+                ? project.id
+                : index;
+
             return (
+              /* 
+                💡 SOLUCIÓN DEFINITIVA: Añadimos onClick y estilo de cursor directo 
+                en el artículo para redirigir al detalle usando el ID dinámico de la BBDD.
+              */
               <article
                 key={project.id ?? `${project.title}-${index}`}
                 className={`expertise-card expertise-card-hover tone-${tone}`}
+                onClick={() => navigate(`/proyectos/${projectId}`)}
+                style={{ cursor: "pointer" }}
               >
                 <div className="card-head">
                   <div className="expertise-icon">{icon}</div>
@@ -163,7 +176,10 @@ function FeaturedProjects({ projects = [], loading = false }) {
                 {techList.length > 0 ? (
                   <div className="project-card-tags">
                     {techList.slice(0, 3).map((tech, techIndex) => (
-                      <span key={`${tech}-${techIndex}`} className="project-tech-tag">
+                      <span
+                        key={`${tech}-${techIndex}`}
+                        className="project-tech-tag"
+                      >
                         {tech}
                       </span>
                     ))}

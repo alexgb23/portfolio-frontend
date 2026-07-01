@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom"; // 💡 NUEVO: Importación del enrutador
+import { useNavigate } from "react-router-dom"; // 💡 CAMBIO: Cambiamos Link por useNavigate
 import "./Cards.css";
 import {
   FaCode,
@@ -65,6 +65,8 @@ function getProjectIcon(project, techList) {
 }
 
 export default function ProjectCard({ project, index = 0 }) {
+  const navigate = useNavigate(); // 💡 Inicializamos el hook de navegación nativa
+
   if (!project) return null;
 
   const techList = Array.isArray(project.technologies)
@@ -83,41 +85,48 @@ export default function ProjectCard({ project, index = 0 }) {
   const summaryText = project.stack_summary || "Software";
   const titleText = project.title || "Sin título";
   const descriptionText = project.short_description || "Sin descripción";
-  const projectId = project.id ?? index; // 💡 Control de ID seguro
+  
+  // Control estricto de ID seguro
+  const projectId = project.id !== undefined && project.id !== null ? project.id : index;
 
   return (
-    /* 💡 ENVOLTORIO GLOBAL: Convierte toda tu tarjeta en un enlace dinámico hacia su detalle */
-    <Link to={`/proyectos/${projectId}`} className="project-card-anchor">
-      <article className={`card card-hover card-project tone-${tone}`}>
-        <div className="project-card-inner">
-          <div className="card-top">
-            <span className="card-badge">{badgeText}</span>
-            <span className="date">{summaryText}</span>
-          </div>
-
-          <div className="card-head">
-            <div className="card-icon">{icon}</div>
-
-            <div className="card-title-wrap">
-              <h3>{titleText}</h3>
-            </div>
-          </div>
-
-          <div className="project-card-divider" />
-
-          <p>{descriptionText}</p>
-
-          {techList.length > 0 && (
-            <div className="tags">
-              {techList.map((tech, i) => (
-                <span key={`${tech}-${i}`} className="tag">
-                  {tech}
-                </span>
-              ))}
-            </div>
-          )}
+    /* 
+      💡 SOLUCIÓN DIRECTA: Usamos onClick nativo directo en el elemento.
+      Forzamos el cursor pointer mediante inline style para mitigar cualquier bloqueo del CSS.
+    */
+    <article 
+      className={`card card-hover card-project tone-${tone}`}
+      onClick={() => navigate(`/proyectos/${projectId}`)}
+      style={{ cursor: "pointer" }}
+    >
+      <div className="project-card-inner">
+        <div className="card-top">
+          <span className="card-badge">{badgeText}</span>
+          <span className="date">{summaryText}</span>
         </div>
-      </article>
-    </Link>
+
+        <div className="card-head">
+          <div className="card-icon">{icon}</div>
+
+          <div className="card-title-wrap">
+            <h3>{titleText}</h3>
+          </div>
+        </div>
+
+        <div className="project-card-divider" />
+
+        <p>{descriptionText}</p>
+
+        {techList.length > 0 && (
+          <div className="tags">
+            {techList.map((tech, i) => (
+              <span key={`${tech}-${i}`} className="tag">
+                {tech}
+              </span>
+            ))}
+          </div>
+        )}
+      </div>
+    </article>
   );
 }
