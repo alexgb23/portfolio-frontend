@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom"; // 💡 CAMBIO: Importamos useNavigate junto a Link
+import { Link, useNavigate } from "react-router"; // 💡 CAMBIO: Importamos useNavigate junto a Link
 import {
   FaArrowRight,
   FaCode,

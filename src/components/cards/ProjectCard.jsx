@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom"; // 💡 CAMBIO: Cambiamos Link por useNavigate
+import { useNavigate } from "react-router"; // 💡 CAMBIO: Cambiamos Link por useNavigate
 import "./Cards.css";
 import {
   FaCode,

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"; // 💡 Añadido useEffect por si deseas resetear el slider al cambiar de proyecto
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link } from "react-router";
 import { useProjects } from "../../hooks/usePortfolioData";
 import usePageTitle from "../../hooks/usePageTitle";
 import {

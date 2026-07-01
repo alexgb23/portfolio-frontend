@@ -1,5 +1,6 @@
 import { lazy, Suspense } from "react";
-import { Routes, Route, Navigate } from "react-router-dom";
+// CORRECCIÓN: Cambiamos "react-router-dom" por "react-router"
+import { Routes, Route, Navigate } from "react-router";
 import MainLayout from "../components/layout/MainLayout";
 import LaboratorySkeleton from "../pages/laboratory/LaboratorySkeleton";
 

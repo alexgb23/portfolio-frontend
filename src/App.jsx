@@ -1,5 +1,6 @@
 import { useEffect } from "react";
-import { useLocation, useNavigationType } from "react-router-dom";
+// Añadimos useLocation y useNavigationType al import de react-router
+import { useLocation, useNavigationType } from "react-router";
 import AppRouter from "./router";
 
 function App() {
@@ -7,7 +8,7 @@ function App() {
   const navType = useNavigationType();
 
   useEffect(() => {
-    // Si el usuario vuelve Atrás (POP), NO tocamos el scroll. El navegador recordará su posición.
+    // Si el usuario vuelve Atrás (POP), NO tocamos el scroll.
     if (navType === "POP") return;
 
     // Solo va arriba si es un enlace nuevo (PUSH) o un cambio manual de página
