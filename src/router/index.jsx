@@ -14,6 +14,10 @@ export const About = lazyWithPreload(() => import("../pages/about/About"));
 export const Projects = lazyWithPreload(
   () => import("../pages/projects/Projects"),
 );
+// 💡 NUEVO: Importación dinámica del detalle de tu proyecto
+export const ProjectDetail = lazyWithPreload(
+  () => import("../pages/projects/ProjectDetail"),
+);
 export const Automation = lazyWithPreload(
   () => import("../pages/automation/Automation"),
 );
@@ -57,6 +61,16 @@ export default function AppRouter() {
           element={
             <Suspense fallback={null}>
               <Projects />
+            </Suspense>
+          }
+        />
+
+        {/* 💡 NUEVO: Ruta con parámetro id dinámico para renderizar cada proyecto */}
+        <Route
+          path="proyectos/:id"
+          element={
+            <Suspense fallback={null}>
+              <ProjectDetail />
             </Suspense>
           }
         />

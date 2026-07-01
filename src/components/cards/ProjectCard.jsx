@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom"; // 💡 NUEVO: Importación del enrutador
 import "./Cards.css";
 import {
   FaCode,
@@ -7,7 +8,6 @@ import {
   FaShieldAlt,
   FaCloud,
 } from "react-icons/fa";
-
 
 function getProjectIcon(project, techList) {
   const text =
@@ -83,37 +83,41 @@ export default function ProjectCard({ project, index = 0 }) {
   const summaryText = project.stack_summary || "Software";
   const titleText = project.title || "Sin título";
   const descriptionText = project.short_description || "Sin descripción";
+  const projectId = project.id ?? index; // 💡 Control de ID seguro
 
   return (
-    <article className={`card card-hover card-project tone-${tone}`}>
-      <div className="project-card-inner">
-        <div className="card-top">
-          <span className="card-badge">{badgeText}</span>
-          <span className="date">{summaryText}</span>
-        </div>
-
-        <div className="card-head">
-          <div className="card-icon">{icon}</div>
-
-          <div className="card-title-wrap">
-            <h3>{titleText}</h3>
+    /* 💡 ENVOLTORIO GLOBAL: Convierte toda tu tarjeta en un enlace dinámico hacia su detalle */
+    <Link to={`/proyectos/${projectId}`} className="project-card-anchor">
+      <article className={`card card-hover card-project tone-${tone}`}>
+        <div className="project-card-inner">
+          <div className="card-top">
+            <span className="card-badge">{badgeText}</span>
+            <span className="date">{summaryText}</span>
           </div>
-        </div>
 
-        <div className="project-card-divider" />
+          <div className="card-head">
+            <div className="card-icon">{icon}</div>
 
-        <p>{descriptionText}</p>
-
-        {techList.length > 0 && (
-          <div className="tags">
-            {techList.map((tech, i) => (
-              <span key={`${tech}-${i}`} className="tag">
-                {tech}
-              </span>
-            ))}
+            <div className="card-title-wrap">
+              <h3>{titleText}</h3>
+            </div>
           </div>
-        )}
-      </div>
-    </article>
+
+          <div className="project-card-divider" />
+
+          <p>{descriptionText}</p>
+
+          {techList.length > 0 && (
+            <div className="tags">
+              {techList.map((tech, i) => (
+                <span key={`${tech}-${i}`} className="tag">
+                  {tech}
+                </span>
+              ))}
+            </div>
+          )}
+        </div>
+      </article>
+    </Link>
   );
 }
