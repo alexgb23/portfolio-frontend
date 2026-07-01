@@ -306,11 +306,7 @@
    ========================================================= */
 
 @media (min-width: 1024px) {
-  .about-section {
-    padding: 140px 0;
-  }
-
-  .about-container {
+   .about-container {
     display: grid;
     grid-template-columns: 1.15fr 0.85fr; /* Retorno a tu layout original */
     gap: 120px;
@@ -443,10 +439,6 @@
    ========================================================= */
 
 @media (min-width: 1280px) {
-    .about-section {
-    padding: 100px 0;
-  }
-
   .about-container {
     gap: 80px;
   }
@@ -483,9 +475,6 @@
    ========================================================= */
 
 @media (min-width: 1536px) {
-    .about-section {
-    padding: 140px 0; /* Volvemos al espacio ultra-premium */
-  }
 
   .about-container {
     gap: 110px;

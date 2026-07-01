@@ -119,17 +119,32 @@
    OVERVIEW
    ========================================================= */
 
-.laboratory-overview {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 1rem;
-  min-width: 0;
+.laboratory-overview.expertise-grid {
+  display: grid !important;
+  /* 💡 CLAVE: Rellena la pantalla automáticamente. Cada tarjeta mide mínimo 280px y máximo lo que sobre */
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)) !important; 
+  grid-auto-rows: 1fr; /* Sigue forzando a que todas las de la misma fila midan lo mismo de alto */
+  gap: 20px;
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
 }
 
-.lab-overview-card {
-  min-width: 0;
-  align-self: start;
+/* Forzamos a que las tarjetas estiren todo su alto en cualquier pantalla */
+.laboratory-overview > div,
+.laboratory-overview > article,
+.laboratory-overview .OverviewCard {
+  display: flex !important;
+  flex-direction: column !important;
+  height: 100% !important;
+  padding: 20px;
 }
+
+/* Sigue alineando los contadores abajo */
+.laboratory-overview p {
+  flex-grow: 1;
+}
+
 
 /* =========================================================
    SECCIONES
@@ -614,13 +629,29 @@
 }
 
 /* =========================================================
-   TABLET
+   TABLET (Desde 700px)
    ========================================================= */
-
 @media (min-width: 700px) {
-  .laboratory-overview {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 1.15rem;
+  .laboratory-overview.expertise-grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    grid-auto-rows: 1fr;
+    gap: 20px;
+    width: 100%;
+  }
+
+  /* 💡 Optimizado: Añadido .OverviewCard aquí también para asegurar el tiro en React */
+  .laboratory-overview > div,
+  .laboratory-overview > article,
+  .laboratory-overview .OverviewCard {
+    display: flex !important; /* Añadido !important para asegurar el flex en cascada */
+    flex-direction: column !important;
+    height: 100% !important; 
+    padding: 20px;
+  }
+
+  .laboratory-overview p {
+    flex-grow: 1; 
   }
 
   .lab-section {
@@ -641,23 +672,11 @@
 }
 
 /* =========================================================
-   LAPTOP
+   LAPTOP / MONITORES (Desde 1024px)
    ========================================================= */
-
 @media (min-width: 1024px) {
   .laboratory-page {
     gap: clamp(3.4rem, 6vw, 5.4rem);
-  }
-
-  .laboratory-overview {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 1rem;
-  min-width: 0;
-}
-
-  .laboratory-overview {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 
   .lab-section {
@@ -695,6 +714,11 @@
     gap: 1.35rem;
   }
 
+  /* 💡 Corregido: Selector unido sin espacio para que apunte bien al contenedor principal */
+  .laboratory-overview.expertise-grid {
+    grid-template-columns: repeat(4, 1fr) !important; 
+  }
+
   .lab-section-divider {
     padding-top: 2.3rem;
   }
@@ -707,9 +731,8 @@
 }
 
 /* =========================================================
-   LARGE DESKTOP
+   LARGE DESKTOP (Desde 1280px)
    ========================================================= */
-
 @media (min-width: 1280px) {
   .lab-feature-grid {
     grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr);
@@ -724,5 +747,25 @@
 
   .laboratory-detail-layout {
     grid-template-columns: minmax(0, 1.2fr) minmax(320px, 0.8fr);
+  }
+
+  .laboratory-overview.expertise-grid {
+    gap: 24px;
+  }
+
+  /* Unificado el triple selector para el padding premium */
+  .laboratory-overview > div, 
+  .laboratory-overview > article, 
+  .laboratory-overview .OverviewCard {
+    padding: 24px;
+  }
+}
+
+/* =========================================================
+   EXTRA LARGE DESKTOP (Desde 1536px)
+   ========================================================= */
+@media (min-width: 1536px) {
+  .laboratory-overview.expertise-grid {
+    gap: 32px;
   }
 }

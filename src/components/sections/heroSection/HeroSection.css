@@ -318,9 +318,6 @@
   RESPONSIVE DESKTOP (Desde 1024px en adelante)
 ========================================================= */
 @media (min-width: 1024px) {
-  .hero-centered-section {
-    padding: 130px 0; /* Más separación superior e inferior de la pantalla */
-  }
 
   .hero-center-content {
     gap: 100px; /* Separación masiva entre el título/foto y las tarjetas */
@@ -401,9 +398,6 @@
   * Aquí corregimos el ahogo de las laptops de 15"
 ========================================================= */
 @media (min-width: 1280px) {
-  .hero-centered-section {
-    padding: 100px 0; /* Reducido de 150px para dar aire vertical en laptops */
-  }
 
   .hero-center-content {
     gap: 80px; /* Reducido de 120px para laptops */
@@ -468,10 +462,7 @@
   * Solo escalamos si la pantalla es gigante y hay espacio de sobra
 ========================================================= */
 @media (min-width: 1440px) {
-  .hero-centered-section {
-    padding: 140px 0; 
-  }
-
+  
   .hero-center-content {
     gap: 110px; 
   }
