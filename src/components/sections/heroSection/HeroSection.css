@@ -328,9 +328,27 @@
 
   .hero-top-row {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) 380px;
-    gap: 70px;
+    /* Cambiamos los 380px fijos por una proporción equilibrada (ej. 60% texto, 40% imagen) */
+    grid-template-columns: 1.4fr 1fr; 
+    gap: 48px; /* Reducimos ligeramente el gap para ganar espacio */
     align-items: center;
+    max-width: 1100px; /* Evita que en pantallas medianas se estire demasiado */
+    margin: 0 auto;
+  }
+
+  .avatar-block {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    width: 100%;
+  }
+
+  .avatar-wrapper {
+    /* En portátiles la imagen se adaptará al 1fr del grid, pero nunca superará los 320px */
+    width: 100%;
+    max-width: 320px; 
+    /* El aspect-ratio (3/4) calculará automáticamente el alto sin saltos de Layout Shift */
+    aspect-ratio: 3 / 4; 
   }
 
   .hero-kicker {
@@ -349,15 +367,6 @@
     line-height: 1.8;
   }
 
-.avatar-block {
-  display: flex;
-  align-items: flex-end; /* En escritorio se alinea a la derecha */
-  justify-content: flex-end;
-}
-
-.avatar-wrapper {
-  max-width: 380px; /* Tamaño máximo definitivo en pantallas grandes */
-}
 
   .profile-avatar {
     border-radius: 32px;
@@ -385,21 +394,92 @@
   }
 }
 
+
+
 /* =========================================================
-  RESPONSIVE LARGE DESKTOP (Pantallas anchas desde 1280px)
+  RESPONSIVE DESKTOP / LAPTOPS (Desde 1280px)
+  * Aquí corregimos el ahogo de las laptops de 15"
 ========================================================= */
 @media (min-width: 1280px) {
   .hero-centered-section {
-    padding: 150px 0; /* Espacio premium total */
+    padding: 100px 0; /* Reducido de 150px para dar aire vertical en laptops */
   }
 
   .hero-center-content {
-    gap: 120px; /* Máximo aire vertical entre bloques */
+    gap: 80px; /* Reducido de 120px para laptops */
+  }
+
+  /* Usamos un porcentaje equilibrado para que la imagen no se coma la pantalla */
+  .hero-top-row {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr; 
+    gap: 50px;
+    max-width: 1140px;
+    margin: 0 auto;
+    align-items: center;
+  }
+
+  .hero-kicker {
+    margin-bottom: 24px;
+    font-size: 0.85rem;
+  }
+
+  .hero-main-title {
+    font-size: clamp(3.5rem, 5vw, 4.5rem); /* Escala fluida para que no colapse */
+  }
+
+  .hero-intro {
+    font-size: 1.05rem;
+    margin-top: 28px;
+  }
+
+  .avatar-block {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+  }
+
+  .avatar-wrapper {
+    width: 100%;
+    max-width: 320px; /* Tamaño perfecto y estilizado para laptops de 15" */
+  }
+
+  .speciality-grid {
+    gap: 24px;
+  }
+
+  .speciality-card {
+    min-height: 220px;
+    padding: 24px;
+  }
+
+  .hero-actions {
+    gap: 20px;
+  }
+
+  .social-center-links {
+    gap: 24px;
+    margin-top: 16px;
+  }
+}
+
+/* =========================================================
+  RESPONSIVE ULTRA-WIDE / MONITORES 2K (Desde 1440px en adelante)
+  * Solo escalamos si la pantalla es gigante y hay espacio de sobra
+========================================================= */
+@media (min-width: 1440px) {
+  .hero-centered-section {
+    padding: 140px 0; 
+  }
+
+  .hero-center-content {
+    gap: 110px; 
   }
 
   .hero-top-row {
-    grid-template-columns: minmax(0, 1fr) 440px;
-    gap: 110px;
+    grid-template-columns: minmax(0, 1fr) 380px; /* Tu diseño definitivo de escritorio */
+    gap: 70px;
+    max-width: 1280px;
   }
 
   .hero-kicker {
@@ -407,17 +487,17 @@
     font-size: 0.9rem;
   }
 
-  .avatar-wrapper {
-    max-width: 440px;
-  }
-
   .hero-main-title {
-    font-size: 5.2rem;
+    font-size: 5.2rem; /* Recupera el tamaño premium */
   }
 
   .hero-intro {
     font-size: 1.12rem;
-    margin-top: 42px; /* Espacio ultra amplio para evitar amontonamientos */
+    margin-top: 36px;
+  }
+
+  .avatar-wrapper {
+    max-width: 380px; /* Crece elegantemente en tu monitor de 27" */
   }
 
   .speciality-grid {
@@ -426,15 +506,10 @@
 
   .speciality-card {
     min-height: 240px;
-    padding: 24px;
-  }
-
-  .hero-actions {
-    gap: 24px;
   }
 
   .social-center-links {
-    gap: 28px; /* Espaciado máximo para los enlaces de redes sociales en monitores gigantes */
+    gap: 28px;
     margin-top: 20px;
   }
 }

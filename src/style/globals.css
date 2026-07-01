@@ -2,7 +2,7 @@
    FUENTES LOCALES ULTRAOPTIMIZADAS
    ========================================================= */
 
-/* Inter Regular */
+/* Inter Regular (Texto común) */
 @font-face {
   font-family: "Inter";
   font-style: normal;
@@ -11,7 +11,16 @@
   src: url("/fonts/inter-v20-latin-regular.woff2") format("woff2");
 }
 
-/* Inter Bold Italic */
+/* Inter Bold (Botones, destacados normales) */
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("/fonts/inter-v20-latin-700.woff2") format("woff2");
+}
+
+/* Inter Bold Italic (Textos enfatizados en cursiva) */
 @font-face {
   font-family: "Inter";
   font-style: italic;
@@ -20,7 +29,7 @@
   src: url("/fonts/inter-v20-latin-700italic.woff2") format("woff2");
 }
 
-/* Space Grotesk Regular */
+/* Space Grotesk Regular (Títulos medianos) */
 @font-face {
   font-family: "Space Grotesk";
   font-style: normal;
@@ -29,7 +38,7 @@
   src: url("/fonts/space-grotesk-v22-latin-regular.woff2") format("woff2");
 }
 
-/* Space Grotesk Bold */
+/* Space Grotesk Bold (Grandes títulos de la Hero/About) */
 @font-face {
   font-family: "Space Grotesk";
   font-style: normal;
@@ -56,7 +65,6 @@
   --text-soft: #cbd5e1;
   --text-sub: #94a3b8;
 
-  /* Tus colores favoritos, alineados también en dark */
   --accent: #0891b2;
   --accent-2: #0f766e;
   --accent-green: #059669;
@@ -74,10 +82,9 @@
   --radius-md: 18px;
   --radius-lg: 26px;
   
-  /* BASE: Ajuste base fluido para pantallas estándar */
   --container: 1280px;
 
-  /* Prueba para Lab */
+  /* Lab */
   --lab-quantum: #00d9ff;
   --lab-neon: #00f5b4;
   --lab-violet: #7a5cff;
@@ -86,13 +93,9 @@
   --lab-lime: #6DFF33;
   --lab-yellow: #d8ff12;
   --lab-matrix: #00ff88;
-
-  /* Superficies */
   --lab-space: #101522;
   --lab-graphite: #1a2333;
   --lab-glass: rgba(255, 255, 255, .05);
-
-  /* Glows */
   --lab-glow-blue: rgba(0, 217, 255, .18);
   --lab-glow-green: rgba(0, 245, 180, .18);
   --lab-glow-violet: rgba(122, 92, 255, .18);
@@ -114,7 +117,6 @@
   --text-soft: #27354a;
   --text-sub: #52637a;
 
-  /* Tus colores favoritos */
   --accent: #0891b2;
   --accent-2: #0f766e;
   --accent-green: #059669;
@@ -132,10 +134,9 @@
   --radius-md: 18px;
   --radius-lg: 26px;
   
-  /* BASE: Ajuste base fluido para pantallas estándar */
   --container: 1280px;
 
-  /* Prueba para Lab */
+  /* Lab */
   --lab-quantum: #00d9ff;
   --lab-neon: #00f5b4;
   --lab-violet: #7a5cff;
@@ -143,19 +144,19 @@
   --lab-plasma: #ff8a00;
   --lab-cyber: #ffd400;
   --lab-matrix: #00ff88;
-
-  /* Superficies */
   --lab-space: #101522;
   --lab-graphite: #1a2333;
   --lab-glass: rgba(255, 255, 255, .05);
-
-  /* Glows */
   --lab-glow-blue: rgba(0, 217, 255, .18);
   --lab-glow-green: rgba(0, 245, 180, .18);
   --lab-glow-violet: rgba(122, 92, 255, .18);
   --lab-glow-magenta: rgba(255,60,172,.18);
   --lab-glow-orange: rgba(255, 138, 0, .18);
 }
+
+/* =========================================================
+   MEDIA QUERIES DE TOKENS GLOBALES
+   ========================================================= */
 
 @media (min-width: 721px) {
   :root[data-theme="dark"],
@@ -164,16 +165,24 @@
   }
 }
 
-/* CORRECCIÓN EXCLUSIVA PARA MONITORES ANCHOS Y 2K */
+/* Optimización para portátiles medianas (15") */
+@media (min-width: 1280px) and (max-width: 1439px) {
+  :root[data-theme="dark"],
+  :root[data-theme="light"] {
+    --container: 1200px;
+  }
+}
+
+/* Optimización para monitores anchos y pantallas 2K */
 @media (min-width: 1440px) {
   :root[data-theme="dark"],
   :root[data-theme="light"] {
-    --container: 1420px; /* Expandimos la rejilla para que quepan 4 columnas sin colapsar */
+    --container: 1420px;
   }
 }
 
 /* =========================================================
-   RESET / BASE
+   RESET / ESTRUCTURA BASE
    ========================================================= */
 
 *,
@@ -194,57 +203,38 @@ html {
 
 body {
   margin: 0;
-  padding-top: var(--navbar-height);
-  font-family:
-    "Inter",
-    system-ui,
-    -apple-system,
-    BlinkMacSystemFont,
-    "Segoe UI",
-    sans-serif;
+  /* 💡 Modificado: Ahora el padding superior es exactamente el 60% del alto de la Navbar */
+  padding-top: calc(var(--navbar-height) * 0.6); 
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   color: var(--text-main);
   background:
     radial-gradient(circle at 0% 0%, var(--accent-glow), transparent 24%),
     radial-gradient(circle at 100% 0%, rgba(37, 99, 235, 0.1), transparent 20%),
-    linear-gradient(
-      180deg,
-      rgba(var(--bg-app-rgb), 0.98),
-      rgba(var(--bg-app-rgb), 1)
-    ),
+    linear-gradient(180deg, rgba(var(--bg-app-rgb), 0.98), rgba(var(--bg-app-rgb), 1)),
     var(--bg-app);
-  transition:
-    background-color 0.25s ease,
-    color 0.25s ease;
+  transition: background-color 0.25s ease, color 0.25s ease;
 }
 
-h1,
-h2,
-h3 {
+h1, h2, h3 {
   font-family: "Space Grotesk", sans-serif;
 }
 
-code,
-pre,
-kbd,
-samp {
+code, pre, kbd, samp {
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
 }
 
-button,
-input,
-textarea,
-select {
+button, input, textarea, select {
   font-family: "Inter", system-ui, sans-serif;
   color: inherit;
 }
 
-img,
-picture,
-video,
-canvas,
-svg {
+button {
+  cursor: pointer;
+}
+
+img, picture, video, canvas, svg {
   display: block;
   max-width: 100%;
   height: auto;
@@ -253,19 +243,6 @@ svg {
 a {
   color: inherit;
   text-decoration: none;
-}
-
-/* REPARADO: Forzamos la herencia tipográfica limpia de Inter en formularios */
-button,
-input,
-textarea,
-select {
-  font-family: "Inter", system-ui, sans-serif;
-  color: inherit;
-}
-
-button {
-  cursor: pointer;
 }
 
 ::selection {
@@ -300,7 +277,6 @@ button {
   border: 0;
 }
 
-/* Bloquea la traducción automática en elementos sensibles del portafolio */
 .notranslate, 
 code, 
 pre, 
