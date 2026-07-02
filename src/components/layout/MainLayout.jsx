@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { Outlet } from "react-router";
-import Navbar from "./Navbar/Navbar";
+import Navbar from "./navbar/Navbar";
 
 function MainLayout() {
   const [themeMode, setThemeMode] = useState("system");
