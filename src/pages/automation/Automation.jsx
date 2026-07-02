@@ -1,5 +1,5 @@
 import NodeCard from "../../components/cards/NodeCard";
-import { useLaboratoryHome } from "../../hooks/usePortfolioData";
+import { useCards } from "../../hooks/usePortfolioData";
 import usePageTitle from "../../hooks/usePageTitle";
 import { FaMicrochip, FaSlidersH, FaBroadcastTower } from "react-icons/fa";
 import "./Automation.css";
@@ -7,7 +7,7 @@ import "./Automation.css";
 function Automation() {
   usePageTitle("Automatización e IoT | Alexander Galvez");
 
-  const { nodes = [], loading, error } = useLaboratoryHome();
+  const { nodes = [], loading, error } = useCards();
   const hasNodes = Array.isArray(nodes) && nodes.length > 0;
 
   if (loading) {
@@ -23,7 +23,7 @@ function Automation() {
     return (
       <div className="state-wrapper error state-wrapper-page centered">
         <h2>Error al cargar nodos</h2>
-        <p>{error}</p>
+        <p>{error.message || String(error)}</p>
       </div>
     );
   }
@@ -102,9 +102,7 @@ function Automation() {
             <div className="list-linear">
               {nodes.map((node, index) => (
                 <NodeCard
-                  key={
-                    node.id ?? `${node.node_name || node.nombre_nodo}-${index}`
-                  }
+                  key={node.id ?? `${node.node_name}-${index}`}
                   node={node}
                   index={index}
                 />

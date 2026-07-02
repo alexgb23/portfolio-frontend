@@ -18,9 +18,7 @@ function Home() {
   const {
     socialLinks,
     projects,
-    servers,
-    nodes,
-    metrics,
+    laboratorySummary,
     error: homeError,
   } = usePortfolioHome();
 
@@ -46,14 +44,6 @@ function Home() {
     const nonFeatured = projects.filter((project) => !project.is_featured);
     return [...featuredOnly, ...nonFeatured].slice(0, 3);
   }, [projects]);
-
-  const laboratorySummary = useMemo(() => {
-    return {
-      servers_count: servers.length,
-      nodes_count: nodes.length,
-      metrics_count: metrics.length,
-    };
-  }, [servers, nodes, metrics]);
 
   const personSchema = {
     "@context": "https://schema.org",

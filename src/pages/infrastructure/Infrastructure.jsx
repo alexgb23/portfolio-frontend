@@ -1,32 +1,16 @@
 import ServerCard from "../../components/cards/ServerCard";
 import MetricCard from "../../components/cards/MetricCard";
-import { useLaboratoryHome } from "../../hooks/usePortfolioData";
+import { useCards } from "../../hooks/usePortfolioData";
 import usePageTitle from "../../hooks/usePageTitle";
 import { FaServer, FaChartLine, FaNetworkWired } from "react-icons/fa";
 
 function Infrastructure() {
   usePageTitle("Infraestructura IT y Sistemas | Alexander Galvez");
 
-  const { servers = [], metrics = [], loading, error } = useLaboratoryHome();
+  const { servers = [], metrics = [], loading, error } = useCards();
 
   const validServers = Array.isArray(servers) ? servers : [];
-  const validMetrics = Array.isArray(metrics)
-    ? metrics.map((metric) => ({
-        id: metric.id,
-        room:
-          metric.location_name ||
-          metric.room ||
-          metric.group_name ||
-          "Ubicación N/D",
-        parameter:
-          metric.display_name ||
-          metric.parameter ||
-          metric.metric_key ||
-          "Sensor",
-        value: metric.value ?? "0",
-        unit: metric.unit ?? "",
-      }))
-    : [];
+  const validMetrics = Array.isArray(metrics) ? metrics : [];
 
   const hasServers = validServers.length > 0;
   const hasMetrics = validMetrics.length > 0;
@@ -44,7 +28,7 @@ function Infrastructure() {
     return (
       <div className="state-wrapper error centered">
         <h2>Error al cargar infraestructura</h2>
-        <p>{error}</p>
+        <p>{error.message || String(error)}</p>
       </div>
     );
   }

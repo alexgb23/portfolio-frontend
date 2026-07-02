@@ -64,6 +64,10 @@ export const laboratoryService = {
   getLaboratoryDetail: (id) =>
     getRequest(`/laboratorio/${id}`, "Laboratory Detail"),
   getLaboratoryHome: () => getRequest("/laboratorio/home", "Laboratory Home"),
+
+  getServers: () => getRequest("/servers", "Servers"),
+  getNodes: () => getRequest("/nodes", "Nodes"),
+  getMetrics: () => getRequest("/metrics", "Metrics"),
 };
 
 export const contactService = {

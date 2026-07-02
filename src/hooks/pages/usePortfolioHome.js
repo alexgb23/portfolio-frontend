@@ -1,13 +1,14 @@
-// src/hooks/pages/usePortfolioHome.js
 import useAsyncResource from "../core/useAsyncResource";
 import { portfolioService } from "../../services/api";
 
 const initialValue = {
   social_links: [],
   projects: [],
-  servers: [],
-  nodes: [],
-  metrics: [],
+  laboratory_summary: {
+    servers_count: 0,
+    nodes_count: 0,
+    metrics_count: 0,
+  },
 };
 
 export default function usePortfolioHome(enabled = true) {
@@ -22,9 +23,18 @@ export default function usePortfolioHome(enabled = true) {
   return {
     socialLinks: Array.isArray(data?.social_links) ? data.social_links : [],
     projects: Array.isArray(data?.projects) ? data.projects : [],
-    servers: Array.isArray(data?.servers) ? data.servers : [],
-    nodes: Array.isArray(data?.nodes) ? data.nodes : [],
-    metrics: Array.isArray(data?.metrics) ? data.metrics : [],
+    laboratorySummary:
+      data?.laboratory_summary && typeof data.laboratory_summary === "object"
+        ? {
+            servers_count: Number(data.laboratory_summary.servers_count) || 0,
+            nodes_count: Number(data.laboratory_summary.nodes_count) || 0,
+            metrics_count: Number(data.laboratory_summary.metrics_count) || 0,
+          }
+        : {
+            servers_count: 0,
+            nodes_count: 0,
+            metrics_count: 0,
+          },
     loading,
     error,
   };
