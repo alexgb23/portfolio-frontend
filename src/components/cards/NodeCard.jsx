@@ -1,32 +1,33 @@
-import { FaNetworkWired, FaWaveSquare } from "react-icons/fa";
+import { FaServer, FaMicrochip, FaMemory, FaClock } from "react-icons/fa";
 import "./Cards.css";
 
-export default function NodeCard({ node, index = 0 }) {
-  if (!node) return null;
+export default function ServerCard({ server, index = 0 }) {
+  if (!server) return null;
 
   const tone = index % 3;
-  const rawStatus = node.status || "unknown";
+  const rawStatus = server.status || "unknown";
   const normalizedStatus = rawStatus.toLowerCase();
   const statusClass = `status-${normalizedStatus}`;
 
-  const name = node.node_name || "Nodo Anónimo";
-  const type = node.type || "General";
-  const value = node.current_value || "Sin telemetría";
-  const source = node.source_system || "sistema";
-  const location = node.location_name || "ubicación";
-  const protocol = node.protocol || "protocolo";
+  const name = server.display_name || server.hostname || "Servidor";
+  const role = server.role || "general";
+  const os = server.os || "Sistema operativo N/D";
+  const ip = server.public_ip || "N/D";
+  const cpu = server.cpu_usage || "N/A";
+  const ram = server.ram_usage || "N/A";
+  const uptime = server.uptime || "N/A";
 
   return (
-    <article className={`card card-hover card-node tone-${tone}`}>
-      <div className="node-card-inner">
+    <article className={`card card-hover card-server tone-${tone}`}>
+      <div className="server-card-inner">
         <div className="card-top">
-          <span className="card-badge">{source}</span>
-          <span className="date">{location}</span>
+          <span className="card-badge">{role}</span>
+          <span className="date">{server.location_name || os}</span>
         </div>
 
         <div className="card-head">
           <div className="card-icon">
-            <FaNetworkWired />
+            <FaServer />
           </div>
 
           <div className="card-title-wrap">
@@ -36,27 +37,37 @@ export default function NodeCard({ node, index = 0 }) {
 
         <div className="server-panel">
           <div className="server-meta-row">
-            <span>Tipo:</span>
-            <span>{type}</span>
+            <span>IP:</span>
+            <code className="server-code">{ip}</code>
           </div>
 
           <div className="server-meta-row">
-            <span>Protocolo:</span>
-            <span>{protocol}</span>
-          </div>
-
-          <div className="server-meta-row">
-            <span>Estado:</span>
-            <span className={`status ${statusClass}`}>{rawStatus}</span>
+            <span>Sistema:</span>
+            <span>{os}</span>
           </div>
 
           <div className="server-stats">
             <span className="server-stat-chip">
-              <FaWaveSquare />
-              {value}
+              <FaMicrochip />
+              CPU {cpu}
+            </span>
+
+            <span className="server-stat-chip">
+              <FaMemory />
+              RAM {ram}
             </span>
           </div>
+
+          <div
+            className="server-meta-row"
+            style={{ marginTop: "8px", fontSize: "0.85rem", opacity: 0.8 }}
+          >
+            <FaClock style={{ marginRight: "5px", verticalAlign: "middle" }} />
+            <span>Uptime: {uptime}</span>
+          </div>
         </div>
+
+        <span className={`status ${statusClass}`}>{rawStatus}</span>
       </div>
     </article>
   );

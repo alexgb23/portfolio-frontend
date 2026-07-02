@@ -35,20 +35,27 @@ function ProjectDetail() {
     "No se ha proporcionado un desglose documental para este módulo de software.";
   const stackSummaryText = project?.stack_summary || "Especificación Técnica";
 
-  // 💡 SOLUCIÓN DEFINITIVA PARA TU JSON: Parseamos el string JSON de image_url
   const mockImages = (() => {
-    if (!project?.image_url) return ["/imagen_portfolio_mia_retocada-960.avif"];
+    const fallback = ["/imagen_portfolio_mia_retocada-960.avif"];
+    const raw = project?.image_url;
 
-    try {
-      // JSON.parse convertirá "[\"url1\", \"url2\"]" en un array real ['url1', 'url2']
-      const parsedImages = JSON.parse(project.image_url);
-      return Array.isArray(parsedImages) && parsedImages.length > 0
-        ? parsedImages
-        : ["/imagen_portfolio_mia_retocada-960.avif"];
-    } catch (e) {
-      console.error("Error al deserializar las imágenes del proyecto:", e);
-      return ["/imagen_portfolio_mia_retocada-960.avif"];
+    if (!raw) return fallback;
+
+    if (Array.isArray(raw)) {
+      const cleaned = raw.map((img) => String(img).trim()).filter(Boolean);
+      return cleaned.length > 0 ? cleaned : fallback;
     }
+
+    if (typeof raw === "string") {
+      const cleaned = raw
+        .split(",")
+        .map((img) => img.trim())
+        .filter(Boolean);
+
+      return cleaned.length > 0 ? cleaned : fallback;
+    }
+
+    return fallback;
   })();
 
   const technologies = project?.technologies
