@@ -21,7 +21,6 @@ function Home() {
     servers,
     nodes,
     metrics,
-    loading: homeLoading,
     error: homeError,
   } = usePortfolioHome();
 
@@ -95,12 +94,7 @@ function Home() {
         dangerouslySetInnerHTML={{ __html: safeJsonLd }}
       />
 
-      <HeroSection
-        profile={null}
-        socialLinks={socialLinks}
-        expertise={[]}
-        error={homeError}
-      />
+      <HeroSection socialLinks={socialLinks} error={homeError} />
 
       <AboutPreview />
 
@@ -132,7 +126,7 @@ function Home() {
             />
           )}
 
-          <ContactPreview profile={null} socialLinks={socialLinks} />
+          <ContactPreview socialLinks={socialLinks} />
         </>
       ) : null}
     </main>
