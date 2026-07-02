@@ -9,7 +9,7 @@ import {
 
 function AboutPreview() {
   const title =
-    "Perfil técnico orientado a sistemas, infraestructura, automatización y software";
+    "Soy Alex, Técnico Superior especializado en infraestructura IT, redes, virtualización y automatización de sistemas conectados";
 
   const description =
     "Trabajo en la intersección entre software, redes, servidores, virtualización, automatización y sistemas conectados. Me interesan los proyectos donde hay que diseñar, integrar y mantener infraestructuras reales con una base técnica sólida.";

@@ -68,9 +68,7 @@ const staticExpertise = [
   },
 ];
 
-const toneFallbacks = ["tone-0", "tone-1", "tone-2", "tone-4"];
-
-function HeroSection({ profile = null, socialLinks = [], expertise = [] }) {
+function HeroSection({ socialLinks = [] }) {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
@@ -104,35 +102,12 @@ function HeroSection({ profile = null, socialLinks = [], expertise = [] }) {
       });
   }, [socialLinks]);
 
-  const displayedExpertise = useMemo(() => {
-    const safeExpertise = Array.isArray(expertise) ? expertise : [];
-    const source = safeExpertise.length > 0 ? safeExpertise : staticExpertise;
-
-    return source.slice(0, 4).map((item, index) => ({
-      id: item?.id || item?.slug || item?.title || `expertise-${index}`,
-      title: item?.title || "Especialidad",
-      text: item?.text || item?.description || "",
-      icon_key: item?.icon_key || item?.iconName || "code",
-      tone: item?.tone || toneFallbacks[index % toneFallbacks.length],
-    }));
-  }, [expertise]);
-
-  const displayName =
-    profile?.display_name || profile?.full_name || "Alex Alexander Galvez";
-
-  const heroKicker =
-    profile?.hero_kicker ||
-    "INFRAESTRUCTURA · SISTEMAS · SOFTWARE · AUTOMATIZACIÓN";
-
-  const heroTitlePrefix =
-    profile?.hero_title_prefix || "Diseño soluciones donde";
-  const heroTitleHighlight =
-    profile?.hero_title_highlight || "software, sistemas y redes";
-  const heroTitleSuffix =
-    profile?.hero_title_suffix || "trabajan como un ecosistema.";
-
+  const displayName = "Alex Alexander Galvez";
+  const heroKicker = "INFRAESTRUCTURA · SISTEMAS · SOFTWARE · AUTOMATIZACIÓN";
+  const heroTitlePrefix = "Diseño soluciones donde";
+  const heroTitleHighlight = "software, sistemas y redes";
+  const heroTitleSuffix = "trabajan como un ecosistema.";
   const heroIntro =
-    profile?.bio_short ||
     "Perfil técnico orientado a infraestructura IT, virtualización, redes, automatización y desarrollo de soluciones web y software.";
 
   const avatarAlt = `Retrato profesional de ${displayName}`;
@@ -152,7 +127,10 @@ function HeroSection({ profile = null, socialLinks = [], expertise = [] }) {
               {heroTitleSuffix}
             </h1>
 
-            <h2 className="sr-only">Especialidades principales</h2>
+            <h2 className="sr-only">
+              Portfolio de Alexander Galvez - Técnico Superior en Sistemas y
+              Desarrollo
+            </h2>
 
             <p className="hero-intro">{heroIntro}</p>
           </div>
@@ -190,7 +168,7 @@ function HeroSection({ profile = null, socialLinks = [], expertise = [] }) {
             className="speciality-grid"
             aria-label="Especialidades principales"
           >
-            {displayedExpertise.map((item, index) => {
+            {staticExpertise.map((item, index) => {
               const Icon =
                 expertiseIconMap[(item?.icon_key || "").toLowerCase()] ||
                 FaCode;

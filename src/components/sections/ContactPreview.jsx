@@ -2,14 +2,7 @@ import { Link } from "react-router";
 import { FaGithub, FaLinkedin, FaEnvelope, FaArrowRight } from "react-icons/fa";
 import "../../pages/contact/Contact.css";
 
-function SocialCard({
-  href = "#",
-  icon,
-  label,
-  title,
-  text,
-  className = "",
-}) {
+function SocialCard({ href = "#", icon, label, title, text, className = "" }) {
   const safeHref = typeof href === "string" && href.trim() ? href : "#";
   const isMail = safeHref.startsWith("mailto:");
 
@@ -24,7 +17,7 @@ function SocialCard({
       <div className="social-mini-front">
         <div className="social-mini-shine" aria-hidden="true"></div>
 
-        <div className=" expertise-icon" aria-hidden="true">
+        <div className="expertise-icon" aria-hidden="true">
           {icon}
         </div>
 
@@ -41,31 +34,33 @@ function SocialCard({
   );
 }
 
-function ContactPreview({ profile = null, socialLinks = [] }) {
+function ContactPreview({ socialLinks = [] }) {
   const safeLinks = Array.isArray(socialLinks) ? socialLinks : [];
 
   const github = safeLinks.find(
-    (item) => (item?.platform || item?.icon_key || "").toLowerCase() === "github"
+    (item) =>
+      (item?.platform || item?.icon_key || "").toLowerCase() === "github",
   );
 
   const linkedin = safeLinks.find(
-    (item) => (item?.platform || item?.icon_key || "").toLowerCase() === "linkedin"
+    (item) =>
+      (item?.platform || item?.icon_key || "").toLowerCase() === "linkedin",
   );
 
   const email = safeLinks.find((item) =>
     ["email", "envelope"].includes(
-      (item?.platform || item?.icon_key || "").toLowerCase()
-    )
+      (item?.platform || item?.icon_key || "").toLowerCase(),
+    ),
   );
 
   return (
     <section className="section section-spaced section-separated">
       <div className="section-head-centered">
         <span className="section-kicker">Contacto</span>
-        <h2>{profile?.contact_title || "Hablemos de tu proyecto"}</h2>
+        <h2>Hablemos de tu proyecto</h2>
         <p>
-          {profile?.contact_intro ||
-            "Desarrollo, infraestructura, automatización y soporte técnico para proyectos reales."}
+          Desarrollo, infraestructura, automatización y soporte técnico para
+          proyectos reales.
         </p>
       </div>
 
@@ -99,7 +94,7 @@ function ContactPreview({ profile = null, socialLinks = [] }) {
                 href={email.url}
                 icon={<FaEnvelope />}
                 label="Correo"
-                title={email.label || profile?.email || "Email"}
+                title={email.label || "Email"}
                 text="Contacto directo"
               />
             ) : null}

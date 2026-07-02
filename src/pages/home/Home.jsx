@@ -94,7 +94,7 @@ function Home() {
         dangerouslySetInnerHTML={{ __html: safeJsonLd }}
       />
 
-      <HeroSection socialLinks={socialLinks} error={homeError} />
+      <HeroSection socialLinks={socialLinks} />
 
       <AboutPreview />
 
