@@ -6,7 +6,7 @@ Información estructurada sobre el portfolio profesional de Alexander Galvez, es
 - **Nombre:** Alexander Galvez
 - **Especialidad:** Systems, Infrastructure and Software Engineer
 - **Ubicación:** Barakaldo, País Vasco, España
-- **Tecnologías Clave:** React, Laravel, Proxmox, pfSense, Docker, Linux, PostgreSQL, Bash, KNX.
+- **Tecnologías Clave:** Proxmox, pfSense, Docker, Linux, PostgreSQL, Bash, KNX, IA, React, Laravel, .
 
 ## Secciones Disponibles
 - **Inicio (Hero):** Presentación del ecosistema tecnológico y enlaces a redes profesionales (GitHub, LinkedIn).
@@ -15,6 +15,6 @@ Información estructurada sobre el portfolio profesional de Alexander Galvez, es
 - **Laboratorio:** Resumen operativo de la infraestructura física del homelab, monitorización de métricas ambientales y gestión de nodos conectados.
 
 ## Canales Oficiales
-- **Sitio Web:** https://alex.syskovex.com
+- **Sitio Web:** https://syskovex.com
 - **GitHub:** https://github.com/alexgb23
 - **LinkedIn:** https://www.linkedin.com/in/alexander-galvez-benavides-450917281/

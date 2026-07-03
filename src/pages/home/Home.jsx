@@ -10,7 +10,7 @@ import usePageTitle from "../../hooks/usePageTitle";
 
 function Home() {
   usePageTitle(
-    "Alex Alexander Galvez | Sistemas, infraestructura y desarrollo de software",
+    "Alexander Galvez | Sistemas, infraestructura y desarrollo de software",
   );
 
   const [showDeferredSections, setShowDeferredSections] = useState(false);
