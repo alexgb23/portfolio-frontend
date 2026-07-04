@@ -10,11 +10,9 @@ import {
   Database,
   FileText,
   Globe,
-  Lightbulb,
   Network,
   Server,
   ShieldCheck,
-  TrendingUp,
   Workflow,
   Wrench,
 } from "lucide-react";
@@ -78,23 +76,11 @@ function getResourceIcon(type) {
   return map[type] || Cable;
 }
 
-function getDocPhaseLabel(value) {
-  const map = {
-    planificacion: "Planificación",
-    desarrollo: "Desarrollo",
-    investigacion: "Investigación",
-  };
-
-  return map[value] || "General";
-}
-
 function normalizeDashboardLab(item) {
   return {
     id: item?.id ?? null,
     title: item?.title ?? "",
-    slug: item?.slug ?? "",
     category: item?.category ?? "",
-    type: item?.type ?? "",
     area: item?.area ?? item?.category ?? "",
     status: item?.status ?? "",
     summary: item?.summary ?? "",
@@ -103,7 +89,6 @@ function normalizeDashboardLab(item) {
     result: item?.currentResult ?? "",
     notes: item?.technicalNotes ?? "",
     relatedAreas: asArray(item?.relatedAreas),
-    coverImage: item?.coverImage ?? null,
     documentationCount: Number(item?.documentationCount) || 0,
     progressCount: Number(item?.progressCount) || 0,
     ideasCount: Number(item?.ideasCount) || 0,
@@ -114,8 +99,6 @@ function normalizeDashboardLab(item) {
     progress: asArray(item?.progress),
     ideas: asArray(item?.ideas),
     resources: asArray(item?.resources),
-    links: asArray(item?.documentationUrls),
-    featured: Boolean(item?.is_featured),
   };
 }
 
@@ -415,8 +398,6 @@ export default function Laboratory() {
                 )}
               </article>
             </section>
-
-           
 
             <section className="lab-resource-strip">
               <div className="lab-resource-strip__title">
