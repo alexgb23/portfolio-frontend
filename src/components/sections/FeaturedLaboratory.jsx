@@ -1,18 +1,10 @@
 import { Link } from "react-router";
-import {
-  FaArrowRight,
-  FaServer,
-  FaChartLine,
-  FaMicrochip,
-} from "react-icons/fa";
+import { FaArrowRight } from "react-icons/fa";
+import LaboratoryCard from "../cards/LaboratoryCard";
 
+function FeaturedLaboratory({ item = null, loading = false, error = null }) {
+  const laboratorySlug = item?.slug ?? null;
 
-function FeaturedLaboratory({
-  serversCount = 0,
-  metricsCount = 0,
-  nodesCount = 0,
-  loading = false,
-}) {
   return (
     <section
       className="section section-spaced section-separated"
@@ -20,89 +12,49 @@ function FeaturedLaboratory({
     >
       <div className="section-head-centered">
         <span className="section-kicker">Laboratorio</span>
-
-        <h2>Infraestructura, automatización y sistemas conectados</h2>
-
+        <h2>Laboratorio destacado</h2>
         <p>
-          Entorno técnico donde desarrollo, pruebo y monitorizo soluciones
-          combinando servidores, redes, hardware y software.
+          Arquitectura backend, documentación técnica y evolución real del
+          sistema dentro del portfolio.
         </p>
       </div>
 
-      <div className="expertise-grid">
-  <article className="expertise-card expertise-card-hover tone-1">
-    <div className="card-head">
-      <div className="expertise-icon">
-        <FaServer />
+      {loading ? (
+        <div className="empty-inline-state">
+          <p>Cargando laboratorio destacado...</p>
+        </div>
+      ) : error ? (
+        <div className="empty-inline-state">
+          <p>No se pudo cargar el resumen del laboratorio en este momento.</p>
+        </div>
+      ) : item ? (
+        <div className="featured-laboratory-card-wrap">
+          <LaboratoryCard item={item} />
+        </div>
+      ) : (
+        <div className="empty-inline-state">
+          <p>
+            El laboratorio destacado aún no está disponible, pero la sección ya
+            está preparada para mostrarlo cuando llegue.
+          </p>
+        </div>
+      )}
+
+      <div className="section-more">
+        <Link
+          to={
+            laboratorySlug ? `/laboratorio/${laboratorySlug}` : "/laboratorio"
+          }
+          className="inline-link"
+        >
+          <span>
+            {laboratorySlug
+              ? "Explorar laboratorio completo"
+              : "Explorar laboratorio completo"}
+          </span>
+          <FaArrowRight />
+        </Link>
       </div>
-
-      <div className="card-title-wrap">
-        <h3>Infraestructura IT</h3>
-      </div>
-    </div>
-
-    <p>
-      Servidores, virtualización y servicios desplegados en entornos
-      técnicos reales.
-    </p>
-
-    <div className="laboratory-counter">
-      <span>servidores</span>
-      <strong>{loading ? "..." : serversCount}</strong>
-    </div>
-  </article>
-
-  <article className="expertise-card expertise-card-hover tone-2">
-    <div className="card-head">
-      <div className="expertise-icon">
-        <FaChartLine />
-      </div>
-
-      <div className="card-title-wrap">
-        <h3>Monitorización</h3>
-      </div>
-    </div>
-
-    <p>
-      Supervisión del estado de sistemas, recursos y comportamiento
-      operativo.
-    </p>
-
-    <div className="laboratory-counter">
-      <span>métricas</span>
-      <strong>{loading ? "..." : metricsCount}</strong>
-    </div>
-  </article>
-
-  <article className="expertise-card expertise-card-hover tone-0">
-    <div className="card-head">
-      <div className="expertise-icon">
-        <FaMicrochip />
-      </div>
-
-      <div className="card-title-wrap">
-        <h3>Automatización IoT</h3>
-      </div>
-    </div>
-
-    <p>
-      Nodos, sensores y controladores integrados para crear sistemas
-      inteligentes.
-    </p>
-
-    <div className="laboratory-counter">
-      <span>nodos</span>
-      <strong>{loading ? "..." : nodesCount}</strong>
-    </div>
-  </article>
-</div>
-
-<div className="section-more">
-  <Link to="/laboratorio" className="inline-link">
-    <span>Explorar laboratorio completo</span>
-    <FaArrowRight />
-  </Link>
-</div>
     </section>
   );
 }

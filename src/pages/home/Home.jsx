@@ -4,9 +4,16 @@ import AboutPreview from "../../components/sections/aboutPreview/AboutPreview";
 import FeaturedProjects from "../../components/sections/FeaturedProjects";
 import FeaturedLaboratory from "../../components/sections/FeaturedLaboratory";
 import ContactPreview from "../../components/sections/ContactPreview";
-
 import { usePortfolioHome } from "../../hooks/usePortfolioData";
 import usePageTitle from "../../hooks/usePageTitle";
+
+function normalizeProjects(projects) {
+  return Array.isArray(projects) ? projects : [];
+}
+
+function normalizeLaboratories(items) {
+  return Array.isArray(items) ? items : [];
+}
 
 function Home() {
   usePageTitle(
@@ -16,9 +23,10 @@ function Home() {
   const [showDeferredSections, setShowDeferredSections] = useState(false);
 
   const {
-    socialLinks,
-    projects,
-    laboratorySummary,
+    socialLinks = [],
+    projects = [],
+    laboratories = [],
+    loading: homeLoading,
     error: homeError,
   } = usePortfolioHome();
 
@@ -39,11 +47,26 @@ function Home() {
     return () => cancelRaf(id);
   }, []);
 
+  const safeProjects = useMemo(() => normalizeProjects(projects), [projects]);
+
   const featuredProjects = useMemo(() => {
-    const featuredOnly = projects.filter((project) => project.is_featured);
-    const nonFeatured = projects.filter((project) => !project.is_featured);
+    const featuredOnly = safeProjects.filter((project) => project?.is_featured);
+    const nonFeatured = safeProjects.filter((project) => !project?.is_featured);
+
     return [...featuredOnly, ...nonFeatured].slice(0, 3);
-  }, [projects]);
+  }, [safeProjects]);
+
+  const safeLaboratories = useMemo(
+    () => normalizeLaboratories(laboratories),
+    [laboratories],
+  );
+
+  const featuredLaboratory = useMemo(() => {
+    const featuredOnly = safeLaboratories.filter((item) => item?.is_featured);
+    const nonFeatured = safeLaboratories.filter((item) => !item?.is_featured);
+
+    return [...featuredOnly, ...nonFeatured][0] ?? null;
+  }, [safeLaboratories]);
 
   const personSchema = {
     "@context": "https://schema.org",
@@ -100,21 +123,11 @@ function Home() {
 
       {showDeferredSections ? (
         <>
-          {homeError ? (
-            <section className="section section-spaced section-separated">
-              <div className="empty-inline-state">
-                <p>
-                  No se pudo cargar el resumen del laboratorio en este momento.
-                </p>
-              </div>
-            </section>
-          ) : (
-            <FeaturedLaboratory
-              serversCount={laboratorySummary.servers_count}
-              metricsCount={laboratorySummary.metrics_count}
-              nodesCount={laboratorySummary.nodes_count}
-            />
-          )}
+          <FeaturedLaboratory
+            item={featuredLaboratory}
+            loading={homeLoading}
+            error={homeError}
+          />
 
           <ContactPreview socialLinks={socialLinks} />
         </>

@@ -4,12 +4,28 @@ import { portfolioService } from "../../services/api";
 const initialValue = {
   social_links: [],
   projects: [],
-  laboratory_summary: {
-    servers_count: 0,
-    nodes_count: 0,
-    metrics_count: 0,
-  },
+  laboratories: [],
 };
+
+function normalizeLaboratories(items) {
+  if (!Array.isArray(items)) return [];
+
+  return items.map((item) => ({
+    id: item?.id ?? null,
+    title: item?.titulo ?? "",
+    slug: item?.slug ?? "",
+    category: item?.categoria ?? "",
+    status: item?.estado ?? "",
+    summary: item?.resumen ?? "",
+    relatedAreas: Array.isArray(item?.areas_relacionadas)
+      ? item.areas_relacionadas
+      : [],
+    coverImage: item?.cover_image ?? null,
+    documentationCount: Number(item?.documentacion_count) || 0,
+    progressCount: Number(item?.avances_count) || 0,
+    raw: item,
+  }));
+}
 
 export default function usePortfolioHome(enabled = true) {
   const { data, loading, error } = useAsyncResource(
@@ -23,18 +39,7 @@ export default function usePortfolioHome(enabled = true) {
   return {
     socialLinks: Array.isArray(data?.social_links) ? data.social_links : [],
     projects: Array.isArray(data?.projects) ? data.projects : [],
-    laboratorySummary:
-      data?.laboratory_summary && typeof data.laboratory_summary === "object"
-        ? {
-            servers_count: Number(data.laboratory_summary.servers_count) || 0,
-            nodes_count: Number(data.laboratory_summary.nodes_count) || 0,
-            metrics_count: Number(data.laboratory_summary.metrics_count) || 0,
-          }
-        : {
-            servers_count: 0,
-            nodes_count: 0,
-            metrics_count: 0,
-          },
+    laboratories: normalizeLaboratories(data?.laboratories ?? data),
     loading,
     error,
   };
