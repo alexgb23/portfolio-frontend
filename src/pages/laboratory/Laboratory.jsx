@@ -336,26 +336,34 @@ export default function Laboratory() {
                   <div className="lab-status-list">
                     <div>
                       <Workflow size={16} />
-                      <span>API</span>
-                      <strong>Online</strong>
+                      <div>
+                        <span>API</span>
+                        <strong>Online</strong>
+                      </div>
                     </div>
 
                     <div>
                       <Database size={16} />
-                      <span>Base de datos</span>
-                      <strong>Online</strong>
+                      <div>
+                        <span>Base de datos</span>
+                        <strong>Online</strong>
+                      </div>
                     </div>
 
                     <div>
                       <FileText size={16} />
-                      <span>Documentación</span>
-                      <strong>Sincronizada</strong>
+                      <div>
+                        <span>Documentación</span>
+                        <strong>Sincronizada</strong>
+                      </div>
                     </div>
 
                     <div>
                       <ShieldCheck size={16} />
-                      <span>Autenticación</span>
-                      <strong>Operativa</strong>
+                      <div>
+                        <span>Autenticación</span>
+                        <strong>Operativa</strong>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -408,74 +416,7 @@ export default function Laboratory() {
               </article>
             </section>
 
-            <section className="lab-bottom-grid">
-              <article className="lab-panel-card">
-                <span className="lab-section-kicker">Avances recientes</span>
-                <h3>Últimos hitos</h3>
-
-                {activeLab.progress.length > 0 ? (
-                  <div className="lab-timeline-list">
-                    {activeLab.progress.slice(0, 5).map((item) => (
-                      <div key={item.id ?? item.titulo}>
-                        <TrendingUp size={15} />
-                        <div>
-                          <strong>{item.titulo ?? "Avance técnico"}</strong>
-                          <span>
-                            {formatDate(item.fecha_avance ?? item.updated_at)}
-                          </span>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  <EmptyBlock text="No hay avances visibles todavía." />
-                )}
-              </article>
-
-              <article className="lab-panel-card">
-                <span className="lab-section-kicker">Documentación</span>
-                <h3>Bloques por fases</h3>
-
-                {activeLab.docs.length > 0 ? (
-                  <div className="lab-doc-list">
-                    {activeLab.docs.slice(0, 6).map((item) => (
-                      <div key={item.id ?? item.titulo}>
-                        <FileText size={15} />
-                        <div>
-                          <strong>{item.titulo ?? "Documento técnico"}</strong>
-                          <span>{getDocPhaseLabel(item.fase)}</span>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  <EmptyBlock text="No hay documentación cargada todavía." />
-                )}
-              </article>
-
-              <article className="lab-panel-card">
-                <span className="lab-section-kicker">Ideas futuras</span>
-                <h3>Línea de evolución</h3>
-
-                {activeLab.ideas.length > 0 ? (
-                  <div className="lab-idea-list">
-                    {activeLab.ideas.slice(0, 5).map((item) => (
-                      <div key={item.id ?? item.titulo}>
-                        <Lightbulb size={15} />
-                        <div>
-                          <strong>{item.titulo ?? "Idea pendiente"}</strong>
-                          <span>
-                            {item.idea ?? "Sin descripción adicional."}
-                          </span>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  <EmptyBlock text="No hay ideas registradas todavía." />
-                )}
-              </article>
-            </section>
+           
 
             <section className="lab-resource-strip">
               <div className="lab-resource-strip__title">
