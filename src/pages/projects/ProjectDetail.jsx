@@ -116,7 +116,7 @@ function ProjectDetail() {
       {/* Cabecera de Navegación */}
       <div className="project-detail-nav">
         <Link to="/proyectos" className="back-link">
-          <FaArrowLeft /> <span>Volver al portfolio</span>
+          <FaArrowLeft /> <span>Volver al proyectos</span>
         </Link>
         <div className="project-meta-top">
           <FaCalendarAlt />{" "}
