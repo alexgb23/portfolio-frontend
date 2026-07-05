@@ -1,9 +1,13 @@
 import { useCallback, useEffect, useState } from "react";
 import { Outlet } from "react-router";
 import Navbar from "./navbar/Navbar";
+import CvModal from "../sections/cvModal/CvModal";
 
 function MainLayout() {
   const [themeMode, setThemeMode] = useState("system");
+  const [isCvOpen, setIsCvOpen] = useState(false);
+  const [cvSocialLinks, setCvSocialLinks] = useState([]);
+
   const [systemPrefersDark, setSystemPrefersDark] = useState(() => {
     if (typeof window === "undefined") return false;
     return window.matchMedia("(prefers-color-scheme: dark)").matches;
@@ -51,6 +55,18 @@ function MainLayout() {
     });
   }, [systemPrefersDark]);
 
+  const openCvModal = useCallback(() => {
+    setIsCvOpen(true);
+  }, []);
+
+  const closeCvModal = useCallback(() => {
+    setIsCvOpen(false);
+  }, []);
+
+  const updateCvSocialLinks = useCallback((links) => {
+    setCvSocialLinks(Array.isArray(links) ? links : []);
+  }, []);
+
   const websiteSchema = {
     "@context": "https://schema.org",
     "@type": "WebSite",
@@ -76,8 +92,20 @@ function MainLayout() {
       />
 
       <main className="container">
-        <Outlet />
+        <Outlet
+          context={{
+            openCvModal,
+            closeCvModal,
+            setCvSocialLinks: updateCvSocialLinks,
+          }}
+        />
       </main>
+
+      <CvModal
+        isOpen={isCvOpen}
+        onClose={closeCvModal}
+        socialLinks={cvSocialLinks}
+      />
     </>
   );
 }

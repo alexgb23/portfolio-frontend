@@ -175,6 +175,16 @@
   gap: 40px;
 }
 
+.cv-trigger-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.cv-trigger-btn svg {
+  flex-shrink: 0;
+}
+
 /* =========================================================
   TARJETAS DE ESPECIALIDAD (BASE MÓVIL)
 ========================================================= */

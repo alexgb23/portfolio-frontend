@@ -1,4 +1,5 @@
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { useOutletContext } from "react-router";
 import HeroSection from "../../components/sections/heroSection/HeroSection";
 import AboutPreview from "../../components/sections/aboutPreview/AboutPreview";
 import FeaturedProjects from "../../components/sections/FeaturedProjects";
@@ -16,6 +17,8 @@ function normalizeLaboratories(items) {
 }
 
 function Home() {
+  const { openCvModal, setCvSocialLinks } = useOutletContext();
+
   usePageTitle(
     "Alexander Galvez | Sistemas, infraestructura y desarrollo de software",
   );
@@ -29,6 +32,12 @@ function Home() {
     loading: homeLoading,
     error: homeError,
   } = usePortfolioHome();
+
+  useEffect(() => {
+    if (typeof setCvSocialLinks === "function") {
+      setCvSocialLinks(socialLinks);
+    }
+  }, [socialLinks, setCvSocialLinks]);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -107,7 +116,7 @@ function Home() {
         dangerouslySetInnerHTML={{ __html: safeJsonLd }}
       />
 
-      <HeroSection socialLinks={socialLinks} />
+      <HeroSection socialLinks={socialLinks} onOpenCv={openCvModal} />
 
       <AboutPreview />
 

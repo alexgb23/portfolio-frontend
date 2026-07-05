@@ -10,6 +10,7 @@ import {
   FaEnvelope,
   FaArrowRight,
   FaDatabase,
+  FaEye,
 } from "react-icons/fa";
 
 import "./HeroSection.css";
@@ -68,7 +69,7 @@ const staticExpertise = [
   },
 ];
 
-function HeroSection({ socialLinks = [] }) {
+function HeroSection({ socialLinks = [], onOpenCv }) {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
@@ -111,6 +112,12 @@ function HeroSection({ socialLinks = [] }) {
     "Perfil técnico orientado a infraestructura IT, virtualización, redes, automatización y desarrollo de soluciones web y software.";
 
   const avatarAlt = `Retrato profesional de ${displayName}`;
+
+const handleOpenCv = () => {
+  if (typeof onOpenCv === "function") {
+    onOpenCv();
+  }
+};
 
   return (
     <header
@@ -203,6 +210,15 @@ function HeroSection({ socialLinks = [] }) {
             <Link to="/contacto" className="social-btn alt-btn">
               Contactar
             </Link>
+
+            <button
+              type="button"
+              className="social-btn cv-trigger-btn"
+              onClick={handleOpenCv}
+            >
+              <FaEye />
+              <span>Ver / Descargar CV</span>
+            </button>
           </div>
 
           {displayedSocialLinks.length > 0 ? (

@@ -14,6 +14,9 @@ export const About = lazyWithPreload(() => import("../pages/about/About"));
 export const Projects = lazyWithPreload(
   () => import("../pages/projects/Projects"),
 );
+export const Certifications = lazyWithPreload(
+  () => import("../pages/certificaciones/Certificaciones"),
+);
 export const ProjectDetail = lazyWithPreload(
   () => import("../pages/projects/ProjectDetail"),
 );
@@ -42,6 +45,15 @@ export default function AppRouter() {
           element={
             <Suspense fallback={null}>
               <About />
+            </Suspense>
+          }
+        />
+
+        <Route
+          path="certificaciones"
+          element={
+            <Suspense fallback={null}>
+              <Certifications />
             </Suspense>
           }
         />

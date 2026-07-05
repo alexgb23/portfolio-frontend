@@ -56,6 +56,15 @@ function Navbar({ isDarkMode, themeMode, toggleTheme }) {
           </NavLink>
 
           <NavLink
+            to="/certificaciones"
+            className={({ isActive }) => (isActive ? "active" : "")}
+            onClick={closeMenu}
+            style={{ display: "none" }}
+          >
+            Certificaciones
+          </NavLink>
+
+          <NavLink
             to="/proyectos"
             className={({ isActive }) => (isActive ? "active" : "")}
             onClick={closeMenu}
