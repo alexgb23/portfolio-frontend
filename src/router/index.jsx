@@ -1,7 +1,7 @@
 import { lazy, Suspense } from "react";
 import { Routes, Route, Navigate } from "react-router";
-import MainLayout from "../components/layout/MainLayout";
-// import LaboratorySkeleton from "../components/skeletons/LaboratorySkeleton";
+import MainLayout from "../layout/MainLayout";
+
 
 function lazyWithPreload(importer) {
   const Component = lazy(importer);

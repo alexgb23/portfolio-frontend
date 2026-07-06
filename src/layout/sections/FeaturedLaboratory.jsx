@@ -1,6 +1,6 @@
 import { Link } from "react-router";
 import { FaArrowRight } from "react-icons/fa";
-import LaboratoryCard from "../cards/LaboratoryCard";
+import LaboratoryCard from "../../components/cards/LaboratoryCard";
 
 function FeaturedLaboratory({ item = null, loading = false, error = null }) {
   const laboratorySlug = item?.slug ?? null;

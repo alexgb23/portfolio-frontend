@@ -1,10 +1,10 @@
 import { useEffect, useMemo, useState } from "react";
 import { useOutletContext } from "react-router";
-import HeroSection from "../../components/sections/heroSection/HeroSection";
-import AboutPreview from "../../components/sections/aboutPreview/AboutPreview";
-import FeaturedProjects from "../../components/sections/FeaturedProjects";
-import FeaturedLaboratory from "../../components/sections/FeaturedLaboratory";
-import ContactPreview from "../../components/sections/ContactPreview";
+import HeroSection from "../../layout/sections/heroSection/HeroSection";
+import AboutPreview from "../../layout/sections/aboutPreview/AboutPreview";
+import FeaturedProjects from "../../layout/sections/FeaturedProjects";
+import FeaturedLaboratory from "../../layout/sections/FeaturedLaboratory";
+import ContactPreview from "../../layout/sections/ContactPreview";
 import { usePortfolioHome } from "../../hooks/usePortfolioData";
 import usePageTitle from "../../hooks/usePageTitle";
 

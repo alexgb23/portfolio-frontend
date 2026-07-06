@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { NavLink, Link } from "react-router";
+import { NavLink, Link } from "react-router"
 import { FaMoon, FaSun, FaArrowRight, FaBars, FaTimes } from "react-icons/fa";
 
 import "./Navbar.css";

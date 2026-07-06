@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { Outlet } from "react-router";
 import Navbar from "./navbar/Navbar";
-import CvModal from "../sections/cvModal/CvModal";
+import CvModal from "../layout/sections/cvModal/CvModal";
 
 function MainLayout() {
   const [themeMode, setThemeMode] = useState("system");
