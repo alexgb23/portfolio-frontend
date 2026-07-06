@@ -1,0 +1,82 @@
+.section {
+  width: 100%;
+  margin-bottom: 18px;
+}
+
+.title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 12px 0;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  color: #1d4ed8;
+}
+
+.titleIcon {
+  color: #2563eb;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.card {
+  min-height: 142px;
+  border-radius: 10px;
+  background: #ffffff;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  padding: 14px 12px;
+  box-sizing: border-box;
+  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.05);
+}
+
+.cardIcon {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  margin-bottom: 10px;
+  font-size: 18px;
+}
+
+.cardTitle {
+  margin: 0 0 8px 0;
+  font-size: 12px;
+  line-height: 1.25;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.cardText {
+  margin: 0;
+  font-size: 11px;
+  line-height: 1.45;
+  color: #475569;
+  text-align: left;
+}
+
+.blue .cardIcon {
+  color: #2563eb;
+  background: rgba(37, 99, 235, 0.12);
+}
+
+.green .cardIcon {
+  color: #16a34a;
+  background: rgba(22, 163, 74, 0.12);
+}
+
+.purple .cardIcon {
+  color: #7c3aed;
+  background: rgba(124, 58, 237, 0.12);
+}
+
+.orange .cardIcon {
+  color: #d97706;
+  background: rgba(217, 119, 6, 0.12);
+}

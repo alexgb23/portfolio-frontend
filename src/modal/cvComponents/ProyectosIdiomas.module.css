@@ -1,0 +1,119 @@
+.wrapper {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1.6fr 1fr;
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+.projectsCard,
+.languagesCard {
+  padding: 16px 18px;
+  border-radius: 12px;
+  background: #ffffff;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  box-sizing: border-box;
+}
+
+.sectionTitle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 16px 0;
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  color: #1d4ed8;
+}
+
+.icon {
+  font-size: 14px;
+  color: #2563eb;
+}
+
+.projectsGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px 22px;
+}
+
+.projectItem {
+  display: grid;
+  grid-template-columns: 10px 1fr;
+  gap: 10px;
+  align-items: start;
+}
+
+.projectDot {
+  width: 8px;
+  height: 8px;
+  margin-top: 6px;
+  border-radius: 50%;
+  background: #1d72f3;
+  box-shadow: 0 0 0 4px rgba(29, 114, 243, 0.12);
+}
+
+.projectContent {
+  min-width: 0;
+}
+
+.projectTitle {
+  margin: 0 0 4px 0;
+  font-size: 12.5px;
+  font-weight: 800;
+  color: #1e3a8a;
+  line-height: 1.35;
+}
+
+.projectText {
+  margin: 0;
+  font-size: 11.5px;
+  line-height: 1.45;
+  color: #475569;
+}
+
+.languagesList {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-top: 2px;
+}
+
+.languageRow {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.languageTop {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: baseline;
+}
+
+.languageName {
+  font-size: 13px;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.languageLevel {
+  font-size: 12px;
+  color: #64748b;
+}
+
+.progressTrack {
+  width: 100%;
+  height: 9px;
+  border-radius: 999px;
+  background: #e2e8f0;
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #1d72f3 0%, #2563eb 100%);
+}

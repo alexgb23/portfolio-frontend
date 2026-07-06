@@ -1,0 +1,117 @@
+.banner {
+  width: 100%;
+  min-height: 126px;
+  background:
+    radial-gradient(circle at 85% 35%, rgba(38, 99, 235, 0.35), transparent 30%),
+    radial-gradient(circle at 10% 10%, rgba(59, 130, 246, 0.2), transparent 25%),
+    linear-gradient(90deg, #050b16 0%, #07131f 48%, #0b2442 100%);
+  color: #ffffff;
+  padding: 18px 26px 16px 26px;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 22px;
+  border-bottom: 1px solid rgba(78, 160, 255, 0.22);
+  box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.03);
+  font-family: "Segoe UI", sans-serif;
+  position: relative;
+  overflow: hidden;
+}
+
+.banner::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(115deg, rgba(255, 255, 255, 0.03), transparent 42%);
+  pointer-events: none;
+}
+
+.leftZone {
+  min-width: 0;
+  position: relative;
+  z-index: 1;
+}
+
+.name {
+  font-size: 24px;
+  font-weight: 800;
+  line-height: 0.95;
+  margin: 0 0 10px 0;
+  letter-spacing: 0.5px;
+  color: #ffffff;
+  text-shadow:
+    0 0 2px rgba(255, 255, 255, 0.9),
+    0 0 10px rgba(59, 130, 246, 0.55),
+    0 0 22px rgba(37, 99, 235, 0.35);
+}
+
+.name span {
+  color: #2f7dff;
+  text-shadow:
+    0 0 2px rgba(255, 255, 255, 0.35),
+    0 0 12px rgba(47, 125, 255, 0.95),
+    0 0 26px rgba(47, 125, 255, 0.55);
+}
+
+.subTitle {
+  font-size: 12px;
+  text-transform: uppercase;
+  color: #dbeafe;
+  margin: 0 0 4px 0;
+  font-weight: 700;
+  letter-spacing: 2.2px;
+}
+
+.tags {
+  font-size: 9.5px;
+  color: #8ec7ff;
+  margin: 0;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  line-height: 1.35;
+}
+
+.rightZone {
+  text-align: left;
+  flex: 0 0 auto;
+  position: relative;
+  z-index: 1;
+  min-width: 180px;
+}
+
+.logoRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+
+.logoMark {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  color: #7db4ff;
+  background: rgba(20, 45, 87, 0.7);
+  border: 1px solid rgba(92, 169, 255, 0.22);
+  font-weight: 800;
+  box-shadow: 0 0 18px rgba(47, 125, 255, 0.22);
+}
+
+.logoText {
+  font-size: 16px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  color: #dbeafe;
+  text-shadow: 0 0 10px rgba(47, 125, 255, 0.35);
+}
+
+.companyInfo {
+  font-size: 10px;
+  color: #cbd5e1;
+  display: flex;
+  flex-direction: column;
+  line-height: 1.35;
+}

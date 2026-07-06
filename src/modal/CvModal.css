@@ -1,0 +1,164 @@
+.cv-modal-overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  background: rgba(15, 23, 42, 0.7);
+  z-index: 9999;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.cv-modal-dialog {
+  width: 95vw;
+  max-width: 1600px;
+  max-height: 90vh;
+  display: flex;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: 8px;
+  background: #fff;
+}
+
+.cv-modal-shell {
+  width: min(1200px, 100%);
+  display: flex;
+  flex-direction: column;
+}
+
+.cv-topbar {
+  width: 100%;
+  height: 64px;
+  background: #0f172a;
+  color: #fff;
+  flex-shrink: 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.cv-topbar-inner {
+  width: 100%;
+  height: 100%;
+  padding: 0 20px;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.cv-topbar-left,
+.cv-topbar-actions {
+  display: flex;
+  align-items: center;
+}
+
+.cv-topbar-left {
+  gap: 10px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.cv-topbar-actions {
+  gap: 15px;
+}
+
+.cv-download-group {
+  position: relative;
+}
+
+.cv-download-btn,
+.cv-close-btn {
+  background: transparent;
+  border: none;
+  color: #94a3b8;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  padding: 8px 12px;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.cv-download-btn:hover,
+.cv-close-btn:hover {
+  color: #ffffff;
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.cv-download-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 5px;
+  background-color: #1e293b;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  min-width: 180px;
+  z-index: 10;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+}
+
+.cv-download-menu a {
+  color: #cbd5e1;
+  padding: 10px 15px;
+  text-decoration: none;
+  font-size: 13px;
+}
+
+.cv-download-menu a:hover {
+  background-color: #334155;
+  color: #ffffff;
+}
+
+.cv-modal-body-wrapper {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.cv-modal-body-wrapper::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
+}
+
+.cv-icon-small {
+  font-size: 14px;
+}
+
+.no-print {
+  display: flex;
+}
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+
+  .cv-topbar {
+    display: none !important;
+  }
+
+  .cv-modal-overlay {
+    position: static !important;
+    background: transparent !important;
+    padding: 0 !important;
+  }
+
+  .cv-modal-dialog {
+    max-height: none !important;
+    overflow: visible !important;
+    border-radius: 0 !important;
+  }
+
+  .cv-modal-body-wrapper {
+    overflow: visible !important;
+  }
+}

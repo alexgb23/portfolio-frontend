@@ -1,0 +1,147 @@
+.wrapper {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+.column {
+  padding: 16px 18px;
+  border-radius: 12px;
+  background: #ffffff;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  box-sizing: border-box;
+}
+
+.sectionTitle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 16px 0;
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  color: #1d4ed8;
+}
+
+.icon {
+  font-size: 14px;
+  color: #2563eb;
+}
+
+.timeline {
+  display: flex;
+  flex-direction: column;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 74px 16px 1fr;
+  gap: 10px;
+  align-items: start;
+  padding: 0 0 14px 0;
+}
+
+.row:last-child {
+  padding-bottom: 0;
+}
+
+.periodo {
+  font-size: 13px;
+  font-weight: 800;
+  color: #2b6cb0;
+  text-align: right;
+  white-space: nowrap;
+  padding-top: 2px;
+}
+
+.dotCol {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  min-height: 100%;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #1d72f3;
+  box-shadow: 0 0 0 4px rgba(29, 114, 243, 0.12);
+  margin-top: 6px;
+  z-index: 1;
+}
+
+.line {
+  position: absolute;
+  top: 16px;
+  bottom: -14px;
+  width: 2px;
+  background: rgba(29, 114, 243, 0.22);
+}
+
+.content {
+  min-width: 0;
+}
+
+.centro {
+  margin: 0 0 4px 0;
+  font-size: 13px;
+  line-height: 1.35;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.list {
+  margin: 0;
+  padding-left: 18px;
+  color: #475569;
+  font-size: 11.5px;
+  line-height: 1.45;
+}
+
+.list li {
+  margin-bottom: 4px;
+}
+
+.techList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.techCard {
+  min-height: 78px;
+  border-radius: 12px;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  background: #ffffff;
+  padding: 14px 14px;
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: 12px;
+  align-items: center;
+  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.04);
+}
+
+.techLabel {
+  font-size: 12px;
+  font-weight: 800;
+  color: #1d4ed8;
+}
+
+.techCard:nth-child(2) .techLabel {
+  color: #047857;
+}
+
+.techCard:nth-child(3) .techLabel {
+  color: #6d28d9;
+}
+
+.techText {
+  margin: 0;
+  font-size: 11.5px;
+  line-height: 1.5;
+  color: #475569;
+}
