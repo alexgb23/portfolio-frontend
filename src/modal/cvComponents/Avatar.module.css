@@ -2,26 +2,29 @@
   width: 100%;
   display: flex;
   justify-content: center;
-  margin-bottom: 14px;
+  margin-top: max(1.5rem, calc(env(safe-area-inset-top) + 0.8rem));
+  margin-bottom: clamp(1rem, 0.9vw + 0.45rem, 1.2rem);
+  min-width: 0;
 }
 
 .picture {
   display: block;
-  width: 138px;
-  height: 138px;
-  padding: 6px;
-  border-radius: 18px;
+  width: clamp(8.8rem, 11.5vw, 10.6rem);
+  aspect-ratio: 1;
+  padding: clamp(0.3rem, 0.3vw + 0.1rem, 0.42rem);
+  border-radius: clamp(0.9rem, 1vw, 1.2rem);
   background: linear-gradient(180deg, #0f172a 0%, #13233d 100%);
   border: 1px solid rgba(78, 160, 255, 0.35);
   box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35);
   flex-shrink: 0;
+  box-sizing: border-box;
 }
 
 .profileImg {
   width: 100%;
   height: 100%;
   display: block;
-  border-radius: 12px;
+  border-radius: clamp(0.65rem, 0.7vw, 0.82rem);
   object-fit: cover;
   object-position: center top;
 }

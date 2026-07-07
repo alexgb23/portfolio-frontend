@@ -69,20 +69,26 @@ const HeaderBanner = () => {
 
       <div className={styles.leftZone}>
         <h1 className={styles.name}>
-          ALEXANDER <br />
-          <span>GÁLVEZ BENAVIDES</span>
+          <span className={styles.nameTop}>ALEXANDER</span>
+          <span className={styles.nameBottom}>GÁLVEZ BENAVIDES</span>
         </h1>
 
         <p className={styles.subTitle}>PERFIL TÉCNICO HÍBRIDO</p>
 
         <p className={styles.tags}>
-          SISTEMAS • DESARROLLO • REDES • AUTOMATIZACIÓN • IA
+          SISTEMAS • DESARROLLO • REDES • AUTOMATIZACIÓN
         </p>
       </div>
 
       <div className={styles.rightZone}>
         <div className={styles.logoRow}>
-          <div className={styles.logoMark}>S</div>
+          <div className={styles.logoMark}>
+            <img
+              src="/logoSyskovex.png"
+              alt="Logo Syskovex"
+              className={styles.logoImg}
+            />
+          </div>
           <div className={styles.logoText}>SYSKOVEX</div>
         </div>
 

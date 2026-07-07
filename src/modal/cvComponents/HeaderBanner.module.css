@@ -3,23 +3,24 @@
   overflow: hidden;
   isolation: isolate;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  gap: 22px;
-  min-height: 126px;
-  padding: 18px 26px 16px;
+  justify-content: space-between;
+  gap: 0.65rem;
+min-height: clamp(8.6rem, 8.9vw, 9.2rem);
+padding: 1rem 1.15rem clamp(1.05rem, 1vw, 1.2rem);
   box-sizing: border-box;
   color: #fff;
   background:
     radial-gradient(circle at 86% 42%, rgba(41, 112, 255, 0.16), transparent 22%),
     radial-gradient(circle at 98% 52%, rgba(22, 90, 255, 0.13), transparent 34%),
     linear-gradient(
-    to right,
-    #030814 0%,
-    #040b18 28%,
-    #07172b 62%,
-    #0f3a82 100%
-  );
+      to right,
+      #030814 0%,
+      #040b18 28%,
+      #07172b 62%,
+      #0f3a82 100%
+    );
+  border-bottom: 1px solid rgba(78, 160, 255, 0.16);
 }
 
 .circuit {
@@ -29,94 +30,131 @@
   height: 100%;
   pointer-events: none;
   z-index: 0;
-  opacity: 0.82;
+  opacity: 0.62;
 }
 
 .leftZone,
 .rightZone {
   position: relative;
   z-index: 2;
+  min-width: 0;
+}
+
+.leftZone {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding-right: 0.3rem;
 }
 
 .name {
-  font-size: 24px;
+  margin: 0 0 0.62rem 0;
   font-weight: 800;
-  line-height: 0.95;
-  margin: 0 0 10px 0;
-  letter-spacing: 0.5px;
-  color: #ffffff;
-  text-shadow:
-    0 0 2px rgba(255, 255, 255, 0.9),
-    0 0 10px rgba(59, 130, 246, 0.55),
-    0 0 22px rgba(37, 99, 235, 0.35);
+  line-height: 0.94;
+  letter-spacing: 0.015em;
+  overflow-wrap: normal;
+  word-break: normal;
 }
 
-.name span {
+.nameTop,
+.nameBottom {
+  display: block;
+  white-space: nowrap;
+}
+
+.nameTop {
+  font-size: 2rem;
+  color: #ffffff;
+  text-shadow:
+    0 0 2px rgba(255, 255, 255, 0.38),
+    0 0 8px rgba(59, 130, 246, 0.16);
+}
+
+.nameBottom {
+  font-size: 2rem;
   color: #2f7dff;
   text-shadow:
-    0 0 2px rgba(255, 255, 255, 0.35),
-    0 0 12px rgba(47, 125, 255, 0.95),
-    0 0 26px rgba(47, 125, 255, 0.55);
+    0 0 2px rgba(255, 255, 255, 0.14),
+    0 0 8px rgba(47, 125, 255, 0.28);
 }
 
 .subTitle {
-  font-size: 12px;
+  font-size: 0.92rem;
   text-transform: uppercase;
-  color: #dbeafe;
-  margin: 0 0 4px 0;
+  color: #eef5ff;
+  margin: 0 0 0.3rem 0;
   font-weight: 700;
-  letter-spacing: 2.2px;
+  letter-spacing: 0.1em;
+  line-height: 1.15;
 }
 
 .tags {
-  font-size: 9.5px;
-  color: #8ec7ff;
+  font-size: 0.72rem;
+  color: #9fd1ff;
   margin: 0;
   font-weight: 700;
-  letter-spacing: 1.2px;
-  line-height: 1.35;
+  letter-spacing: 0.045em;
+  line-height: 1.2;
+  white-space: normal;
 }
 
 .rightZone {
-  text-align: left;
   flex: 0 0 auto;
-  position: relative;
-  z-index: 1;
-  min-width: 180px;
+  width: max-content;
+  min-width: 11.2rem;
+  margin-left: auto;
+  padding-left: 0.15rem;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
 }
 
 .logoRow {
   display: flex;
   align-items: center;
-  gap: 10px;
-  margin-bottom: 6px;
+  gap: 0.45rem;
+  margin-bottom: 0.28rem;
+  width: max-content;
+  max-width: 100%;
 }
 
 .logoMark {
-  width: 28px;
-  height: 28px;
-  border-radius: 8px;
+  width: 2.05rem;
+  height: 2.05rem;
   display: grid;
   place-items: center;
-  color: #7db4ff;
-  background: rgba(20, 45, 87, 0.7);
-  border: 1px solid rgba(92, 169, 255, 0.22);
-  font-weight: 800;
-  box-shadow: 0 0 18px rgba(47, 125, 255, 0.22);
+  flex: 0 0 auto;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+}
+
+.logoImg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: transparent;
 }
 
 .logoText {
-  font-size: 16px;
+  font-size: 1.02rem;
   font-weight: 800;
-  letter-spacing: 1px;
-  color: #dbeafe;
-  text-shadow: 0 0 10px rgba(47, 125, 255, 0.35);
+  letter-spacing: 0.03em;
+  color: #eef5ff;
+  text-shadow: 0 0 6px rgba(47, 125, 255, 0.14);
+  white-space: nowrap;
+  line-height: 1;
 }
 
 .companyInfo {
-  font-size: 10px;
-  color: #cbd5e1;
+  font-size: 0.72rem;
+  color: #e4edf8;
   display: flex;
   flex-direction: column;
-  line-height: 1.35;
+  gap: 0.04rem;
+  line-height: 1.16;
+  width: max-content;
+  max-width: 100%;
 }

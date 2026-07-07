@@ -1,6 +1,12 @@
 import React from "react";
 import styles from "./Especializacion.module.css";
-import { FaBoxOpen, FaCode, FaNetworkWired, FaMicrochip } from "react-icons/fa";
+import {
+  FaBoxOpen,
+  FaCode,
+  FaNetworkWired,
+  FaMicrochip,
+  FaPuzzlePiece,
+} from "react-icons/fa";
 
 const bloques = [
   {
@@ -21,7 +27,7 @@ const bloques = [
     icon: <FaCode />,
     titulo: "Desarrollo web y programación",
     texto:
-      "Frontend y backend con enfoque práctico, APIs, arquitectura clara y experiencia en PHP, Python, Java, JavaScript.",
+      "Frontend y backend con enfoque práctico, APIs, arquitectura clara y base formativa en PHP, Python, Java y JavaScript.",
     color: styles.purple,
   },
   {
@@ -37,7 +43,7 @@ const Especializacion = () => {
   return (
     <section className={styles.section}>
       <h2 className={styles.title}>
-        <span className={styles.titleIcon}>🧩</span>
+        <FaPuzzlePiece className={styles.titleIcon} />
         <span>ESPECIALIZACIÓN HÍBRIDA</span>
       </h2>
 
