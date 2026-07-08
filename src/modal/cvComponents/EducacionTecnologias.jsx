@@ -39,15 +39,20 @@ const formacion = [
 
 const tecnologias = [
   {
-    titulo: "Desarrollo",
-    texto:
-      "HTML5, CSS3, SASS, JavaScript, Vue, React, PHP, Python, Java, Figma, GitHub y APIs.",
+    titulo: "Desarrollo web",
+    texto: "HTML5, CSS3, SASS, JavaScript, Vue, React, PHP y consumo de APIs.",
     tone: "blue",
+  },
+  {
+    titulo: "Programación",
+    texto:
+      "Python y Java para lógica de negocio, automatización, aplicaciones y resolución de problemas.",
+    tone: "slate",
   },
   {
     titulo: "Sistemas y automatización",
     texto:
-      "Linux, Proxmox, Home Assistant, PLC, BMS, sensores, actuadores, protocolos de comunicación e IoT.",
+      "Linux, Proxmox, Home Assistant, PLC, BMS, sensores, actuadores, protocolos e IoT.",
     tone: "green",
   },
   {

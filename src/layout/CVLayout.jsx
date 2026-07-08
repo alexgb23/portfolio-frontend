@@ -3,67 +3,75 @@ import "./CVLayout.css";
 
 const CVLayout = ({ sidebar, header, body, bottom, footer }) => {
   const wrapperRef = useRef(null);
-  const pageRef = useRef(null);
 
   useEffect(() => {
     const baseWidth = 840;
     const baseHeight = 1188;
 
-    const updateScale = () => {
+    const updateLayout = () => {
       const wrapper = wrapperRef.current;
       if (!wrapper) return;
 
       const container = wrapper.parentElement;
       if (!container) return;
 
-      const containerRect = container.getBoundingClientRect();
+      if (window.matchMedia("print").matches) return;
+
+      const rect = container.getBoundingClientRect();
       const styles = window.getComputedStyle(container);
 
       const padX =
         parseFloat(styles.paddingLeft || 0) +
         parseFloat(styles.paddingRight || 0);
+
       const padY =
         parseFloat(styles.paddingTop || 0) +
         parseFloat(styles.paddingBottom || 0);
 
-      const availableWidth = containerRect.width - padX;
-      const availableHeight = containerRect.height - padY;
-
-      const scaleX = availableWidth / baseWidth;
-      const scaleY = availableHeight / baseHeight;
+      const availableWidth = Math.max(0, rect.width - padX);
+      const availableHeight = Math.max(0, rect.height - padY);
 
       let scale;
 
       if (window.innerWidth <= 699) {
+        const scaleX = availableWidth / baseWidth;
+        const scaleY = availableHeight / baseHeight;
         scale = Math.min(scaleX, scaleY);
       } else {
-        scale = Math.min(scaleX, scaleY, 1.45);
-        scale = Math.max(scale, 1);
+        scale = availableWidth / baseWidth;
+      }
+
+      if (!Number.isFinite(scale) || scale <= 0) {
+        scale = 1;
       }
 
       wrapper.style.setProperty("--cv-scale", String(scale));
       wrapper.style.width = `${baseWidth * scale}px`;
       wrapper.style.height = `${baseHeight * scale}px`;
+      wrapper.style.minHeight = `${baseHeight * scale}px`;
     };
 
-    updateScale();
+    updateLayout();
 
-    const resizeObserver = new ResizeObserver(updateScale);
+    const resizeObserver = new ResizeObserver(() => {
+      updateLayout();
+    });
+
     if (wrapperRef.current?.parentElement) {
       resizeObserver.observe(wrapperRef.current.parentElement);
     }
 
-    window.addEventListener("resize", updateScale);
+    window.addEventListener("resize", updateLayout);
 
     return () => {
       resizeObserver.disconnect();
-      window.removeEventListener("resize", updateScale);
+      window.removeEventListener("resize", updateLayout);
     };
   }, []);
 
   return (
     <div className="cv-layout-wrapper" ref={wrapperRef}>
-      <div className="cv-page" ref={pageRef}>
+      <div className="cv-page">
         <aside className="cv-sidebar">{sidebar}</aside>
 
         <main className="cv-main">

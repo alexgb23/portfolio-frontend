@@ -79,8 +79,8 @@ const Sidebar = () => {
         </h3>
 
         <div className={styles.techGrid}>
-          {herramientas.map((tech, index) => (
-            <span key={index} className={styles.badge}>
+          {herramientas.map((tech) => (
+            <span key={tech} className={styles.badge}>
               {tech}
             </span>
           ))}

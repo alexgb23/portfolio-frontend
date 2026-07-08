@@ -1,65 +1,292 @@
 .cv-body {
-  padding: 10px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.50rem;
+  padding: 0 10px 0 10px;
+  box-sizing: border-box;
 }
+
+/* =========================
+   Modal base
+   ========================= */
 
 .cv-modal-overlay {
   position: fixed;
   inset: 0;
   display: flex;
   justify-content: center;
-  align-items: flex-start;
-  background: rgba(15, 23, 42, 0.7);
+  align-items: stretch;
+  background: rgba(15, 23, 42, 0.72);
   z-index: 9999;
-  padding: clamp(8px, 0.7vw, 14px);
+  padding: 0;
   box-sizing: border-box;
 }
 
 .cv-modal-dialog {
-  width: min(98vw, 1900px);
-  max-width: 1900px;
-  max-height: min(98vh, 1600px);
+  width: 100vw;
+  max-width: none;
+  height: 100vh;
+  height: 100dvh;
+  max-height: none;
   display: flex;
   justify-content: center;
   overflow: hidden;
-  border-radius: clamp(8px, 0.6vw, 14px);
+  border-radius: 0;
 }
 
 .cv-modal-shell {
-  width: min(1600px, 100%);
-  max-width: 100%;
+  width: 100%;
+  height: 100%;
+  max-width: none;
   display: flex;
   flex-direction: column;
+  min-height: 0;
+  min-width: 0;
 }
+
+/* =========================
+   Topbar
+   ========================= */
 
 .cv-topbar {
   width: 100%;
-  height: clamp(56px, 4vw, 68px);
+  height: 58px;
   background: #0f172a;
-  color: #fff;
+  color: #ffffff;
   flex-shrink: 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 10px 30px rgba(2, 6, 23, 0.18);
 }
 
 .cv-topbar-inner {
-  width: min(1600px, 100%);
+  width: 100%;
   height: 100%;
   margin: 0 auto;
-  padding: 0 clamp(14px, 1vw, 20px);
+  padding: 0 18px;
   box-sizing: border-box;
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-width: 0;
 }
+
+.cv-topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+.cv-topbar-title {
+  min-width: 0;
+  color: #eaf2ff;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cv-topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: nowrap;
+  flex-shrink: 0;
+  min-width: 0;
+  white-space: nowrap;
+}
+
+.cv-download-group {
+  position: relative;
+  flex: 0 1 auto;
+  min-width: 0;
+}
+
+.cv-download-btn,
+.cv-close-btn {
+  appearance: none;
+  border: 1px solid rgba(148, 163, 184, 0.22);
+  background: linear-gradient(
+    180deg,
+    rgba(18, 28, 52, 0.98) 0%,
+    rgba(10, 15, 29, 0.98) 100%
+  );
+  color: #f8fbff;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 40px;
+  padding: 0 14px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  line-height: 1;
+  box-shadow:
+    0 10px 24px rgba(2, 6, 23, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  cursor: pointer;
+  transition:
+    transform 160ms ease,
+    border-color 160ms ease,
+    background 160ms ease,
+    box-shadow 160ms ease,
+    color 160ms ease;
+}
+
+.cv-download-btn:hover,
+.cv-close-btn:hover {
+  background: linear-gradient(
+    180deg,
+    rgba(24, 37, 66, 0.98) 0%,
+    rgba(13, 20, 38, 0.98) 100%
+  );
+  border-color: rgba(96, 165, 250, 0.36);
+  box-shadow:
+    0 14px 28px rgba(2, 6, 23, 0.28),
+    0 0 0 1px rgba(59, 130, 246, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  transform: translateY(-1px);
+}
+
+.cv-download-btn:active,
+.cv-close-btn:active {
+  transform: translateY(0);
+}
+
+.cv-download-btn:focus-visible,
+.cv-close-btn:focus-visible {
+  outline: none;
+  border-color: rgba(96, 165, 250, 0.55);
+  box-shadow:
+    0 0 0 4px rgba(59, 130, 246, 0.18),
+    0 12px 26px rgba(2, 6, 23, 0.24);
+}
+
+.cv-download-btn span {
+  white-space: nowrap;
+}
+
+.cv-download-menu-btn {
+  width: 100%;
+  min-height: 42px;
+  padding: 10px 12px;
+  border: 0;
+  border-radius: 12px;
+  background: transparent;
+  color: #dbeafe;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-align: left;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition:
+    background-color 150ms ease,
+    color 150ms ease,
+    transform 150ms ease;
+}
+
+.cv-download-menu-btn:hover {
+  background: rgba(37, 99, 235, 0.16);
+  color: #ffffff;
+  transform: translateX(1px);
+}
+
+.cv-download-menu-btn:focus-visible {
+  outline: none;
+  background: rgba(37, 99, 235, 0.18);
+  color: #ffffff;
+  box-shadow: 0 0 0 2px rgba(96, 165, 250, 0.22);
+}
+
+.cv-close-btn {
+  width: 40px;
+  min-width: 40px;
+  height: 40px;
+  padding: 0;
+  flex: 0 0 40px;
+}
+
+.cv-icon-small {
+  font-size: 13px;
+  flex-shrink: 0;
+}
+
+.cv-download-menu {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  min-width: 210px;
+  padding: 8px;
+  border-radius: 16px;
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  background: linear-gradient(
+    180deg,
+    rgba(9, 14, 28, 0.98) 0%,
+    rgba(15, 23, 42, 0.98) 100%
+  );
+  box-shadow:
+    0 20px 48px rgba(2, 6, 23, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(10px);
+  z-index: 30;
+}
+
+.cv-download-menu a {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-height: 42px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  color: #dbeafe;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 500;
+  transition:
+    background-color 150ms ease,
+    color 150ms ease,
+    transform 150ms ease;
+}
+
+.cv-download-menu a:hover {
+  background: rgba(37, 99, 235, 0.16);
+  color: #ffffff;
+  transform: translateX(1px);
+}
+
+.cv-download-menu a:focus-visible {
+  outline: none;
+  background: rgba(37, 99, 235, 0.18);
+  color: #ffffff;
+  box-shadow: 0 0 0 2px rgba(96, 165, 250, 0.22);
+}
+
+/* =========================
+   Cuerpo modal
+   ========================= */
 
 .cv-modal-body-wrapper {
   flex: 1;
   min-height: 0;
+  min-width: 0;
   overflow-y: auto;
   overflow-x: hidden;
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  padding: clamp(8px, 0.5vw, 12px);
+  padding: 12px 0;
+  box-sizing: border-box;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
 .cv-modal-body-wrapper::-webkit-scrollbar {
@@ -67,6 +294,10 @@
   height: 0;
   display: none;
 }
+
+/* =========================
+   Documento
+   ========================= */
 
 .cv-layout-wrapper {
   width: fit-content;
@@ -153,27 +384,44 @@
   z-index: 2;
 }
 
-@media screen and (max-width: 840px) {
-  .cv-modal-body-wrapper {
-    display: block;
-    padding: 0;
-  }
-}
+/* =========================
+   Desktop / tablet
+   ========================= */
 
-@media screen and (min-width: 841px) {
-  .cv-layout-wrapper {
-     display: block;
+@media screen and (min-width: 700px) {
+  .cv-modal-shell {
+    width: min(100%, calc(100vw - clamp(360px, 24vw, 520px)));
     margin: 0 auto;
-    justify-content: center;
-    align-items: flex-start;
-    min-height: 1188px;
-    padding-inline: 0;
   }
 
-  .cv-page {
-    transform-origin: top left;
+  .cv-topbar {
+    height: 60px;
+  }
+
+  .cv-topbar-inner {
+    padding: 0 18px;
+  }
+
+  .cv-modal-body-wrapper {
+    padding: 12px 0;
   }
 }
+
+@media screen and (min-width: 1200px) {
+  .cv-modal-shell {
+    width: calc(100vw - 500px);
+    max-width: 1400px;
+    min-width: 900px;
+  }
+
+  .cv-topbar-inner {
+    padding: 0 20px;
+  }
+}
+
+/* =========================
+   Móvil
+   ========================= */
 
 @media screen and (max-width: 699px) {
   .cv-modal-overlay {
@@ -193,6 +441,7 @@
   .cv-modal-shell {
     width: 100%;
     height: 100%;
+    margin: 0;
   }
 
   .cv-topbar {
@@ -201,35 +450,140 @@
 
   .cv-topbar-inner {
     width: 100%;
-    padding: 0 14px;
+    padding: 0 12px;
+    gap: 8px;
   }
 
-  .cv-download-btn,
-  .cv-close-btn {
-    padding: 8px;
+  .cv-topbar-left {
+    gap: 8px;
+    min-width: 0;
+    flex: 1 1 auto;
+  }
+
+  .cv-topbar-title {
     font-size: 12px;
   }
-}
 
-@media print {
-  .no-print,
-  .cv-topbar {
-    display: none !important;
+  .cv-topbar-actions {
+    gap: 6px;
+    flex-wrap: nowrap;
+    flex-shrink: 0;
   }
 
-  .cv-modal-overlay {
-    position: static !important;
-    background: transparent !important;
-    padding: 0 !important;
+  .cv-download-group {
+    flex: 0 0 auto;
   }
 
-  .cv-modal-dialog {
-    max-height: none !important;
-    overflow: visible !important;
-    border-radius: 0 !important;
+  .cv-download-btn {
+    min-height: 36px;
+    padding: 0 10px;
+    font-size: 12px;
+    gap: 6px;
+    flex: 0 0 auto;
+  }
+
+  .cv-download-btn span {
+    display: none;
+  }
+
+  .cv-close-btn {
+    width: 36px;
+    min-width: 36px;
+    height: 36px;
+    flex: 0 0 36px;
   }
 
   .cv-modal-body-wrapper {
+    padding: 0;
+    justify-content: center;
+    align-items: flex-start;
+  }
+
+  .cv-download-menu {
+    right: 0;
+    min-width: 180px;
+  }
+}
+
+/* =========================
+   Print
+   ========================= */
+@page {
+  size: A4;
+  margin: 0;
+}
+
+@media print {
+  html,
+  body {
+    width: auto !important;
+    height: auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #ffffff !important;
     overflow: visible !important;
+  }
+
+  body.cv-print-mode #root {
+    display: none !important;
+  }
+
+  body.cv-print-mode .cv-modal-overlay {
+    position: static !important;
+    inset: auto !important;
+    display: block !important;
+    background: #ffffff !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    overflow: visible !important;
+  }
+
+  body.cv-print-mode .cv-modal-dialog,
+  body.cv-print-mode .cv-modal-shell,
+  body.cv-print-mode .cv-modal-body-wrapper,
+  body.cv-print-mode .cv-layout-wrapper {
+    width: auto !important;
+    height: auto !important;
+    max-width: none !important;
+    max-height: none !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: visible !important;
+    display: block !important;
+  }
+
+  body.cv-print-mode .no-print,
+  body.cv-print-mode .cv-topbar {
+    display: none !important;
+  }
+
+  body.cv-print-mode .cv-page {
+    width: 210mm !important;
+    min-height: 297mm !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    transform: none !important;
+    transform-origin: top left !important;
+    box-shadow: none !important;
+    overflow: hidden !important;
+    background: #ffffff !important;
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+
+  body.cv-print-mode .cv-page > *:first-child,
+  body.cv-print-mode .cv-main > *:first-child,
+  body.cv-print-mode .cv-body > *:first-child {
+    margin-top: 0 !important;
+  }
+
+  body.cv-print-mode .cv-sidebar,
+  body.cv-print-mode .cv-main,
+  body.cv-print-mode .cv-bottom,
+  body.cv-print-mode .cv-footer,
+  body.cv-print-mode .cv-page {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
   }
 }

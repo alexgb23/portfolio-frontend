@@ -89,7 +89,7 @@ const HeaderBanner = () => {
               className={styles.logoImg}
             />
           </div>
-          <div className={styles.logoText}>SYSKOVEX</div>
+          <div className={styles.logoText}>YSKOVEX</div>
         </div>
 
         <div className={styles.companyInfo}>
