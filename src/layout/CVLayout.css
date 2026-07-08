@@ -1,11 +1,13 @@
 .cv-layout-wrapper {
-  width: 100%;
+  width: fit-content;
+  max-width: 100%;
   box-sizing: border-box;
   overflow: visible;
   --cv-width: 840;
   --cv-height: 1188;
   --cv-scale: 1;
   position: relative;
+  margin: 0 auto;
 }
 
 .cv-page {
@@ -13,27 +15,40 @@
   min-height: 1188px;
   margin: 0;
   display: grid;
-grid-template-columns: clamp(180px, 22vw, 205px) 1fr;
+  grid-template-columns: clamp(180px, 22vw, 205px) 1fr;
+  grid-template-rows: auto auto auto;
+  grid-template-areas:
+    "sidebar main"
+    "sidebar bottom"
+    "footer footer";
   background: #ffffff;
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
   transform: scale(var(--cv-scale));
   transform-origin: top left;
-  will-change: transform;
+  overflow: visible;
 }
 
+
+
 .cv-sidebar {
+  grid-area: sidebar;
   background: linear-gradient(180deg, #040b18 0%, #081a31 100%);
   color: #ffffff;
-  min-height: calc(var(--cv-height) * 1px);
   overflow: hidden;
+  position: relative;
+  z-index: 1;
+  min-height: 100%;
 }
 
 .cv-main {
+  grid-area: main;
   display: flex;
   flex-direction: column;
   min-width: 0;
-  min-height: calc(var(--cv-height) * 1px);
+  min-height: 0;
   background: #ffffff;
+  position: relative;
+  z-index: 2;
 }
 
 .cv-header,
@@ -42,17 +57,42 @@ grid-template-columns: clamp(180px, 22vw, 205px) 1fr;
   width: 100%;
 }
 
+.cv-bottom {
+  grid-area: bottom;
+  min-width: 0;
+  box-sizing: border-box;
+  padding:
+    clamp(0.28rem, 0.12vw + 0.22rem, 0.38rem)
+    clamp(0.62rem, 0.3vw + 0.46rem, 0.8rem)
+    0;
+  margin-left: calc(clamp(180px, 22vw, 205px) * -1);
+  width: calc(100% + clamp(180px, 22vw, 205px));
+  position: relative;
+  z-index: 3;
+  background: transparent;
+}
+
+.cv-footer {
+  grid-area: footer;
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  position: relative;
+  z-index: 2;
+}
+
 /* Desktop */
 @media screen and (min-width: 841px) {
   .cv-layout-wrapper {
-    display: flex;
+    display: block;
     justify-content: center;
     align-items: flex-start;
-    min-height: 1188px;
+    min-height: auto;
     padding-inline: 0;
+    margin: 0 auto;
   }
 
   .cv-page {
-    transform-origin: top center;
+    transform-origin: top left;
   }
 }

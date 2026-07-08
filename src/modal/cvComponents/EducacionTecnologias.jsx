@@ -42,16 +42,19 @@ const tecnologias = [
     titulo: "Desarrollo",
     texto:
       "HTML5, CSS3, SASS, JavaScript, Vue, React, PHP, Python, Java, Figma, GitHub y APIs.",
+    tone: "blue",
   },
   {
     titulo: "Sistemas y automatización",
     texto:
       "Linux, Proxmox, Home Assistant, PLC, BMS, sensores, actuadores, protocolos de comunicación e IoT.",
+    tone: "green",
   },
   {
     titulo: "Infraestructura y redes",
     texto:
       "Virtualización, VLAN, pfSense, servicios internos, backup, videovigilancia y control de energía.",
+    tone: "purple",
   },
 ];
 
@@ -66,23 +69,30 @@ const EducacionTecnologias = () => {
 
         <div className={styles.timeline}>
           {formacion.map((item, index) => (
-            <div key={index} className={styles.row}>
-              <div className={styles.periodo}>{item.periodo}</div>
+            <article
+              key={`${item.periodo}-${item.centro}`}
+              className={styles.row}
+            >
               <div className={styles.dotCol}>
                 <span className={styles.dot} />
                 {index !== formacion.length - 1 && (
                   <span className={styles.line} />
                 )}
               </div>
-              <div className={styles.content}>
-                <h3 className={styles.centro}>{item.centro}</h3>
-                <ul className={styles.list}>
-                  {item.items.map((texto, idx) => (
-                    <li key={idx}>{texto}</li>
-                  ))}
-                </ul>
+
+              <div className={styles.mainBlock}>
+                <div className={styles.periodo}>{item.periodo}</div>
+
+                <div className={styles.content}>
+                  <h3 className={styles.centro}>{item.centro}</h3>
+                  <ul className={styles.list}>
+                    {item.items.map((texto, idx) => (
+                      <li key={idx}>{texto}</li>
+                    ))}
+                  </ul>
+                </div>
               </div>
-            </div>
+            </article>
           ))}
         </div>
       </div>
@@ -94,8 +104,11 @@ const EducacionTecnologias = () => {
         </h2>
 
         <div className={styles.techList}>
-          {tecnologias.map((item, index) => (
-            <article key={index} className={styles.techCard}>
+          {tecnologias.map((item) => (
+            <article
+              key={item.titulo}
+              className={`${styles.techCard} ${styles[item.tone]}`}
+            >
               <div className={styles.techLabel}>{item.titulo}</div>
               <p className={styles.techText}>{item.texto}</p>
             </article>

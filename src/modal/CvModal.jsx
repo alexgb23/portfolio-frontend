@@ -142,9 +142,9 @@ return createPortal(
                 <Especializacion />
                 <Experiencia />
                 <EducacionTecnologias />
-                <ProyectosIdiomas />
               </>
             }
+            bottom={<ProyectosIdiomas />}
             footer={<Footer />}
           />
         </div>

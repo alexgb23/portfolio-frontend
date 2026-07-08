@@ -1,76 +1,63 @@
 import React, { useEffect, useRef } from "react";
 import "./CVLayout.css";
 
-const BASE_WIDTH = 840;
-const BASE_HEIGHT = 1188;
-
-const CVLayout = ({ sidebar, header, body, footer }) => {
+const CVLayout = ({ sidebar, header, body, bottom, footer }) => {
   const wrapperRef = useRef(null);
   const pageRef = useRef(null);
 
   useEffect(() => {
-    const wrapper = wrapperRef.current;
-    const page = pageRef.current;
-    if (!wrapper || !page) return;
+    const baseWidth = 840;
+    const baseHeight = 1188;
 
-    let frameId = null;
+    const updateScale = () => {
+      const wrapper = wrapperRef.current;
+      if (!wrapper) return;
 
-    const ajustarEscala = () => {
-      if (!wrapper || !page) return;
+      const container = wrapper.parentElement;
+      if (!container) return;
 
-      const rect = wrapper.getBoundingClientRect();
-      const styles = window.getComputedStyle(wrapper);
+      const containerRect = container.getBoundingClientRect();
+      const styles = window.getComputedStyle(container);
 
-      const paddingX =
+      const padX =
         parseFloat(styles.paddingLeft || 0) +
         parseFloat(styles.paddingRight || 0);
-
-      const paddingY =
+      const padY =
         parseFloat(styles.paddingTop || 0) +
         parseFloat(styles.paddingBottom || 0);
 
-      const availableWidth = Math.max(rect.width - paddingX, 0);
-      const availableHeight = Math.max(rect.height - paddingY, 0);
+      const availableWidth = containerRect.width - padX;
+      const availableHeight = containerRect.height - padY;
 
-      if (!availableWidth || !availableHeight) return;
-
-      const scaleX = availableWidth / BASE_WIDTH;
-      const scaleY = availableHeight / BASE_HEIGHT;
-      const isMobile = window.innerWidth <= 840;
+      const scaleX = availableWidth / baseWidth;
+      const scaleY = availableHeight / baseHeight;
 
       let scale;
 
-      if (isMobile) {
+      if (window.innerWidth <= 699) {
         scale = Math.min(scaleX, scaleY);
       } else {
-        scale = Math.min(scaleX, scaleY, 1.9);
+        scale = Math.min(scaleX, scaleY, 1.45);
+        scale = Math.max(scale, 1);
       }
 
-      scale = Math.max(scale, 0.35);
-
-      page.style.setProperty("--cv-scale", String(scale));
-      wrapper.style.setProperty("--scaled-width", `${BASE_WIDTH * scale}px`);
-      wrapper.style.setProperty("--scaled-height", `${BASE_HEIGHT * scale}px`);
+      wrapper.style.setProperty("--cv-scale", String(scale));
+      wrapper.style.width = `${baseWidth * scale}px`;
+      wrapper.style.height = `${baseHeight * scale}px`;
     };
 
-    const scheduleAjuste = () => {
-      cancelAnimationFrame(frameId);
-      frameId = requestAnimationFrame(ajustarEscala);
-    };
+    updateScale();
 
-    const resizeObserver = new ResizeObserver(scheduleAjuste);
-    resizeObserver.observe(wrapper);
+    const resizeObserver = new ResizeObserver(updateScale);
+    if (wrapperRef.current?.parentElement) {
+      resizeObserver.observe(wrapperRef.current.parentElement);
+    }
 
-    window.addEventListener("resize", scheduleAjuste);
-    window.addEventListener("orientationchange", scheduleAjuste);
-
-    scheduleAjuste();
+    window.addEventListener("resize", updateScale);
 
     return () => {
-      cancelAnimationFrame(frameId);
       resizeObserver.disconnect();
-      window.removeEventListener("resize", scheduleAjuste);
-      window.removeEventListener("orientationchange", scheduleAjuste);
+      window.removeEventListener("resize", updateScale);
     };
   }, []);
 
@@ -79,11 +66,13 @@ const CVLayout = ({ sidebar, header, body, footer }) => {
       <div className="cv-page" ref={pageRef}>
         <aside className="cv-sidebar">{sidebar}</aside>
 
-        <section className="cv-main">
-          <header className="cv-header">{header}</header>
+        <main className="cv-main">
+          <div className="cv-header">{header}</div>
           <div className="cv-body">{body}</div>
-          <footer className="cv-footer">{footer}</footer>
-        </section>
+        </main>
+
+        {bottom ? <section className="cv-bottom">{bottom}</section> : null}
+        {footer ? <footer className="cv-footer">{footer}</footer> : null}
       </div>
     </div>
   );

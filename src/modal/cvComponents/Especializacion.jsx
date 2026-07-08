@@ -1,37 +1,34 @@
 import React from "react";
 import styles from "./Especializacion.module.css";
 import {
-  FaBoxOpen,
-  FaCode,
-  FaNetworkWired,
-  FaMicrochip,
   FaPuzzlePiece,
 } from "react-icons/fa";
+import { Server, Globe, CodeXml, HousePlug} from "lucide-react";
 
 const bloques = [
   {
-    icon: <FaMicrochip />,
+    icon: <Server />,
     titulo: "Infraestructura y virtualización",
     texto:
       "Administración de sistemas, virtualización, homelab, servicios, copias de seguridad y despliegues orientados a estabilidad y continuidad.",
     color: styles.blue,
   },
   {
-    icon: <FaNetworkWired />,
+    icon: <Globe />,
     titulo: "Redes y conectividad",
     texto:
       "Segmentación por VLAN, firewall pfSense, protocolos de comunicación, servicios internos y resolución de incidencias técnicas.",
     color: styles.green,
   },
   {
-    icon: <FaCode />,
+    icon: <CodeXml />,
     titulo: "Desarrollo web y programación",
     texto:
       "Frontend y backend con enfoque práctico, APIs, arquitectura clara y base formativa en PHP, Python, Java y JavaScript.",
     color: styles.purple,
   },
   {
-    icon: <FaBoxOpen />,
+    icon: <HousePlug />,
     titulo: "Automatización y domótica",
     texto:
       "IoT, Home Assistant, sensores, actuadores, BMS, PLC y automatización aplicada a entornos reales.",
