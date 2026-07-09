@@ -40,7 +40,7 @@ const formacion = [
 const tecnologias = [
   {
     titulo: "Desarrollo web",
-    texto: "HTML5, CSS3, SASS, JavaScript, Vue, React, PHP y consumo de APIs.",
+    texto: "HTML5, CSS3, SASS, JavaScript, React, PHP y consumo de APIs.",
     tone: "blue",
   },
   {
