@@ -151,30 +151,38 @@ function CvModal({ isOpen, onClose }) {
   useEffect(() => {
     if (!isOpen) return;
 
-    const handleDocumentClick = (event) => {
-      const target = event.target;
+    const html = document.documentElement;
+    const body = document.body;
+    const scrollY = window.scrollY;
 
-      if (
-        downloadGroupRef.current &&
-        target instanceof Node &&
-        !downloadGroupRef.current.contains(target)
-      ) {
-        setIsDownloadMenuOpen(false);
-      }
-    };
+    const prevHtmlOverflow = html.style.overflow;
+    const prevBodyOverflow = body.style.overflow;
+    const prevBodyPosition = body.style.position;
+    const prevBodyTop = body.style.top;
+    const prevBodyWidth = body.style.width;
 
-    document.addEventListener("click", handleDocumentClick);
+    html.style.overflow = "hidden";
+    body.style.overflow = "hidden";
+    body.style.position = "fixed";
+    body.style.top = `-${scrollY}px`;
+    body.style.width = "100%";
 
     return () => {
-      document.removeEventListener("click", handleDocumentClick);
+      html.style.overflow = prevHtmlOverflow;
+      body.style.overflow = prevBodyOverflow;
+      body.style.position = prevBodyPosition;
+      body.style.top = prevBodyTop;
+      body.style.width = prevBodyWidth;
+
+      window.scrollTo(0, scrollY);
     };
   }, [isOpen]);
 
   // Escala automática
-const scale = useCvScale({
-  enabled: isOpen,
-  viewportRef,
-});
+  const scale = useCvScale({
+    enabled: isOpen,
+    viewportRef,
+  });
 
   // SOLO una variable CSS
   const shellStyle = {
