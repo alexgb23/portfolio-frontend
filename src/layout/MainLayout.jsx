@@ -1,7 +1,8 @@
-import { useCallback, useEffect, useState } from "react";
+import { lazy, Suspense, useCallback, useEffect, useState } from "react";
 import { Outlet } from "react-router";
 import Navbar from "./navbar/Navbar";
-import CvModal from "../modal/CvModal";
+
+const CvModal = lazy(() => import("../modal/CvModal"));
 
 function MainLayout() {
   const [themeMode, setThemeMode] = useState("system");
@@ -101,11 +102,15 @@ function MainLayout() {
         />
       </main>
 
-      <CvModal
-        isOpen={isCvOpen}
-        onClose={closeCvModal}
-        socialLinks={cvSocialLinks}
-      />
+      <Suspense fallback={null}>
+        {isCvOpen ? (
+          <CvModal
+            isOpen={isCvOpen}
+            onClose={closeCvModal}
+            socialLinks={cvSocialLinks}
+          />
+        ) : null}
+      </Suspense>
     </>
   );
 }

@@ -1,12 +1,3 @@
-.cv-body {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 0.50rem;
-  padding: 0 10px 0 10px;
-  box-sizing: border-box;
-}
-
 /* =========================
    Modal base
    ========================= */
@@ -25,9 +16,8 @@
 
 .cv-modal-dialog {
   width: 100vw;
+  margin: 0 auto;
   max-width: none;
-  height: 100vh;
-  height: 100dvh;
   max-height: none;
   display: flex;
   justify-content: center;
@@ -36,13 +26,14 @@
 }
 
 .cv-modal-shell {
-  width: 100%;
+  width: clamp(1040px, 62vw, 1400px);
   height: 100%;
   max-width: none;
   display: flex;
   flex-direction: column;
-  min-height: 0;
   min-width: 0;
+  min-height: 0;
+  margin: 0 auto;
 }
 
 /* =========================
@@ -51,7 +42,7 @@
 
 .cv-topbar {
   width: 100%;
-  height: 58px;
+  height: 60px;
   background: #0f172a;
   color: #ffffff;
   flex-shrink: 0;
@@ -63,12 +54,12 @@
   width: 100%;
   height: 100%;
   margin: 0 auto;
-  padding: 0 18px;
+  padding: 0 clamp(16px, 1.2vw, 24px);
   box-sizing: border-box;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
+  gap: 14px;
   min-width: 0;
 }
 
@@ -278,12 +269,13 @@
   flex: 1;
   min-height: 0;
   min-width: 0;
+  width: 100%;
   overflow-y: auto;
   overflow-x: hidden;
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  padding: 12px 0;
+  padding: 14px 0 14px 0;
   box-sizing: border-box;
   scrollbar-width: none;
   -ms-overflow-style: none;
@@ -296,28 +288,26 @@
 }
 
 /* =========================
-   Documento
+   Documento - base desktop
    ========================= */
 
 .cv-layout-wrapper {
-  width: fit-content;
+  width: 100%;
   max-width: none;
   box-sizing: border-box;
   overflow: visible;
-  --cv-width: 840;
-  --cv-height: 1188;
   --cv-scale: 1;
   position: relative;
   margin: 0 auto;
-  flex: 0 0 auto;
+  flex: 1 1 auto;
 }
 
 .cv-page {
-  width: 840px;
-  min-height: 1188px;
+  width: 100%;
+  min-height: auto;
   margin: 0;
   display: grid;
-  grid-template-columns: clamp(180px, 22vw, 205px) 1fr;
+  grid-template-columns: clamp(240px, 18vw, 300px) 1fr;
   grid-template-rows: auto auto auto;
   grid-template-areas:
     "sidebar main"
@@ -325,7 +315,7 @@
     "footer footer";
   background: #ffffff;
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
-  transform: scale(var(--cv-scale));
+  transform: none;
   transform-origin: top left;
   overflow: visible;
   -webkit-font-smoothing: antialiased;
@@ -360,6 +350,15 @@
   width: 100%;
 }
 
+.cv-body {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  padding: 16px 18px;
+  box-sizing: border-box;
+}
+
 .cv-bottom {
   grid-area: bottom;
   min-width: 0;
@@ -367,9 +366,10 @@
   padding:
     clamp(0.28rem, 0.12vw + 0.22rem, 0.38rem)
     clamp(0.62rem, 0.3vw + 0.46rem, 0.8rem)
-    0;
-  margin-left: calc(clamp(180px, 22vw, 205px) * -1);
-  width: calc(100% + clamp(180px, 22vw, 205px));
+    0
+    clamp(0.85rem, 0.42vw + 0.58rem, 1.12rem);
+    margin-left: calc(clamp(240px, 18vw, 300px) * -1);
+  width: calc(100% + clamp(240px, 18vw, 300px));
   position: relative;
   z-index: 3;
   background: transparent;
@@ -385,13 +385,14 @@
 }
 
 /* =========================
-   Desktop / tablet
+   Tablet
    ========================= */
 
-@media screen and (min-width: 700px) {
+@media screen and (min-width: 700px) and (max-width: 1199px) {
   .cv-modal-shell {
-    width: min(100%, calc(100vw - clamp(360px, 24vw, 520px)));
-    margin: 0 auto;
+    width: 100%;
+    height: 100%;
+    margin: 0;
   }
 
   .cv-topbar {
@@ -400,22 +401,39 @@
 
   .cv-topbar-inner {
     padding: 0 18px;
+    gap: 14px;
   }
 
   .cv-modal-body-wrapper {
-    padding: 12px 0;
-  }
-}
-
-@media screen and (min-width: 1200px) {
-  .cv-modal-shell {
-    width: calc(100vw - 500px);
-    max-width: 1400px;
-    min-width: 900px;
+    width: 100%;
+    padding: 12px 18px;
+    justify-content: center;
+    align-items: flex-start;
   }
 
-  .cv-topbar-inner {
-    padding: 0 20px;
+  .cv-layout-wrapper {
+    width: fit-content;
+    max-width: none;
+    margin: 0 auto;
+    flex: 0 0 auto;
+  }
+
+  .cv-page {
+    width: 840px;
+    min-height: 1188px;
+    transform: scale(var(--cv-scale));
+    transform-origin: top left;
+    grid-template-columns: clamp(180px, 22vw, 205px) 1fr;
+  }
+
+  .cv-body {
+    padding: 10px;
+    gap: 0.5rem;
+  }
+
+  .cv-bottom {
+    margin-left: calc(clamp(180px, 22vw, 205px) * -1);
+    width: calc(100% + clamp(180px, 22vw, 205px));
   }
 }
 
@@ -451,13 +469,14 @@
   .cv-topbar-inner {
     width: 100%;
     padding: 0 12px;
-    gap: 8px;
+    gap: 12px;
   }
 
   .cv-topbar-left {
     gap: 8px;
     min-width: 0;
     flex: 1 1 auto;
+    padding-right: 6px;
   }
 
   .cv-topbar-title {
@@ -468,6 +487,7 @@
     gap: 6px;
     flex-wrap: nowrap;
     flex-shrink: 0;
+    margin-left: 6px;
   }
 
   .cv-download-group {
@@ -494,7 +514,8 @@
   }
 
   .cv-modal-body-wrapper {
-    padding: 0;
+    width: 100%;
+    padding: 8px 0 0;
     justify-content: center;
     align-items: flex-start;
   }
@@ -503,11 +524,36 @@
     right: 0;
     min-width: 180px;
   }
-}
 
+  .cv-layout-wrapper {
+    width: fit-content;
+    max-width: none;
+    margin: 0 auto;
+    flex: 0 0 auto;
+  }
+
+  .cv-page {
+    width: 840px;
+    min-height: 1188px;
+    transform: scale(var(--cv-scale));
+    transform-origin: top left;
+    grid-template-columns: clamp(180px, 22vw, 205px) 1fr;
+  }
+
+  .cv-body {
+    padding: 10px;
+    gap: 0.5rem;
+  }
+
+  .cv-bottom {
+    margin-left: calc(clamp(180px, 22vw, 205px) * -1);
+    width: calc(100% + clamp(180px, 22vw, 205px));
+  }
+}
 /* =========================
    Print
    ========================= */
+
 @page {
   size: A4;
   margin: 0;
@@ -522,6 +568,13 @@
     padding: 0 !important;
     background: #ffffff !important;
     overflow: visible !important;
+  }
+
+  body.cv-print-mode {
+    zoom: 0.82;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
   }
 
   body.cv-print-mode #root {
@@ -542,34 +595,93 @@
   body.cv-print-mode .cv-modal-shell,
   body.cv-print-mode .cv-modal-body-wrapper,
   body.cv-print-mode .cv-layout-wrapper {
-    width: auto !important;
+    width: 256mm !important;
+    max-width: 256mm !important;
     height: auto !important;
-    max-width: none !important;
     max-height: none !important;
     min-height: 0 !important;
     margin: 0 !important;
     padding: 0 !important;
     overflow: visible !important;
     display: block !important;
+    background: #ffffff !important;
   }
 
   body.cv-print-mode .no-print,
-  body.cv-print-mode .cv-topbar {
+  body.cv-print-mode .cv-topbar,
+  body.cv-print-mode .cv-topbar-inner,
+  body.cv-print-mode .cv-topbar-left,
+  body.cv-print-mode .cv-topbar-actions,
+  body.cv-print-mode .cv-download-group,
+  body.cv-print-mode .cv-download-btn,
+  body.cv-print-mode .cv-download-menu,
+  body.cv-print-mode .cv-download-menu-btn,
+  body.cv-print-mode .cv-close-btn {
     display: none !important;
   }
 
+  body.cv-print-mode .cv-modal-body-wrapper {
+    padding: 0 !important;
+  }
+
+  body.cv-print-mode .cv-layout-wrapper {
+    --cv-scale: 1 !important;
+  }
+
   body.cv-print-mode .cv-page {
-    width: 210mm !important;
-    min-height: 297mm !important;
+    width: 256mm !important;
+    min-height: 0 !important;
+    height: auto !important;
     margin: 0 !important;
     padding: 0 !important;
+    display: grid !important;
+    grid-template-columns: 210px 1fr !important;
+    grid-template-rows: auto auto auto !important;
+    grid-template-areas:
+      "sidebar main"
+      "sidebar bottom"
+      "footer footer" !important;
     transform: none !important;
-    transform-origin: top left !important;
     box-shadow: none !important;
     overflow: hidden !important;
     background: #ffffff !important;
     page-break-inside: avoid !important;
     break-inside: avoid !important;
+  }
+
+  body.cv-print-mode .cv-sidebar {
+    grid-area: sidebar !important;
+    min-height: 100% !important;
+    overflow: hidden !important;
+    background: linear-gradient(180deg, #040b18 0%, #081a31 100%) !important;
+    color: #ffffff !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
+  }
+
+  body.cv-print-mode .cv-main {
+    min-width: 0 !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+    background: #ffffff !important;
+  }
+
+  body.cv-print-mode .cv-body {
+    padding: 6px 8px !important;
+    gap: 0.08rem !important;
+  }
+
+  body.cv-print-mode .cv-bottom {
+    margin-left: -210px !important;
+    width: calc(100% + 210px) !important;
+    padding: 0 0.18rem 0 0.3rem !important;
+    overflow: hidden !important;
+  }
+
+  body.cv-print-mode .cv-footer {
+    width: 100% !important;
+    overflow: hidden !important;
   }
 
   body.cv-print-mode .cv-page > *:first-child,
@@ -582,8 +694,326 @@
   body.cv-print-mode .cv-main,
   body.cv-print-mode .cv-bottom,
   body.cv-print-mode .cv-footer,
-  body.cv-print-mode .cv-page {
+  body.cv-print-mode .cv-page,
+  body.cv-print-mode .sidebarInner,
+  body.cv-print-mode .quoteBox,
+  body.cv-print-mode .badge,
+  body.cv-print-mode .picture {
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
+    color-adjust: exact !important;
+  }
+
+  body.cv-print-mode .cv-page * {
+    box-shadow: none !important;
+  }
+
+  /* Avatar */
+  body.cv-print-mode .avatarContainer {
+    width: 100% !important;
+    display: flex !important;
+    justify-content: center !important;
+    margin-top: 0.04rem !important;
+    margin-bottom: 0.02rem !important;
+    min-width: 0 !important;
+  }
+
+  body.cv-print-mode .picture {
+    display: block !important;
+    width: 5.5rem !important;
+    aspect-ratio: 1 !important;
+    padding: 0.05rem !important;
+    border-radius: 0.32rem !important;
+    background: linear-gradient(180deg, #0f172a 0%, #13233d 100%) !important;
+    border: 1px solid rgba(78, 160, 255, 0.35) !important;
+    flex-shrink: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  body.cv-print-mode .profileImg {
+    width: 100% !important;
+    height: 100% !important;
+    display: block !important;
+    border-radius: 0.18rem !important;
+    object-fit: cover !important;
+    object-position: center top !important;
+  }
+
+  /* Sidebar */
+  body.cv-print-mode .sidebarInner {
+    width: 100% !important;
+    min-height: 100% !important;
+    min-width: 0 !important;
+    color: #ffffff !important;
+    padding: 0.1rem 0.16rem !important;
+    box-sizing: border-box !important;
+    font-family: "Segoe UI", sans-serif !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0.02rem !important;
+  }
+
+  body.cv-print-mode .section {
+    width: 100% !important;
+    min-width: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  body.cv-print-mode .title {
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.08rem !important;
+    font-size: 0.44rem !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.025em !important;
+    margin: 0 0 0.025rem 0 !important;
+    color: #4ea0ff !important;
+    border-bottom: 1px solid rgba(78, 160, 255, 0.14) !important;
+    padding-bottom: 0.015rem !important;
+    font-weight: 800 !important;
+    line-height: 0.94 !important;
+  }
+
+  body.cv-print-mode .titleIcon {
+    font-size: 0.44rem !important;
+    flex: 0 0 auto !important;
+  }
+
+  body.cv-print-mode .contactList,
+  body.cv-print-mode .bulletList {
+    list-style: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0 !important;
+    font-size: 0.41rem !important;
+    color: #cbd5e1 !important;
+    min-width: 0 !important;
+    line-height: 0.92 !important;
+  }
+
+  body.cv-print-mode .contactList li,
+  body.cv-print-mode .bulletList li {
+    display: grid !important;
+    grid-template-columns: 0.44rem minmax(0, 1fr) !important;
+    column-gap: 0.08rem !important;
+    align-items: start !important;
+    line-height: 0.92 !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  body.cv-print-mode .contactList li > *,
+  body.cv-print-mode .bulletList li > * {
+    min-width: 0 !important;
+  }
+
+  /* ESTA ES LA CLAVE PARA LINKEDIN */
+  body.cv-print-mode .contactList li span {
+    min-width: 0 !important;
+    max-width: 100% !important;
+    width: 100% !important;
+    display: block !important;
+    white-space: normal !important;
+    overflow: visible !important;
+    text-overflow: clip !important;
+    overflow-wrap: anywhere !important;
+    word-break: break-word !important;
+    word-wrap: break-word !important;
+    hyphens: auto !important;
+    line-height: 0.92 !important;
+  }
+
+  body.cv-print-mode .bulletList li span {
+    min-width: 0 !important;
+    max-width: 100% !important;
+    width: 100% !important;
+    display: block !important;
+    white-space: normal !important;
+    overflow: visible !important;
+    text-overflow: clip !important;
+    overflow-wrap: anywhere !important;
+    word-break: break-word !important;
+    word-wrap: break-word !important;
+    hyphens: auto !important;
+    line-height: 0.92 !important;
+  }
+
+  body.cv-print-mode .contactList li {
+    align-items: start !important;
+  }
+
+  body.cv-print-mode .itemIcon {
+    font-size: 0.36rem !important;
+    color: #5ca9ff !important;
+    margin-top: 0 !important;
+    flex: 0 0 auto !important;
+  }
+
+  /* Skills más pequeñas */
+  body.cv-print-mode .techGrid {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 0.015rem !important;
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  body.cv-print-mode .badge {
+    color: #ffffff !important;
+    font-size: 0.31rem !important;
+    line-height: 0.9 !important;
+    padding: 0.015rem 0.055rem !important;
+    border-radius: 0.06rem !important;
+    border: 1px solid rgba(94, 165, 255, 0.14) !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    white-space: normal !important;
+    max-width: 100% !important;
+    overflow: hidden !important;
+    text-overflow: clip !important;
+    background: rgba(12, 28, 54, 0.9) !important;
+  }
+
+  body.cv-print-mode .quoteBox {
+    margin-top: 0 !important;
+    padding: 0.03rem !important;
+    border-radius: 0.06rem !important;
+    display: flex !important;
+    gap: 0.02rem !important;
+    align-items: flex-start !important;
+    min-width: 0 !important;
+    background: linear-gradient(
+      180deg,
+      rgba(11, 24, 48, 0.72) 0%,
+      rgba(15, 34, 66, 0.62) 100%
+    ) !important;
+    border: 1px solid rgba(78, 160, 255, 0.12) !important;
+    overflow: hidden !important;
+  }
+
+  body.cv-print-mode .quoteIcon {
+    color: #5ca9ff !important;
+    font-size: 0.24rem !important;
+    margin-top: 0 !important;
+    flex: 0 0 auto !important;
+  }
+
+  body.cv-print-mode .quoteBox p {
+    margin: 0 !important;
+    font-size: 0.29rem !important;
+    line-height: 0.9 !important;
+    color: #d7e5ff !important;
+    min-width: 0 !important;
+    overflow-wrap: anywhere !important;
+    word-break: break-word !important;
+  }
+
+  body.cv-print-mode .sidebarInner,
+  body.cv-print-mode .section,
+  body.cv-print-mode .quoteBox {
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+  }
+
+  /* Main */
+  body.cv-print-mode .sectionTitle {
+    font-size: 0.5rem !important;
+    margin: 0 0 0.09rem 0 !important;
+    line-height: 1 !important;
+  }
+
+  body.cv-print-mode .icon {
+    font-size: 0.52rem !important;
+  }
+
+  body.cv-print-mode .text,
+  body.cv-print-mode .descripcion,
+  body.cv-print-mode .projectText,
+  body.cv-print-mode .techText,
+  body.cv-print-mode .list,
+  body.cv-print-mode .cardText {
+    font-size: 0.4rem !important;
+    line-height: 0.96 !important;
+  }
+
+  body.cv-print-mode .cardTitle,
+  body.cv-print-mode .company,
+  body.cv-print-mode .centro,
+  body.cv-print-mode .projectTitle,
+  body.cv-print-mode .techLabel,
+  body.cv-print-mode .periodo,
+  body.cv-print-mode .languageName {
+    font-size: 0.46rem !important;
+    line-height: 0.96 !important;
+  }
+
+  body.cv-print-mode .languageLevel,
+  body.cv-print-mode .date {
+    font-size: 0.42rem !important;
+    line-height: 0.96 !important;
+  }
+
+  body.cv-print-mode .row,
+  body.cv-print-mode .item,
+  body.cv-print-mode .projectItem {
+    padding-bottom: 0.035rem !important;
+    column-gap: 0.08rem !important;
+  }
+
+  body.cv-print-mode .mainBlock {
+    gap: 0 !important;
+  }
+
+  body.cv-print-mode .list {
+    padding-left: 0.28rem !important;
+  }
+
+  body.cv-print-mode .list li {
+    margin-bottom: 0 !important;
+  }
+
+  body.cv-print-mode .projectsColumns,
+  body.cv-print-mode .projectsList,
+  body.cv-print-mode .languagesList,
+  body.cv-print-mode .techList,
+  body.cv-print-mode .timeline {
+    gap: 0.04rem !important;
+  }
+
+  body.cv-print-mode .card,
+  body.cv-print-mode .techCard,
+  body.cv-print-mode .column,
+  body.cv-print-mode .projectsCard,
+  body.cv-print-mode .languagesCard,
+  body.cv-print-mode .section {
+    padding-top: 0.08rem !important;
+    padding-bottom: 0.08rem !important;
+  }
+
+  /* Footer */
+  body.cv-print-mode .footer {
+    font-size: 0.38rem !important;
+    line-height: 1 !important;
+    gap: 0.08rem !important;
+    padding: 0 0.2rem !important;
+    min-height: 15px !important;
+  }
+
+  body.cv-print-mode .logo {
+    font-size: 0.42rem !important;
+  }
+
+  body.cv-print-mode .center {
+    font-size: 0.4rem !important;
+  }
+
+  body.cv-print-mode .mark {
+    width: 0.46rem !important;
+    height: 0.46rem !important;
+    font-size: 0.24rem !important;
   }
 }

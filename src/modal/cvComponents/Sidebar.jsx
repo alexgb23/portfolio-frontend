@@ -63,7 +63,7 @@ const Sidebar = () => {
           </li>
           <li>
             <FaGithub className={styles.itemIcon} />
-            <span>github.com/alexsyskovex</span>
+            <span>github.com/alexgb23</span>
           </li>
           <li>
             <FaLinkedin className={styles.itemIcon} />

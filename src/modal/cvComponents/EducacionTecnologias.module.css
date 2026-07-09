@@ -2,18 +2,18 @@
   width: 100%;
   min-width: 0;
   display: grid;
-  grid-template-columns: minmax(0, 1.22fr) minmax(0, 0.78fr);
-  gap: clamp(0.4rem, 0.24vw + 0.22rem, 0.56rem);
-  margin: 0 0 clamp(0.52rem, 0.32vw + 0.22rem, 0.66rem) 0;
+  grid-template-columns: minmax(0, 1.16fr) minmax(0, 0.84fr);
+  gap: clamp(0.5rem, 0.28vw + 0.28rem, 0.68rem);
+  margin: 0 0 clamp(0.68rem, 0.38vw + 0.26rem, 0.84rem) 0;
 }
 
 .column {
   min-width: 0;
   padding:
-    clamp(0.52rem, 0.3vw + 0.3rem, 0.62rem)
-    clamp(0.52rem, 0.32vw + 0.28rem, 0.64rem)
-    clamp(0.56rem, 0.34vw + 0.3rem, 0.68rem);
-  border-radius: clamp(0.5rem, 0.18vw + 0.36rem, 0.62rem);
+    clamp(0.64rem, 0.36vw + 0.34rem, 0.78rem)
+    clamp(0.68rem, 0.4vw + 0.34rem, 0.84rem)
+    clamp(0.72rem, 0.42vw + 0.36rem, 0.86rem);
+  border-radius: clamp(0.56rem, 0.2vw + 0.4rem, 0.68rem);
   background: #ffffff;
   border: 1px solid rgba(15, 23, 42, 0.08);
   box-shadow:
@@ -25,18 +25,18 @@
 .sectionTitle {
   display: flex;
   align-items: center;
-  gap: clamp(0.28rem, 0.16vw + 0.18rem, 0.36rem);
-  margin: 0 0 clamp(0.42rem, 0.24vw + 0.2rem, 0.54rem) 0;
-  font-size: clamp(0.61rem, 0.14vw + 0.56rem, 0.67rem);
+  gap: clamp(0.34rem, 0.18vw + 0.2rem, 0.42rem);
+  margin: 0 0 clamp(0.5rem, 0.28vw + 0.24rem, 0.62rem) 0;
+  font-size: clamp(0.72rem, 0.18vw + 0.64rem, 0.82rem);
   font-weight: 800;
   letter-spacing: 0.07em;
   text-transform: uppercase;
   color: #1d4ed8;
-  line-height: 1.1;
+  line-height: 1.12;
 }
 
 .icon {
-  font-size: clamp(0.64rem, 0.16vw + 0.5rem, 0.74rem);
+  font-size: clamp(0.78rem, 0.2vw + 0.56rem, 0.88rem);
   color: #2563eb;
   flex: 0 0 auto;
 }
@@ -50,10 +50,10 @@
 
 .row {
   display: grid;
-  grid-template-columns: clamp(0.4rem, 0.08vw + 0.36rem, 0.5rem) minmax(0, 1fr);
-  column-gap: clamp(0.32rem, 0.16vw + 0.18rem, 0.42rem);
+  grid-template-columns: clamp(0.48rem, 0.08vw + 0.42rem, 0.56rem) minmax(0, 1fr);
+  column-gap: clamp(0.34rem, 0.16vw + 0.22rem, 0.46rem);
   align-items: start;
-  padding: 0 0 clamp(0.26rem, 0.16vw + 0.16rem, 0.36rem) 0;
+  padding: 0 0 clamp(0.28rem, 0.16vw + 0.18rem, 0.38rem) 0;
 }
 
 .row:last-child {
@@ -68,36 +68,36 @@
 }
 
 .dot {
-  width: clamp(0.27rem, 0.06vw + 0.24rem, 0.32rem);
-  height: clamp(0.27rem, 0.06vw + 0.24rem, 0.32rem);
-  margin-top: clamp(0.15rem, 0.04vw + 0.11rem, 0.18rem);
+  width: clamp(0.3rem, 0.06vw + 0.28rem, 0.36rem);
+  height: clamp(0.3rem, 0.06vw + 0.28rem, 0.36rem);
+  margin-top: clamp(0.18rem, 0.06vw + 0.12rem, 0.22rem);
   border-radius: 999px;
   background: #1d72f3;
-  box-shadow: 0 0 0 clamp(0.05rem, 0.02vw + 0.04rem, 0.08rem) rgba(29, 114, 243, 0.1);
+  box-shadow: 0 0 0 clamp(0.06rem, 0.02vw + 0.04rem, 0.1rem) rgba(29, 114, 243, 0.1);
   z-index: 1;
   flex: 0 0 auto;
 }
 
 .line {
   position: absolute;
-  top: clamp(0.42rem, 0.08vw + 0.38rem, 0.48rem);
-  bottom: calc(clamp(0.26rem, 0.16vw + 0.16rem, 0.36rem) * -1);
+  top: clamp(0.46rem, 0.08vw + 0.4rem, 0.54rem);
+  bottom: calc(clamp(0.28rem, 0.16vw + 0.18rem, 0.38rem) * -1);
   width: 1px;
   border-radius: 999px;
-  background: rgba(29, 114, 243, 0.24);
+  background: rgba(29, 114, 243, 0.22);
 }
 
 .mainBlock {
   min-width: 0;
   display: flex;
   flex-direction: column;
-  gap: clamp(0.05rem, 0.03vw + 0.03rem, 0.08rem);
+  gap: clamp(0.06rem, 0.03vw + 0.04rem, 0.1rem);
 }
 
 .periodo {
   margin: 0;
-  font-size: clamp(0.52rem, 0.08vw + 0.48rem, 0.56rem);
-  line-height: 1.08;
+  font-size: clamp(0.62rem, 0.1vw + 0.56rem, 0.68rem);
+  line-height: 1.12;
   font-weight: 800;
   color: #2563eb;
   letter-spacing: 0.005em;
@@ -108,9 +108,9 @@
 }
 
 .centro {
-  margin: 0 0 clamp(0.08rem, 0.04vw + 0.05rem, 0.12rem) 0;
-  font-size: clamp(0.59rem, 0.1vw + 0.53rem, 0.64rem);
-  line-height: 1.12;
+  margin: 0 0 clamp(0.1rem, 0.04vw + 0.08rem, 0.16rem) 0;
+  font-size: clamp(0.7rem, 0.14vw + 0.62rem, 0.76rem);
+  line-height: 1.14;
   font-weight: 800;
   letter-spacing: -0.01em;
   color: #0f172a;
@@ -120,14 +120,14 @@
 
 .list {
   margin: 0;
-  padding-left: clamp(0.48rem, 0.08vw + 0.42rem, 0.56rem);
-  font-size: clamp(0.5rem, 0.08vw + 0.46rem, 0.55rem);
-  line-height: 1.18;
+  padding-left: clamp(0.62rem, 0.1vw + 0.56rem, 0.72rem);
+  font-size: clamp(0.6rem, 0.1vw + 0.54rem, 0.66rem);
+  line-height: 1.28;
   color: #334155;
 }
 
 .list li {
-  margin-bottom: clamp(0.02rem, 0.02vw + 0.02rem, 0.05rem);
+  margin-bottom: clamp(0.04rem, 0.02vw + 0.03rem, 0.08rem);
 }
 
 .list li:last-child {
@@ -137,21 +137,21 @@
 .techList {
   display: flex;
   flex-direction: column;
-  gap: clamp(0.22rem, 0.14vw + 0.14rem, 0.3rem);
+  gap: clamp(0.34rem, 0.18vw + 0.22rem, 0.44rem);
 }
 
 .techCard {
   min-width: 0;
   min-height: 0;
-  border-radius: clamp(0.44rem, 0.14vw + 0.34rem, 0.54rem);
+  border-radius: clamp(0.52rem, 0.16vw + 0.38rem, 0.62rem);
   border: 1px solid rgba(148, 163, 184, 0.18);
   background: #ffffff;
   padding:
-    clamp(0.34rem, 0.14vw + 0.24rem, 0.4rem)
-    clamp(0.4rem, 0.16vw + 0.26rem, 0.48rem);
+    clamp(0.5rem, 0.18vw + 0.34rem, 0.62rem)
+    clamp(0.58rem, 0.22vw + 0.4rem, 0.72rem);
   display: grid;
-  grid-template-columns: clamp(3.4rem, 0.34vw + 3.16rem, 3.78rem) minmax(0, 1fr);
-  gap: clamp(0.24rem, 0.14vw + 0.14rem, 0.32rem);
+  grid-template-columns: clamp(4.2rem, 0.44vw + 3.9rem, 4.8rem) minmax(0, 1fr);
+  gap: clamp(0.34rem, 0.18vw + 0.22rem, 0.46rem);
   align-items: center;
   box-sizing: border-box;
   box-shadow:
@@ -162,9 +162,9 @@
 .techLabel {
   position: relative;
   min-width: 0;
-  padding-right: clamp(0.22rem, 0.1vw + 0.14rem, 0.28rem);
-  font-size: clamp(0.52rem, 0.08vw + 0.48rem, 0.57rem);
-  line-height: 1.12;
+  padding-right: clamp(0.28rem, 0.12vw + 0.18rem, 0.36rem);
+  font-size: clamp(0.66rem, 0.12vw + 0.6rem, 0.72rem);
+  line-height: 1.16;
   font-weight: 800;
   letter-spacing: -0.01em;
   text-wrap: balance;
@@ -176,18 +176,18 @@
 .techLabel::after {
   content: "";
   position: absolute;
-  top: 0.02rem;
+  top: 0.04rem;
   right: 0;
   width: 1px;
-  height: calc(100% - 0.04rem);
+  height: calc(100% - 0.08rem);
   background: rgba(148, 163, 184, 0.26);
 }
 
 .techText {
   margin: 0;
   min-width: 0;
-  font-size: clamp(0.49rem, 0.08vw + 0.45rem, 0.54rem);
-  line-height: 1.16;
+  font-size: clamp(0.64rem, 0.12vw + 0.58rem, 0.7rem);
+  line-height: 1.4;
   color: #334155;
   overflow-wrap: break-word;
   word-break: break-word;

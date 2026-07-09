@@ -1,9 +1,19 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
+// 1. Importamos el visualizador aquí arriba
+import { visualizer } from "rollup-plugin-visualizer";
 
 // https://vite.dev
 export default defineConfig({
-  plugins: [react()],
+  plugins: [
+    react(),
+    // 2. Activamos el visualizador con sus opciones
+    visualizer({
+      open: true, // Abre el gráfico automáticamente en tu navegador al compilar
+      filename: "stats.html", // Nombre del archivo del reporte gráfico
+      gzipSize: true, // Muestra el peso real comprimido en el gráfico
+    }),
+  ],
 
   // 1. CONFIGURACIÓN DE DESARROLLO (Corrige el congelamiento)
   server: {

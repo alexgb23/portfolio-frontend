@@ -1,12 +1,12 @@
 .section {
   width: 100%;
   min-width: 0;
-  margin: 0 0 clamp(0.58rem, 0.4vw + 0.24rem, 0.74rem) 0;
+  margin: 0 0 clamp(0.72rem, 0.48vw + 0.28rem, 0.92rem) 0;
   padding:
-    clamp(0.56rem, 0.34vw + 0.3rem, 0.68rem)
-    clamp(0.58rem, 0.36vw + 0.3rem, 0.72rem)
-    clamp(0.62rem, 0.38vw + 0.32rem, 0.76rem);
-  border-radius: clamp(0.42rem, 0.14vw + 0.36rem, 0.5rem);
+    clamp(0.72rem, 0.42vw + 0.38rem, 0.88rem)
+    clamp(0.76rem, 0.46vw + 0.38rem, 0.94rem)
+    clamp(0.82rem, 0.48vw + 0.4rem, 0.98rem);
+  border-radius: clamp(0.5rem, 0.18vw + 0.38rem, 0.6rem);
   background: #ffffff;
   border: 1px solid rgba(15, 23, 42, 0.08);
   box-shadow:
@@ -18,18 +18,18 @@
 .title {
   display: flex;
   align-items: center;
-  gap: clamp(0.3rem, 0.18vw + 0.18rem, 0.4rem);
-  margin: 0 0 clamp(0.48rem, 0.3vw + 0.24rem, 0.62rem) 0;
-  font-size: clamp(0.62rem, 0.16vw + 0.56rem, 0.69rem);
+  gap: clamp(0.36rem, 0.22vw + 0.2rem, 0.46rem);
+  margin: 0 0 clamp(0.58rem, 0.34vw + 0.28rem, 0.74rem) 0;
+  font-size: clamp(0.72rem, 0.18vw + 0.64rem, 0.82rem);
   font-weight: 800;
   letter-spacing: 0.07em;
   text-transform: uppercase;
   color: #1d4ed8;
-  line-height: 1.1;
+  line-height: 1.12;
 }
 
 .icon {
-  font-size: clamp(0.66rem, 0.18vw + 0.5rem, 0.76rem);
+  font-size: clamp(0.8rem, 0.22vw + 0.56rem, 0.92rem);
   color: #2563eb;
   flex: 0 0 auto;
 }
@@ -45,12 +45,12 @@
 .item {
   display: grid;
   grid-template-columns:
-    clamp(3.95rem, 0.82vw + 3.5rem, 4.7rem)
-    clamp(0.62rem, 0.12vw + 0.56rem, 0.78rem)
+    clamp(4.7rem, 1vw + 4rem, 5.6rem)
+    clamp(0.74rem, 0.14vw + 0.64rem, 0.9rem)
     minmax(0, 1fr);
-  gap: clamp(0.28rem, 0.18vw + 0.18rem, 0.42rem);
+  gap: clamp(0.38rem, 0.22vw + 0.24rem, 0.56rem);
   align-items: start;
-  padding: 0 0 clamp(0.4rem, 0.24vw + 0.24rem, 0.54rem) 0;
+  padding: 0 0 clamp(0.56rem, 0.3vw + 0.34rem, 0.72rem) 0;
 }
 
 .item:last-child {
@@ -60,13 +60,13 @@
 .left {
   display: flex;
   justify-content: flex-end;
-  padding-top: clamp(0.01rem, 0.02vw, 0.04rem);
+  padding-top: clamp(0.04rem, 0.04vw, 0.08rem);
   min-width: 0;
 }
 
 .periodo {
-  font-size: clamp(0.52rem, 0.1vw + 0.48rem, 0.58rem);
-  line-height: 1.12;
+  font-size: clamp(0.64rem, 0.14vw + 0.58rem, 0.72rem);
+  line-height: 1.18;
   font-weight: 800;
   color: #2563eb;
   white-space: nowrap;
@@ -81,20 +81,20 @@
 }
 
 .dot {
-  width: clamp(0.34rem, 0.08vw + 0.3rem, 0.4rem);
-  height: clamp(0.34rem, 0.08vw + 0.3rem, 0.4rem);
+  width: clamp(0.42rem, 0.1vw + 0.36rem, 0.48rem);
+  height: clamp(0.42rem, 0.1vw + 0.36rem, 0.48rem);
   border-radius: 999px;
   background: #1d72f3;
-  margin-top: clamp(0.16rem, 0.08vw + 0.1rem, 0.2rem);
-  box-shadow: 0 0 0 clamp(0.1rem, 0.04vw + 0.08rem, 0.14rem) rgba(29, 114, 243, 0.12);
+  margin-top: clamp(0.18rem, 0.1vw + 0.12rem, 0.24rem);
+  box-shadow: 0 0 0 clamp(0.12rem, 0.05vw + 0.1rem, 0.16rem) rgba(29, 114, 243, 0.12);
   z-index: 1;
   flex: 0 0 auto;
 }
 
 .line {
   position: absolute;
-  top: clamp(0.52rem, 0.1vw + 0.46rem, 0.6rem);
-  bottom: calc(clamp(0.4rem, 0.24vw + 0.24rem, 0.54rem) * -1);
+  top: clamp(0.62rem, 0.12vw + 0.54rem, 0.72rem);
+  bottom: calc(clamp(0.56rem, 0.3vw + 0.34rem, 0.72rem) * -1);
   width: 1px;
   background: rgba(29, 114, 243, 0.2);
   border-radius: 999px;
@@ -105,9 +105,9 @@
 }
 
 .company {
-  margin: 0 0 clamp(0.1rem, 0.04vw + 0.08rem, 0.16rem) 0;
-  font-size: clamp(0.6rem, 0.12vw + 0.54rem, 0.66rem);
-  line-height: 1.14;
+  margin: 0 0 clamp(0.16rem, 0.08vw + 0.1rem, 0.24rem) 0;
+  font-size: clamp(0.72rem, 0.16vw + 0.64rem, 0.8rem);
+  line-height: 1.18;
   font-weight: 800;
   letter-spacing: -0.01em;
   color: #0f172a;
@@ -116,8 +116,8 @@
 
 .descripcion {
   margin: 0;
-  font-size: clamp(0.53rem, 0.1vw + 0.48rem, 0.58rem);
-  line-height: 1.22;
+  font-size: clamp(0.64rem, 0.12vw + 0.58rem, 0.7rem);
+  line-height: 1.42;
   color: #334155;
   text-align: left;
   min-width: 0;

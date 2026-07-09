@@ -2,18 +2,14 @@
   width: 100%;
   min-width: 0;
   display: grid;
-  grid-template-columns: minmax(0, 1.56fr) minmax(0, 0.88fr);
-  gap: clamp(0.42rem, 0.26vw + 0.24rem, 0.62rem);
+  grid-template-columns: minmax(0, 1.78fr) minmax(0, 0.66fr);
+  gap: clamp(0.46rem, 0.28vw + 0.26rem, 0.66rem);
   margin: 0;
 }
 
 .projectsCard,
 .languagesCard {
   min-width: 0;
-  padding:
-    clamp(0.58rem, 0.34vw + 0.34rem, 0.72rem)
-    clamp(0.62rem, 0.36vw + 0.36rem, 0.78rem)
-    clamp(0.62rem, 0.36vw + 0.36rem, 0.76rem);
   border-radius: clamp(0.58rem, 0.2vw + 0.4rem, 0.72rem);
   background: #ffffff;
   border: 1px solid rgba(15, 23, 42, 0.08);
@@ -23,21 +19,35 @@
   box-sizing: border-box;
 }
 
+.projectsCard {
+  padding:
+    clamp(0.68rem, 0.38vw + 0.38rem, 0.84rem)
+    clamp(0.74rem, 0.42vw + 0.4rem, 0.92rem)
+    clamp(0.72rem, 0.4vw + 0.4rem, 0.88rem);
+}
+
+.languagesCard {
+  padding:
+    clamp(0.5rem, 0.28vw + 0.3rem, 0.62rem)
+    clamp(0.54rem, 0.3vw + 0.32rem, 0.68rem)
+    clamp(0.58rem, 0.32vw + 0.34rem, 0.7rem);
+}
+
 .sectionTitle {
   display: flex;
   align-items: center;
-  gap: clamp(0.28rem, 0.16vw + 0.18rem, 0.38rem);
-  margin: 0 0 clamp(0.48rem, 0.28vw + 0.22rem, 0.62rem) 0;
-  font-size: clamp(0.62rem, 0.14vw + 0.56rem, 0.7rem);
+  gap: clamp(0.34rem, 0.18vw + 0.22rem, 0.42rem);
+  margin: 0 0 clamp(0.56rem, 0.3vw + 0.26rem, 0.7rem) 0;
+  font-size: clamp(0.72rem, 0.18vw + 0.64rem, 0.82rem);
   font-weight: 800;
   letter-spacing: 0.07em;
   text-transform: uppercase;
   color: #1d4ed8;
-  line-height: 1.1;
+  line-height: 1.12;
 }
 
 .icon {
-  font-size: clamp(0.66rem, 0.16vw + 0.52rem, 0.76rem);
+  font-size: clamp(0.8rem, 0.22vw + 0.56rem, 0.92rem);
   color: #2563eb;
   flex: 0 0 auto;
 }
@@ -45,20 +55,20 @@
 .projectsColumns {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: clamp(0.5rem, 0.28vw + 0.26rem, 0.68rem);
+  gap: clamp(0.58rem, 0.32vw + 0.3rem, 0.78rem);
 }
 
 .projectsList {
   display: flex;
   flex-direction: column;
-  gap: clamp(0.34rem, 0.2vw + 0.2rem, 0.46rem);
+  gap: clamp(0.44rem, 0.24vw + 0.26rem, 0.58rem);
   min-width: 0;
 }
 
 .projectItem {
   display: grid;
-  grid-template-columns: clamp(0.42rem, 0.08vw + 0.38rem, 0.5rem) minmax(0, 1fr);
-  column-gap: clamp(0.3rem, 0.16vw + 0.18rem, 0.4rem);
+  grid-template-columns: clamp(0.5rem, 0.1vw + 0.42rem, 0.6rem) minmax(0, 1fr);
+  column-gap: clamp(0.38rem, 0.18vw + 0.24rem, 0.5rem);
   align-items: start;
 }
 
@@ -70,20 +80,20 @@
 }
 
 .projectDot {
-  width: clamp(0.24rem, 0.08vw + 0.22rem, 0.3rem);
-  height: clamp(0.24rem, 0.08vw + 0.22rem, 0.3rem);
-  margin-top: clamp(0.18rem, 0.04vw + 0.14rem, 0.24rem);
+  width: clamp(0.32rem, 0.08vw + 0.28rem, 0.38rem);
+  height: clamp(0.32rem, 0.08vw + 0.28rem, 0.38rem);
+  margin-top: clamp(0.2rem, 0.06vw + 0.14rem, 0.26rem);
   border-radius: 999px;
   background: #1d72f3;
-  box-shadow: 0 0 0 clamp(0.06rem, 0.02vw + 0.04rem, 0.08rem) rgba(29, 114, 243, 0.12);
+  box-shadow: 0 0 0 clamp(0.08rem, 0.03vw + 0.06rem, 0.12rem) rgba(29, 114, 243, 0.12);
   z-index: 1;
   flex: 0 0 auto;
 }
 
 .line {
   position: absolute;
-  top: clamp(0.46rem, 0.08vw + 0.4rem, 0.54rem);
-  bottom: clamp(-0.38rem, -0.08vw - 0.28rem, -0.28rem);
+  top: clamp(0.56rem, 0.1vw + 0.46rem, 0.64rem);
+  bottom: clamp(-0.5rem, -0.1vw - 0.36rem, -0.36rem);
   width: 1px;
   border-radius: 999px;
   background: rgba(29, 114, 243, 0.24);
@@ -94,19 +104,19 @@
 }
 
 .projectTitle {
-  margin: 0 0 clamp(0.08rem, 0.04vw + 0.06rem, 0.12rem) 0;
-  font-size: clamp(0.61rem, 0.1vw + 0.55rem, 0.67rem);
+  margin: 0 0 clamp(0.12rem, 0.06vw + 0.08rem, 0.18rem) 0;
+  font-size: clamp(0.72rem, 0.14vw + 0.64rem, 0.8rem);
   font-weight: 800;
   color: #1e3a8a;
-  line-height: 1.14;
+  line-height: 1.18;
   letter-spacing: -0.01em;
   text-wrap: balance;
 }
 
 .projectText {
   margin: 0;
-  font-size: clamp(0.52rem, 0.08vw + 0.47rem, 0.57rem);
-  line-height: 1.2;
+  font-size: clamp(0.64rem, 0.12vw + 0.58rem, 0.7rem);
+  line-height: 1.4;
   color: #475569;
   overflow-wrap: break-word;
   word-break: break-word;
@@ -115,32 +125,32 @@
 .languagesList {
   display: flex;
   flex-direction: column;
-  gap: clamp(0.54rem, 0.26vw + 0.3rem, 0.7rem);
-  margin-top: clamp(0.04rem, 0.02vw + 0.02rem, 0.08rem);
+  gap: clamp(0.42rem, 0.22vw + 0.24rem, 0.56rem);
+  margin-top: clamp(0.02rem, 0.02vw + 0.01rem, 0.06rem);
 }
 
 .languageRow {
   display: flex;
   flex-direction: column;
-  gap: clamp(0.18rem, 0.1vw + 0.12rem, 0.26rem);
+  gap: clamp(0.14rem, 0.08vw + 0.1rem, 0.22rem);
 }
 
 .languageTop {
   display: flex;
   justify-content: space-between;
-  gap: clamp(0.28rem, 0.16vw + 0.18rem, 0.42rem);
+  gap: clamp(0.22rem, 0.14vw + 0.16rem, 0.34rem);
   align-items: baseline;
 }
 
 .languageName {
-  font-size: clamp(0.61rem, 0.12vw + 0.55rem, 0.68rem);
+  font-size: clamp(0.58rem, 0.1vw + 0.54rem, 0.64rem);
   font-weight: 800;
   color: #0f172a;
-  line-height: 1.1;
+  line-height: 1.12;
 }
 
 .languageLevel {
-  font-size: clamp(0.53rem, 0.08vw + 0.48rem, 0.58rem);
+  font-size: clamp(0.5rem, 0.08vw + 0.46rem, 0.56rem);
   color: #64748b;
   line-height: 1.1;
   white-space: nowrap;
@@ -148,7 +158,7 @@
 
 .progressTrack {
   width: 100%;
-  height: clamp(0.2rem, 0.04vw + 0.18rem, 0.26rem);
+  height: clamp(0.18rem, 0.04vw + 0.16rem, 0.22rem);
   border-radius: 999px;
   background: #e7ecf3;
   overflow: hidden;

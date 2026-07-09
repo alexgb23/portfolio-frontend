@@ -30,12 +30,12 @@
 
 .text {
   margin: 0;
-  padding-right: clamp(0.7rem, 0.9vw + 0.22rem, 1.2rem);
   padding-left: clamp(1.12rem, 0.42vw + 0.82rem, 1.34rem);
-  font-size: clamp(0.62rem, 0.18vw + 0.56rem, 0.68rem);
-  line-height: 1.42;
+  padding-right: 0;
+  max-width: 85%;
+  font-size: clamp(0.82rem, 0.24vw + 0.72rem, 0.9rem);
+  line-height: 1.6;
   color: #334155;
-  text-align: justify;
   min-width: 0;
   overflow-wrap: break-word;
   word-break: break-word;
