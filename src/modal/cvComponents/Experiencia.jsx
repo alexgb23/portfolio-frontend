@@ -4,12 +4,6 @@ import { FaBriefcase } from "react-icons/fa";
 
 const puestos = [
   {
-    periodo: "2013 – 2018",
-    empresa: "Informático · Dirección Integral de Supervisión",
-    descripcion:
-      "Mantenimiento de software en centro formativo, soporte, operativa técnica y resolución de incidencias.",
-  },
-  {
     periodo: "2007 – 2011",
     empresa: "Técnico de laboratorio informático",
     descripcion:

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { FaDownload, FaTimes, FaStamp, FaPrint } from "react-icons/fa";
 import "./CvModal.css";
@@ -13,274 +13,188 @@ import EducacionTecnologias from "./cvComponents/EducacionTecnologias";
 import ProyectosIdiomas from "./cvComponents/ProyectosIdiomas";
 import Footer from "./cvComponents/Footer";
 
+const VIEWPORT_PADDING = 10;
+const MAX_SCALE = 1.22;
+const MM_TO_PX = 96 / 25.4;
+const PAGE_WIDTH_PX = 210 * MM_TO_PX;
+const PAGE_HEIGHT_PX = 297 * MM_TO_PX;
+
+function useCvScale({ enabled, viewportRef }) {
+  const [scale, setScale] = useState(1);
+
+  useLayoutEffect(() => {
+    if (!enabled) return;
+
+    let frame1 = 0;
+    let frame2 = 0;
+    let timeoutId = 0;
+
+    const calculate = () => {
+      const viewport = viewportRef.current;
+      if (!(viewport instanceof HTMLElement)) return;
+
+      const viewportPadding = window.innerWidth <= 768 ? 0 : VIEWPORT_PADDING;
+
+      const vw = Math.max(viewport.clientWidth - viewportPadding * 2, 0);
+      const vh = Math.max(viewport.clientHeight - viewportPadding * 2, 0);
+
+      const widthScale = vw / PAGE_WIDTH_PX;
+      const heightScale = vh / PAGE_HEIGHT_PX;
+
+      const isMobile = window.innerWidth <= 768;
+
+      const next = isMobile ? widthScale : Math.min(widthScale, heightScale, 1);
+
+      setScale(Math.max(next, 0.1));
+    };
+
+    const calculateDeferred = () => {
+      cancelAnimationFrame(frame1);
+      cancelAnimationFrame(frame2);
+      clearTimeout(timeoutId);
+
+      frame1 = requestAnimationFrame(() => {
+        calculate();
+
+        frame2 = requestAnimationFrame(() => {
+          calculate();
+
+          timeoutId = window.setTimeout(() => {
+            calculate();
+          }, 120);
+        });
+      });
+    };
+
+    calculateDeferred();
+
+    const observer = new ResizeObserver(() => {
+      calculateDeferred();
+    });
+
+    if (viewportRef.current instanceof HTMLElement) {
+      observer.observe(viewportRef.current);
+    }
+
+    window.addEventListener("resize", calculateDeferred);
+    window.addEventListener("orientationchange", calculateDeferred);
+    window.visualViewport?.addEventListener("resize", calculateDeferred);
+    window.visualViewport?.addEventListener("scroll", calculateDeferred);
+
+    return () => {
+      observer.disconnect();
+      cancelAnimationFrame(frame1);
+      cancelAnimationFrame(frame2);
+      clearTimeout(timeoutId);
+
+      window.removeEventListener("resize", calculateDeferred);
+      window.removeEventListener("orientationchange", calculateDeferred);
+      window.visualViewport?.removeEventListener("resize", calculateDeferred);
+      window.visualViewport?.removeEventListener("scroll", calculateDeferred);
+    };
+  }, [enabled, viewportRef]);
+
+  return scale;
+}
+
 function CvModal({ isOpen, onClose }) {
   const [isMounted, setIsMounted] = useState(false);
   const [isDownloadMenuOpen, setIsDownloadMenuOpen] = useState(false);
 
-  const closeButtonRef = useRef(null);
   const downloadGroupRef = useRef(null);
-  const wrapperRef = useRef(null);
+
+  // Viewport donde se calcula el espacio disponible
+  const viewportRef = useRef(null);
+
+  // Hoja A4 real
+  const pageRef = useRef(null);
 
   useEffect(() => {
     setIsMounted(true);
   }, []);
 
   useEffect(() => {
-    const cleanupPrintMode = () => {
-      document.body.classList.remove("cv-print-mode");
+    const handleAfterPrint = () => {
+      requestAnimationFrame(() => {
+        window.dispatchEvent(new Event("resize"));
+      });
     };
 
-    window.addEventListener("afterprint", cleanupPrintMode);
+    window.addEventListener("afterprint", handleAfterPrint);
 
     return () => {
-      window.removeEventListener("afterprint", cleanupPrintMode);
-      document.body.classList.remove("cv-print-mode");
+      window.removeEventListener("afterprint", handleAfterPrint);
     };
   }, []);
 
   useEffect(() => {
     if (!isOpen) return;
 
-    const scrollY = window.scrollY;
-    const previousBodyStyle = {
-      position: document.body.style.position,
-      top: document.body.style.top,
-      left: document.body.style.left,
-      right: document.body.style.right,
-      width: document.body.style.width,
-      overflow: document.body.style.overflow,
-    };
-
-    document.body.style.position = "fixed";
-    document.body.style.top = `-${scrollY}px`;
-    document.body.style.left = "0";
-    document.body.style.right = "0";
-    document.body.style.width = "100%";
-    document.body.style.overflow = "hidden";
-
-    closeButtonRef.current?.focus();
-
-    return () => {
-      document.body.style.position = previousBodyStyle.position;
-      document.body.style.top = previousBodyStyle.top;
-      document.body.style.left = previousBodyStyle.left;
-      document.body.style.right = previousBodyStyle.right;
-      document.body.style.width = previousBodyStyle.width;
-      document.body.style.overflow = previousBodyStyle.overflow;
-      document.body.classList.remove("cv-print-mode");
-      setIsDownloadMenuOpen(false);
-      window.scrollTo(0, scrollY);
-    };
-  }, [isOpen]);
-
-  useEffect(() => {
-    if (!isOpen) return;
-
     const handleKeyDown = (event) => {
-      if (event.key !== "Escape") return;
+      if (event.key === "Escape") {
+        if (isDownloadMenuOpen) {
+          setIsDownloadMenuOpen(false);
+          return;
+        }
 
-      if (isDownloadMenuOpen) {
-        setIsDownloadMenuOpen(false);
-        return;
+        onClose();
       }
-
-      onClose?.();
     };
 
-    window.addEventListener("keydown", handleKeyDown);
+    document.addEventListener("keydown", handleKeyDown);
 
     return () => {
-      window.removeEventListener("keydown", handleKeyDown);
+      document.removeEventListener("keydown", handleKeyDown);
     };
   }, [isOpen, isDownloadMenuOpen, onClose]);
 
   useEffect(() => {
-    if (!isDownloadMenuOpen) return;
+    if (!isOpen) return;
 
-    const handlePointerDownOutside = (event) => {
-      if (!downloadGroupRef.current?.contains(event.target)) {
+    const handleDocumentClick = (event) => {
+      const target = event.target;
+
+      if (
+        downloadGroupRef.current &&
+        target instanceof Node &&
+        !downloadGroupRef.current.contains(target)
+      ) {
         setIsDownloadMenuOpen(false);
       }
     };
 
-    document.addEventListener("mousedown", handlePointerDownOutside);
-    document.addEventListener("touchstart", handlePointerDownOutside);
+    document.addEventListener("click", handleDocumentClick);
 
     return () => {
-      document.removeEventListener("mousedown", handlePointerDownOutside);
-      document.removeEventListener("touchstart", handlePointerDownOutside);
-    };
-  }, [isDownloadMenuOpen]);
-
-  useEffect(() => {
-    if (!isOpen) return;
-
-    const mobileMq = window.matchMedia("(max-width: 699px)");
-    const tabletMq = window.matchMedia(
-      "(min-width: 700px) and (max-width: 1199px)",
-    );
-
-    const MOBILE_BASE_WIDTH = 840;
-    const MOBILE_BASE_HEIGHT = 1188;
-
-    const TABLET_BASE_WIDTH = 840;
-    const TABLET_BASE_HEIGHT = 1188;
-
-    const resetWrapperStyles = () => {
-      const wrapper = wrapperRef.current;
-      if (!wrapper) return;
-
-      wrapper.style.removeProperty("--cv-scale");
-      wrapper.style.width = "";
-      wrapper.style.height = "";
-      wrapper.style.minHeight = "";
-    };
-
-    const getContainerMetrics = () => {
-      const wrapper = wrapperRef.current;
-      if (!wrapper) return null;
-
-      const container = wrapper.parentElement;
-      if (!container) return null;
-
-      if (window.matchMedia("print").matches) return null;
-
-      const rect = container.getBoundingClientRect();
-      const styles = window.getComputedStyle(container);
-
-      const padX =
-        parseFloat(styles.paddingLeft || 0) +
-        parseFloat(styles.paddingRight || 0);
-
-      const padY =
-        parseFloat(styles.paddingTop || 0) +
-        parseFloat(styles.paddingBottom || 0);
-
-      return {
-        wrapper,
-        availableWidth: Math.max(0, rect.width - padX),
-        availableHeight: Math.max(0, rect.height - padY),
-      };
-    };
-
-    const applyLayout = (baseWidth, baseHeight, scale) => {
-      const metrics = getContainerMetrics();
-      if (!metrics) return;
-
-      const { wrapper } = metrics;
-      const safeScale = Number.isFinite(scale) && scale > 0 ? scale : 1;
-
-      resetWrapperStyles();
-
-      wrapper.style.setProperty("--cv-scale", String(safeScale));
-      wrapper.style.width = `${baseWidth * safeScale}px`;
-      wrapper.style.height = `${baseHeight * safeScale}px`;
-      wrapper.style.minHeight = `${baseHeight * safeScale}px`;
-    };
-
-    const applyMobileLayout = () => {
-      const metrics = getContainerMetrics();
-      if (!metrics) return;
-
-      const { availableWidth, availableHeight } = metrics;
-      const scaleX = availableWidth / MOBILE_BASE_WIDTH;
-      const scaleY = availableHeight / MOBILE_BASE_HEIGHT;
-      const scale = Math.min(scaleX, scaleY, 1);
-
-      applyLayout(MOBILE_BASE_WIDTH, MOBILE_BASE_HEIGHT, scale);
-    };
-
-    const applyTabletLayout = () => {
-      const metrics = getContainerMetrics();
-      if (!metrics) return;
-
-      const { availableWidth, availableHeight } = metrics;
-      const scaleX = availableWidth / TABLET_BASE_WIDTH;
-      const scaleY = availableHeight / TABLET_BASE_HEIGHT;
-      const scale = Math.min(scaleX, scaleY, 1);
-
-      applyLayout(TABLET_BASE_WIDTH, TABLET_BASE_HEIGHT, scale);
-    };
-
-    const updateLayoutByViewport = () => {
-      resetWrapperStyles();
-
-      if (mobileMq.matches) {
-        applyMobileLayout();
-        return;
-      }
-
-      if (tabletMq.matches) {
-        applyTabletLayout();
-        return;
-      }
-
-      resetWrapperStyles();
-    };
-
-    updateLayoutByViewport();
-
-    const handleViewportChange = () => {
-      window.requestAnimationFrame(() => {
-        updateLayoutByViewport();
-      });
-    };
-
-    mobileMq.addEventListener("change", handleViewportChange);
-    tabletMq.addEventListener("change", handleViewportChange);
-    window.addEventListener("resize", handleViewportChange);
-
-    return () => {
-      mobileMq.removeEventListener("change", handleViewportChange);
-      tabletMq.removeEventListener("change", handleViewportChange);
-      window.removeEventListener("resize", handleViewportChange);
-      resetWrapperStyles();
+      document.removeEventListener("click", handleDocumentClick);
     };
   }, [isOpen]);
 
-  const handleToggleDownloadMenu = () => {
+  // Escala automática
+const scale = useCvScale({
+  enabled: isOpen,
+  viewportRef,
+});
+
+  // SOLO una variable CSS
+  const shellStyle = {
+    "--cv-scale": scale,
+  };
+
+  const handleToggleDownloadMenu = (event) => {
+    event.stopPropagation();
     setIsDownloadMenuOpen((prev) => !prev);
   };
 
-  const handleCloseMenu = () => {
+  const handlePrintCurrentCV = (event) => {
+    event.stopPropagation();
     setIsDownloadMenuOpen(false);
+    window.print();
   };
 
-  const handlePrintCurrentCV = () => {
+  const handleCloseMenu = (event) => {
+    event.stopPropagation();
     setIsDownloadMenuOpen(false);
-
-    const previousBodyStyle = {
-      position: document.body.style.position,
-      top: document.body.style.top,
-      left: document.body.style.left,
-      right: document.body.style.right,
-      width: document.body.style.width,
-      overflow: document.body.style.overflow,
-    };
-
-    document.body.classList.add("cv-print-mode");
-
-    document.body.style.position = "";
-    document.body.style.top = "";
-    document.body.style.left = "";
-    document.body.style.right = "";
-    document.body.style.width = "";
-    document.body.style.overflow = "";
-
-    window.setTimeout(() => {
-      window.print();
-
-      window.setTimeout(() => {
-        if (isOpen) {
-          document.body.style.position = previousBodyStyle.position;
-          document.body.style.top = previousBodyStyle.top;
-          document.body.style.left = previousBodyStyle.left;
-          document.body.style.right = previousBodyStyle.right;
-          document.body.style.width = previousBodyStyle.width;
-          document.body.style.overflow = previousBodyStyle.overflow;
-        }
-      }, 150);
-    }, 100);
   };
 
   if (!isMounted || !isOpen) return null;
@@ -294,7 +208,7 @@ function CvModal({ isOpen, onClose }) {
         aria-modal="true"
         aria-labelledby="cv-modal-title"
       >
-        <div className="cv-modal-shell">
+        <div className="cv-modal-shell" style={shellStyle}>
           <header className="cv-topbar no-print">
             <div className="cv-topbar-inner">
               <div className="cv-topbar-left">
@@ -305,7 +219,11 @@ function CvModal({ isOpen, onClose }) {
               </div>
 
               <div className="cv-topbar-actions">
-                <div className="cv-download-group" ref={downloadGroupRef}>
+                <div
+                  className="cv-download-group"
+                  ref={downloadGroupRef}
+                  onClick={(e) => e.stopPropagation()}
+                >
                   <button
                     type="button"
                     className="cv-download-btn"
@@ -334,6 +252,7 @@ function CvModal({ isOpen, onClose }) {
                         href="/cvv/curriculum-friendly-dev.pdf"
                         download="CV_Dev.pdf"
                         role="menuitem"
+                        className="cv-download-link"
                         onClick={handleCloseMenu}
                       >
                         CV Desarrollo
@@ -343,6 +262,7 @@ function CvModal({ isOpen, onClose }) {
                         href="/cvv/curriculum-friendly-sistemas.pdf"
                         download="CV_Sistemas.pdf"
                         role="menuitem"
+                        className="cv-download-link"
                         onClick={handleCloseMenu}
                       >
                         CV Sistemas
@@ -352,7 +272,6 @@ function CvModal({ isOpen, onClose }) {
                 </div>
 
                 <button
-                  ref={closeButtonRef}
                   type="button"
                   className="cv-close-btn"
                   onClick={onClose}
@@ -364,34 +283,38 @@ function CvModal({ isOpen, onClose }) {
             </div>
           </header>
 
-          <div className="cv-modal-body-wrapper">
-            <div className="cv-layout-wrapper" ref={wrapperRef}>
-              <div className="cv-page">
-                <aside className="cv-sidebar">
-                  <Avatar />
-                  <Sidebar />
-                </aside>
+          <div className="cv-modal-body">
+            <div ref={viewportRef} className="cv-viewport">
+              <div className="cv-stage">
+                <article
+                  ref={pageRef}
+                  className="cv-page"
+                  aria-label="Currículum A4"
+                >
+                  <aside className="cv-sidebar">
+                    <Avatar />
+                    <Sidebar />
+                  </aside>
 
-                <main className="cv-main">
                   <div className="cv-header">
                     <HeaderBanner />
                   </div>
 
-                  <div className="cv-body">
+                  <main className="cv-body">
                     <SobreMi />
                     <Especializacion />
                     <Experiencia />
                     <EducacionTecnologias />
-                  </div>
-                </main>
+                  </main>
 
-                <section className="cv-bottom">
-                  <ProyectosIdiomas />
-                </section>
+                  <section className="cv-bottom">
+                    <ProyectosIdiomas />
+                  </section>
 
-                <footer className="cv-footer">
-                  <Footer />
-                </footer>
+                  <footer className="cv-footer">
+                    <Footer />
+                  </footer>
+                </article>
               </div>
             </div>
           </div>

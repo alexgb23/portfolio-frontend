@@ -1,12 +1,9 @@
 .section {
   width: 100%;
   min-width: 0;
-  margin: 0 0 clamp(0.72rem, 0.48vw + 0.28rem, 0.92rem) 0;
-  padding:
-    clamp(0.72rem, 0.42vw + 0.38rem, 0.88rem)
-    clamp(0.76rem, 0.46vw + 0.38rem, 0.94rem)
-    clamp(0.82rem, 0.48vw + 0.4rem, 0.98rem);
-  border-radius: clamp(0.5rem, 0.18vw + 0.38rem, 0.6rem);
+  margin: 0 0 6px 0;
+  padding: 8px 10px 9px;
+  border-radius: 7px;
   background: #ffffff;
   border: 1px solid rgba(15, 23, 42, 0.08);
   box-shadow:
@@ -18,39 +15,36 @@
 .title {
   display: flex;
   align-items: center;
-  gap: clamp(0.36rem, 0.22vw + 0.2rem, 0.46rem);
-  margin: 0 0 clamp(0.58rem, 0.34vw + 0.28rem, 0.74rem) 0;
-  font-size: clamp(0.72rem, 0.18vw + 0.64rem, 0.82rem);
+  gap: 5px;
+  margin: 0 0 6px 0;
+  font-size: 11px;
   font-weight: 800;
+  line-height: 1.1;
   letter-spacing: 0.07em;
   text-transform: uppercase;
   color: #1d4ed8;
-  line-height: 1.12;
 }
 
 .icon {
-  font-size: clamp(0.8rem, 0.22vw + 0.56rem, 0.92rem);
-  color: #2563eb;
   flex: 0 0 auto;
+  font-size: 12px;
+  color: #2563eb;
 }
 
 .timeline {
+  width: 100%;
+  min-width: 0;
   display: flex;
   flex-direction: column;
   gap: 0;
-  width: 100%;
-  min-width: 0;
 }
 
 .item {
   display: grid;
-  grid-template-columns:
-    clamp(4.7rem, 1vw + 4rem, 5.6rem)
-    clamp(0.74rem, 0.14vw + 0.64rem, 0.9rem)
-    minmax(0, 1fr);
-  gap: clamp(0.38rem, 0.22vw + 0.24rem, 0.56rem);
+  grid-template-columns: 66px 9px minmax(0, 1fr);
+  gap: 5px;
   align-items: start;
-  padding: 0 0 clamp(0.56rem, 0.3vw + 0.34rem, 0.72rem) 0;
+  padding: 0 0 5px 0;
 }
 
 .item:last-child {
@@ -58,19 +52,19 @@
 }
 
 .left {
+  min-width: 0;
   display: flex;
   justify-content: flex-end;
-  padding-top: clamp(0.04rem, 0.04vw, 0.08rem);
-  min-width: 0;
+  padding-top: 1px;
 }
 
 .periodo {
-  font-size: clamp(0.64rem, 0.14vw + 0.58rem, 0.72rem);
-  line-height: 1.18;
+  font-size: 9.5px;
+  line-height: 1.14;
   font-weight: 800;
+  letter-spacing: 0.005em;
   color: #2563eb;
   white-space: nowrap;
-  letter-spacing: 0.005em;
 }
 
 .dotCol {
@@ -81,23 +75,23 @@
 }
 
 .dot {
-  width: clamp(0.42rem, 0.1vw + 0.36rem, 0.48rem);
-  height: clamp(0.42rem, 0.1vw + 0.36rem, 0.48rem);
+  width: 5px;
+  height: 5px;
+  margin-top: 3px;
   border-radius: 999px;
   background: #1d72f3;
-  margin-top: clamp(0.18rem, 0.1vw + 0.12rem, 0.24rem);
-  box-shadow: 0 0 0 clamp(0.12rem, 0.05vw + 0.1rem, 0.16rem) rgba(29, 114, 243, 0.12);
+  box-shadow: 0 0 0 1.5px rgba(29, 114, 243, 0.12);
   z-index: 1;
   flex: 0 0 auto;
 }
 
 .line {
   position: absolute;
-  top: clamp(0.62rem, 0.12vw + 0.54rem, 0.72rem);
-  bottom: calc(clamp(0.56rem, 0.3vw + 0.34rem, 0.72rem) * -1);
+  top: 8px;
+  bottom: -5px;
   width: 1px;
-  background: rgba(29, 114, 243, 0.2);
   border-radius: 999px;
+  background: rgba(29, 114, 243, 0.2);
 }
 
 .right {
@@ -105,9 +99,9 @@
 }
 
 .company {
-  margin: 0 0 clamp(0.16rem, 0.08vw + 0.1rem, 0.24rem) 0;
-  font-size: clamp(0.72rem, 0.16vw + 0.64rem, 0.8rem);
-  line-height: 1.18;
+  margin: 0 0 1px 0;
+  font-size: 10.5px;
+  line-height: 1.14;
   font-weight: 800;
   letter-spacing: -0.01em;
   color: #0f172a;
@@ -116,11 +110,11 @@
 
 .descripcion {
   margin: 0;
-  font-size: clamp(0.64rem, 0.12vw + 0.58rem, 0.7rem);
-  line-height: 1.42;
-  color: #334155;
-  text-align: left;
   min-width: 0;
+  color: #334155;
+  font-size: 9px;
+  line-height: 1.26;
+  text-align: left;
   overflow-wrap: break-word;
   word-break: break-word;
 }
