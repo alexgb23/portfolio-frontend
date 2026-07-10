@@ -4,17 +4,18 @@ import {
   ArrowRight,
   Bot,
   Boxes,
-  Cable,
   CalendarDays,
   CheckCircle2,
   Database,
   FileText,
   Globe,
+  HeartPulse,
   Network,
   Server,
   ShieldCheck,
   Workflow,
   Wrench,
+  Code2,
 } from "lucide-react";
 import { useLaboratoryHome } from "../../hooks/usePortfolioData";
 import "./Laboratory.css";
@@ -64,41 +65,95 @@ function getAreaIcon(area) {
   return map[area] || Boxes;
 }
 
-function getResourceIcon(type) {
+function getResourceIcon(resource) {
+  const name = resource?.nombre_archivo ?? "";
+  const type = resource?.metadata?.tipo ?? "";
+
+  if (name === "backend-api") return Server;
+  if (name === "api-docs") return FileText;
+  if (name === "openapi-json") return Code2;
+  if (name === "health-check") return HeartPulse;
+  if (name === "portfolio-home-example") return Workflow;
+
   const map = {
     backend: Server,
     api: Workflow,
-    infraestructura: Network,
-    automatizacion: Bot,
-    frontend: Globe,
+    documentacion: FileText,
+    openapi: Code2,
+    health: HeartPulse,
+    "ejemplo-endpoint": Workflow,
   };
 
-  return map[type] || Cable;
+  return map[type] || Workflow;
+}
+
+function getResourceLabel(resource) {
+  const name = resource?.nombre_archivo ?? "Recurso";
+
+  const labels = {
+    "backend-api": "Backend API",
+    "api-docs": "Documentación API",
+    "openapi-json": "OpenAPI JSON",
+    "health-check": "Health check",
+    "portfolio-home-example": "Endpoint de ejemplo",
+  };
+
+  return labels[name] ?? name;
+}
+
+function shouldShowPublicResource(resource) {
+  const name = resource?.nombre_archivo ?? "";
+  const visibleAsLink = resource?.metadata?.visible_como_link;
+
+  if (visibleAsLink === false) return false;
+
+  const allowedNames = new Set([
+    "backend-api",
+    "api-docs",
+    "openapi-json",
+    "health-check",
+    "portfolio-home-example",
+  ]);
+
+  return allowedNames.has(name);
 }
 
 function normalizeDashboardLab(item) {
+  const resources = asArray(item?.resources ?? item?.adjuntos);
+
   return {
     id: item?.id ?? null,
-    title: item?.title ?? "",
-    category: item?.category ?? "",
-    area: item?.area ?? item?.category ?? "",
-    status: item?.status ?? "",
-    summary: item?.summary ?? "",
-    description: item?.description ?? item?.summary ?? "",
-    objective: item?.objective ?? "",
-    result: item?.currentResult ?? "",
-    notes: item?.technicalNotes ?? "",
-    relatedAreas: asArray(item?.relatedAreas),
-    documentationCount: Number(item?.documentationCount) || 0,
-    progressCount: Number(item?.progressCount) || 0,
-    ideasCount: Number(item?.ideasCount) || 0,
-    resourcesCount: Number(item?.resourcesCount) || 0,
-    updatedAt: item?.updatedAt ?? null,
-    stack: asArray(item?.stack),
-    docs: asArray(item?.documentation),
-    progress: asArray(item?.progress),
+    title: item?.title ?? item?.titulo ?? "",
+    category:
+      item?.category ?? item?.categoria ?? item?.tipo_proyecto ?? "Laboratorio",
+    area: item?.area ?? item?.area_principal ?? item?.category ?? "",
+    status: item?.status ?? item?.estado ?? "",
+    summary: item?.summary ?? item?.resumen ?? "",
+    description: item?.description ?? item?.descripcion ?? item?.summary ?? "",
+    objective: item?.objective ?? item?.objetivo ?? "",
+    result: item?.currentResult ?? item?.resultado_actual ?? "",
+    notes: item?.technicalNotes ?? item?.notas_tecnicas ?? "",
+    relatedAreas:
+      asArray(item?.relatedAreas).length > 0
+        ? asArray(item?.relatedAreas)
+        : asArray(item?.areas_relacionadas),
+    documentationCount:
+      Number(item?.documentationCount ?? item?.documentacion_count) || 0,
+    progressCount: Number(item?.progressCount ?? item?.avances_count) || 0,
+    ideasCount:
+      Number(item?.ideasCount ?? item?.ideas_count) ||
+      asArray(item?.ideas).length,
+    resourcesCount:
+      Number(item?.resourcesCount ?? item?.adjuntos_count) || resources.length,
+    updatedAt: item?.updatedAt ?? item?.updated_at ?? null,
+    stack:
+      asArray(item?.stack).length > 0
+        ? asArray(item?.stack)
+        : asArray(item?.metadata?.stack),
+    docs: asArray(item?.documentation ?? item?.documentacion),
+    progress: asArray(item?.progress ?? item?.avances),
     ideas: asArray(item?.ideas),
-    resources: asArray(item?.resources),
+    resources,
   };
 }
 
@@ -141,6 +196,12 @@ export default function Laboratory() {
     preferredLabs[0] ??
     labs[0] ??
     null;
+
+  const visibleResources = useMemo(() => {
+    return asArray(activeLab?.resources)
+      .filter(shouldShowPublicResource)
+      .sort((a, b) => (a?.orden ?? 999) - (b?.orden ?? 999));
+  }, [activeLab]);
 
   if (loading) {
     return (
@@ -272,10 +333,8 @@ export default function Laboratory() {
               </article>
 
               <article className="lab-kpi-card">
-                <span>Adjuntos</span>
-                <strong>
-                  {activeLab.resources.length || activeLab.resourcesCount}
-                </strong>
+                <span>Adjuntos visibles</span>
+                <strong>{visibleResources.length}</strong>
               </article>
             </div>
 
@@ -405,10 +464,10 @@ export default function Laboratory() {
                 <h3>Adjuntos y referencias</h3>
               </div>
 
-              {activeLab.resources.length > 0 ? (
+              {visibleResources.length > 0 ? (
                 <div className="lab-resource-strip__grid">
-                  {activeLab.resources.slice(0, 6).map((item) => {
-                    const ResourceIcon = getResourceIcon(item?.metadata?.tipo);
+                  {visibleResources.map((item) => {
+                    const ResourceIcon = getResourceIcon(item);
 
                     return (
                       <article
@@ -420,25 +479,19 @@ export default function Laboratory() {
                         </div>
 
                         <div className="lab-resource-card__body">
-                          <strong>{item.nombre_archivo ?? "Recurso"}</strong>
+                          <strong>{getResourceLabel(item)}</strong>
                           <span>{item.descripcion ?? "Sin descripción."}</span>
                         </div>
 
-                        {item.url ? (
-                          <a href={item.url} target="_blank" rel="noreferrer">
-                            <ArrowRight size={16} />
-                          </a>
-                        ) : (
-                          <span className="lab-resource-card__fallback">
-                            <ArrowRight size={16} />
-                          </span>
-                        )}
+                        <a href={item.url} target="_blank" rel="noreferrer">
+                          <ArrowRight size={16} />
+                        </a>
                       </article>
                     );
                   })}
                 </div>
               ) : (
-                <EmptyBlock text="No hay adjuntos o referencias disponibles." />
+                <EmptyBlock text="No hay adjuntos o referencias públicas disponibles." />
               )}
             </section>
 
@@ -466,5 +519,3 @@ export default function Laboratory() {
     </section>
   );
 }
-
-
