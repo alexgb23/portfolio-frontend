@@ -11,11 +11,44 @@ import {
 
 import "./Navbar.css";
 
+/*
+  Navbar recibe desde el padre:
+  - isDarkMode: indica si el tema actual resuelto es oscuro
+  - themeMode: "light", "dark" o "system"
+  - toggleTheme: función para alternar el tema
+  - onOpenCv: función que abre la modal del CV en MainLayout
+*/
 function Navbar({ isDarkMode, themeMode, toggleTheme, onOpenCv }) {
+  /*
+    isOpen controla el menú móvil:
+    - false => menú cerrado
+    - true  => menú abierto
+  */
   const [isOpen, setIsOpen] = useState(false);
 
+  /*
+    closeMenu:
+    cierra el menú móvil.
+    Se usa al hacer click en logo o links para que en mobile
+    el panel desaparezca después de navegar o interactuar.
+  */
   const closeMenu = () => setIsOpen(false);
 
+  /*
+    handleOpenCv:
+    este handler se usa en el link "Ver CV".
+
+    ¿Por qué lleva preventDefault()?
+    Porque aunque visualmente usamos un NavLink,
+    en realidad no queremos navegar a otra ruta.
+    Queremos abrir una modal.
+
+    Flujo:
+    1. evita la navegación del enlace
+    2. cierra el menú móvil si estaba abierto
+    3. llama a onOpenCv() que viene del MainLayout
+    4. MainLayout pone isCvOpen en true y renderiza CvModal
+  */
   const handleOpenCv = (event) => {
     event.preventDefault();
     closeMenu();
@@ -25,6 +58,11 @@ function Navbar({ isDarkMode, themeMode, toggleTheme, onOpenCv }) {
     }
   };
 
+  /*
+    themeLabel:
+    texto descriptivo del botón de tema.
+    Sirve para mostrar un title más claro al usuario.
+  */
   const themeLabel =
     themeMode === "system"
       ? `Tema automático (${isDarkMode ? "oscuro" : "claro"})`
@@ -33,6 +71,11 @@ function Navbar({ isDarkMode, themeMode, toggleTheme, onOpenCv }) {
   return (
     <nav className="navbar">
       <div className="nav-container">
+        {/*
+          Logo del navbar:
+          - navega al inicio
+          - también cierra el menú móvil
+        */}
         <Link to="/" className="nav-logo" onClick={closeMenu}>
           <div className="logo-avatar-wrapper">
             <img
@@ -54,6 +97,13 @@ function Navbar({ isDarkMode, themeMode, toggleTheme, onOpenCv }) {
           </div>
         </Link>
 
+        {/*
+          nav-links:
+          bloque principal de navegación.
+
+          Si isOpen es true, se añade la clase "active"
+          para mostrar el menú en móvil.
+        */}
         <div className={`nav-links ${isOpen ? "active" : ""}`}>
           <NavLink
             to="/"
@@ -71,6 +121,11 @@ function Navbar({ isDarkMode, themeMode, toggleTheme, onOpenCv }) {
             Sobre mí
           </NavLink>
 
+          {/*
+            Este link está oculto con display:none.
+            Lo mantienes en el código por si lo recuperas luego,
+            pero ahora mismo no se ve.
+          */}
           <NavLink
             to="/certificaciones"
             className={({ isActive }) => (isActive ? "active" : "")}
@@ -96,11 +151,24 @@ function Navbar({ isDarkMode, themeMode, toggleTheme, onOpenCv }) {
             Laboratorio
           </NavLink>
 
+          {/*
+            "Ver CV" está dentro del grupo de navegación,
+            después de "Laboratorio", como tú querías.
+
+            Importante:
+            - visualmente parece un link del navbar
+            - funcionalmente abre una modal
+            - no cambia de página
+          */}
           <NavLink to="#cv" className="nav-cv-inline" onClick={handleOpenCv}>
             <FaDownload />
             <span>Ver CV</span>
           </NavLink>
 
+          {/*
+            Link de contacto para versión móvil o bloque interno
+            de navegación.
+          */}
           <NavLink
             to="/contacto"
             className={({ isActive }) =>
@@ -112,6 +180,14 @@ function Navbar({ isDarkMode, themeMode, toggleTheme, onOpenCv }) {
           </NavLink>
         </div>
 
+        {/*
+          nav-actions:
+          bloque derecho del navbar.
+          Aquí van acciones globales, no links principales:
+          - cambio de tema
+          - CTA de contacto en desktop
+          - botón hamburguesa
+        */}
         <div className="nav-actions">
           <button
             type="button"
@@ -135,10 +211,15 @@ function Navbar({ isDarkMode, themeMode, toggleTheme, onOpenCv }) {
             <FaArrowRight />
           </NavLink>
 
+          {/*
+            Botón del menú móvil:
+            - alterna entre abrir y cerrar
+            - muestra icono distinto según estado
+          */}
           <button
             type="button"
             className="mobile-menu-btn"
-            onClick={() => setIsOpen(!isOpen)}
+            onClick={() => setIsOpen((prev) => !prev)}
             aria-label="Menú de navegación"
             aria-expanded={isOpen}
           >

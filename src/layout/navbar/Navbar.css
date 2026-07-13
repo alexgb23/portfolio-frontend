@@ -2,6 +2,12 @@
    NAVBAR — MOBILE FIRST
    ========================================================= */
 
+/*
+  Barra principal fija arriba.
+  - fixed: siempre visible al hacer scroll
+  - inset: equivale a top/right/bottom/left abreviado
+  - backdrop-filter: efecto cristal / blur
+*/
 .navbar {
   position: fixed;
   inset: 0 0 auto;
@@ -12,6 +18,11 @@
   backdrop-filter: blur(18px) saturate(140%);
 }
 
+/*
+  Contenedor interno:
+  - centra el contenido
+  - separa logo, links y acciones
+*/
 .nav-container {
   display: flex;
   align-items: center;
@@ -22,6 +33,9 @@
   margin: 0 auto;
 }
 
+/*
+  Logo clicable hacia home
+*/
 .nav-logo {
   display: flex;
   align-items: center;
@@ -29,11 +43,17 @@
   text-decoration: none;
 }
 
+/*
+  Bloque de texto del logo
+*/
 .logo-meta {
   display: flex;
   flex-direction: column;
 }
 
+/*
+  Avatar circular del logo
+*/
 .logo-avatar-wrapper {
   display: block;
   width: 36px;
@@ -51,6 +71,9 @@
   object-fit: cover;
 }
 
+/*
+  Texto principal del logo
+*/
 .logo-text {
   color: var(--text-main);
   font-size: 1.25rem;
@@ -60,6 +83,9 @@
   white-space: nowrap;
 }
 
+/*
+  Subtexto decorativo del logo
+*/
 .logo-subtext {
   position: relative;
   width: 100%;
@@ -86,12 +112,21 @@
   color: var(--accent);
 }
 
+/*
+  Acciones de la derecha:
+  - botón tema
+  - CTA contacto desktop
+  - menú móvil
+*/
 .nav-actions {
   display: flex;
   align-items: center;
   gap: 0.75rem;
 }
 
+/*
+  Botón hamburguesa móvil
+*/
 .mobile-menu-btn {
   display: inline-flex;
   align-items: center;
@@ -104,6 +139,9 @@
   cursor: pointer;
 }
 
+/*
+  Botón de cambio de tema
+*/
 .theme-toggle {
   display: inline-flex;
   align-items: center;
@@ -128,6 +166,10 @@
   box-shadow: 0 0 0 4px var(--accent-glow);
 }
 
+/*
+  Menú de navegación en móvil:
+  oculto por defecto y aparece al activar .active
+*/
 .nav-links {
   position: fixed;
   top: 82px;
@@ -156,6 +198,9 @@
   transform: translateY(0);
 }
 
+/*
+  Estilo base de TODOS los links del navbar
+*/
 .nav-links a {
   position: relative;
   width: 100%;
@@ -164,11 +209,17 @@
   font-size: 1.05rem;
   font-weight: 650;
   letter-spacing: -0.01em;
+  text-decoration: none;
   transition:
     color 0.2s ease,
     transform 0.2s ease;
 }
 
+/*
+  Esta barra inferior NO es underline nativo.
+  Es una línea decorativa creada con ::after.
+  Por eso text-decoration: none no te la quitaba.
+*/
 .nav-links a::after {
   content: "";
   position: absolute;
@@ -191,6 +242,9 @@
   width: 60%;
 }
 
+/*
+  CTA principal de contacto en desktop
+*/
 .nav-cta {
   display: none;
   align-items: center;
@@ -200,6 +254,7 @@
   background: linear-gradient(135deg, var(--accent-2), var(--accent));
   color: #fff;
   font-weight: 700;
+  text-decoration: none;
   box-shadow: var(--shadow-md);
   transition:
     transform 0.25s ease,
@@ -221,49 +276,86 @@
   display: none;
 }
 
-/*link de ver el cvv*/
-.nav-cv-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.55rem;
-  padding: 0;
-  border: none;
-  background: transparent;
-  color: var(--text-main);
-  font: inherit;
-  font-size: 0.95rem;
-  font-weight: 600;
-  letter-spacing: 0.01em;
-  cursor: pointer;
-  transition: color 0.2s ease, opacity 0.2s ease, transform 0.2s ease;
-}
+/* =========================================================
+   LINK "VER CV"
+   ========================================================= */
+
+/*
+  Este es el link especial del CV dentro de nav-links.
+  Queremos que:
+  - se vea como item del navbar
+  - tenga icono
+  - NO muestre la línea decorativa inferior
+*/
 .nav-cv-inline {
   display: inline-flex;
   align-items: center;
   gap: 0.45rem;
+  color: var(--text-sub);
+  text-decoration: none;
 }
 
-.nav-cv-link svg {
- font-size: 0.85rem;
-  opacity: 0.9;
-  transition: transform 0.2s ease, opacity 0.2s ease;
+/*
+  Cubrimos todos los estados del enlace
+  para evitar color azul o subrayado nativo.
+*/
+.nav-cv-inline:link,
+.nav-cv-inline:visited,
+.nav-cv-inline:hover,
+.nav-cv-inline:active,
+.nav-cv-inline:focus {
+  color: inherit;
+  text-decoration: none;
 }
 
-.nav-cv-link:hover {
+/*
+  AQUÍ está la corrección clave:
+  anulamos la línea decorativa global del navbar
+  solo para este link.
+*/
+.nav-cv-inline::after,
+.nav-cv-inline:hover::after,
+.nav-cv-inline.active::after {
+  display: none;
+  width: 0;
+  content: none;
+}
+
+/*
+  Icono de descarga
+*/
+.nav-cv-inline svg {
+  font-size: 0.85rem;
+  opacity: 1;
   color: var(--accent);
+  transition:
+    transform 0.2s ease,
+    opacity 0.2s ease,
+    color 0.2s ease;
 }
 
-.nav-cv-link:hover svg {
+/*
+  Hover del link de CV
+*/
+.nav-cv-inline:hover svg {
+  color: var(--accent-2);
   opacity: 1;
   transform: translateY(1px);
 }
 
-.nav-cv-link:focus-visible {
-  outline: none;
-  text-decoration: underline;
-  text-underline-offset: 0.22rem;
+.nav-cv-inline:hover svg {
+  opacity: 1;
+  transform: translateY(1px);
 }
 
+/*
+  Focus accesible sin subrayado feo
+*/
+.nav-cv-inline:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--accent-glow);
+  border-radius: 8px;
+}
 
 /* =========================================================
    TABLET
@@ -299,7 +391,10 @@
     display: none;
   }
 
-
+  /*
+    En desktop el menú deja de ser panel móvil
+    y pasa a estar inline dentro de la barra.
+  */
   .nav-links {
     position: static;
     display: flex;
