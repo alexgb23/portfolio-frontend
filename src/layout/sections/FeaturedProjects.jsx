@@ -1,92 +1,7 @@
-import { Link, useNavigate } from "react-router";
-import {
-  FaArrowRight,
-  FaCode,
-  FaServer,
-  FaDatabase,
-  FaNetworkWired,
-  FaShieldAlt,
-  FaCloud,
-} from "react-icons/fa";
+import { Link } from "react-router";
+import { FaArrowRight } from "react-icons/fa";
+import ProjectCard from "../../components/cards/ProjectCard";
 import "./FeaturedProjects.css";
-
-function normalizeTechList(technologies) {
-  if (Array.isArray(technologies)) {
-    return technologies.filter(Boolean);
-  }
-
-  if (typeof technologies === "string") {
-    try {
-      const parsed = JSON.parse(technologies);
-
-      if (Array.isArray(parsed)) {
-        return parsed.filter(Boolean);
-      }
-    } catch {
-      return technologies
-        .split(",")
-        .map((tech) => tech.trim())
-        .filter(Boolean);
-    }
-  }
-
-  return [];
-}
-
-function getProjectIcon(project, techList) {
-  const text =
-    `${project?.title || ""} ${project?.short_description || ""} ${project?.stack_summary || ""} ${techList.join(" ")}`.toLowerCase();
-
-  if (
-    text.includes("api") ||
-    text.includes("backend") ||
-    text.includes("laravel") ||
-    text.includes("node") ||
-    text.includes("server")
-  ) {
-    return <FaServer />;
-  }
-
-  if (
-    text.includes("postgres") ||
-    text.includes("mysql") ||
-    text.includes("database") ||
-    text.includes("sql")
-  ) {
-    return <FaDatabase />;
-  }
-
-  if (
-    text.includes("red") ||
-    text.includes("network") ||
-    text.includes("firewall") ||
-    text.includes("pfsense") ||
-    text.includes("dns") ||
-    text.includes("vlan")
-  ) {
-    return <FaNetworkWired />;
-  }
-
-  if (
-    text.includes("security") ||
-    text.includes("seguridad") ||
-    text.includes("auth") ||
-    text.includes("jwt")
-  ) {
-    return <FaShieldAlt />;
-  }
-
-  if (
-    text.includes("cloud") ||
-    text.includes("docker") ||
-    text.includes("deploy") ||
-    text.includes("proxmox")
-  ) {
-    return <FaCloud />;
-  }
-
-  return <FaCode />;
-}
 
 function ProjectCardSkeleton({ tone = 0 }) {
   return (
@@ -122,7 +37,6 @@ function ProjectCardSkeleton({ tone = 0 }) {
 }
 
 function FeaturedProjects({ projects = [], loading = false }) {
-  const navigate = useNavigate();
   const safeProjects = Array.isArray(projects) ? projects : [];
   const visibleProjects = safeProjects.slice(0, 3);
   const hasProjects = visibleProjects.length > 0;
@@ -152,63 +66,14 @@ function FeaturedProjects({ projects = [], loading = false }) {
         </div>
       ) : hasProjects ? (
         <div className="expertise-grid">
-          {visibleProjects.map((project, index) => {
-            const techList = normalizeTechList(project?.technologies);
-            const icon = getProjectIcon(project, techList);
-            const tone = index % 3;
-            const projectSlug =
-              typeof project?.slug === "string" ? project.slug.trim() : "";
-
-            const handleOpenProject = () => {
-              if (!projectSlug) return;
-              navigate(`/proyectos/${projectSlug}`);
-            };
-
-            return (
-              <article
-                key={project.id ?? project.slug ?? `${project.title}-${index}`}
-                className={`expertise-card expertise-card-hover tone-${tone}`}
-                onClick={handleOpenProject}
-                onKeyDown={(event) => {
-                  if (event.key === "Enter" || event.key === " ") {
-                    event.preventDefault();
-                    handleOpenProject();
-                  }
-                }}
-                role="button"
-                tabIndex={0}
-                aria-label={`Abrir proyecto ${project.title || "sin título"}`}
-                style={{ cursor: projectSlug ? "pointer" : "default" }}
-              >
-                <div className="card-head">
-                  <div className="expertise-icon">{icon}</div>
-
-                  <div className="card-title-wrap">
-                    <h3>{project.title || "Sin título"}</h3>
-                  </div>
-                </div>
-
-                <p>{project.short_description || "Sin descripción"}</p>
-
-                <div className="laboratory-counter project-card-stack">
-                  <strong>{project.stack_summary || "Software"}</strong>
-                </div>
-
-                {techList.length > 0 ? (
-                  <div className="project-card-tags">
-                    {techList.slice(0, 3).map((tech, techIndex) => (
-                      <span
-                        key={`${tech}-${techIndex}`}
-                        className="project-tech-tag"
-                      >
-                        {tech}
-                      </span>
-                    ))}
-                  </div>
-                ) : null}
-              </article>
-            );
-          })}
+          {visibleProjects.map((project, index) => (
+            <ProjectCard
+              key={project.id ?? project.slug ?? `${project.title}-${index}`}
+              project={project}
+              index={index}
+              maxTags={3}
+            />
+          ))}
         </div>
       ) : (
         <div className="empty-inline-state">

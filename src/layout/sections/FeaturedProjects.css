@@ -1,38 +1,35 @@
 /* =========================================================
-   CONTENEDOR GLOBAL (GRID TOTALMENTE EXPANSIVO)
+   GRID
    ========================================================= */
 
 .expertise-grid {
   display: grid;
-  /* 💡 CAMBIO CRÍTICO: auto-fit colapsa los huecos vacíos y expande las tarjetas existentes */
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 20px;
   width: 100%;
-  align-items: stretch; /* Mantiene todas las alturas perfectamente iguales en la fila */
+  align-items: stretch;
 }
 
 /* =========================================================
-   TARJETA INDIVIDUAL (FLEXBOX PARA IGUALAR ALTURAS)
+   CARD BASE
    ========================================================= */
 
 .expertise-card {
   display: flex;
   flex-direction: column;
-  height: 100%; /* Obliga a la tarjeta a usar todo el alto calculado por la Grid */
+  height: 100%;
   padding: 1.5rem;
   border-radius: 12px;
   box-sizing: border-box;
 }
 
-/* Forzamos a que el texto de descripción absorba el espacio sobrante */
 .expertise-card p {
-  flex-grow: 1; /* Esto alinea quirúrgicamente los componentes inferiores */
+  flex-grow: 1;
   margin: 1rem 0;
 }
 
-
 /* =========================================================
-   ESTILOS BASE: MOBILE FIRST (0px a 767px)
+   TAGS / STACK / SKELETON
    ========================================================= */
 
 .project-card-tags,
@@ -40,13 +37,13 @@
   display: flex;
   gap: 8px;
   flex-wrap: wrap;
-  margin-top: auto; /* Empuja las etiquetas al fondo de la tarjeta */
+  margin-top: auto;
 }
 
 .project-card-stack,
 .project-card-skeleton-counter {
   align-items: flex-start;
-  margin-top: auto; /* Mantiene la métrica alineada en la base */
+  margin-top: auto;
 }
 
 .project-card-skeleton-counter strong {
@@ -91,12 +88,14 @@
   color: var(--text-soft, rgb(15 23 42 / 72%));
 }
 
+
+
 /* =========================================================
-   MEDIA QUERY: TABLET (Desde 768px hasta 1023px)
+   TABLET
    ========================================================= */
+
 @media (min-width: 768px) and (max-width: 1023px) {
   .expertise-grid {
-    /* Fuerza estrictamente un diseño exacto de 2 columnas de igual ancho */
     grid-template-columns: repeat(2, 1fr);
     gap: 24px;
   }

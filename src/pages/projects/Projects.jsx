@@ -5,7 +5,21 @@ import usePageTitle from "../../hooks/usePageTitle";
 function Projects() {
   usePageTitle("Proyectos de Desarrollo e Integración | Alex González");
 
-  const { projects, loading, error } = useProjects();
+  const projectsState = useProjects();
+
+  console.log("useProjects() =>", projectsState);
+
+  const { projects, loading, error } = projectsState ?? {};
+
+  console.log("projects =>", projects);
+  console.log("loading =>", loading);
+  console.log("error =>", error);
+  console.log("isArray(projects) =>", Array.isArray(projects));
+  console.log(
+    "projects length =>",
+    Array.isArray(projects) ? projects.length : "no-array",
+  );
+
   const hasProjects = Array.isArray(projects) && projects.length > 0;
 
   if (loading) return null;

@@ -1,5 +1,5 @@
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
-import "./Cards.css";
 import {
   FaCode,
   FaServer,
@@ -8,34 +8,38 @@ import {
   FaShieldAlt,
   FaCloud,
 } from "react-icons/fa";
+import "./ProjectCard.css";
 
-// Normaliza cualquier campo tipo lista para que siempre sea un array limpio.
+/**
+ * Convierte cualquier valor a un array limpio de strings.
+ *
+ * Soporta:
+ * - arrays reales
+ * - strings JSON
+ * - strings separados por comas
+ * - strings simples
+ * - valores vacíos o inválidos
+ */
 function normalizeList(value) {
-  // Si ya viene como array, limpia vacíos y espacios.
   if (Array.isArray(value)) {
     return value.map((item) => String(item).trim()).filter(Boolean);
   }
 
-  // Si viene como string, intenta leerlo como JSON.
   if (typeof value === "string") {
     const trimmed = value.trim();
-
     if (!trimmed) return [];
 
     try {
       const parsed = JSON.parse(trimmed);
 
-      // Si el JSON es un array, lo devuelve limpio.
       if (Array.isArray(parsed)) {
         return parsed.map((item) => String(item).trim()).filter(Boolean);
       }
 
-      // Si el JSON era un string simple, lo convierte en array de un solo valor.
       if (typeof parsed === "string" && parsed.trim()) {
         return [parsed.trim()];
       }
     } catch {
-      // Si no era JSON, lo trata como texto simple o lista por comas.
       if (trimmed.includes(",")) {
         return trimmed
           .split(",")
@@ -47,23 +51,34 @@ function normalizeList(value) {
     }
   }
 
-  // Fallback seguro.
   return [];
 }
 
-// Devuelve la primera imagen válida del proyecto.
-function getProjectImage(project) {
-  const images = normalizeList(project?.image_url);
-  return images[0] || "";
+/**
+ * Elige la imagen de fondo adecuada según el tema actual.
+ *
+ * Prioridad:
+ * - En dark: primero dark, si no hay usa light.
+ * - En light: primero light, si no hay usa dark.
+ */
+function getProjectThemeBackground(project, isDark) {
+  const darkImages = normalizeList(project?.card_background_dark);
+  const lightImages = normalizeList(project?.card_background_light);
+
+  if (isDark) {
+    return darkImages[0] || lightImages[0] || "";
+  }
+
+  return lightImages[0] || darkImages[0] || "";
 }
 
-// Elige un icono automático según el contenido técnico del proyecto.
+/**
+ * Selecciona un icono en función del contenido técnico del proyecto.
+ */
 function getProjectIcon(project, techList) {
-  // Une varios campos del proyecto en un solo texto para detectar palabras clave.
   const text =
     `${project?.title || ""} ${project?.short_description || ""} ${project?.stack_summary || ""} ${techList.join(" ")}`.toLowerCase();
 
-  // Proyectos de backend, APIs o servidor.
   if (
     text.includes("api") ||
     text.includes("backend") ||
@@ -74,7 +89,6 @@ function getProjectIcon(project, techList) {
     return <FaServer />;
   }
 
-  // Proyectos orientados a base de datos.
   if (
     text.includes("postgres") ||
     text.includes("mysql") ||
@@ -84,7 +98,6 @@ function getProjectIcon(project, techList) {
     return <FaDatabase />;
   }
 
-  // Proyectos de redes o infraestructura de red.
   if (
     text.includes("red") ||
     text.includes("network") ||
@@ -96,7 +109,6 @@ function getProjectIcon(project, techList) {
     return <FaNetworkWired />;
   }
 
-  // Proyectos relacionados con seguridad o autenticación.
   if (
     text.includes("security") ||
     text.includes("seguridad") ||
@@ -106,7 +118,6 @@ function getProjectIcon(project, techList) {
     return <FaShieldAlt />;
   }
 
-  // Proyectos de cloud, despliegue o virtualización.
   if (
     text.includes("cloud") ||
     text.includes("docker") ||
@@ -116,40 +127,76 @@ function getProjectIcon(project, techList) {
     return <FaCloud />;
   }
 
-  // Icono genérico si no coincide ninguna categoría.
   return <FaCode />;
 }
 
-export default function ProjectCard({ project, index = 0 }) {
-  // Hook de React Router para navegar al detalle del proyecto.
+/**
+ * Tarjeta reutilizable para proyectos.
+ *
+ * Responsabilidades:
+ * - Detectar el tema actual.
+ * - Escoger la imagen de fondo adecuada.
+ * - Pintar icono, contenido y tags.
+ * - Navegar al detalle del proyecto.
+ */
+export default function ProjectCard({ project, index = 0, maxTags = 3 }) {
   const navigate = useNavigate();
 
-  // Si no hay proyecto, no renderiza nada.
+  /**
+   * Estado que indica si el tema activo es dark.
+   */
+  const [isDark, setIsDark] = useState(() => {
+    if (typeof document !== "undefined") {
+      return document.documentElement.getAttribute("data-theme") === "dark";
+    }
+    return false;
+  });
+
+  /**
+   * Observa cambios en data-theme del <html> para actualizar
+   * automáticamente la imagen de fondo cuando el usuario cambia de tema.
+   */
+  useEffect(() => {
+    if (typeof document === "undefined") return;
+
+    const root = document.documentElement;
+
+    const syncTheme = () => {
+      setIsDark(root.getAttribute("data-theme") === "dark");
+    };
+
+    syncTheme();
+
+    const observer = new MutationObserver(syncTheme);
+    observer.observe(root, {
+      attributes: true,
+      attributeFilter: ["data-theme"],
+    });
+
+    return () => observer.disconnect();
+  }, []);
+
   if (!project) return null;
 
-  // Convierte technologies a un array reutilizable.
-  const techList = normalizeList(project.technologies);
+  /**
+   * Lista de tecnologías, limitada para no romper el layout.
+   */
+  const techList = normalizeList(
+    project?.technologies ?? project?.tecnologías,
+  ).slice(0, maxTags);
 
-  // Obtiene la imagen principal de la tarjeta.
-  const projectImage = getProjectImage(project);
-
-  // Define una variación visual por índice para alternar estilos.
-  const tone = index % 3;
-
-  // Selecciona el icono más adecuado según el contenido del proyecto.
+  /**
+   * Variantes visuales y datos derivados.
+   */
   const icon = getProjectIcon(project, techList);
-
-  // Textos preparados con fallback para evitar huecos vacíos.
-  const badgeText = project.is_featured ? "Destacado" : "Proyecto";
-  const summaryText = project.stack_summary || "Software";
-  const titleText = project.title || "Sin título";
-  const descriptionText = project.short_description || "Sin descripción";
-
-  // Normaliza el slug antes de construir la ruta.
+  const tone = index % 3;
   const projectSlug =
-    typeof project.slug === "string" ? project.slug.trim() : "";
+    typeof project?.slug === "string" ? project.slug.trim() : "";
+  const backgroundImage = getProjectThemeBackground(project, isDark);
 
-  // Abre la página de detalle si el proyecto tiene slug válido.
+  /**
+   * Navega al detalle del proyecto si hay slug válido.
+   */
   const handleOpenProject = () => {
     if (!projectSlug) return;
     navigate(`/proyectos/${projectSlug}`);
@@ -157,10 +204,11 @@ export default function ProjectCard({ project, index = 0 }) {
 
   return (
     <article
-      className={`card card-hover card-project tone-${tone} ${projectImage ? "has-project-image" : "no-project-image"}`}
+      className={`expertise-card expertise-card-hover tone-${tone} ${
+        backgroundImage ? "has-project-bg" : ""
+      }`}
       onClick={handleOpenProject}
       onKeyDown={(event) => {
-        // Permite abrir la tarjeta con teclado para accesibilidad.
         if (event.key === "Enter" || event.key === " ") {
           event.preventDefault();
           handleOpenProject();
@@ -168,54 +216,45 @@ export default function ProjectCard({ project, index = 0 }) {
       }}
       role="button"
       tabIndex={0}
-      aria-label={`Abrir proyecto ${titleText}`}
-      style={{ cursor: projectSlug ? "pointer" : "default" }}
+      aria-label={`Abrir proyecto ${project.title || "sin título"}`}
+      style={{
+        cursor: projectSlug ? "pointer" : "default",
+      }}
     >
-      {/* Fondo visual de la tarjeta si existe imagen */}
-      {projectImage && (
-        <div
-          className="project-card-media"
-          aria-hidden="true"
-          style={{
-            backgroundImage: `url("${projectImage}")`,
-          }}
-        />
-      )}
+      {backgroundImage ? (
+        <>
+          <div
+            className="project-card-bg"
+            aria-hidden="true"
+            style={{ backgroundImage: `url("${backgroundImage}")` }}
+          />
+          <div className="expertise-card-overlay" aria-hidden="true" />
+        </>
+      ) : null}
 
-      {/* Capa de contenido principal */}
-      <div className="project-card-inner">
-        {/* Cabecera superior con badge y resumen de stack */}
-        <div className="card-top">
-          <span className="card-badge">{badgeText}</span>
-          <span className="date">{summaryText}</span>
+      <div className="card-head">
+        <div className="expertise-icon">{icon}</div>
+
+        <div className="card-title-wrap">
+          <h3>{project.title || "Sin título"}</h3>
         </div>
-
-        {/* Bloque principal con icono y título */}
-        <div className="card-head">
-          <div className="card-icon">{icon}</div>
-
-          <div className="card-title-wrap">
-            <h3>{titleText}</h3>
-          </div>
-        </div>
-
-        {/* Separador visual entre cabecera y contenido */}
-        <div className="project-card-divider" />
-
-        {/* Descripción breve del proyecto */}
-        <p>{descriptionText}</p>
-
-        {/* Lista de tecnologías si existen */}
-        {techList.length > 0 && (
-          <div className="tags">
-            {techList.map((tech, i) => (
-              <span key={`${tech}-${i}`} className="tag">
-                {tech}
-              </span>
-            ))}
-          </div>
-        )}
       </div>
+
+      <p>{project.short_description || "Sin descripción"}</p>
+
+      <div className="laboratory-counter project-card-stack">
+        <strong>{project.stack_summary || "Software"}</strong>
+      </div>
+
+      {techList.length > 0 ? (
+        <div className="project-card-tags">
+          {techList.map((tech, techIndex) => (
+            <span key={`${tech}-${techIndex}`} className="project-tech-tag">
+              {tech}
+            </span>
+          ))}
+        </div>
+      ) : null}
     </article>
   );
 }

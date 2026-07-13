@@ -7,7 +7,7 @@ export default function useProjects(enabled = true) {
     [],
     [],
     "Projects",
-    enabled
+    enabled,
   );
 
   return {

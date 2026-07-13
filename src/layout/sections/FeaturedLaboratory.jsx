@@ -3,7 +3,7 @@ import { FaArrowRight } from "react-icons/fa";
 import LaboratoryCard from "../../components/cards/LaboratoryCard";
 
 function FeaturedLaboratory({ item = null, loading = false, error = null }) {
-  const laboratorySlug = item?.slug ?? null;
+  const laboratoryUrl = "/laboratorio";
 
   return (
     <section
@@ -41,17 +41,8 @@ function FeaturedLaboratory({ item = null, loading = false, error = null }) {
       )}
 
       <div className="section-more">
-        <Link
-          to={
-            laboratorySlug ? `/laboratorio/${laboratorySlug}` : "/laboratorio"
-          }
-          className="inline-link"
-        >
-          <span>
-            {laboratorySlug
-              ? "Explorar laboratorio completo"
-              : "Explorar laboratorio completo"}
-          </span>
+        <Link to={laboratoryUrl} className="inline-link">
+          <span>Explorar laboratorio completo</span>
           <FaArrowRight />
         </Link>
       </div>

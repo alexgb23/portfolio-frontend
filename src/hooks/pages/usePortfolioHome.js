@@ -7,6 +7,52 @@ const initialValue = {
   laboratories: [],
 };
 
+function normalizeList(value) {
+  if (Array.isArray(value)) {
+    return value.map((item) => String(item).trim()).filter(Boolean);
+  }
+
+  if (typeof value === "string") {
+    const trimmed = value.trim();
+
+    if (!trimmed) return [];
+
+    try {
+      const parsed = JSON.parse(trimmed);
+
+      if (Array.isArray(parsed)) {
+        return parsed.map((item) => String(item).trim()).filter(Boolean);
+      }
+
+      if (typeof parsed === "string" && parsed.trim()) {
+        return [parsed.trim()];
+      }
+    } catch {
+      if (trimmed.includes(",")) {
+        return trimmed
+          .split(",")
+          .map((item) => item.trim())
+          .filter(Boolean);
+      }
+
+      return [trimmed];
+    }
+  }
+
+  return [];
+}
+
+function normalizeProjects(items) {
+  if (!Array.isArray(items)) return [];
+
+  return items.map((item) => ({
+    ...item,
+    technologies: normalizeList(item?.technologies ?? item?.tecnologías),
+    card_background_dark: normalizeList(item?.card_background_dark),
+    card_background_light: normalizeList(item?.card_background_light),
+  }));
+}
+
 function normalizeLaboratories(items) {
   if (!Array.isArray(items)) return [];
 
@@ -23,7 +69,6 @@ function normalizeLaboratories(items) {
     coverImage: item?.cover_image ?? null,
     documentationCount: Number(item?.documentacion_count) || 0,
     progressCount: Number(item?.avances_count) || 0,
-    raw: item,
   }));
 }
 
@@ -38,8 +83,8 @@ export default function usePortfolioHome(enabled = true) {
 
   return {
     socialLinks: Array.isArray(data?.social_links) ? data.social_links : [],
-    projects: Array.isArray(data?.projects) ? data.projects : [],
-    laboratories: normalizeLaboratories(data?.laboratories ?? data),
+    projects: normalizeProjects(data?.projects),
+    laboratories: normalizeLaboratories(data?.laboratories),
     loading,
     error,
   };
