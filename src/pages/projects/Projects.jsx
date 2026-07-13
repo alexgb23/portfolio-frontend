@@ -24,7 +24,7 @@ function Projects() {
 
         <div className="state-wrapper error centered">
           <h2>Error al cargar proyectos</h2>
-          <p>{error}</p>
+          <p>{error?.message || String(error)}</p>
         </div>
       </section>
     );
@@ -48,7 +48,7 @@ function Projects() {
           <div className="grid-cards">
             {projects.map((project, index) => (
               <ProjectCard
-                key={project.id ?? `${project.title}-${index}`}
+                key={project.slug ?? project.id ?? `${project.title}-${index}`}
                 project={project}
                 index={index}
               />

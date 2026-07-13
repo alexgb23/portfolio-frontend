@@ -56,14 +56,14 @@ export const portfolioService = {
   getHomeData: () => getRequest("/portfolio-home", "Portfolio Home"),
   getAboutData: () => getRequest("/portfolio-home/about", "Portfolio About"),
   getProjects: () => getRequest("/projects", "Projects"),
-  getProjectDetail: (id) => getRequest(`/projects/${id}`, "Project Detail"),
+  getProjectDetail: (slug) => getRequest(`/projects/${slug}`, "Project Detail"),
 };
 
 export const laboratoriosRealesService = {
   getHome: () => getRequest("/laboratorios-reales/home", "Laboratorios Home"),
   getList: () => getRequest("/laboratorios-reales", "Laboratorios List"),
   getDetail: (slug) =>
-  getRequest(`/laboratorios-reales/${slug}`, "Laboratorio Detail"),
+    getRequest(`/laboratorios-reales/${slug}`, "Laboratorio Detail"),
 };
 
 export const contactService = {

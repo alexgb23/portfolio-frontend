@@ -1,13 +1,29 @@
 import { useState } from "react";
-import { NavLink, Link } from "react-router"
-import { FaMoon, FaSun, FaArrowRight, FaBars, FaTimes } from "react-icons/fa";
+import { NavLink, Link } from "react-router";
+import {
+  FaMoon,
+  FaSun,
+  FaArrowRight,
+  FaBars,
+  FaTimes,
+  FaDownload,
+} from "react-icons/fa";
 
 import "./Navbar.css";
 
-function Navbar({ isDarkMode, themeMode, toggleTheme }) {
+function Navbar({ isDarkMode, themeMode, toggleTheme, onOpenCv }) {
   const [isOpen, setIsOpen] = useState(false);
 
   const closeMenu = () => setIsOpen(false);
+
+  const handleOpenCv = (event) => {
+    event.preventDefault();
+    closeMenu();
+
+    if (typeof onOpenCv === "function") {
+      onOpenCv();
+    }
+  };
 
   const themeLabel =
     themeMode === "system"
@@ -78,6 +94,11 @@ function Navbar({ isDarkMode, themeMode, toggleTheme }) {
             onClick={closeMenu}
           >
             Laboratorio
+          </NavLink>
+
+          <NavLink to="#cv" className="nav-cv-inline" onClick={handleOpenCv}>
+            <FaDownload />
+            <span>Ver CV</span>
           </NavLink>
 
           <NavLink

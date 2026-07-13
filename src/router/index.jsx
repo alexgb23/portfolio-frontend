@@ -2,7 +2,6 @@ import { lazy, Suspense } from "react";
 import { Routes, Route, Navigate } from "react-router";
 import MainLayout from "../layout/MainLayout";
 
-
 function lazyWithPreload(importer) {
   const Component = lazy(importer);
   Component.preload = importer;
@@ -68,7 +67,7 @@ export default function AppRouter() {
         />
 
         <Route
-          path="proyectos/:id"
+          path="proyectos/:slug"
           element={
             <Suspense fallback={null}>
               <ProjectDetail />

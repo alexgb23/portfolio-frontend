@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router"; // 💡 CAMBIO: Cambiamos Link por useNavigate
+import { useNavigate } from "react-router";
 import "./Cards.css";
 import {
   FaCode,
@@ -8,6 +8,29 @@ import {
   FaShieldAlt,
   FaCloud,
 } from "react-icons/fa";
+
+function normalizeTechList(technologies) {
+  if (Array.isArray(technologies)) {
+    return technologies.filter(Boolean);
+  }
+
+  if (typeof technologies === "string") {
+    try {
+      const parsed = JSON.parse(technologies);
+
+      if (Array.isArray(parsed)) {
+        return parsed.filter(Boolean);
+      }
+    } catch {
+      return technologies
+        .split(",")
+        .map((tech) => tech.trim())
+        .filter(Boolean);
+    }
+  }
+
+  return [];
+}
 
 function getProjectIcon(project, techList) {
   const text =
@@ -65,19 +88,11 @@ function getProjectIcon(project, techList) {
 }
 
 export default function ProjectCard({ project, index = 0 }) {
-  const navigate = useNavigate(); // 💡 Inicializamos el hook de navegación nativa
+  const navigate = useNavigate();
 
   if (!project) return null;
 
-  const techList = Array.isArray(project.technologies)
-    ? project.technologies.filter(Boolean)
-    : typeof project.technologies === "string"
-      ? project.technologies
-          .split(",")
-          .map((tech) => tech.trim())
-          .filter(Boolean)
-      : [];
-
+  const techList = normalizeTechList(project.technologies);
   const tone = index % 3;
   const icon = getProjectIcon(project, techList);
 
@@ -85,19 +100,28 @@ export default function ProjectCard({ project, index = 0 }) {
   const summaryText = project.stack_summary || "Software";
   const titleText = project.title || "Sin título";
   const descriptionText = project.short_description || "Sin descripción";
-  
-  // Control estricto de ID seguro
-  const projectId = project.id !== undefined && project.id !== null ? project.id : index;
+  const projectSlug =
+    typeof project.slug === "string" ? project.slug.trim() : "";
+
+  const handleOpenProject = () => {
+    if (!projectSlug) return;
+    navigate(`/proyectos/${projectSlug}`);
+  };
 
   return (
-    /* 
-      💡 SOLUCIÓN DIRECTA: Usamos onClick nativo directo en el elemento.
-      Forzamos el cursor pointer mediante inline style para mitigar cualquier bloqueo del CSS.
-    */
-    <article 
+    <article
       className={`card card-hover card-project tone-${tone}`}
-      onClick={() => navigate(`/proyectos/${projectId}`)}
-      style={{ cursor: "pointer" }}
+      onClick={handleOpenProject}
+      onKeyDown={(event) => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          handleOpenProject();
+        }
+      }}
+      role="button"
+      tabIndex={0}
+      aria-label={`Abrir proyecto ${titleText}`}
+      style={{ cursor: projectSlug ? "pointer" : "default" }}
     >
       <div className="project-card-inner">
         <div className="card-top">

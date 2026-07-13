@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react"; // 💡 Añadido useEffect por si deseas resetear el slider al cambiar de proyecto
+import { useState, useEffect, useMemo } from "react";
 import { useParams, Link } from "react-router";
-import { useProjects } from "../../hooks/usePortfolioData";
+import { useProjectDetail } from "../../hooks/usePortfolioData";
 import usePageTitle from "../../hooks/usePageTitle";
 import {
   FaArrowLeft,
@@ -12,70 +12,104 @@ import {
   FaChevronLeft,
   FaChevronRight,
   FaTerminal,
+  FaServer,
+  FaGlobe,
+  FaDatabase,
+  FaFolderOpen,
 } from "react-icons/fa";
 import "./ProjectDetail.css";
 
-function ProjectDetail() {
-  const { id } = useParams();
-  const { projects, loading, error } = useProjects();
-  const [activeImageIndex, setActiveImageIndex] = useState(0);
+function normalizeArrayValue(value) {
+  if (Array.isArray(value)) {
+    return value.map((item) => String(item).trim()).filter(Boolean);
+  }
 
-  const project = projects?.find((p) => String(p.id) === String(id));
+  if (typeof value === "string") {
+    try {
+      const parsed = JSON.parse(value);
+      if (Array.isArray(parsed)) {
+        return parsed.map((item) => String(item).trim()).filter(Boolean);
+      }
+    } catch {
+      return value
+        .split(",")
+        .map((item) => item.trim())
+        .filter(Boolean);
+    }
+  }
+
+  return [];
+}
+
+function ProjectDetail() {
+  const { slug } = useParams();
+  const { project, loading, error } = useProjectDetail(slug);
+  const [activeImageIndex, setActiveImageIndex] = useState(0);
 
   usePageTitle(`${project?.title || "Detalle del Proyecto"} | Alex González`);
 
-  // Resetear el índice del slider si el usuario cambia a otro proyecto
   useEffect(() => {
     setActiveImageIndex(0);
-  }, [id]);
+  }, [slug]);
 
-  const titleText = project?.title || "Untitled Project";
-  const descriptionText =
+  const titleText = project?.title || "Proyecto sin título";
+  const summaryText =
     project?.short_description ||
-    "No se ha proporcionado un desglose documental para este módulo de software.";
-  const stackSummaryText = project?.stack_summary || "Especificación Técnica";
+    "No se ha proporcionado una descripción breve para este proyecto.";
+  const stackSummaryText = project?.stack_summary || "Especificación técnica";
 
-  const mockImages = (() => {
-    const fallback = ["/imagen_portfolio_mia_retocada-960.avif"];
-    const raw = project?.image_url;
+  const images = useMemo(() => {
+    const imageList = normalizeArrayValue(project?.image_url);
+    const galleryList = normalizeArrayValue(project?.galeria_urls);
+    const merged = [...imageList, ...galleryList];
+    return merged.length > 0
+      ? merged
+      : ["/imagen_portfolio_mia_retocada-960.avif"];
+  }, [project]);
 
-    if (!raw) return fallback;
+  const technologies = useMemo(
+    () => normalizeArrayValue(project?.technologies),
+    [project],
+  );
 
-    if (Array.isArray(raw)) {
-      const cleaned = raw.map((img) => String(img).trim()).filter(Boolean);
-      return cleaned.length > 0 ? cleaned : fallback;
-    }
+  const relatedAreas = useMemo(
+    () => normalizeArrayValue(project?.areas_relacionadas),
+    [project],
+  );
 
-    if (typeof raw === "string") {
-      const cleaned = raw
-        .split(",")
-        .map((img) => img.trim())
-        .filter(Boolean);
+  const documentationUrls = useMemo(
+    () => normalizeArrayValue(project?.documentacion_urls),
+    [project],
+  );
 
-      return cleaned.length > 0 ? cleaned : fallback;
-    }
-
-    return fallback;
-  })();
-
-  const technologies = project?.technologies
-    ? project.technologies
-        .split(",")
-        .map((tech) => tech.trim())
-        .filter(Boolean)
-    : [];
-
-  const liveUrl = project?.project_url;
-  const githubUrl = project?.repo_url;
-  const isFeatured = project?.is_featured;
+  const links = [
+    {
+      label: "Proyecto",
+      url: project?.project_url,
+      icon: <FaExternalLinkAlt />,
+    },
+    { label: "Frontend", url: project?.frontend_url, icon: <FaGlobe /> },
+    { label: "Backend", url: project?.backend_url, icon: <FaServer /> },
+    { label: "API", url: project?.api_base_url, icon: <FaDatabase /> },
+    {
+      label: "Staging",
+      url: project?.staging_url,
+      icon: <FaExternalLinkAlt />,
+    },
+    { label: "Repositorio", url: project?.repo_url, icon: <FaGithub /> },
+    {
+      label: "Referencia",
+      url: project?.referencia_externa,
+      icon: <FaFolderOpen />,
+    },
+  ].filter((item) => item.url);
 
   const nextImage = () => {
-    setActiveImageIndex((prev) => (prev + 1) % mockImages.length);
+    setActiveImageIndex((prev) => (prev + 1) % images.length);
   };
+
   const prevImage = () => {
-    setActiveImageIndex(
-      (prev) => (prev - 1 + mockImages.length) % mockImages.length,
-    );
+    setActiveImageIndex((prev) => (prev - 1 + images.length) % images.length);
   };
 
   if (loading) {
@@ -100,11 +134,12 @@ function ProjectDetail() {
         <Link to="/proyectos" className="back-link">
           <FaArrowLeft /> Volver a proyectos
         </Link>
+
         <div className="empty-inline-state" style={{ marginTop: "40px" }}>
-          <h2>Proyecto no encontrado (ID: {id})</h2>
+          <h2>Proyecto no encontrado</h2>
           <p>
-            El identificador no coincide con ningún registro indexado en el
-            sistema.
+            No existe ningún proyecto publicado asociado al slug:{" "}
+            <strong>{slug}</strong>
           </p>
         </div>
       </section>
@@ -113,165 +148,250 @@ function ProjectDetail() {
 
   return (
     <section className="project-detail-container">
-      {/* Cabecera de Navegación */}
       <div className="project-detail-nav">
         <Link to="/proyectos" className="back-link">
-          <FaArrowLeft /> <span>Volver al proyectos</span>
+          <FaArrowLeft /> <span>Volver a proyectos</span>
         </Link>
+
         <div className="project-meta-top">
-          <FaCalendarAlt />{" "}
-          <span>{isFeatured ? "Entorno Destacado" : "Módulo Técnico"}</span>
+          <FaCalendarAlt />
+          <span>
+            {project?.is_featured ? "Entorno destacado" : "Proyecto técnico"}
+          </span>
         </div>
       </div>
 
-      {/* Cabecera del Proyecto */}
       <header className="project-detail-header">
-        <span className="project-kicker">// Core Engine</span>
+        <span className="project-kicker">
+          {project?.tipo_proyecto || "// Core Engine"}
+        </span>
         <h1 className="project-main-title">{titleText}</h1>
         <p className="project-subtitle">{stackSummaryText}</p>
+        <p className="project-detail-summary">{summaryText}</p>
       </header>
 
-      {/* Layout Principal Exótico */}
       <div className="project-detail-layout">
-        {/* COLUMNA IZQUIERDA: Slider y Documentación */}
         <div className="project-detail-main">
-          {/* Slider Exótico */}
           <div className="project-slider-wrapper">
             <div className="project-slider">
               <img
-                src={mockImages[activeImageIndex]}
+                src={images[activeImageIndex]}
                 alt={`${titleText} - Visualización ${activeImageIndex + 1}`}
                 className="slider-image"
               />
-              {mockImages.length > 1 && (
+
+              {images.length > 1 && (
                 <>
                   <button
                     onClick={prevImage}
                     className="slider-btn prev"
                     aria-label="Anterior"
+                    type="button"
                   >
                     <FaChevronLeft />
                   </button>
+
                   <button
                     onClick={nextImage}
                     className="slider-btn next"
                     aria-label="Siguiente"
+                    type="button"
                   >
                     <FaChevronRight />
                   </button>
                 </>
               )}
             </div>
-            {/* Indicadores inferiores (Dots) */}
-            {mockImages.length > 1 && (
+
+            {images.length > 1 && (
               <div className="slider-dots">
-                {mockImages.map((_, idx) => (
-                  <span
+                {images.map((_, idx) => (
+                  <button
                     key={idx}
+                    type="button"
                     className={`dot ${idx === activeImageIndex ? "active" : ""}`}
                     onClick={() => setActiveImageIndex(idx)}
+                    aria-label={`Ir a imagen ${idx + 1}`}
                   />
                 ))}
               </div>
             )}
           </div>
 
-          {/* Bloque de Documentación Técnica */}
+          {project?.resumen && (
+            <article className="project-docs">
+              <h2>Resumen</h2>
+              <div className="docs-content">
+                <p style={{ whiteSpace: "pre-line" }}>{project.resumen}</p>
+              </div>
+            </article>
+          )}
+
           <article className="project-docs">
             <h2>
-              <FaTerminal /> Especificaciones del Sistema
+              <FaTerminal /> Descripción
             </h2>
             <div className="docs-content">
-              {/* Aquí usamos project.description en vez de short_description para mostrar todo el texto largo de tu JSON */}
               <p style={{ whiteSpace: "pre-line" }}>
-                {project?.description || descriptionText}
+                {project?.description || summaryText}
               </p>
             </div>
           </article>
+
+          {project?.objetivo && (
+            <article className="project-docs">
+              <h2>Objetivo</h2>
+              <div className="docs-content">
+                <p style={{ whiteSpace: "pre-line" }}>{project.objetivo}</p>
+              </div>
+            </article>
+          )}
+
+          {project?.resultado_actual && (
+            <article className="project-docs">
+              <h2>Resultado actual</h2>
+              <div className="docs-content">
+                <p style={{ whiteSpace: "pre-line" }}>
+                  {project.resultado_actual}
+                </p>
+              </div>
+            </article>
+          )}
+
+          {project?.notas_tecnicas && (
+            <article className="project-docs">
+              <h2>Notas técnicas</h2>
+              <div className="docs-content">
+                <p style={{ whiteSpace: "pre-line" }}>
+                  {project.notas_tecnicas}
+                </p>
+              </div>
+            </article>
+          )}
         </div>
 
-        {/* COLUMNA DERECHA: Sidebar de Arquitectura */}
         <aside className="project-detail-sidebar">
-          {/* Tarjeta de Acciones */}
           <div className="sidebar-card actions-card">
-            {liveUrl ? (
-              <a
-                href={liveUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn-project primary"
-              >
-                Desplegar Entorno <FaExternalLinkAlt />
-              </a>
-            ) : null}
-
-            {githubUrl ? (
-              <a
-                href={githubUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn-project secondary"
-              >
-                Analizar Repositorio <FaGithub />
-              </a>
-            ) : null}
-
-            {!liveUrl && !githubUrl && (
+            {links.length > 0 ? (
+              links.map((item) => (
+                <a
+                  key={item.label}
+                  href={item.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn-project primary"
+                >
+                  {item.label} {item.icon}
+                </a>
+              ))
+            ) : (
               <span className="confidential-badge">
-                Código Privado / Persistencia Local
+                Código privado / acceso no público
               </span>
             )}
           </div>
 
-          {/* Stack Tecnológico */}
           <div className="sidebar-card tags-card">
             <h3>
-              <FaCode /> Componentes de Stack
+              <FaCode /> Tecnologías
             </h3>
+
             <div className="tech-badges-grid">
-              {technologies.map((tech, idx) => (
-                <span key={idx} className="tech-tag-premium">
-                  {tech}
-                </span>
-              ))}
-              {technologies.length === 0 && (
-                <span className="empty-tag">Vanilla Stack</span>
+              {technologies.length > 0 ? (
+                technologies.map((tech, idx) => (
+                  <span key={`${tech}-${idx}`} className="tech-tag-premium">
+                    {tech}
+                  </span>
+                ))
+              ) : (
+                <span className="empty-tag">Stack no especificado</span>
               )}
             </div>
           </div>
 
-          {/* Métricas de Core */}
-          <div className="sidebar-card info-card">
-            <h3>
-              <FaBoxes /> Métricas de Infraestructura
-            </h3>
-            <div className="architecture-table">
-              <div className="arch-row">
-                <span>Database Engine</span>
-                <strong>
-                  {technologies.includes("MySQL")
-                    ? "MySQL Server"
-                    : "SQLite / NoSQL"}
-                </strong>
-              </div>
-              <div className="arch-row">
-                <span>Architecture</span>
-                <strong>
-                  {project?.slug?.includes("poo")
-                    ? "Object-Oriented (POO)"
-                    : "Functional Core"}
-                </strong>
-              </div>
-              <div className="arch-row">
-                <span>Environment</span>
-                <strong>
-                  {project?.slug?.includes("linux")
-                    ? "GNU/Linux Container"
-                    : "Windows Desktop Application"}
-                </strong>
+          {relatedAreas.length > 0 && (
+            <div className="sidebar-card tags-card">
+              <h3>Áreas relacionadas</h3>
+              <div className="tech-badges-grid">
+                {relatedAreas.map((area, idx) => (
+                  <span key={`${area}-${idx}`} className="tech-tag-premium">
+                    {area}
+                  </span>
+                ))}
               </div>
             </div>
+          )}
+
+          <div className="sidebar-card info-card">
+            <h3>
+              <FaBoxes /> Ficha técnica
+            </h3>
+
+            <div className="architecture-table">
+              <div className="arch-row">
+                <span>Slug</span>
+                <strong>{project?.slug || "-"}</strong>
+              </div>
+
+              <div className="arch-row">
+                <span>Tipo</span>
+                <strong>{project?.tipo_proyecto || "-"}</strong>
+              </div>
+
+              <div className="arch-row">
+                <span>Área principal</span>
+                <strong>{project?.area_principal || "-"}</strong>
+              </div>
+
+              <div className="arch-row">
+                <span>Estado</span>
+                <strong>{project?.status || "-"}</strong>
+              </div>
+
+              <div className="arch-row">
+                <span>Publicado</span>
+                <strong>{project?.is_published ? "Sí" : "No"}</strong>
+              </div>
+
+              <div className="arch-row">
+                <span>Destacado</span>
+                <strong>{project?.is_featured ? "Sí" : "No"}</strong>
+              </div>
+
+              <div className="arch-row">
+                <span>Inicio</span>
+                <strong>{project?.fecha_inicio || "-"}</strong>
+              </div>
+
+              <div className="arch-row">
+                <span>Fin</span>
+                <strong>{project?.fecha_fin || "-"}</strong>
+              </div>
+
+              {project?.laboratorio_origen?.titulo && (
+                <div className="arch-row">
+                  <span>Laboratorio</span>
+                  <strong>{project.laboratorio_origen.titulo}</strong>
+                </div>
+              )}
+            </div>
           </div>
+
+          {documentationUrls.length > 0 && (
+            <div className="sidebar-card info-card">
+              <h3>Documentación</h3>
+              <div className="architecture-table">
+                {documentationUrls.map((url, idx) => (
+                  <div key={`${url}-${idx}`} className="arch-row">
+                    <span>Documento {idx + 1}</span>
+                    <a href={url} target="_blank" rel="noopener noreferrer">
+                      Abrir
+                    </a>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </aside>
       </div>
     </section>

@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router"; // 💡 CAMBIO: Importamos useNavigate junto a Link
+import { Link, useNavigate } from "react-router";
 import {
   FaArrowRight,
   FaCode,
@@ -9,6 +9,29 @@ import {
   FaCloud,
 } from "react-icons/fa";
 import "./FeaturedProjects.css";
+
+function normalizeTechList(technologies) {
+  if (Array.isArray(technologies)) {
+    return technologies.filter(Boolean);
+  }
+
+  if (typeof technologies === "string") {
+    try {
+      const parsed = JSON.parse(technologies);
+
+      if (Array.isArray(parsed)) {
+        return parsed.filter(Boolean);
+      }
+    } catch {
+      return technologies
+        .split(",")
+        .map((tech) => tech.trim())
+        .filter(Boolean);
+    }
+  }
+
+  return [];
+}
 
 function getProjectIcon(project, techList) {
   const text =
@@ -99,7 +122,7 @@ function ProjectCardSkeleton({ tone = 0 }) {
 }
 
 function FeaturedProjects({ projects = [], loading = false }) {
-  const navigate = useNavigate(); // 💡 Inicializamos el hook para cambiar de página programáticamente
+  const navigate = useNavigate();
   const safeProjects = Array.isArray(projects) ? projects : [];
   const visibleProjects = safeProjects.slice(0, 3);
   const hasProjects = visibleProjects.length > 0;
@@ -130,34 +153,32 @@ function FeaturedProjects({ projects = [], loading = false }) {
       ) : hasProjects ? (
         <div className="expertise-grid">
           {visibleProjects.map((project, index) => {
-            const techList = Array.isArray(project?.technologies)
-              ? project.technologies.filter(Boolean)
-              : typeof project?.technologies === "string"
-                ? project.technologies
-                    .split(",")
-                    .map((tech) => tech.trim())
-                    .filter(Boolean)
-                : [];
-
+            const techList = normalizeTechList(project?.technologies);
             const icon = getProjectIcon(project, techList);
             const tone = index % 3;
+            const projectSlug =
+              typeof project?.slug === "string" ? project.slug.trim() : "";
 
-            // 💡 Control de ID seguro por si llega nulo o indefinido temporalmente
-            const projectId =
-              project.id !== undefined && project.id !== null
-                ? project.id
-                : index;
+            const handleOpenProject = () => {
+              if (!projectSlug) return;
+              navigate(`/proyectos/${projectSlug}`);
+            };
 
             return (
-              /* 
-                💡 SOLUCIÓN DEFINITIVA: Añadimos onClick y estilo de cursor directo 
-                en el artículo para redirigir al detalle usando el ID dinámico de la BBDD.
-              */
               <article
-                key={project.id ?? `${project.title}-${index}`}
+                key={project.id ?? project.slug ?? `${project.title}-${index}`}
                 className={`expertise-card expertise-card-hover tone-${tone}`}
-                onClick={() => navigate(`/proyectos/${projectId}`)}
-                style={{ cursor: "pointer" }}
+                onClick={handleOpenProject}
+                onKeyDown={(event) => {
+                  if (event.key === "Enter" || event.key === " ") {
+                    event.preventDefault();
+                    handleOpenProject();
+                  }
+                }}
+                role="button"
+                tabIndex={0}
+                aria-label={`Abrir proyecto ${project.title || "sin título"}`}
+                style={{ cursor: projectSlug ? "pointer" : "default" }}
               >
                 <div className="card-head">
                   <div className="expertise-icon">{icon}</div>

@@ -1,12 +1,13 @@
 import useAsyncResource from "../core/useAsyncResource";
 import { portfolioService } from "../../services/api";
 
-export default function useProjectDetail(id) {
+export default function useProjectDetail(slug) {
   const { data, loading, error } = useAsyncResource(
-    () => portfolioService.getProjectDetail(id),
+    () => portfolioService.getProjectDetail(slug),
     null,
-    [id],
-    "Project detail"
+    [slug],
+    "Project detail",
+    Boolean(slug),
   );
 
   return {
