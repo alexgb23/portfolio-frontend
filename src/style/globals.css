@@ -2,7 +2,7 @@
    FUENTES LOCALES ULTRAOPTIMIZADAS
    ========================================================= */
 
-/* Inter Regular (Texto común) */
+/* Inter Regular */
 @font-face {
   font-family: "Inter";
   font-style: normal;
@@ -11,7 +11,7 @@
   src: url("/fonts/inter-v20-latin-regular.woff2") format("woff2");
 }
 
-/* Inter Bold (Botones, destacados normales) */
+/* Inter Bold */
 @font-face {
   font-family: "Inter";
   font-style: normal;
@@ -20,16 +20,7 @@
   src: url("/fonts/inter-v20-latin-700.woff2") format("woff2");
 }
 
-/* Inter Bold Italic (Textos enfatizados en cursiva) */
-@font-face {
-  font-family: "Inter";
-  font-style: italic;
-  font-weight: 700;
-  font-display: swap;
-  src: url("/fonts/inter-v20-latin-700italic.woff2") format("woff2");
-}
-
-/* Space Grotesk Regular (Títulos medianos) */
+/* Space Grotesk Regular */
 @font-face {
   font-family: "Space Grotesk";
   font-style: normal;
@@ -38,13 +29,31 @@
   src: url("/fonts/space-grotesk-v22-latin-regular.woff2") format("woff2");
 }
 
-/* Space Grotesk Bold (Grandes títulos de la Hero/About) */
+/* Space Grotesk Bold */
 @font-face {
   font-family: "Space Grotesk";
   font-style: normal;
   font-weight: 700;
   font-display: swap;
   src: url("/fonts/space-grotesk-v22-latin-700.woff2") format("woff2");
+}
+
+/* Orbitron Bold */
+@font-face {
+  font-family: "Orbitron";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("/fonts/orbitron-latin-700-normal.woff2") format("woff2");
+}
+
+/* Orbitron ExtraBold */
+@font-face {
+  font-family: "Orbitron";
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url("/fonts/orbitron-latin-800-normal.woff2") format("woff2");
 }
 
 /* =========================================================
@@ -66,7 +75,9 @@
     BlinkMacSystemFont,
     "Segoe UI",
     sans-serif;
+
   --font-display: "Space Grotesk", sans-serif;
+  --font-tech: "Orbitron", "Space Grotesk", sans-serif;
 }
 
 /* =========================================================
@@ -91,38 +102,30 @@
   --accent-2: #0f766e;
   --accent-green: #059669;
   --accent-glow: rgba(8, 145, 178, 0.14);
-  --acent-quantum: #00d9ff;
-  --acent-neon: #00f5b4;
-  --acent-matrix: #00ff88;
 
   --shadow-sm: 0 8px 32px rgba(0, 0, 0, 0.24);
   --shadow-md: 0 16px 48px rgba(0, 0, 0, 0.32);
   --shadow-lg: 0 24px 64px rgba(0, 0, 0, 0.4);
+
   --terminal-bg: #161b26;
   --console-bg: #1c2331;
-  --radius-sm: 12px;
-  --radius-md: 18px;
-  --radius-lg: 26px;
 
-  --container: 1280px;
+  --lab-accent-start: #08b8ff;
+  --lab-accent-mid: #1fd3ff;
+  --lab-accent-end: #20e6a7;
 
-  /* Lab */
-  --lab-quantum: #00d9ff;
-  --lab-neon: #00f5b4;
-  --lab-violet: #7a5cff;
-  --lab-magenta: #ff3cac;
-  --lab-plasma: #ff8a00;
-  --lab-lime: #6dff33;
-  --lab-yellow: #d8ff12;
-  --lab-matrix: #00ff88;
-  --lab-space: #101522;
-  --lab-graphite: #1a2333;
-  --lab-glass: rgba(255, 255, 255, 0.05);
-  --lab-glow-blue: rgba(0, 217, 255, 0.18);
-  --lab-glow-green: rgba(0, 245, 180, 0.18);
-  --lab-glow-violet: rgba(122, 92, 255, 0.18);
-  --lab-glow-magenta: rgba(255, 60, 172, 0.18);
-  --lab-glow-orange: rgba(255, 138, 0, 0.18);
+  --lab-cta-text: #f8fafc;
+  --lab-cta-bg-start: rgba(10, 18, 30, 0.84);
+  --lab-cta-bg-end: rgba(10, 18, 30, 0.72);
+  --lab-cta-border: rgba(0, 217, 255, 0.55);
+  --lab-cta-ring: rgba(0, 217, 255, 0.12);
+
+  --lab-panel-text: #f8fafc;
+  --lab-panel-text-soft: rgba(248, 250, 252, 0.84);
+  --lab-panel-bg-start: rgba(8, 14, 24, 0.82);
+  --lab-panel-bg-end: rgba(8, 14, 24, 0.72);
+  --lab-panel-border: rgba(0, 217, 255, 0.16);
+  --lab-panel-shadow: 0 10px 32px rgba(0, 0, 0, 0.18);
 }
 
 /* =========================================================
@@ -147,37 +150,30 @@
   --accent-2: #0f766e;
   --accent-green: #059669;
   --accent-glow: rgba(8, 145, 178, 0.14);
-  --acent-quantum: #00d9ff;
-  --acent-neon: #00f5b4;
-  --acent-matrix: #00ff88;
 
   --shadow-sm: 0 10px 25px rgba(15, 23, 42, 0.05);
   --shadow-md: 0 20px 55px rgba(15, 23, 42, 0.08);
   --shadow-lg: 0 30px 80px rgba(15, 23, 42, 0.12);
+
   --terminal-bg: #ffffff;
   --console-bg: #1e2530;
-  --radius-sm: 12px;
-  --radius-md: 18px;
-  --radius-lg: 26px;
 
-  --container: 1280px;
+  --lab-accent-start: #00a6ff;
+  --lab-accent-mid: #12c8ff;
+  --lab-accent-end: #23d89d;
 
-  /* Lab */
-  --lab-quantum: #00d9ff;
-  --lab-neon: #00f5b4;
-  --lab-violet: #7a5cff;
-  --lab-magenta: #ff3cac;
-  --lab-plasma: #ff8a00;
-  --lab-cyber: #ffd400;
-  --lab-matrix: #00ff88;
-  --lab-space: #101522;
-  --lab-graphite: #1a2333;
-  --lab-glass: rgba(255, 255, 255, 0.05);
-  --lab-glow-blue: rgba(0, 217, 255, 0.18);
-  --lab-glow-green: rgba(0, 245, 180, 0.18);
-  --lab-glow-violet: rgba(122, 92, 255, 0.18);
-  --lab-glow-magenta: rgba(255, 60, 172, 0.18);
-  --lab-glow-orange: rgba(255, 138, 0, 0.18);
+  --lab-cta-text: #0f172a;
+  --lab-cta-bg-start: rgba(255, 255, 255, 0.96);
+  --lab-cta-bg-end: rgba(238, 244, 251, 0.96);
+  --lab-cta-border: rgba(8, 145, 178, 0.34);
+  --lab-cta-ring: rgba(8, 145, 178, 0.12);
+
+  --lab-panel-text: #0f172a;
+  --lab-panel-text-soft: #334155;
+  --lab-panel-bg-start: rgba(255, 255, 255, 0.94);
+  --lab-panel-bg-end: rgba(238, 244, 251, 0.96);
+  --lab-panel-border: rgba(15, 23, 42, 0.1);
+  --lab-panel-shadow: 0 10px 32px rgba(15, 23, 42, 0.08);
 }
 
 /* =========================================================
@@ -217,14 +213,12 @@
   }
 }
 
-/* Optimización para portátiles medianas (15") */
 @media (min-width: 1280px) and (max-width: 1439px) {
   :root {
     --container: 1200px;
   }
 }
 
-/* Optimización para monitores anchos y pantallas 2K */
 @media (min-width: 1440px) {
   :root {
     --container: 1420px;
@@ -333,6 +327,13 @@ a {
 @media (min-width: 721px) {
   .container {
     padding-inline: 20px;
+  }
+}
+
+/* quita el padding del main.container en desktop */
+@media (min-width: 1024px) {
+  main.container {
+    padding-inline: 0;
   }
 }
 
