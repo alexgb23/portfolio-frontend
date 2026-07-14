@@ -14,9 +14,9 @@
     overscroll-behavior-x: contain;
     -webkit-overflow-scrolling: touch;
     padding-bottom: 0.25rem;
-    scroll-snap-type: none;
     scrollbar-width: none;
     -ms-overflow-style: none;
+    scroll-snap-type: none;
   }
 
   .expertise-grid.grid-4xl.about-preview-grid::-webkit-scrollbar {
@@ -26,7 +26,6 @@
   .expertise-grid.grid-4xl.about-preview-grid > * {
     min-width: 0;
     height: 100%;
-    /* scroll-snap-align: start; */
   }
 
   .expertise-grid.grid-4xl.about-preview-grid .expertise-card {

@@ -12,76 +12,56 @@ import "./AboutPreview.css";
 function AboutPreview() {
   const sliderRef = useRef(null);
 
-useEffect(() => {
-  const el = sliderRef.current;
-  if (!el) return;
+  useEffect(() => {
+    const el = sliderRef.current;
+    if (!el) return;
 
-  const mediaQuery = window.matchMedia("(max-width: 767px)");
-  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const isMobile = window.innerWidth <= 767;
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
 
-  let frameId = null;
-  let paused = false;
-  let pauseTimeout = null;
+    if (!isMobile || prefersReducedMotion) return;
 
-  const tick = () => {
-    if (!el || !mediaQuery.matches || reducedMotion.matches) return;
+    let frameId;
+    let pausedUntil = 0;
 
-    const maxScroll = el.scrollWidth - el.clientWidth;
+    const pause = () => {
+      pausedUntil = Date.now() + 1800;
+    };
 
-    if (!paused && maxScroll > 0) {
-      if (el.scrollLeft >= maxScroll - 1) {
-        el.scrollLeft = 0;
-      } else {
-        el.scrollLeft += 0.6;
+    const tick = () => {
+      if (!el) return;
+
+      const maxScroll = el.scrollWidth - el.clientWidth;
+
+      if (Date.now() < pausedUntil) {
+        frameId = requestAnimationFrame(tick);
+        return;
       }
-    }
+
+      if (maxScroll > 0) {
+        if (el.scrollLeft >= maxScroll - 1) {
+          el.scrollLeft = 0;
+        } else {
+          el.scrollLeft += 0.6;
+        }
+      }
+
+      frameId = requestAnimationFrame(tick);
+    };
+
+    el.addEventListener("touchstart", pause, { passive: true });
+    el.addEventListener("touchmove", pause, { passive: true });
 
     frameId = requestAnimationFrame(tick);
-  };
 
-  const start = () => {
-    cancelAnimationFrame(frameId);
-    frameId = requestAnimationFrame(tick);
-  };
-
-  const stop = () => {
-    cancelAnimationFrame(frameId);
-    frameId = null;
-  };
-
-  const pause = () => {
-    paused = true;
-    clearTimeout(pauseTimeout);
-    pauseTimeout = setTimeout(() => {
-      paused = false;
-    }, 1800);
-  };
-
-  const handleChange = () => {
-    stop();
-    if (mediaQuery.matches && !reducedMotion.matches) {
-      start();
-    } else if (el) {
-      el.scrollLeft = 0;
-    }
-  };
-
-  el.addEventListener("touchstart", pause, { passive: true });
-  el.addEventListener("touchmove", pause, { passive: true });
-
-  handleChange();
-  mediaQuery.addEventListener("change", handleChange);
-  reducedMotion.addEventListener("change", handleChange);
-
-  return () => {
-    stop();
-    clearTimeout(pauseTimeout);
-    el.removeEventListener("touchstart", pause);
-    el.removeEventListener("touchmove", pause);
-    mediaQuery.removeEventListener("change", handleChange);
-    reducedMotion.removeEventListener("change", handleChange);
-  };
-}, []);
+    return () => {
+      cancelAnimationFrame(frameId);
+      el.removeEventListener("touchstart", pause);
+      el.removeEventListener("touchmove", pause);
+    };
+  }, []);
 
   const title =
     "Soy Alex, Técnico Superior especializado en infraestructura IT, redes, virtualización y automatización de sistemas conectados";
