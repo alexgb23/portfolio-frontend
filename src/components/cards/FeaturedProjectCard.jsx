@@ -8,7 +8,7 @@ import {
   FaShieldAlt,
   FaCloud,
 } from "react-icons/fa";
-import "./ProjectCard.css";
+import "./FeaturedProjectCard.css";
 
 function normalizeList(value) {
   if (Array.isArray(value)) {

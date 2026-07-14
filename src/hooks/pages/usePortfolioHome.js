@@ -14,7 +14,6 @@ function normalizeList(value) {
 
   if (typeof value === "string") {
     const trimmed = value.trim();
-
     if (!trimmed) return [];
 
     try {
@@ -60,12 +59,10 @@ function normalizeLaboratories(items) {
     id: item?.id ?? null,
     title: item?.titulo ?? "",
     slug: item?.slug ?? "",
-    category: item?.categoria ?? "",
-    status: item?.estado ?? "",
-    summary: item?.resumen ?? "",
-    relatedAreas: Array.isArray(item?.areas_relacionadas)
-      ? item.areas_relacionadas
-      : [],
+    category: item?.categoria ?? "Laboratorio",
+    status: item?.estado ?? "Activo",
+    summary: item?.resumen ?? "Laboratorio técnico real.",
+    relatedAreas: normalizeList(item?.areas_relacionadas).slice(0, 4),
     coverImage: item?.cover_image ?? null,
     documentationCount: Number(item?.documentacion_count) || 0,
     progressCount: Number(item?.avances_count) || 0,

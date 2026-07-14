@@ -8,27 +8,18 @@ import ContactPreview from "../../layout/sections/ContactPreview";
 import { usePortfolioHome } from "../../hooks/usePortfolioData";
 import usePageTitle from "../../hooks/usePageTitle";
 
-function normalizeProjects(projects) {
-  return Array.isArray(projects) ? projects : [];
-}
-
-function normalizeLaboratories(items) {
-  return Array.isArray(items) ? items : [];
-}
-
 function Home() {
   const { openCvModal, setCvSocialLinks } = useOutletContext();
+  const [showDeferredSections, setShowDeferredSections] = useState(false);
 
   usePageTitle(
     "Alexander Galvez | Sistemas, infraestructura y desarrollo de software",
   );
 
-  const [showDeferredSections, setShowDeferredSections] = useState(false);
-
   const {
-    socialLinks = [],
-    projects = [],
-    laboratories = [],
+    socialLinks,
+    projects,
+    laboratories,
     loading: homeLoading,
     error: homeError,
   } = usePortfolioHome();
@@ -42,40 +33,22 @@ function Home() {
   useEffect(() => {
     if (typeof window === "undefined") return;
 
-    const raf =
-      window.requestAnimationFrame ||
-      ((callback) => window.setTimeout(callback, 16));
-
-    const cancelRaf =
-      window.cancelAnimationFrame || ((id) => window.clearTimeout(id));
-
-    const id = raf(() => {
+    const id = window.setTimeout(() => {
       setShowDeferredSections(true);
-    });
+    }, 120);
 
-    return () => cancelRaf(id);
+    return () => window.clearTimeout(id);
   }, []);
 
-  const safeProjects = useMemo(() => normalizeProjects(projects), [projects]);
-
   const featuredProjects = useMemo(() => {
-    const featuredOnly = safeProjects.filter((project) => project?.is_featured);
-    const nonFeatured = safeProjects.filter((project) => !project?.is_featured);
-
-    return [...featuredOnly, ...nonFeatured].slice(0, 3);
-  }, [safeProjects]);
-
-  const safeLaboratories = useMemo(
-    () => normalizeLaboratories(laboratories),
-    [laboratories],
-  );
+    return Array.isArray(projects) ? projects.slice(0, 2) : [];
+  }, [projects]);
 
   const featuredLaboratory = useMemo(() => {
-    const featuredOnly = safeLaboratories.filter((item) => item?.is_featured);
-    const nonFeatured = safeLaboratories.filter((item) => !item?.is_featured);
-
-    return [...featuredOnly, ...nonFeatured][0] ?? null;
-  }, [safeLaboratories]);
+    return Array.isArray(laboratories) && laboratories.length > 0
+      ? laboratories[0]
+      : null;
+  }, [laboratories]);
 
   const personSchema = {
     "@context": "https://schema.org",
@@ -127,7 +100,7 @@ function Home() {
           </div>
         </section>
       ) : (
-        <FeaturedProjects projects={featuredProjects} />
+        <FeaturedProjects projects={featuredProjects} loading={homeLoading} />
       )}
 
       {showDeferredSections ? (

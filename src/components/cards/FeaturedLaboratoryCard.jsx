@@ -1,84 +1,54 @@
 import { Link } from "react-router";
-import { ArrowUpRight, FolderKanban, Rocket, Activity } from "lucide-react";
-import "./LaboratoryCard.css";
-
-function normalizeArray(value) {
-  if (Array.isArray(value)) return value.filter(Boolean);
-  if (!value) return [];
-  return [value].filter(Boolean);
-}
-
-function pickImage(lab) {
-  if (!lab) return null;
-
-  if (typeof lab.coverImage === "string" && lab.coverImage.trim()) {
-    return lab.coverImage;
-  }
-
-  if (typeof lab.cover_image === "string" && lab.cover_image.trim()) {
-    return lab.cover_image;
-  }
-
-  return "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1400&q=80";
-}
-
-function pickCategory(lab) {
-  return lab?.categoria || lab?.category || lab?.tipo_proyecto || "Laboratorio";
-}
-
-function pickStatus(lab) {
-  return lab?.estado || lab?.status || "Activo";
-}
-
-function pickTitle(lab) {
-  return lab?.titulo || lab?.title || "Laboratorio destacado";
-}
-
-function pickDescription(lab) {
-  return lab?.resumen || lab?.summary || "Laboratorio técnico real.";
-}
-
-function pickTags(lab) {
-  return normalizeArray(lab?.areas_relacionadas || lab?.relatedAreas).slice(
-    0,
-    4,
-  );
-}
-
-function pickDocumentationCount(lab) {
-  return Number(lab?.documentacion_count ?? lab?.documentationCount ?? 0);
-}
-
-function pickAdvancesCount(lab) {
-  return Number(lab?.avances_count ?? lab?.progressCount ?? 0);
-}
-
-function pickCtaUrl() {
-  return "/laboratorio";
-}
+import {
+  ArrowUpRight,
+  FolderKanban,
+  Rocket,
+  Activity,
+  FlaskConical,
+} from "lucide-react";
+import "./FeaturedLaboratoryCard.css";
 
 export default function LaboratoryCard({ item, className = "" }) {
-  const title = pickTitle(item);
-  const description = pickDescription(item);
-  const category = pickCategory(item);
-  const status = pickStatus(item);
-  const tags = pickTags(item);
-  const documentationCount = pickDocumentationCount(item);
-  const advancesCount = pickAdvancesCount(item);
-  const image = pickImage(item);
-  const ctaUrl = pickCtaUrl();
+  if (!item) return null;
+
+  const {
+    title = "Laboratorio destacado",
+    summary = "Laboratorio técnico real.",
+    category = "Laboratorio",
+    status = "Activo",
+    relatedAreas = [],
+    documentationCount = 0,
+    progressCount = 0,
+    coverImage = null,
+  } = item;
+
+  const hasImage = Boolean(coverImage);
 
   return (
-    <article className={["lab-card-rich", className].filter(Boolean).join(" ")}>
+    <article
+      className={[
+        "lab-card-rich",
+        hasImage ? "has-media" : "is-empty-media",
+        className,
+      ]
+        .filter(Boolean)
+        .join(" ")}
+    >
       <div className="lab-card-rich__media">
-        <img
-          src={image}
-          alt={`Vista previa del laboratorio ${title}`}
-          className="lab-card-rich__image"
-          loading="lazy"
-          width="1400"
-          height="900"
-        />
+        {hasImage ? (
+          <img
+            src={coverImage}
+            alt={`Vista previa del laboratorio ${title}`}
+            className="lab-card-rich__image"
+            loading="lazy"
+            width="1400"
+            height="900"
+          />
+        ) : (
+          <div className="lab-card-rich__image-fallback" aria-hidden="true">
+            <FlaskConical size={28} />
+          </div>
+        )}
 
         <div className="lab-card-rich__overlay" />
 
@@ -95,7 +65,7 @@ export default function LaboratoryCard({ item, className = "" }) {
 
             <h3 className="lab-card-rich__title">
               <Link
-                to={ctaUrl}
+                to="/laboratorio"
                 className="lab-card-rich__primary-link"
                 aria-label={`Abrir laboratorio ${title}`}
               >
@@ -103,11 +73,11 @@ export default function LaboratoryCard({ item, className = "" }) {
               </Link>
             </h3>
 
-            <p className="lab-card-rich__description">{description}</p>
+            <p className="lab-card-rich__description">{summary}</p>
           </div>
 
           <Link
-            to={ctaUrl}
+            to="/laboratorio"
             className="lab-card-rich__cta lab-card-rich__cta-link"
             aria-label={`Ir a laboratorio desde ${title}`}
           >
@@ -116,15 +86,15 @@ export default function LaboratoryCard({ item, className = "" }) {
           </Link>
         </div>
 
-        {tags.length > 0 && (
+        {relatedAreas.length > 0 ? (
           <div className="lab-card-rich__tags">
-            {tags.map((tag) => (
+            {relatedAreas.map((tag) => (
               <span className="lab-card-rich__tag" key={`tag-${tag}`}>
                 {tag}
               </span>
             ))}
           </div>
-        )}
+        ) : null}
 
         <div className="lab-card-rich__stats">
           <div className="lab-card-rich__stat">
@@ -141,7 +111,7 @@ export default function LaboratoryCard({ item, className = "" }) {
               <Rocket size={16} />
               Avances
             </div>
-            <strong>{advancesCount}</strong>
+            <strong>{progressCount}</strong>
             <span>hitos</span>
           </div>
 

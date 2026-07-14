@@ -1,4 +1,4 @@
-import ProjectCard from "../../components/cards/ProjectCard";
+import ProjectCard from "../../components/cards/FeaturedProjectCard";
 import { useProjects } from "../../hooks/usePortfolioData";
 import usePageTitle from "../../hooks/usePageTitle";
 

@@ -1,6 +1,6 @@
 import { Link } from "react-router";
 import { FaArrowRight } from "react-icons/fa";
-import LaboratoryCard from "../../components/cards/LaboratoryCard";
+import FeaturedLaboratoryCard from "../../components/cards/FeaturedLaboratoryCard";
 
 function FeaturedLaboratory({ item = null, loading = false, error = null }) {
   const laboratoryUrl = "/laboratorio";
@@ -29,7 +29,7 @@ function FeaturedLaboratory({ item = null, loading = false, error = null }) {
         </div>
       ) : item ? (
         <div className="featured-laboratory-card-wrap">
-          <LaboratoryCard item={item} />
+          <FeaturedLaboratoryCard item={item} />
         </div>
       ) : (
         <div className="empty-inline-state">
