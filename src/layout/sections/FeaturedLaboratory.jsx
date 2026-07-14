@@ -2,7 +2,12 @@ import { Link } from "react-router";
 import { FaArrowRight } from "react-icons/fa";
 import FeaturedLaboratoryCard from "../../components/cards/FeaturedLaboratoryCard";
 
-function FeaturedLaboratory({ item = null, loading = false, error = null }) {
+function FeaturedLaboratory({
+  item = null,
+  loading = false,
+  isRefreshing = false,
+  error = "",
+}) {
   const laboratoryUrl = "/laboratorio";
 
   return (
@@ -19,17 +24,25 @@ function FeaturedLaboratory({ item = null, loading = false, error = null }) {
         </p>
       </div>
 
-      {loading ? (
+      {item ? (
+        <>
+          {isRefreshing ? (
+            <div className="section-inline-status">
+              <p>Actualizando laboratorio...</p>
+            </div>
+          ) : null}
+
+          <div className="featured-laboratory-card-wrap">
+            <FeaturedLaboratoryCard item={item} />
+          </div>
+        </>
+      ) : loading ? (
         <div className="empty-inline-state">
           <p>Cargando laboratorio destacado...</p>
         </div>
       ) : error ? (
         <div className="empty-inline-state">
           <p>No se pudo cargar el resumen del laboratorio en este momento.</p>
-        </div>
-      ) : item ? (
-        <div className="featured-laboratory-card-wrap">
-          <FeaturedLaboratoryCard item={item} />
         </div>
       ) : (
         <div className="empty-inline-state">

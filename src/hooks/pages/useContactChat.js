@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const API_URL = import.meta.env.VITE_API_URL ?? "http://localhost:8000";
 
@@ -8,11 +8,25 @@ export default function useContactChat() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
+  const successTimeoutRef = useRef(null);
+
+  useEffect(() => {
+    return () => {
+      if (successTimeoutRef.current) {
+        clearTimeout(successTimeoutRef.current);
+      }
+    };
+  }, []);
+
   async function sendMessage(payload) {
     try {
       setLoading(true);
       setError("");
-      setSuccess(""); // Limpia éxitos anteriores al iniciar una nueva petición
+      setSuccess("");
+
+      if (successTimeoutRef.current) {
+        clearTimeout(successTimeoutRef.current);
+      }
 
       const response = await fetch(`${API_URL}/api/contact-messages`, {
         method: "POST",
@@ -37,8 +51,7 @@ export default function useContactChat() {
       setMessages((current) => [...current, payload]);
       setSuccess(data?.message ?? "Mensaje enviado correctamente");
 
-      // Opcional: Auto-limpiar el mensaje de éxito después de 5 segundos
-      setTimeout(() => {
+      successTimeoutRef.current = setTimeout(() => {
         setSuccess("");
       }, 5000);
 

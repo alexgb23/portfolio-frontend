@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import useAsyncResource from "../core/useAsyncResource";
 import { laboratoriosRealesService } from "../../services/api";
 
@@ -17,6 +18,7 @@ function normalizeLaboratoryItems(payload) {
   return source.map((item) => ({
     id: item?.id ?? null,
     title: item?.title ?? item?.titulo ?? "",
+    slug: item?.slug ?? "",
     category:
       item?.category ?? item?.categoria ?? item?.tipo_proyecto ?? "Laboratorio",
     area: item?.area ?? item?.area_principal ?? "",
@@ -55,7 +57,7 @@ function normalizeLaboratoryItems(payload) {
 }
 
 export default function useLaboratoryHome(enabled = true) {
-  const { data, loading, error } = useAsyncResource(
+  const { data, loading, error, isRefreshing } = useAsyncResource(
     laboratoriosRealesService.getHome,
     initialValue,
     [],
@@ -63,15 +65,20 @@ export default function useLaboratoryHome(enabled = true) {
     enabled,
   );
 
-  const items = normalizeLaboratoryItems(data);
-  const featuredItems = items.filter((item) => item.is_featured);
-  const fallbackItems = items.filter((item) => !item.is_featured);
+  const items = useMemo(() => normalizeLaboratoryItems(data), [data]);
+
+  const featuredItems = useMemo(() => {
+    const featured = items.filter((item) => item.is_featured);
+    const fallback = items.filter((item) => !item.is_featured);
+    return featured.length > 0 ? featured : fallback;
+  }, [items]);
 
   return {
     laboratoryHome: data,
     items,
-    featuredItems: featuredItems.length > 0 ? featuredItems : fallbackItems,
+    featuredItems,
     loading,
     error,
+    isRefreshing,
   };
 }

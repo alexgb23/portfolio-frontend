@@ -1,12 +1,19 @@
+import { useLaboratoryHome } from "../../hooks/usePortfolioData";
 import LaboratoryHero from "./components/LaboratoryHero";
 import LaboratorySection from "./components/LaboratorySection";
 import LaboratoryFooter from "./components/LaboratoryFooter";
 
 export default function Laboratory() {
+  const { featuredItems, loading, error } = useLaboratoryHome(true);
+
   return (
     <>
       <LaboratoryHero />
-      <LaboratorySection />
+      <LaboratorySection
+        featuredItems={featuredItems}
+        loading={loading}
+        error={error}
+      />
       <LaboratoryFooter />
     </>
   );

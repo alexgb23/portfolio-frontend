@@ -2,6 +2,22 @@ import { Link } from "react-router";
 import { FaGithub, FaLinkedin, FaEnvelope, FaArrowRight } from "react-icons/fa";
 import "../../pages/contact/Contact.css";
 
+function normalizeHref(href = "", type = "") {
+  const safeHref = typeof href === "string" ? href.trim() : "";
+  const normalizedType = String(type || "").toLowerCase();
+
+  if (!safeHref) return "#";
+
+  if (
+    ["email", "envelope"].includes(normalizedType) &&
+    !safeHref.startsWith("mailto:")
+  ) {
+    return `mailto:${safeHref}`;
+  }
+
+  return safeHref;
+}
+
 function SocialCard({ href = "#", icon, label, title, text, className = "" }) {
   const safeHref = typeof href === "string" && href.trim() ? href : "#";
   const isMail = safeHref.startsWith("mailto:");
@@ -10,7 +26,7 @@ function SocialCard({ href = "#", icon, label, title, text, className = "" }) {
     <a
       href={safeHref}
       target={isMail ? undefined : "_blank"}
-      rel={isMail ? undefined : "noreferrer"}
+      rel={isMail ? undefined : "noopener noreferrer"}
       className={`social-mini-card${className ? ` ${className}` : ""}`}
       aria-label={`${label}: ${title}`}
     >
@@ -53,6 +69,8 @@ function ContactPreview({ socialLinks = [] }) {
     ),
   );
 
+  const hasAnySocial = Boolean(github?.url || linkedin?.url || email?.url);
+
   return (
     <section className="section section-spaced section-separated">
       <div className="section-head-centered">
@@ -71,7 +89,7 @@ function ContactPreview({ socialLinks = [] }) {
           <div className="social-mini-grid">
             {github?.url ? (
               <SocialCard
-                href={github.url}
+                href={normalizeHref(github.url, "github")}
                 icon={<FaGithub />}
                 label="GitHub"
                 title={github.label || github.username || "GitHub"}
@@ -81,7 +99,7 @@ function ContactPreview({ socialLinks = [] }) {
 
             {linkedin?.url ? (
               <SocialCard
-                href={linkedin.url}
+                href={normalizeHref(linkedin.url, "linkedin")}
                 icon={<FaLinkedin />}
                 label="LinkedIn"
                 title={linkedin.label || "LinkedIn"}
@@ -91,7 +109,10 @@ function ContactPreview({ socialLinks = [] }) {
 
             {email?.url ? (
               <SocialCard
-                href={email.url}
+                href={normalizeHref(
+                  email.url,
+                  email?.platform || email?.icon_key || "email",
+                )}
                 icon={<FaEnvelope />}
                 label="Correo"
                 title={email.label || "Email"}
@@ -99,6 +120,12 @@ function ContactPreview({ socialLinks = [] }) {
               />
             ) : null}
           </div>
+
+          {!hasAnySocial ? (
+            <p className="empty-inline-copy">
+              Los canales directos estarán disponibles aquí en breve.
+            </p>
+          ) : null}
 
           <div className="section-more left">
             <Link to="/contacto" className="inline-link">

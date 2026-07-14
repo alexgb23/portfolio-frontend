@@ -1,5 +1,5 @@
 import { Link } from "react-router";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import {
   FaServer,
   FaCode,
@@ -103,7 +103,7 @@ function HeroSection({ socialLinks = [], onOpenCv }) {
       });
   }, [socialLinks]);
 
-  const displayName = "Alex Alexander Galvez";
+  const displayName = "Alexander Galvez";
   const heroKicker = "INFRAESTRUCTURA · SISTEMAS · SOFTWARE · AUTOMATIZACIÓN";
   const heroTitlePrefix = "Diseño soluciones donde";
   const heroTitleHighlight = "software, sistemas y redes";
@@ -113,11 +113,11 @@ function HeroSection({ socialLinks = [], onOpenCv }) {
 
   const avatarAlt = `Retrato profesional de ${displayName}`;
 
-const handleOpenCv = () => {
-  if (typeof onOpenCv === "function") {
-    onOpenCv();
-  }
-};
+  const handleOpenCv = useCallback(() => {
+    if (typeof onOpenCv === "function") {
+      onOpenCv();
+    }
+  }, [onOpenCv]);
 
   return (
     <header

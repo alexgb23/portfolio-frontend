@@ -76,7 +76,7 @@ function Navbar({ isDarkMode, themeMode, toggleTheme, onOpenCv }) {
           - navega al inicio
           - también cierra el menú móvil
         */}
-        <Link to="/" className="nav-logo" onClick={closeMenu}>
+        <Link to="/home" className="nav-logo" onClick={closeMenu}>
           <div className="logo-avatar-wrapper">
             <img
               src="/logoPortfolio.png"

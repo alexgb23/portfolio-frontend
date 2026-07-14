@@ -22,6 +22,7 @@ export default function LaboratoryCard({ item, className = "" }) {
     coverImage = null,
   } = item;
 
+  const safeRelatedAreas = Array.isArray(relatedAreas) ? relatedAreas : [];
   const hasImage = Boolean(coverImage);
 
   return (
@@ -41,6 +42,7 @@ export default function LaboratoryCard({ item, className = "" }) {
             alt={`Vista previa del laboratorio ${title}`}
             className="lab-card-rich__image"
             loading="lazy"
+            decoding="async"
             width="1400"
             height="900"
           />
@@ -86,9 +88,9 @@ export default function LaboratoryCard({ item, className = "" }) {
           </Link>
         </div>
 
-        {relatedAreas.length > 0 ? (
+        {safeRelatedAreas.length > 0 ? (
           <div className="lab-card-rich__tags">
-            {relatedAreas.map((tag) => (
+            {safeRelatedAreas.map((tag) => (
               <span className="lab-card-rich__tag" key={`tag-${tag}`}>
                 {tag}
               </span>

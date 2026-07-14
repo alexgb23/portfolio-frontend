@@ -12,66 +12,66 @@ import "./AboutPreview.css";
 function AboutPreview() {
   const sliderRef = useRef(null);
 
-useEffect(() => {
-  const el = sliderRef.current;
-  if (!el) return;
+  useEffect(() => {
+    const el = sliderRef.current;
+    if (!el || typeof window === "undefined") return;
 
-  const isMobile = window.innerWidth <= 767;
-  const prefersReducedMotion = window.matchMedia(
-    "(prefers-reduced-motion: reduce)",
-  ).matches;
+    const isMobile = window.innerWidth <= 767;
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
 
-  if (!isMobile || prefersReducedMotion) return;
+    if (!isMobile || prefersReducedMotion) return;
 
-  if (!el.dataset.cloned) {
-    const children = Array.from(el.children);
-    children.forEach((child) => {
-      const clone = child.cloneNode(true);
-      clone.setAttribute("aria-hidden", "true");
-      el.appendChild(clone);
-    });
-    el.dataset.cloned = "true";
-  }
+    if (!el.dataset.cloned) {
+      const children = Array.from(el.children);
 
-  let frameId;
-  let pausedUntil = 0;
+      children.forEach((child) => {
+        const clone = child.cloneNode(true);
+        clone.setAttribute("aria-hidden", "true");
+        el.appendChild(clone);
+      });
 
-  const pause = () => {
-    pausedUntil = Date.now() + 1800;
-  };
-
-  const tick = () => {
-    if (!el) return;
-
-    const halfWidth = el.scrollWidth / 2;
-
-    if (Date.now() < pausedUntil) {
-      frameId = requestAnimationFrame(tick);
-      return;
+      el.dataset.cloned = "true";
     }
 
-    if (halfWidth > 0) {
-      if (el.scrollLeft >= halfWidth) {
-        el.scrollLeft = 0;
-      } else {
-        el.scrollLeft += 0.45;
+    let frameId = 0;
+    let pausedUntil = 0;
+
+    const pause = () => {
+      pausedUntil = Date.now() + 1800;
+    };
+
+    const tick = () => {
+      const halfWidth = el.scrollWidth / 2;
+
+      if (Date.now() < pausedUntil) {
+        frameId = window.requestAnimationFrame(tick);
+        return;
       }
-    }
 
-    frameId = requestAnimationFrame(tick);
-  };
+      if (halfWidth > 0) {
+        if (el.scrollLeft >= halfWidth) {
+          el.scrollLeft = 0;
+        } else {
+          el.scrollLeft += 0.45;
+        }
+      }
 
-  el.addEventListener("touchstart", pause, { passive: true });
-  el.addEventListener("touchmove", pause, { passive: true });
+      frameId = window.requestAnimationFrame(tick);
+    };
 
-  frameId = requestAnimationFrame(tick);
+    el.addEventListener("touchstart", pause, { passive: true });
+    el.addEventListener("touchmove", pause, { passive: true });
 
-  return () => {
-    cancelAnimationFrame(frameId);
-    el.removeEventListener("touchstart", pause);
-    el.removeEventListener("touchmove", pause);
-  };
-}, []);
+    frameId = window.requestAnimationFrame(tick);
+
+    return () => {
+      window.cancelAnimationFrame(frameId);
+      el.removeEventListener("touchstart", pause);
+      el.removeEventListener("touchmove", pause);
+    };
+  }, []);
 
   const title =
     "Soy Alex, Técnico Superior especializado en infraestructura IT, redes, virtualización y automatización de sistemas conectados";

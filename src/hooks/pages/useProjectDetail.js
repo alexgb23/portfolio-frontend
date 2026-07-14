@@ -2,7 +2,7 @@ import useAsyncResource from "../core/useAsyncResource";
 import { portfolioService } from "../../services/api";
 
 export default function useProjectDetail(slug) {
-  const { data, loading, error } = useAsyncResource(
+  const { data, loading, error, isRefreshing } = useAsyncResource(
     () => portfolioService.getProjectDetail(slug),
     null,
     [slug],
@@ -14,5 +14,6 @@ export default function useProjectDetail(slug) {
     project: data,
     loading,
     error,
+    isRefreshing,
   };
 }

@@ -119,7 +119,11 @@ function getProjectIcon(project, techList) {
   return <FaCode />;
 }
 
-export default function ProjectCard({ project, index = 0, maxTags = 3 }) {
+export default function ProjectCard({
+  project = null,
+  index = 0,
+  maxTags = 3,
+}) {
   const navigate = useNavigate();
 
   const [isDark, setIsDark] = useState(() => {
@@ -149,23 +153,30 @@ export default function ProjectCard({ project, index = 0, maxTags = 3 }) {
     return () => observer.disconnect();
   }, []);
 
-  if (!project) return null;
+  const techList = useMemo(() => {
+    return normalizeList(project?.technologies ?? project?.tecnologías).slice(
+      0,
+      maxTags,
+    );
+  }, [project?.technologies, project?.tecnologías, maxTags]);
 
-  const techList = normalizeList(
-    project?.technologies ?? project?.tecnologías,
-  ).slice(0, maxTags);
-
-  const icon = getProjectIcon(project, techList);
   const tone = index % 3;
-  const projectSlug =
-    typeof project?.slug === "string" ? project.slug.trim() : "";
 
-  const themeImages = getProjectThemeImages(project, isDark);
+  const projectSlug = useMemo(() => {
+    return typeof project?.slug === "string" ? project.slug.trim() : "";
+  }, [project?.slug]);
 
-  const imageSources = useMemo(
-    () => getImageSources(themeImages),
-    [themeImages],
-  );
+  const icon = useMemo(() => {
+    return getProjectIcon(project, techList);
+  }, [project, techList]);
+
+  const themeImages = useMemo(() => {
+    return getProjectThemeImages(project, isDark);
+  }, [project, isDark]);
+
+  const imageSources = useMemo(() => {
+    return getImageSources(themeImages);
+  }, [themeImages]);
 
   const hasBackground = Boolean(imageSources.fallback);
 
@@ -173,6 +184,8 @@ export default function ProjectCard({ project, index = 0, maxTags = 3 }) {
     if (!projectSlug) return;
     navigate(`/proyectos/${projectSlug}`);
   };
+
+  if (!project) return null;
 
   return (
     <article
@@ -187,7 +200,7 @@ export default function ProjectCard({ project, index = 0, maxTags = 3 }) {
         }
       }}
       role="button"
-      tabIndex={0}
+      tabIndex={projectSlug ? 0 : -1}
       aria-label={`Abrir proyecto ${project?.title || "sin título"}`}
       style={{ cursor: projectSlug ? "pointer" : "default" }}
     >

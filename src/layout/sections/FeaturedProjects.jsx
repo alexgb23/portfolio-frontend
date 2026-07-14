@@ -3,7 +3,12 @@ import { FaArrowRight } from "react-icons/fa";
 import FeaturedProjectsProjectCard from "../../components/cards/FeaturedProjectCard";
 import "./FeaturedProjects.css";
 
-function FeaturedProjects({ projects = [], loading = false }) {
+function FeaturedProjects({
+  projects = [],
+  loading = false,
+  isRefreshing = false,
+  error = "",
+}) {
   const safeProjects = Array.isArray(projects) ? projects : [];
   const visibleProjects = safeProjects.slice(0, 2);
   const hasProjects = visibleProjects.length > 0;
@@ -23,17 +28,33 @@ function FeaturedProjects({ projects = [], loading = false }) {
       </div>
 
       {hasProjects ? (
-        <div className="expertise-grid featured-projects-grid">
-          {visibleProjects.map((project, index) => (
-            <FeaturedProjectsProjectCard
-              key={project.id ?? project.slug ?? `${project.title}-${index}`}
-              project={project}
-              index={index}
-              maxTags={3}
-            />
-          ))}
+        <>
+          {isRefreshing ? (
+            <div className="section-inline-status">
+              <p>Actualizando proyectos...</p>
+            </div>
+          ) : null}
+
+          <div className="expertise-grid featured-projects-grid">
+            {visibleProjects.map((project, index) => (
+              <FeaturedProjectsProjectCard
+                key={project.id ?? project.slug ?? `${project.title}-${index}`}
+                project={project}
+                index={index}
+                maxTags={3}
+              />
+            ))}
+          </div>
+        </>
+      ) : loading ? (
+        <div className="empty-inline-state">
+          <p>Cargando proyectos destacados...</p>
         </div>
-      ) : loading ? null : (
+      ) : error ? (
+        <div className="empty-inline-state">
+          <p>No se pudieron cargar los proyectos destacados en este momento.</p>
+        </div>
+      ) : (
         <div className="empty-inline-state">
           <p>Aún no hay proyectos destacados cargados.</p>
         </div>

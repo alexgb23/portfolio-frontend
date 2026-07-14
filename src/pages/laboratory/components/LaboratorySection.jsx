@@ -1,5 +1,4 @@
 import styles from "./LaboratorySection.module.css";
-import { useLaboratoryHome } from "../../../hooks/usePortfolioData";
 
 const laboratoryFallback = {
   id: "lab-upcoming-ai",
@@ -16,7 +15,6 @@ const laboratoryFallback = {
   stack: ["Python", "OpenAI", "Automatización", "APIs"],
   isPlaceholder: true,
 };
-
 
 const stats = [
   { id: "labs", value: "20+", label: "Laboratorios activos", icon: "flask" },
@@ -43,6 +41,11 @@ const technologies = [
 
 function buildLaboratories(items = []) {
   const normalized = Array.isArray(items) ? items.slice(0, 2) : [];
+
+  if (normalized.length >= 3) {
+    return normalized.slice(0, 3);
+  }
+
   return [...normalized, laboratoryFallback];
 }
 
@@ -213,11 +216,15 @@ function renderLabGlyph(title = "") {
   );
 }
 
-export default function LaboratorySection() {
-  const { featuredItems, loading, error } = useLaboratoryHome(true);
+export default function LaboratorySection({
+  featuredItems = [],
+  loading = false,
+  error = "",
+}) {
   const laboratories = buildLaboratories(featuredItems);
+  const hasLaboratories = laboratories.length > 0;
 
-  if (loading) {
+  if (loading && !hasLaboratories) {
     return (
       <section className={`section ${styles.laboratorySection}`}>
         <div className="container">
@@ -231,7 +238,7 @@ export default function LaboratorySection() {
     );
   }
 
-  if (error) {
+  if (error && !hasLaboratories) {
     return (
       <section className={`section ${styles.laboratorySection}`}>
         <div className="container">
@@ -262,7 +269,11 @@ export default function LaboratorySection() {
                 return (
                   <article
                     key={lab.id}
-                    className={`${styles.labCard} ${styles[`tone${tone.charAt(0).toUpperCase() + tone.slice(1)}`]}`}
+                    className={`${styles.labCard} ${
+                      styles[
+                        `tone${tone.charAt(0).toUpperCase() + tone.slice(1)}`
+                      ]
+                    }`}
                   >
                     <div className={styles.labCardInner}>
                       <div className={styles.labIconWrap}>

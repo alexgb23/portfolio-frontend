@@ -9,16 +9,27 @@ function buildHookErrorMessage(label, error) {
 }
 
 function hasMeaningfulData(value, initialValue) {
-  if (Array.isArray(value)) return value.length > 0;
+  if (Array.isArray(value)) {
+    return value.length > 0;
+  }
 
   if (value && typeof value === "object") {
-    if (!initialValue || typeof initialValue !== "object") return true;
+    if (!initialValue || typeof initialValue !== "object") {
+      return true;
+    }
 
     return Object.keys(value).some((key) => {
       const current = value[key];
       const initial = initialValue[key];
 
-      if (Array.isArray(current)) return current.length > 0;
+      if (Array.isArray(current)) {
+        return current.length > 0;
+      }
+
+      if (current && typeof current === "object") {
+        return true;
+      }
+
       return current !== initial && current != null && current !== "";
     });
   }
@@ -69,7 +80,15 @@ export default function useAsyncResource(
   });
 
   useEffect(() => {
-    if (!enabled) return;
+    if (!enabled) {
+      setState({
+        data: initialValue,
+        loading: false,
+        error: "",
+        isRefreshing: false,
+      });
+      return;
+    }
 
     const cached = resourceCache.get(cacheKey);
     const isFresh = cached && Date.now() - cached.time < CACHE_TTL;

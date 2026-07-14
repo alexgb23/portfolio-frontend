@@ -21,6 +21,7 @@ function Home() {
     laboratories,
     loading: homeLoading,
     error: homeError,
+    isRefreshing,
   } = usePortfolioHome();
 
   useEffect(() => {
@@ -39,37 +40,48 @@ function Home() {
       : null;
   }, [laboratories]);
 
-  const personSchema = {
-    "@context": "https://schema.org",
-    "@type": "Person",
-    "@id": "https://alex.syskovex.com/#alexander-galvez",
-    name: "Alexander Galvez",
-    url: "https://alex.syskovex.com/",
-    image: "https://alex.syskovex.com/imagen_portfolio_mia_retocada-960.avif",
-    jobTitle: "Systems, Infrastructure and Software Engineer",
-    description:
-      "Perfil técnico especializado en infraestructura IT, redes, virtualización, automatización y desarrollo de software.",
-    knowsAbout: [
-      "Infraestructura IT",
-      "Administración de sistemas",
-      "Virtualización",
-      "Redes",
-      "Seguridad perimetral",
-      "Automatización",
-      "IoT",
-      "Linux",
-      "APIs",
-      "Desarrollo de software",
-    ],
-    sameAs: [
-      "https://github.com/alexgb23",
-      "https://www.linkedin.com/in/alexander-galvez-benavides-450917281/",
-      "https://instagram.com/_aaleex_88",
-      "https://www.facebook.com/alexander.galvez.benavides",
-    ],
-  };
+  const hasProjects = featuredProjects.length > 0;
+  const hasLaboratory = Boolean(featuredLaboratory);
+  const hasSocialLinks = Array.isArray(socialLinks) && socialLinks.length > 0;
+  const hasHomeContent = hasProjects || hasLaboratory || hasSocialLinks;
 
-  const safeJsonLd = JSON.stringify(personSchema).replace(/<\//g, "<\\/");
+  const personSchema = useMemo(
+    () => ({
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "@id": "https://alex.syskovex.com/#alexander-galvez",
+      name: "Alexander Galvez",
+      url: "https://alex.syskovex.com/",
+      image: "https://alex.syskovex.com/imagen_portfolio_mia_retocada-960.avif",
+      jobTitle: "Systems, Infrastructure and Software Engineer",
+      description:
+        "Perfil técnico especializado en infraestructura IT, redes, virtualización, automatización y desarrollo de software.",
+      knowsAbout: [
+        "Infraestructura IT",
+        "Administración de sistemas",
+        "Virtualización",
+        "Redes",
+        "Seguridad perimetral",
+        "Automatización",
+        "IoT",
+        "Linux",
+        "APIs",
+        "Desarrollo de software",
+      ],
+      sameAs: [
+        "https://github.com/alexgb23",
+        "https://www.linkedin.com/in/alexander-galvez-benavides-450917281/",
+        "https://instagram.com/_aaleex_88",
+        "https://www.facebook.com/alexander.galvez.benavides",
+      ],
+    }),
+    [],
+  );
+
+  const safeJsonLd = useMemo(
+    () => JSON.stringify(personSchema).replace(/<\//g, "<\\/"),
+    [personSchema],
+  );
 
   return (
     <main id="main-content">
@@ -82,7 +94,7 @@ function Home() {
 
       <AboutPreview />
 
-      {homeError ? (
+      {homeError && !hasHomeContent ? (
         <section className="section section-spaced section-separated">
           <div className="empty-inline-state">
             <p>No se pudieron cargar los datos de inicio en este momento.</p>
@@ -90,11 +102,17 @@ function Home() {
         </section>
       ) : (
         <>
-          <FeaturedProjects projects={featuredProjects} loading={homeLoading} />
+          <FeaturedProjects
+            projects={featuredProjects}
+            loading={homeLoading}
+            isRefreshing={isRefreshing}
+            error={homeError}
+          />
 
           <FeaturedLaboratory
             item={featuredLaboratory}
             loading={homeLoading}
+            isRefreshing={isRefreshing}
             error={homeError}
           />
 
