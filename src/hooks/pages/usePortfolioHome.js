@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import useAsyncResource from "../core/useAsyncResource";
 import { portfolioService } from "../../services/api";
 
@@ -78,10 +79,25 @@ export default function usePortfolioHome(enabled = true) {
     enabled,
   );
 
+  const socialLinks = useMemo(
+    () => (Array.isArray(data?.social_links) ? data.social_links : []),
+    [data?.social_links],
+  );
+
+  const projects = useMemo(
+    () => normalizeProjects(data?.projects),
+    [data?.projects],
+  );
+
+  const laboratories = useMemo(
+    () => normalizeLaboratories(data?.laboratories),
+    [data?.laboratories],
+  );
+
   return {
-    socialLinks: Array.isArray(data?.social_links) ? data.social_links : [],
-    projects: normalizeProjects(data?.projects),
-    laboratories: normalizeLaboratories(data?.laboratories),
+    socialLinks,
+    projects,
+    laboratories,
     loading,
     error,
   };

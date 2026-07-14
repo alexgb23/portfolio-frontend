@@ -17,6 +17,7 @@ const laboratoryFallback = {
   isPlaceholder: true,
 };
 
+
 const stats = [
   { id: "labs", value: "20+", label: "Laboratorios activos", icon: "flask" },
   {

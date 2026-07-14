@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo } from "react";
 import { useOutletContext } from "react-router";
 import HeroSection from "../../layout/sections/heroSection/HeroSection";
 import AboutPreview from "../../layout/sections/aboutPreview/AboutPreview";
@@ -10,7 +10,6 @@ import usePageTitle from "../../hooks/usePageTitle";
 
 function Home() {
   const { openCvModal, setCvSocialLinks } = useOutletContext();
-  const [showDeferredSections, setShowDeferredSections] = useState(false);
 
   usePageTitle(
     "Alexander Galvez | Sistemas, infraestructura y desarrollo de software",
@@ -29,16 +28,6 @@ function Home() {
       setCvSocialLinks(socialLinks);
     }
   }, [socialLinks, setCvSocialLinks]);
-
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-
-    const id = window.setTimeout(() => {
-      setShowDeferredSections(true);
-    }, 120);
-
-    return () => window.clearTimeout(id);
-  }, []);
 
   const featuredProjects = useMemo(() => {
     return Array.isArray(projects) ? projects.slice(0, 2) : [];
@@ -96,15 +85,13 @@ function Home() {
       {homeError ? (
         <section className="section section-spaced section-separated">
           <div className="empty-inline-state">
-            <p>No se pudieron cargar los proyectos en este momento.</p>
+            <p>No se pudieron cargar los datos de inicio en este momento.</p>
           </div>
         </section>
       ) : (
-        <FeaturedProjects projects={featuredProjects} loading={homeLoading} />
-      )}
-
-      {showDeferredSections ? (
         <>
+          <FeaturedProjects projects={featuredProjects} loading={homeLoading} />
+
           <FeaturedLaboratory
             item={featuredLaboratory}
             loading={homeLoading}
@@ -113,7 +100,7 @@ function Home() {
 
           <ContactPreview socialLinks={socialLinks} />
         </>
-      ) : null}
+      )}
     </main>
   );
 }
