@@ -79,12 +79,11 @@ function Navbar({ isDarkMode, themeMode, toggleTheme, onOpenCv }) {
         <Link to="/" className="nav-logo" onClick={closeMenu}>
           <div className="logo-avatar-wrapper">
             <img
-              src="/avatar-nav-72.webp"
-              srcSet="/avatar-nav-72.webp 1x, /avatar-nav-144.webp 2x"
-              alt="Alex Avatar"
+              src="/logoPortfolio.png"
+              alt="Logo"
               className="logo-avatar"
-              width="36"
-              height="36"
+              width="72"
+              height="72"
               decoding="async"
             />
           </div>

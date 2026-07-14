@@ -12,7 +12,7 @@ const Footer = () => {
             className={styles.logoImg}
           />
         </div>
-        <span className={styles.logo}>YSKOVEX</span>
+        <span className={styles.logo}>SYSKOVEX</span>
       </div>
 
       <div className={styles.center}>
