@@ -151,7 +151,7 @@ function About() {
       ) : null}
 
       <section className="expertise-section">
-        <div className="expertise-grid">
+        <div className="expertise-grid grid-4xl">
           {staticExpertise.map((item, index) => {
             const Icon =
               expertiseIconMap[(item?.icon_key || "").toLowerCase()] || FaCode;

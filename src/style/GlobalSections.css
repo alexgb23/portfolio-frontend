@@ -4,7 +4,7 @@
 
 .section {
   position: relative;
-  padding: 2.4rem 0;
+  padding: 2.5rem 0;
 }
 
 .section-spaced {
@@ -24,6 +24,7 @@
 }
 
 .narrow {
+  width: 100%;
   max-width: 768px;
   margin-inline: auto;
 }
@@ -33,27 +34,29 @@
    ========================================================= */
 
 .section-head-centered {
+  width: 100%;
   max-width: 768px;
   margin: 0 auto 2rem;
   text-align: center;
 }
 
 .section-kicker {
+  display: inline-block;
   margin-bottom: 0.5rem;
 }
 
-h2 {
+.section-head-centered h1,
+.section-head-centered h2 {
   margin: 0 0 1rem;
-  font-size: clamp(1.5rem, 3vw, 2.4rem);
   line-height: 1.08;
   letter-spacing: -0.03em;
   color: var(--text-main);
 }
 
-p {
-  margin: 0;
+.section-head-centered p {
+  margin: 0 auto;
+  max-width: 65ch;
   color: var(--text-sub);
-  font-size: 1rem;
   line-height: 1.75;
 }
 
@@ -76,13 +79,13 @@ p {
   align-items: center;
   justify-content: center;
   gap: 0.4rem;
-  min-height: 40px;
-  padding: 0.6rem 0.8rem;
+  min-height: 44px;
+  padding: 0.65rem 0.9rem;
   border-radius: 999px;
   text-decoration: none;
   font-weight: 700;
   color: var(--text-main);
-  transition: 
+  transition:
     transform 0.2s ease,
     color 0.2s ease,
     border-color 0.2s ease,
@@ -145,7 +148,7 @@ p {
   justify-content: center;
   align-items: center;
   min-height: 140px;
-  padding: 1.2rem;
+  padding: 1.25rem;
   border-radius: 20px;
   text-align: center;
 }
@@ -213,22 +216,32 @@ p {
 }
 
 /* =========================================================
-   GRIDS GLOBALES (OPTIMIZADAS: MOBILE-FIRST CON FLEX-CENTER EN PC)
+   GRIDS GLOBALES
    ========================================================= */
 
 .grid-cards,
 .expertise-grid {
   display: grid;
-  grid-template-columns: 1fr; /* 1 columna exacta y limpia en móviles */
+  grid-template-columns: 1fr;
   gap: 1rem;
   margin-top: 1.5rem;
   width: 100%;
+  min-width: 0;
+  align-items: stretch;
 }
 
-.grid-cards,
-.expertise-grid{
+.grid-cards > *,
+.expertise-grid > * {
   min-width: 0;
+  height: 100%;
 }
+
+/* Variante específica para bloques que deben llegar a 4 columnas */
+.expertise-grid.grid-4xl {
+  grid-template-columns: 1fr;
+}
+
+
 
 /* =========================================================
    LISTADOS LINEALES
@@ -241,7 +254,7 @@ p {
 }
 
 /* =========================================================
-   RESPONSIVE TABLET (Desde 768px: Reorganización en 2 Columnas)
+   TABLET
    ========================================================= */
 
 @media (min-width: 768px) {
@@ -257,18 +270,11 @@ p {
     margin-bottom: 2.5rem;
   }
 
-  /* Formato 2x2 centrado y limpio para tablets medianas */
   .grid-cards,
-  .expertise-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .grid-cards,
-  .expertise-grid{
-    width: 100%;
-    min-width: 0;
-    height: 100%;
+  .expertise-grid,
+  .expertise-grid.grid-4xl {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.15rem;
   }
 
   .section-more {
@@ -281,51 +287,60 @@ p {
 }
 
 /* =========================================================
-   RESPONSIVE DESKTOP Y PANTALLAS ANCHAS 2K (Desde 1024px)
+   DESKTOP
    ========================================================= */
 
 @media (min-width: 1024px) {
   .section {
-    padding: 4.3rem 0;
+    padding: 4.25rem 0;
   }
 
   .section-spaced {
-    padding: 4.6rem 0;
+    padding: 4.75rem 0;
   }
 
   .section-head-centered {
     margin-bottom: 3rem;
   }
 
-  .grid-cards,
-  .expertise-grid {
-    display: grid;
-    gap: 1.2rem;
-    width: 100%;
-    align-items: start;
-    justify-content: center;
-    min-width: 0;
-    max-width: none;
-    width: auto;
-    height: auto;
-  }
-
-  .grid-cards > *,
-  .expertise-grid > * {
-    min-width: 0; /* Evita que los elementos de la cuadrícula sean más anchos que su contenedor */
-  }
-
   .grid-cards {
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
+    gap: 1.2rem;
   }
 
   .expertise-grid {
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 1.5rem;
+    grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
+    gap: 1.35rem;
   }
 
   .list-linear {
     gap: 1.05rem;
+  }
+}
+
+/* =========================================================
+   PANTALLAS ANCHAS
+   ========================================================= */
+
+@media (min-width: 1280px) {
+  .expertise-grid.grid-4xl {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1.35rem;
+  }
+}
+
+@media (min-width: 1440px) {
+  .grid-cards {
+    grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
+  }
+
+  .expertise-grid {
+    grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr));
+  }
+
+  .expertise-grid.grid-4xl {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1.5rem;
   }
 }
 

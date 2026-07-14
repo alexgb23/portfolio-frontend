@@ -38,7 +38,7 @@ function ProjectCardSkeleton({ tone = 0 }) {
 
 function FeaturedProjects({ projects = [], loading = false }) {
   const safeProjects = Array.isArray(projects) ? projects : [];
-  const visibleProjects = safeProjects.slice(0, 3);
+  const visibleProjects = safeProjects.slice(0, 2);
   const hasProjects = visibleProjects.length > 0;
 
   return (
@@ -56,7 +56,10 @@ function FeaturedProjects({ projects = [], loading = false }) {
       </div>
 
       {loading && !hasProjects ? (
-        <div className="expertise-grid skeleton" aria-busy="true">
+        <div
+          className="expertise-grid featured-projects-grid skeleton"
+          aria-busy="true"
+        >
           {Array.from({ length: 2 }).map((_, index) => (
             <ProjectCardSkeleton
               key={`project-skeleton-${index}`}
@@ -65,7 +68,7 @@ function FeaturedProjects({ projects = [], loading = false }) {
           ))}
         </div>
       ) : hasProjects ? (
-        <div className="expertise-grid">
+        <div className="expertise-grid featured-projects-grid">
           {visibleProjects.map((project, index) => (
             <ProjectCard
               key={project.id ?? project.slug ?? `${project.title}-${index}`}

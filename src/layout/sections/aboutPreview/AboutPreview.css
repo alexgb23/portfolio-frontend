@@ -1,0 +1,72 @@
+.about-preview-grid {
+  margin-top: 1.5rem;
+}
+
+@media (max-width: 767px) {
+ .expertise-grid.grid-4xl.about-preview-grid {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 84%;
+    grid-template-columns: none;
+    gap: 1rem;
+    overflow-x: auto;
+    overflow-y: hidden;
+    overscroll-behavior-x: contain;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 0.25rem;
+    scroll-snap-type: none;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .expertise-grid.grid-4xl.about-preview-grid::-webkit-scrollbar {
+    display: none;
+  }
+
+  .expertise-grid.grid-4xl.about-preview-grid > * {
+    min-width: 0;
+    height: 100%;
+    /* scroll-snap-align: start; */
+  }
+
+  .expertise-grid.grid-4xl.about-preview-grid .expertise-card {
+    text-align: center;
+  }
+
+  .expertise-grid.grid-4xl.about-preview-grid .card-head {
+    justify-content: center;
+  }
+
+  .expertise-grid.grid-4xl.about-preview-grid .card-title-wrap {
+    flex: initial;
+  }
+
+  .expertise-grid.grid-4xl.about-preview-grid .expertise-card p {
+    text-align: center;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1279px) {
+  .expertise-grid.grid-4xl.about-preview-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.15rem;
+    overflow: visible;
+    padding-bottom: 0;
+    scroll-snap-type: none;
+  }
+}
+
+@media (min-width: 1280px) {
+  .expertise-grid.grid-4xl.about-preview-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1.35rem;
+    overflow: visible;
+    padding-bottom: 0;
+  }
+}
+
+@media (min-width: 1440px) {
+  .expertise-grid.grid-4xl.about-preview-grid {
+    gap: 1.5rem;
+  }
+}

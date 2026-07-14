@@ -1,21 +1,20 @@
-
 /* =========================================================
    ABOUT SECTION (BASE: MOBILE FIRST 0px a 767px)
    ========================================================= */
 
 .about-section {
   width: 100%;
-  padding: 60px 0; /* Más compacto en pantallas pequeñas */
+  padding: 60px 0;
   overflow: hidden;
 }
 
 /* =========================================================
-   INTRO + FOTO (BASE MÓVIL)
+   INTRO + FOTO
    ========================================================= */
 
 .about-container {
   display: flex;
-  flex-direction: column-reverse; /* Primero la foto y luego el texto arriba en móvil */
+  flex-direction: column-reverse;
   gap: 48px;
   align-items: center;
 }
@@ -37,11 +36,11 @@
 .about-title {
   margin: 0 0 24px;
   max-width: 100%;
+  color: var(--text-main);
   font-family: "Space Grotesk", sans-serif;
   font-size: clamp(2rem, 6vw, 3rem);
   line-height: 1.15;
   letter-spacing: -0.04em;
-  color: var(--text-main);
 }
 
 .about-text {
@@ -89,7 +88,7 @@
 }
 
 /* =========================================================
-   PHOTO (BASE MÓVIL FLUIDA)
+   PHOTO
    ========================================================= */
 
 .about-right {
@@ -101,11 +100,10 @@
 
 .photo-wrapper {
   width: 100%;
-  max-width: 290px; /* Fluida en móviles para evitar overflow */
-  aspect-ratio: 3 / 4; /* Simplificado a la proporción exacta de tu imagen */
+  max-width: 290px;
+  aspect-ratio: 3 / 4;
   height: auto;
 }
-
 
 .photo-container {
   width: 100%;
@@ -140,7 +138,7 @@
 }
 
 /* =========================================================
-   TECHNICAL TIMELINE (BASE MÓVIL)
+   TECHNICAL TIMELINE
    ========================================================= */
 
 .technical-section {
@@ -160,7 +158,7 @@
   position: absolute;
   top: 0;
   bottom: 0;
-  left: 12px; /* Línea a la izquierda en móviles */
+  left: 12px;
   width: 2px;
   border-radius: 999px;
   background: linear-gradient(
@@ -176,19 +174,17 @@
 }
 
 /* =========================================================
-   STAT CARDS (BASE MÓVIL FLUIDA)
+   STAT CARDS
    ========================================================= */
 
 .stat-card {
   position: relative;
   display: flex;
-  align-items: flex-start;
   flex-direction: column;
+  align-items: flex-start;
   gap: 12px;
-  width: calc(
-    100% - 36px
-  ); /* Ocupa todo el ancho disponible restando la línea */
-  margin-left: 36px !important; /* Desplazado a la derecha de la línea */
+  width: calc(100% - 36px);
+  margin-left: 36px !important;
   margin-right: 0 !important;
   padding: 24px;
   border: 1px solid var(--border);
@@ -210,8 +206,8 @@
 .stat-card::before {
   content: "";
   position: absolute;
-  top: 32px; /* Alineado arriba cerca del número */
-  left: -31px !important; /* Nodo encima de la línea izquierda */
+  top: 32px;
+  left: -31px !important;
   right: auto !important;
   width: 12px;
   height: 12px;
@@ -238,24 +234,36 @@
 .stat-card p {
   margin: 0;
   color: var(--text-sub);
-  line-height: 1.6;
   font-size: 0.92rem;
+  line-height: 1.6;
 }
 
 /* =========================================================
-   EXPERTISE SECTION (BASE MÓVIL GRIDS)
+   EXPERTISE SECTION
    ========================================================= */
 
+.expertise-section {
+  margin-top: 64px;
+}
+
 .expertise-section .expertise-card {
-  display: flex;
-  flex-direction: column;
+  text-align: center;
+}
+
+.expertise-section .card-head {
   justify-content: center;
-  align-items: center;
-  min-width: 0; /* Evita que los elementos de la cuadrícula sean más anchos que su contenedor */
+}
+
+.expertise-section .card-title-wrap {
+  flex: initial;
+}
+
+.expertise-section .expertise-card p {
+  text-align: center;
 }
 
 /* =========================================================
-   RESPONSIVE: TABLET (Breakpoints medianos desde 768px)
+   RESPONSIVE: TABLET
    ========================================================= */
 
 @media (min-width: 768px) {
@@ -283,34 +291,21 @@
     gap: 50px;
   }
 
-  /* Las 4 tarjetas finales se maquetan en 2 columnas muy ordenadas */
-  .expertise-grid {
-    grid-template-columns: repeat(2, 1fr);
-    grid-auto-rows: 1fr; /* ¡Clave! Fuerza igual altura por fila */
-    gap: 20px;
-    min-height: 100%;
-  display: flex;
+  .expertise-section {
+    margin-top: 80px;
   }
-
-  .expertise-card p {
-  flex-grow: 1; 
-}
-.expertise-section{
-  margin-top:80px;
-}
-
 }
 
 /* =========================================================
-   RESPONSIVE: DESKTOP (Desde 1024px en adelante)
+   RESPONSIVE: DESKTOP
    ========================================================= */
 
 @media (min-width: 1024px) {
-   .about-container {
+  .about-container {
     display: grid;
-    grid-template-columns: 1.15fr 0.85fr; /* Retorno a tu layout original */
+    grid-template-columns: 1.15fr 0.85fr;
     gap: 120px;
-    align-items: center; /* 💡 CAMBIADO de 'start' a 'center' */
+    align-items: center;
   }
 
   .about-left {
@@ -328,8 +323,8 @@
   }
 
   .about-text {
-    font-size: 1.05rem;
     margin-bottom: 28px;
+    font-size: 1.05rem;
   }
 
   .tech-badges {
@@ -338,8 +333,8 @@
   }
 
   .badge {
-    font-size: 0.75rem;
     padding: 9px 17px;
+    font-size: 0.75rem;
   }
 
   .about-right {
@@ -359,7 +354,6 @@
     transform: perspective(1200px) rotateY(-7deg);
   }
 
-  /* REPARACIÓN DEL TIMELINE INTERACTIVO IZQUIERDA/DERECHA */
   .technical-section {
     margin-top: 50px;
     padding: 60px 0 100px;
@@ -406,9 +400,9 @@
 
   .stat-card::before {
     top: 50%;
-    transform: translateY(-50%);
     width: 14px;
     height: 14px;
+    transform: translateY(-50%);
   }
 
   .stat-card.left::before {
@@ -435,7 +429,7 @@
 }
 
 /* =========================================================
-   RESPONSIVE: LARGE DESKTOP (Desde 1280px)
+   RESPONSIVE: LARGE DESKTOP
    ========================================================= */
 
 @media (min-width: 1280px) {
@@ -444,60 +438,34 @@
   }
 
   .photo-wrapper {
-    max-width: 360px; /* Crece de forma fluida y controlada (alto: 480px) */
+    max-width: 360px;
   }
- 
 
   .technical-section {
     margin-top: 180px;
   }
-
-  /* FORZAR 4 COLUMNAS EN ESCRITORIO Y MONITORES ANCHOS (2K) */
-  .expertise-grid {
-    grid-template-columns: repeat(
-      4,
-      1fr
-    ) !important; /* Fuerza 4 columnas exactas en paralelo */
-    max-width: 1400px; /* Ampliado para que luzca simétrico y espaciado en pantallas 2K */
-    margin: 0 auto;
-    gap: 24px; /* Espaciado cómodo entre las 4 tarjetas */
-  }
-
-  /* Ajuste local para equilibrar las tarjetas al ir en una sola fila */
-  .expertise-section .expertise-card {
-    min-height: 200px !important; /* Altura unificada para que se alineen perfectamente */
-    padding: 24px;
-  }
 }
 
 /* =========================================================
-   RESPONSIVE: EXTRA LARGE DESKTOP (Desde 1536px)
+   RESPONSIVE: EXTRA LARGE DESKTOP
    ========================================================= */
 
 @media (min-width: 1536px) {
-
   .about-container {
     gap: 110px;
   }
 
   .photo-wrapper {
-    max-width: 440px; /* Tamaño máximo para monitores gigantes (alto: 586px) */
-  }
-  .expertise-grid {
-    gap: 32px; /* Ajusta el espacio entre las tarjetas para pantallas extra largas */
+    max-width: 440px;
   }
 }
 
 /* =========================================================
-   RESPONSIVE: ULTRA LARGE DESKTOP (Desde 1792px)
+   RESPONSIVE: ULTRA LARGE DESKTOP
    ========================================================= */
 
 @media (min-width: 1792px) {
-   .photo-wrapper {
-    max-width: 460px; /* Límite definitivo absoluto para pantallas extremas */
-  }
-
-  .expertise-grid {
-    gap: 40px; 
+  .photo-wrapper {
+    max-width: 460px;
   }
 }

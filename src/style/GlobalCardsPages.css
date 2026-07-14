@@ -7,6 +7,7 @@
 :root {
   --gt-card-radius: 18px;
   --gt-card-pad: 1rem;
+  --gt-card-gap: 0.75rem;
   --gt-card-border: var(--border, rgb(255 255 255 / 10%));
 
   --gt-card-bg-dark: linear-gradient(
@@ -34,9 +35,15 @@
 
 .expertise-card {
   --card-accent: var(--card-tone-accent, var(--lab-accent, var(--accent)));
-  --card-accent-strong: var(--card-tone-accent-strong, var(--lab-accent-strong, var(--card-accent)));
+  --card-accent-strong: var(
+    --card-tone-accent-strong,
+    var(--lab-accent-strong, var(--card-accent))
+  );
   --card-icon-color: var(--lab-icon-color, var(--card-accent));
-  --card-icon-border: var(--lab-icon-border, color-mix(in srgb, var(--card-accent) 18%, var(--gt-card-border)));
+  --card-icon-border: var(
+    --lab-icon-border,
+    color-mix(in srgb, var(--card-accent) 18%, var(--gt-card-border))
+  );
   --card-line-fade: linear-gradient(
     90deg,
     transparent 0%,
@@ -53,13 +60,16 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: 0.15rem;
-  min-height: 100%;
+  gap: var(--gt-card-gap);
+  width: 100%;
+  height: 100%;
+  min-width: 0;
   padding: var(--gt-card-pad);
   border: 1px solid var(--gt-card-border);
   border-radius: var(--gt-card-radius);
   overflow: hidden;
   isolation: isolate;
+  box-sizing: border-box;
   transition:
     transform 0.22s ease,
     border-color 0.22s ease,
@@ -87,9 +97,10 @@
   display: block;
   width: 72%;
   height: 1px;
-  margin: 0.95rem 0;
+  margin: 0.35rem 0 0.2rem;
   background: var(--card-line-fade);
   opacity: 0.95;
+  flex-shrink: 0;
 }
 
 :root[data-theme="dark"] .expertise-card {
@@ -152,17 +163,14 @@
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  margin-bottom: 0.9rem;
+  margin-bottom: 0.2rem;
+  min-width: 0;
 }
 
 .card-title-wrap {
   flex: 1;
   min-width: 0;
 }
-
-/* =========================================================
-   TÍTULOS Y TEXTO
-   ========================================================= */
 
 .expertise-card h3,
 .card-title-wrap h3 {
@@ -172,15 +180,43 @@
   color: var(--text-main, #fff);
   font-size: 1rem;
   line-height: 1.2;
+  overflow-wrap: anywhere;
 }
 
 .expertise-card p {
   position: relative;
   z-index: 1;
   margin: 0;
+  min-width: 0;
   color: var(--text-soft, rgb(255 255 255 / 74%));
   line-height: 1.6;
-  
+  overflow-wrap: anywhere;
+}
+
+/* bloque descriptivo flexible */
+.expertise-card > p,
+.expertise-card .card-copy,
+.expertise-card .skeleton-copy {
+  flex: 1 1 auto;
+}
+
+/* elementos del pie alineados abajo */
+.project-card-tags,
+.project-card-stack,
+.project-card-actions,
+.laboratory-counter,
+.project-card-skeleton-tags,
+.project-card-skeleton-counter {
+  position: relative;
+  z-index: 1;
+  margin-top: auto;
+}
+
+.project-card-tags,
+.project-card-skeleton-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
 }
 
 /* =========================================================
@@ -194,7 +230,7 @@
   justify-content: center;
   width: 44px;
   height: 44px;
-  flex-shrink: 0;
+  flex: 0 0 44px;
   border: 1px solid var(--card-icon-border);
   border-radius: 14px;
   overflow: hidden;
@@ -264,7 +300,6 @@
 
 /* =========================================================
    TONOS COMPARTIDOS
-   Fallback global para bloques viejos fuera de Laboratory
    ========================================================= */
 
 .tone-0 { --card-tone-accent: var(--accent); }
@@ -274,7 +309,6 @@
 .tone-4 { --card-tone-accent: var(--accent-neon); }
 .tone-5 { --card-tone-accent: var(--accent-matrix); }
 
-
 /* =========================================================
    RESPONSIVE
    ========================================================= */
@@ -283,16 +317,17 @@
   :root {
     --gt-card-radius: 20px;
     --gt-card-pad: 1.1rem;
+    --gt-card-gap: 0.8rem;
   }
 
   .card-head {
     gap: 0.85rem;
-    margin-bottom: 1rem;
   }
 
   .expertise-icon {
     width: 48px;
     height: 48px;
+    flex-basis: 48px;
     font-size: 1.05rem;
   }
 }
@@ -301,11 +336,13 @@
   :root {
     --gt-card-radius: 22px;
     --gt-card-pad: 1.15rem;
+    --gt-card-gap: 0.85rem;
   }
 
   .expertise-icon {
     width: 50px;
     height: 50px;
+    flex-basis: 50px;
     font-size: 1.08rem;
   }
 }
