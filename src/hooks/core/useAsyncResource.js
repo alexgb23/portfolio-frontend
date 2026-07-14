@@ -8,6 +8,24 @@ function buildHookErrorMessage(label, error) {
   return `${label} error al cargar datos`;
 }
 
+function hasMeaningfulData(value, initialValue) {
+  if (Array.isArray(value)) return value.length > 0;
+
+  if (value && typeof value === "object") {
+    if (!initialValue || typeof initialValue !== "object") return true;
+
+    return Object.keys(value).some((key) => {
+      const current = value[key];
+      const initial = initialValue[key];
+
+      if (Array.isArray(current)) return current.length > 0;
+      return current !== initial && current != null && current !== "";
+    });
+  }
+
+  return value !== initialValue && value != null && value !== "";
+}
+
 const resourceCache = new Map();
 const CACHE_TTL = 5 * 60 * 1000;
 
@@ -16,7 +34,7 @@ export default function useAsyncResource(
   initialValue,
   deps = [],
   label = "Resource",
-  enabled = true
+  enabled = true,
 ) {
   const cacheKey = JSON.stringify([label, enabled, ...deps]);
 
@@ -26,6 +44,7 @@ export default function useAsyncResource(
         data: initialValue,
         loading: false,
         error: "",
+        isRefreshing: false,
       };
     }
 
@@ -37,6 +56,7 @@ export default function useAsyncResource(
         data: cached.data,
         loading: false,
         error: "",
+        isRefreshing: false,
       };
     }
 
@@ -44,6 +64,7 @@ export default function useAsyncResource(
       data: initialValue,
       loading: true,
       error: "",
+      isRefreshing: false,
     };
   });
 
@@ -58,6 +79,7 @@ export default function useAsyncResource(
         data: cached.data,
         loading: false,
         error: "",
+        isRefreshing: false,
       });
       return;
     }
@@ -65,13 +87,18 @@ export default function useAsyncResource(
     let ignore = false;
 
     async function load() {
-      try {
-        setState((prev) => ({
-          ...prev,
-          loading: true,
-          error: "",
-        }));
+      setState((prev) => {
+        const hasData = hasMeaningfulData(prev.data, initialValue);
 
+        return {
+          ...prev,
+          loading: !hasData,
+          isRefreshing: hasData,
+          error: "",
+        };
+      });
+
+      try {
         const result = await fetcher();
 
         if (ignore) return;
@@ -87,6 +114,7 @@ export default function useAsyncResource(
           data,
           loading: false,
           error: "",
+          isRefreshing: false,
         });
       } catch (err) {
         if (ignore) return;
@@ -94,6 +122,7 @@ export default function useAsyncResource(
         setState((prev) => ({
           ...prev,
           loading: false,
+          isRefreshing: false,
           error: buildHookErrorMessage(label, err),
         }));
       }

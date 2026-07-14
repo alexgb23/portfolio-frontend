@@ -71,7 +71,7 @@ function normalizeLaboratories(items) {
 }
 
 export default function usePortfolioHome(enabled = true) {
-  const { data, loading, error } = useAsyncResource(
+  const { data, loading, error, isRefreshing } = useAsyncResource(
     portfolioService.getHomeData,
     initialValue,
     [],
@@ -100,5 +100,6 @@ export default function usePortfolioHome(enabled = true) {
     laboratories,
     loading,
     error,
+    isRefreshing,
   };
 }
