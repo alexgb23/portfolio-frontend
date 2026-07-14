@@ -12,56 +12,66 @@ import "./AboutPreview.css";
 function AboutPreview() {
   const sliderRef = useRef(null);
 
-  useEffect(() => {
-    const el = sliderRef.current;
+useEffect(() => {
+  const el = sliderRef.current;
+  if (!el) return;
+
+  const isMobile = window.innerWidth <= 767;
+  const prefersReducedMotion = window.matchMedia(
+    "(prefers-reduced-motion: reduce)",
+  ).matches;
+
+  if (!isMobile || prefersReducedMotion) return;
+
+  if (!el.dataset.cloned) {
+    const children = Array.from(el.children);
+    children.forEach((child) => {
+      const clone = child.cloneNode(true);
+      clone.setAttribute("aria-hidden", "true");
+      el.appendChild(clone);
+    });
+    el.dataset.cloned = "true";
+  }
+
+  let frameId;
+  let pausedUntil = 0;
+
+  const pause = () => {
+    pausedUntil = Date.now() + 1800;
+  };
+
+  const tick = () => {
     if (!el) return;
 
-    const isMobile = window.innerWidth <= 767;
-    const prefersReducedMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)",
-    ).matches;
+    const halfWidth = el.scrollWidth / 2;
 
-    if (!isMobile || prefersReducedMotion) return;
-
-    let frameId;
-    let pausedUntil = 0;
-
-    const pause = () => {
-      pausedUntil = Date.now() + 1800;
-    };
-
-    const tick = () => {
-      if (!el) return;
-
-      const maxScroll = el.scrollWidth - el.clientWidth;
-
-      if (Date.now() < pausedUntil) {
-        frameId = requestAnimationFrame(tick);
-        return;
-      }
-
-      if (maxScroll > 0) {
-        if (el.scrollLeft >= maxScroll - 1) {
-          el.scrollLeft = 0;
-        } else {
-          el.scrollLeft += 0.6;
-        }
-      }
-
+    if (Date.now() < pausedUntil) {
       frameId = requestAnimationFrame(tick);
-    };
+      return;
+    }
 
-    el.addEventListener("touchstart", pause, { passive: true });
-    el.addEventListener("touchmove", pause, { passive: true });
+    if (halfWidth > 0) {
+      if (el.scrollLeft >= halfWidth) {
+        el.scrollLeft = 0;
+      } else {
+        el.scrollLeft += 0.45;
+      }
+    }
 
     frameId = requestAnimationFrame(tick);
+  };
 
-    return () => {
-      cancelAnimationFrame(frameId);
-      el.removeEventListener("touchstart", pause);
-      el.removeEventListener("touchmove", pause);
-    };
-  }, []);
+  el.addEventListener("touchstart", pause, { passive: true });
+  el.addEventListener("touchmove", pause, { passive: true });
+
+  frameId = requestAnimationFrame(tick);
+
+  return () => {
+    cancelAnimationFrame(frameId);
+    el.removeEventListener("touchstart", pause);
+    el.removeEventListener("touchmove", pause);
+  };
+}, []);
 
   const title =
     "Soy Alex, Técnico Superior especializado en infraestructura IT, redes, virtualización y automatización de sistemas conectados";
