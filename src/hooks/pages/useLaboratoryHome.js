@@ -3,13 +3,6 @@ import useAsyncResource from "../core/useAsyncResource";
 import { laboratoriosRealesService } from "../../services/api";
 
 const initialValue = {
-  stats: {
-    active_laboratories: 0,
-    technologies_count: 0,
-    documents_count: 0,
-    projects_count: 0,
-  },
-  top_technologies: [],
   featured_laboratories: [],
 };
 
@@ -26,8 +19,9 @@ function normalizeLaboratoryItems(payload) {
     id: item?.id ?? null,
     title: item?.titulo ?? "",
     slug: item?.slug ?? "",
-    category: item?.categoria ?? "Laboratorio",
+    category: item?.categoria ?? "laboratorio",
     status: item?.estado ?? "",
+    active: Boolean(item?.activo ?? item?.estado === "activo"),
     summary: item?.resumen ?? "",
     areas_relacionadas: normalizeArray(item?.areas_relacionadas),
     stack: normalizeArray(item?.stack).map((tech) => ({
@@ -35,29 +29,46 @@ function normalizeLaboratoryItems(payload) {
       slug: tech?.slug ?? "",
     })),
     projects_count: Number(item?.projects_count) || 0,
-    documentationCount: Number(item?.documentationCount) || 0,
-    progressCount: Number(item?.progressCount) || 0,
-    ideasCount: Number(item?.ideasCount) || 0,
-    is_featured: true,
   }));
 }
 
-function normalizeStats(payload) {
-  const source = payload?.stats ?? {};
+function computeStatsFromItems(items = []) {
+  // 1) Laboratorios activos
+  const activeLabs = items.filter((lab) => lab.active).length;
+
+  // 2) Proyectos asociados
+  const projectsCount = items.reduce(
+    (acc, lab) => acc + (lab.projects_count || 0),
+    0,
+  );
+
+  // 3) Tecnologías utilizadas (únicas por slug)
+  const techSlugs = new Set();
+  items.forEach((lab) => {
+    normalizeArray(lab.stack).forEach((tech) => {
+      if (tech.slug) techSlugs.add(tech.slug);
+    });
+  });
+  const technologiesCount = techSlugs.size;
+
+  // 4) Documentos técnicos -> ahora mismo no hay datos: 0
+  const documentsCount = 0;
+
   return {
-    active_laboratories: Number(source?.active_laboratories) || 0,
-    technologies_count: Number(source?.technologies_count) || 0,
-    documents_count: Number(source?.documents_count) || 0,
-    projects_count: Number(source?.projects_count) || 0,
+    active_laboratories: activeLabs,
+    projects_count: projectsCount,
+    technologies_count: technologiesCount,
+    documents_count: documentsCount,
   };
 }
 
 function getTopTechnologiesFromItems(items = [], limit = 8) {
   const counter = new Map();
 
-  items.forEach((item) => {
-    normalizeArray(item?.stack).forEach((tech) => {
-      if (!tech?.label) return;
+  items.forEach((lab) => {
+    normalizeArray(lab.stack).forEach((tech) => {
+      if (!tech.label) return;
+
       const key = tech.slug || tech.label.toLowerCase();
 
       if (!counter.has(key)) {
@@ -90,13 +101,15 @@ export default function useLaboratoryHome(enabled = true) {
   );
 
   const items = useMemo(() => normalizeLaboratoryItems(data), [data]);
-  const stats = useMemo(() => normalizeStats(data), [data]);
+
+  const featuredItems = useMemo(() => items, [items]);
+
+  const stats = useMemo(() => computeStatsFromItems(items), [items]);
+
   const topTechnologies = useMemo(
     () => getTopTechnologiesFromItems(items, 8),
     [items],
   );
-
-  const featuredItems = useMemo(() => items, [items]);
 
   return {
     laboratoryHome: data,

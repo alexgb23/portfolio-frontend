@@ -1,4 +1,4 @@
-import StackIcon from "tech-stack-icons";
+import * as TheSvg from "@thesvg/react";
 import styles from "./LaboratorySection.module.css";
 
 function buildLaboratories(items = []) {
@@ -123,38 +123,251 @@ function renderLabGlyph(title = "") {
   );
 }
 
-function renderTechIcon(type) {
-  switch (type) {
-    case "proxmox":
-      return (
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M5 6 11 12 5 18" />
-          <path d="M11 6 17 12 11 18" />
-        </svg>
-      );
-    default:
-      return <span className={styles.moreTech}>+20</span>;
+function renderTechFallback(label = "") {
+  const short =
+    String(label || "")
+      .trim()
+      .slice(0, 2)
+      .toUpperCase() || "•";
+
+  return <span className={styles.moreTech}>{short}</span>;
+}
+
+function normalizeTechSlug(value = "") {
+  return String(value || "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/\./g, "")
+    .replace(/\+/g, "plus")
+    .replace(/#/g, "sharp")
+    .replace(/[^a-z0-9]/g, "");
+}
+
+function toPascalCase(value = "") {
+  return String(value || "")
+    .split(/[\s-_]+/)
+    .filter(Boolean)
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join("");
+}
+
+function getIconCandidates(slug = "", label = "") {
+  const normalizedSlug = normalizeTechSlug(slug);
+  const normalizedLabel = normalizeTechSlug(label);
+
+  const aliases = {
+    js: "javascript",
+    javascript: "javascript",
+    ts: "typescript",
+    node: "nodejs",
+    nodejs: "nodejs",
+    reactrouter: "reactrouter",
+    reactrouterdom: "reactrouter",
+    postgres: "postgresql",
+    postgresql: "postgresql",
+    php84: "php",
+    php: "php",
+    dockercompose: "docker",
+    githubactions: "githubactions",
+    cloudflareworkers: "cloudflare",
+  };
+
+  const base =
+    aliases[normalizedSlug] ||
+    aliases[normalizedLabel] ||
+    normalizedSlug ||
+    normalizedLabel;
+
+  const rawCandidates = [
+    base,
+    normalizedSlug,
+    normalizedLabel,
+    label,
+    slug,
+  ].filter(Boolean);
+
+  return [...new Set(rawCandidates)]
+    .map((candidate) => toPascalCase(String(candidate)))
+    .filter(Boolean);
+}
+
+function resolveTechIcon(slug = "", label = "") {
+  const candidates = getIconCandidates(slug, label);
+
+  for (const key of candidates) {
+    if (TheSvg[key]) {
+      return TheSvg[key];
+    }
   }
+
+  return null;
+}
+
+function buildAutomaticTopTechnologies(
+  featuredItems = [],
+  topTechnologies = [],
+  limit = 8,
+) {
+  const source =
+    Array.isArray(topTechnologies) && topTechnologies.length > 0
+      ? topTechnologies
+      : Array.isArray(featuredItems)
+        ? featuredItems.flatMap((item) => item?.stack || [])
+        : [];
+
+  const registry = new Map();
+
+  source.forEach((tech, index) => {
+    if (!tech) return;
+
+    if (typeof tech === "string") {
+      const label = tech.trim();
+      if (!label) return;
+
+      const slug = normalizeTechSlug(label);
+      const key = slug || `tech-${index}`;
+
+      if (!registry.has(key)) {
+        registry.set(key, {
+          label,
+          slug,
+          weight: 1,
+        });
+      } else {
+        registry.get(key).weight += 1;
+      }
+
+      return;
+    }
+
+    const label = tech?.label?.trim?.() || "";
+    const rawSlug = tech?.slug?.trim?.() || "";
+    const slug = normalizeTechSlug(rawSlug || label);
+    const key = slug || label || `tech-${index}`;
+
+    if (!label && !slug) return;
+
+    if (!registry.has(key)) {
+      registry.set(key, {
+        label: label || rawSlug || "Tecnología",
+        slug,
+        weight: 1,
+      });
+    } else {
+      registry.get(key).weight += 1;
+    }
+  });
+
+  const uniqueTechnologies = Array.from(registry.values());
+
+  uniqueTechnologies.sort((a, b) => {
+    if (b.weight !== a.weight) return b.weight - a.weight;
+    return a.label.localeCompare(b.label, "es");
+  });
+
+  if (uniqueTechnologies.length <= limit) {
+    return uniqueTechnologies;
+  }
+
+  const firstBlock = uniqueTechnologies.slice(
+    0,
+    Math.max(4, Math.floor(limit / 2)),
+  );
+  const remaining = uniqueTechnologies.slice(firstBlock.length);
+
+  const shuffled = [...remaining].sort((a, b) => {
+    const seedA = normalizeTechSlug(a.slug || a.label)
+      .split("")
+      .reduce((acc, char) => acc + char.charCodeAt(0), 0);
+    const seedB = normalizeTechSlug(b.slug || b.label)
+      .split("")
+      .reduce((acc, char) => acc + char.charCodeAt(0), 0);
+    return seedA - seedB;
+  });
+
+  return [...firstBlock, ...shuffled.slice(0, limit - firstBlock.length)];
+}
+
+function TechLogo({ tech }) {
+  const Icon = resolveTechIcon(tech?.slug, tech?.label);
+
+  if (!Icon) {
+    return renderTechFallback(tech?.label);
+  }
+
+  return (
+    <Icon
+      width={30}
+      height={30}
+      aria-label={tech?.label || "Tecnología"}
+      role="img"
+    />
+  );
 }
 
 export default function LaboratorySection({
   featuredItems = [],
   statsData = {},
   topTechnologies = [],
+  loading = false,
+  error = "",
 }) {
   const laboratories = buildLaboratories(featuredItems);
   const stats = buildStats(statsData);
+  const visibleTechnologies = buildAutomaticTopTechnologies(
+    featuredItems,
+    topTechnologies,
+    8,
+  );
+  const hasLaboratories = laboratories.length > 0;
+
+  if (loading && !hasLaboratories) {
+    return (
+      <section className={`section ${styles.laboratorySection}`}>
+        <div className="container">
+          <div className="section-head-centered">
+            <span className="section-kicker">Laboratorios destacados</span>
+            <h2>Áreas activas en SYSKOVEX</h2>
+            <p>Cargando laboratorios destacados...</p>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  if (error && !hasLaboratories) {
+    return (
+      <section className={`section ${styles.laboratorySection}`}>
+        <div className="container">
+          <div className="section-head-centered">
+            <span className="section-kicker">Laboratorios destacados</span>
+            <h2>Áreas activas en SYSKOVEX</h2>
+            <p>No se pudieron cargar los laboratorios en este momento.</p>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className={`section ${styles.laboratorySection}`}>
       <div className="container">
         <div className={styles.block}>
+          <div className={styles.blockHead}>
+            <span className={styles.blockKicker}>Laboratorios destacados</span>
+          </div>
+
           <div className={styles.featuredRow}>
             <div className={styles.featuredScroller}>
               {laboratories.map((lab, index) => {
-                const statusMeta = getStatusMeta(lab.status);
+                const title = lab?.title ?? lab?.titulo ?? "";
+                const summary = lab?.summary ?? lab?.resumen ?? "";
+                const status = lab?.status ?? lab?.estado ?? "";
+                const statusMeta = getStatusMeta(status);
+
                 return (
-                  <article key={lab.id} className={styles.labCard}>
+                  <article key={lab.id ?? index} className={styles.labCard}>
                     <div className={styles.labCardInner}>
                       <div className={styles.labIconWrap}>
                         <div className={styles.labHex}>
@@ -164,14 +377,14 @@ export default function LaboratorySection({
                           <span className={styles.hexHalo} />
                           <span className={styles.hexShadow} />
                           <span className={styles.labHexIcon}>
-                            {renderLabGlyph(lab.title)}
+                            {renderLabGlyph(title)}
                           </span>
                         </div>
                       </div>
 
                       <div className={styles.labContent}>
                         <div className={styles.labTop}>
-                          <h3>{lab.title}</h3>
+                          <h3>{title}</h3>
                           <span
                             className={`${styles.status} ${styles[statusMeta.className]}`}
                           >
@@ -180,7 +393,7 @@ export default function LaboratorySection({
                           </span>
                         </div>
 
-                        <p>{lab.summary}</p>
+                        <p>{summary}</p>
 
                         <div className={styles.labActions}>
                           <a
@@ -190,7 +403,7 @@ export default function LaboratorySection({
                             Ver detalles
                           </a>
                           <span className={styles.countBadge}>
-                            {lab.projects_count || 0} proyectos
+                            {lab?.projects_count ?? 0} proyectos
                           </span>
                         </div>
                       </div>
@@ -229,16 +442,15 @@ export default function LaboratorySection({
             </div>
 
             <div className={styles.techGrid}>
-              {topTechnologies.map((tech, index) => (
-                <div key={`${tech.label}-${index}`} className={styles.techCard}>
+              {visibleTechnologies.map((tech, index) => (
+                <div
+                  key={`${tech?.slug || tech?.label || "tech"}-${index}`}
+                  className={styles.techCard}
+                >
                   <div className={styles.techLogo}>
-                    {tech.slug ? (
-                      <StackIcon name={tech.slug} />
-                    ) : (
-                      renderTechIcon("proxmox")
-                    )}
+                    <TechLogo tech={tech} />
                   </div>
-                  <span>{tech.label}</span>
+                  <span>{tech?.label ?? "Tecnología"}</span>
                 </div>
               ))}
             </div>
