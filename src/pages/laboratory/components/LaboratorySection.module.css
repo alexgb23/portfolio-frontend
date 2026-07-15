@@ -49,7 +49,7 @@
 .featuredScroller {
   display: grid;
   grid-auto-flow: column;
-  grid-auto-columns: minmax(88%, 88%);
+  grid-auto-columns: 100%;
   gap: 0.9rem;
   overflow-x: auto;
   padding-bottom: 0.25rem;
@@ -57,6 +57,8 @@
   scrollbar-width: none;
   align-items: stretch;
 }
+
+
 
 .featuredScroller::-webkit-scrollbar {
   display: none;
@@ -88,14 +90,16 @@
   --lab-card-accent: #8a6cff;
 }
 
+
 .labCardInner {
+  position: relative;
   display: grid;
   grid-template-columns: 88px minmax(0, 1fr);
   gap: 0.82rem;
   align-items: center;
   min-height: clamp(176px, 23vw, 194px);
   height: 100%;
-  padding: 0.92rem 0.95rem;
+  padding: 0.92rem 0.95rem 4.2rem; /* más espacio abajo para las acciones */
 }
 
 .labIconWrap {
@@ -111,14 +115,7 @@
   aspect-ratio: 1;
   display: grid;
   place-items: center;
-  --hex-shape: polygon(
-    50% 0%,
-    94% 25%,
-    94% 75%,
-    50% 100%,
-    6% 75%,
-    6% 25%
-  );
+  --hex-shape: polygon(50% 0%, 94% 25%, 94% 75%, 50% 100%, 6% 75%, 6% 25%);
 }
 
 .hexOuter,
@@ -132,21 +129,23 @@
   clip-path: var(--hex-shape);
 }
 
-.hexOuter{
-    background:var(--lab-card-accent);
-    filter:
-      drop-shadow(0 0 2px color-mix(in srgb,var(--lab-card-accent) 55%,transparent))
-      drop-shadow(0 0 6px color-mix(in srgb,var(--lab-card-accent) 18%,transparent));
+.hexOuter {
+  background: var(--lab-card-accent);
+  filter: drop-shadow(
+      0 0 2px color-mix(in srgb, var(--lab-card-accent) 55%, transparent)
+    )
+    drop-shadow(
+      0 0 6px color-mix(in srgb, var(--lab-card-accent) 18%, transparent)
+    );
 }
 
 .hexInner {
   inset: 0.8px;
-  background:
-    linear-gradient(
-      180deg,
-      color-mix(in srgb, var(--lab-card-accent) 8%, #08202a 92%) 0%,
-      color-mix(in srgb, var(--lab-card-accent) 3%, #09141d 97%) 100%
-    );
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--lab-card-accent) 8%, #08202a 92%) 0%,
+    color-mix(in srgb, var(--lab-card-accent) 3%, #09141d 97%) 100%
+  );
 }
 
 .hexLines {
@@ -166,46 +165,43 @@
       transparent 50.8%
     );
 
-  opacity: .18;
+  opacity: 0.18;
 
-  filter: blur(.35px);
+  filter: blur(0.35px);
 }
 
-.hexHalo{
-    inset:8px;
+.hexHalo {
+  inset: 8px;
 
-    background:
-    radial-gradient(
-        circle,
+  background: radial-gradient(
+    circle,
+    color-mix(in srgb, var(--lab-card-accent) 10%, transparent) 0%,
 
-        color-mix(in srgb,var(--lab-card-accent) 10%,transparent) 0%,
+    color-mix(in srgb, var(--lab-card-accent) 5%, transparent) 30%,
 
-        color-mix(in srgb,var(--lab-card-accent) 5%,transparent) 30%,
+    color-mix(in srgb, var(--lab-card-accent) 2%, transparent) 55%,
 
-        color-mix(in srgb,var(--lab-card-accent) 2%,transparent) 55%,
+    transparent 78%
+  );
 
-        transparent 78%
-    );
-
-    opacity:.7;
+  opacity: 0.7;
 }
 
 .hexShadow {
   inset: 2px;
-  background:
-    radial-gradient(
-      ellipse at center,
-      rgba(0, 0, 0, 0) 28%,
-      rgba(2, 12, 18, 0.14) 66%,
-      rgba(2, 10, 16, 0.46) 100%
-    );
+  background: radial-gradient(
+    ellipse at center,
+    rgba(0, 0, 0, 0) 28%,
+    rgba(2, 12, 18, 0.14) 66%,
+    rgba(2, 10, 16, 0.46) 100%
+  );
   opacity: 0.9;
 }
 
 .hexGlow {
   inset: 2px;
-  box-shadow:
-    inset 0 0 14px color-mix(in srgb, var(--lab-card-accent) 10%, transparent);
+  box-shadow: inset 0 0 14px
+    color-mix(in srgb, var(--lab-card-accent) 10%, transparent);
   opacity: 0.9;
 }
 
@@ -223,8 +219,9 @@
   stroke: currentColor;
   stroke-width: 1.7;
   fill: none;
-  filter:
-    drop-shadow(0 0 4px color-mix(in srgb, var(--lab-card-accent) 72%, transparent));
+  filter: drop-shadow(
+    0 0 4px color-mix(in srgb, var(--lab-card-accent) 72%, transparent)
+  );
 }
 
 .labContent {
@@ -286,7 +283,7 @@
 
 .labActions {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   gap: 0.7rem;
   align-items: center;
   margin-top: auto;
@@ -302,9 +299,14 @@
   border-radius: 11px;
   font-size: clamp(0.8rem, 0.78rem + 0.12vw, 0.88rem);
   font-weight: 700;
-  border: 1px solid color-mix(in srgb, var(--lab-card-accent) 48%, var(--lab-cta-border));
+  border: 1px solid
+    color-mix(in srgb, var(--lab-card-accent) 48%, var(--lab-cta-border));
   color: var(--lab-cta-text);
-  background: linear-gradient(180deg, var(--lab-cta-bg-start), var(--lab-cta-bg-end));
+  background: linear-gradient(
+    180deg,
+    var(--lab-cta-bg-start),
+    var(--lab-cta-bg-end)
+  );
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.04),
     0 0 0 4px color-mix(in srgb, var(--lab-card-accent) 10%, transparent);
@@ -333,7 +335,7 @@
 }
 
 .arrowButton {
-  display: inline-grid;
+  display: none;
   place-items: center;
   align-self: center;
   width: 44px;
@@ -429,7 +431,11 @@
   font-family: var(--font-tech);
   font-size: clamp(1.2rem, 1rem + 0.8vw, 1.8rem);
   line-height: 1;
-  color: color-mix(in srgb, var(--lab-accent-end) 72%, var(--lab-accent-start) 28%);
+  color: color-mix(
+    in srgb,
+    var(--lab-accent-end) 72%,
+    var(--lab-accent-start) 28%
+  );
 }
 
 .statCard span {
@@ -489,6 +495,35 @@
   color: var(--text-soft);
 }
 
+
+@media (max-width: 720px) {
+  .labActions {
+    position: absolute;
+    left: 50%;
+    bottom: 0.95rem;
+    transform: translateX(-50%);
+    width: max-content;
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: center;
+    gap: 0.7rem;
+    margin: 0;
+    padding: 0;
+  }
+
+  .featuredRow {
+    margin-inline: calc(50% - 50vw);
+  }
+
+  .featuredScroller {
+    width: 100vw;
+    grid-auto-columns: 90vw;
+    padding-inline: 1rem;
+    box-sizing: border-box;
+    scroll-padding-inline: 1rem;
+  }
+}
+
 @media (min-width: 721px) {
   .featuredScroller {
     grid-auto-columns: minmax(46%, 46%);
@@ -505,8 +540,8 @@
 
 @media (min-width: 1024px) {
   .laboratorySection {
-  margin-top: -150px;
-}
+    margin-top: -150px;
+  }
 
   .featuredRow {
     grid-template-columns: minmax(0, 1fr) 54px;
@@ -544,6 +579,10 @@
 
   .techGrid {
     grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .arrowButton {
+    display: inline-grid;
   }
 }
 
