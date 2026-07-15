@@ -1,6 +1,5 @@
 .laboratorySection {
   overflow: hidden;
-  margin-top: -150px;
 }
 
 .block {
@@ -505,6 +504,10 @@
 }
 
 @media (min-width: 1024px) {
+  .laboratorySection {
+  margin-top: -150px;
+}
+
   .featuredRow {
     grid-template-columns: minmax(0, 1fr) 54px;
     gap: 1rem;
