@@ -1,5 +1,43 @@
-import * as TheSvg from "@thesvg/react";
 import styles from "./LaboratorySection.module.css";
+
+const FIXED_TECHNOLOGIES = [
+  {
+    id: "proxmox",
+    label: "Proxmox",
+    iconUrl:
+      "https://cdn.jsdelivr.net/gh/glincker/thesvg@main/public/icons/proxmox/default.svg",
+  },
+  {
+    id: "docker",
+    label: "Docker",
+    iconUrl:
+      "https://cdn.jsdelivr.net/gh/glincker/thesvg@main/public/icons/docker/default.svg",
+  },
+  {
+    id: "linux",
+    label: "Linux",
+    iconUrl:
+      "https://cdn.jsdelivr.net/gh/glincker/thesvg@main/public/icons/linux/default.svg",
+  },
+  {
+    id: "n8n",
+    label: "n8n",
+    iconUrl:
+      "https://cdn.jsdelivr.net/gh/glincker/thesvg@main/public/icons/n8n/default.svg",
+  },
+  {
+    id: "home-assistant",
+    label: "Home Assistant",
+    iconUrl:
+      "https://cdn.jsdelivr.net/gh/glincker/thesvg@main/public/icons/home-assistant/default.svg",
+  },
+  {
+    id: "react",
+    label: "React",
+    iconUrl:
+      "https://cdn.jsdelivr.net/gh/glincker/thesvg@main/public/icons/react/default.svg",
+  },
+];
 
 function buildLaboratories(items = []) {
   return Array.isArray(items) ? items.slice(0, 3) : [];
@@ -9,29 +47,41 @@ function buildStats(statsData = {}) {
   return [
     {
       id: "labs",
-      value: `${statsData?.active_laboratories ?? 0}`,
+      value: Number(statsData?.active_laboratories ?? 0),
       label: "Laboratorios activos",
       icon: "flask",
+      tone: "cyan",
     },
     {
       id: "projects",
-      value: `${statsData?.projects_count ?? 0}`,
+      value: Number(statsData?.projects_count ?? 0),
       label: "Proyectos asociados",
       icon: "terminal",
+      tone: "violet",
     },
     {
       id: "tech",
-      value: `${statsData?.technologies_count ?? 0}`,
+      value: Number(statsData?.technologies_count ?? 0),
       label: "Tecnologías utilizadas",
       icon: "chip",
+      tone: "green",
     },
     {
       id: "docs",
-      value: `${statsData?.documents_count ?? 0}`,
+      value: Number(statsData?.documents_count ?? 0),
       label: "Documentos técnicos",
       icon: "docs",
+      tone: "orange",
     },
   ];
+}
+
+function getExtraTechnologiesCount(statsData = {}) {
+  const total = Number(statsData?.technologies_count ?? 0);
+  return Math.max(total - FIXED_TECHNOLOGIES.length, 0);
+}
+function getStatDisplayValue(value) {
+  return `${Number(value ?? 0)} +`;
 }
 
 function getLabHref(lab) {
@@ -123,203 +173,15 @@ function renderLabGlyph(title = "") {
   );
 }
 
-function renderTechFallback(label = "") {
-  const short =
-    String(label || "")
-      .trim()
-      .slice(0, 2)
-      .toUpperCase() || "•";
-
-  return <span className={styles.moreTech}>{short}</span>;
-}
-
-function normalizeTechSlug(value = "") {
-  return String(value || "")
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .toLowerCase()
-    .replace(/\./g, "")
-    .replace(/\+/g, "plus")
-    .replace(/#/g, "sharp")
-    .replace(/[^a-z0-9]/g, "");
-}
-
-function toPascalCase(value = "") {
-  return String(value || "")
-    .split(/[\s-_]+/)
-    .filter(Boolean)
-    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
-    .join("");
-}
-
-function getIconCandidates(slug = "", label = "") {
-  const normalizedSlug = normalizeTechSlug(slug);
-  const normalizedLabel = normalizeTechSlug(label);
-
-  const aliases = {
-    js: "javascript",
-    javascript: "javascript",
-    ts: "typescript",
-    node: "nodejs",
-    nodejs: "nodejs",
-    reactrouter: "reactrouter",
-    reactrouterdom: "reactrouter",
-    postgres: "postgresql",
-    postgresql: "postgresql",
-    php84: "php",
-    php: "php",
-    dockercompose: "docker",
-    githubactions: "githubactions",
-    cloudflareworkers: "cloudflare",
-  };
-
-  const base =
-    aliases[normalizedSlug] ||
-    aliases[normalizedLabel] ||
-    normalizedSlug ||
-    normalizedLabel;
-
-  const rawCandidates = [
-    base,
-    normalizedSlug,
-    normalizedLabel,
-    label,
-    slug,
-  ].filter(Boolean);
-
-  return [...new Set(rawCandidates)]
-    .map((candidate) => toPascalCase(String(candidate)))
-    .filter(Boolean);
-}
-
-function resolveTechIcon(slug = "", label = "") {
-  const candidates = getIconCandidates(slug, label);
-
-  for (const key of candidates) {
-    if (TheSvg[key]) {
-      return TheSvg[key];
-    }
-  }
-
-  return null;
-}
-
-function buildAutomaticTopTechnologies(
-  featuredItems = [],
-  topTechnologies = [],
-  limit = 8,
-) {
-  const source =
-    Array.isArray(topTechnologies) && topTechnologies.length > 0
-      ? topTechnologies
-      : Array.isArray(featuredItems)
-        ? featuredItems.flatMap((item) => item?.stack || [])
-        : [];
-
-  const registry = new Map();
-
-  source.forEach((tech, index) => {
-    if (!tech) return;
-
-    if (typeof tech === "string") {
-      const label = tech.trim();
-      if (!label) return;
-
-      const slug = normalizeTechSlug(label);
-      const key = slug || `tech-${index}`;
-
-      if (!registry.has(key)) {
-        registry.set(key, {
-          label,
-          slug,
-          weight: 1,
-        });
-      } else {
-        registry.get(key).weight += 1;
-      }
-
-      return;
-    }
-
-    const label = tech?.label?.trim?.() || "";
-    const rawSlug = tech?.slug?.trim?.() || "";
-    const slug = normalizeTechSlug(rawSlug || label);
-    const key = slug || label || `tech-${index}`;
-
-    if (!label && !slug) return;
-
-    if (!registry.has(key)) {
-      registry.set(key, {
-        label: label || rawSlug || "Tecnología",
-        slug,
-        weight: 1,
-      });
-    } else {
-      registry.get(key).weight += 1;
-    }
-  });
-
-  const uniqueTechnologies = Array.from(registry.values());
-
-  uniqueTechnologies.sort((a, b) => {
-    if (b.weight !== a.weight) return b.weight - a.weight;
-    return a.label.localeCompare(b.label, "es");
-  });
-
-  if (uniqueTechnologies.length <= limit) {
-    return uniqueTechnologies;
-  }
-
-  const firstBlock = uniqueTechnologies.slice(
-    0,
-    Math.max(4, Math.floor(limit / 2)),
-  );
-  const remaining = uniqueTechnologies.slice(firstBlock.length);
-
-  const shuffled = [...remaining].sort((a, b) => {
-    const seedA = normalizeTechSlug(a.slug || a.label)
-      .split("")
-      .reduce((acc, char) => acc + char.charCodeAt(0), 0);
-    const seedB = normalizeTechSlug(b.slug || b.label)
-      .split("")
-      .reduce((acc, char) => acc + char.charCodeAt(0), 0);
-    return seedA - seedB;
-  });
-
-  return [...firstBlock, ...shuffled.slice(0, limit - firstBlock.length)];
-}
-
-function TechLogo({ tech }) {
-  const Icon = resolveTechIcon(tech?.slug, tech?.label);
-
-  if (!Icon) {
-    return renderTechFallback(tech?.label);
-  }
-
-  return (
-    <Icon
-      width={30}
-      height={30}
-      aria-label={tech?.label || "Tecnología"}
-      role="img"
-    />
-  );
-}
-
 export default function LaboratorySection({
   featuredItems = [],
   statsData = {},
-  topTechnologies = [],
   loading = false,
   error = "",
 }) {
   const laboratories = buildLaboratories(featuredItems);
   const stats = buildStats(statsData);
-  const visibleTechnologies = buildAutomaticTopTechnologies(
-    featuredItems,
-    topTechnologies,
-    8,
-  );
+  const extraTechnologiesCount = getExtraTechnologiesCount(statsData);
   const hasLaboratories = laboratories.length > 0;
 
   if (loading && !hasLaboratories) {
@@ -425,12 +287,18 @@ export default function LaboratorySection({
 
             <div className={styles.statsGrid}>
               {stats.map((item) => (
-                <div key={item.id} className={styles.statCard}>
+                <div
+                  key={item.id}
+                  className={`${styles.statCard} ${styles[`statTone${item.tone.charAt(0).toUpperCase()}${item.tone.slice(1)}`]}`}
+                >
                   <div className={styles.statIcon}>
                     {renderStatIcon(item.icon)}
                   </div>
-                  <strong>{item.value}</strong>
-                  <span>{item.label}</span>
+
+                  <div className={styles.statContent}>
+                    <strong>{getStatDisplayValue(item.value)}</strong>
+                    <span>{item.label}</span>
+                  </div>
                 </div>
               ))}
             </div>
@@ -442,17 +310,34 @@ export default function LaboratorySection({
             </div>
 
             <div className={styles.techGrid}>
-              {visibleTechnologies.map((tech, index) => (
+              {FIXED_TECHNOLOGIES.map((tech, index) => (
                 <div
-                  key={`${tech?.slug || tech?.label || "tech"}-${index}`}
-                  className={styles.techCard}
+                  key={tech.id}
+                  className={`${styles.techCard} ${styles[`techTone${(index % 6) + 1}`]}`}
                 >
                   <div className={styles.techLogo}>
-                    <TechLogo tech={tech} />
+                    <img
+                      src={tech.iconUrl}
+                      alt={tech.label}
+                      width="28"
+                      height="28"
+                      loading="lazy"
+                    />
                   </div>
-                  <span>{tech?.label ?? "Tecnología"}</span>
+                  <span>{tech.label}</span>
                 </div>
               ))}
+
+              {extraTechnologiesCount > 0 && (
+                <div
+                  className={`${styles.techCard} ${styles.techCardMore} ${styles.techToneMore}`}
+                >
+                  <div className={styles.techMoreValue}>
+                    +{extraTechnologiesCount}
+                  </div>
+                  <span>Más</span>
+                </div>
+              )}
             </div>
           </article>
         </div>
@@ -460,4 +345,3 @@ export default function LaboratorySection({
     </section>
   );
 }
-
