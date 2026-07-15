@@ -333,7 +333,7 @@ export default function LaboratorySection({
                   className={`${styles.techCard} ${styles.techCardMore} ${styles.techToneMore}`}
                 >
                   <div className={styles.techMoreValue}>
-                    +{extraTechnologiesCount}
+                    + {extraTechnologiesCount}
                   </div>
                   <span>Más</span>
                 </div>

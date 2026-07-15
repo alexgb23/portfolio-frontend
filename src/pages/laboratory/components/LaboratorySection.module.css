@@ -486,7 +486,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 0.5rem;
   padding: 0.72rem 0.45rem;
   text-align: center;
@@ -517,6 +517,15 @@
   font-size: 0.74rem;
   line-height: 1.2;
   color: var(--text-soft);
+   margin-top: auto;
+}
+
+.techCard:last-child {
+  justify-content: center;
+}
+.techCard:last-child span {
+  margin-top: 0;
+  gap: 1rem;
 }
 
 .techCardMore {
