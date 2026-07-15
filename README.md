@@ -405,6 +405,11 @@ Un README de calidad suele mejorar mucho si incluyes:
 
 Las guías de README de calidad suelen recomendar screenshots, GIFs, enlaces al deploy y una estructura clara por secciones. [web:74][web:77][web:79][web:83][web:85]
 
+## Libreria de iconos
+
+thesvg.org
+
+
 ## Autor
 
 **Alex / Syskovex**
