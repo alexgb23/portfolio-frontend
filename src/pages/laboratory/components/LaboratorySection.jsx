@@ -1,63 +1,41 @@
+import StackIcon from "tech-stack-icons";
 import styles from "./LaboratorySection.module.css";
 
-const laboratoryFallback = {
-  id: "lab-upcoming-ai",
-  title: "Inteligencia Artificial",
-  category: "IA aplicada",
-  area: "inteligencia artificial",
-  status: "activo",
-  summary:
-    "Modelos de IA, machine learning, agentes, pipelines de datos y aplicaciones útiles orientadas a casos reales.",
-  documentationCount: 2,
-  progressCount: 3,
-  ideasCount: 6,
-  is_featured: true,
-  stack: ["Python", "OpenAI", "Automatización", "APIs"],
-  isPlaceholder: true,
-};
-
-const stats = [
-  { id: "labs", value: "20+", label: "Laboratorios activos", icon: "flask" },
-  {
-    id: "hours",
-    value: "1500+",
-    label: "Horas de investigación",
-    icon: "terminal",
-  },
-  { id: "tech", value: "30+", label: "Tecnologías utilizadas", icon: "chip" },
-  { id: "docs", value: "50+", label: "Documentos técnicos", icon: "docs" },
-];
-
-const technologies = [
-  { id: "proxmox", label: "Proxmox", icon: "proxmox" },
-  { id: "docker", label: "Docker", icon: "docker" },
-  { id: "kubernetes", label: "Kubernetes", icon: "kubernetes" },
-  { id: "linux", label: "Linux", icon: "linux" },
-  { id: "pfsense", label: "PfSense", icon: "pfsense" },
-  { id: "home-assistant", label: "Home Assistant", icon: "homeassistant" },
-  { id: "python", label: "Python", icon: "python" },
-  { id: "more", label: "+20", icon: "more" },
-];
-
 function buildLaboratories(items = []) {
-  const normalized = Array.isArray(items) ? items.slice(0, 2) : [];
+  return Array.isArray(items) ? items.slice(0, 3) : [];
+}
 
-  if (normalized.length >= 3) {
-    return normalized.slice(0, 3);
-  }
-
-  return [...normalized, laboratoryFallback];
+function buildStats(statsData = {}) {
+  return [
+    {
+      id: "labs",
+      value: `${statsData?.active_laboratories ?? 0}`,
+      label: "Laboratorios activos",
+      icon: "flask",
+    },
+    {
+      id: "projects",
+      value: `${statsData?.projects_count ?? 0}`,
+      label: "Proyectos asociados",
+      icon: "terminal",
+    },
+    {
+      id: "tech",
+      value: `${statsData?.technologies_count ?? 0}`,
+      label: "Tecnologías utilizadas",
+      icon: "chip",
+    },
+    {
+      id: "docs",
+      value: `${statsData?.documents_count ?? 0}`,
+      label: "Documentos técnicos",
+      icon: "docs",
+    },
+  ];
 }
 
 function getLabHref(lab) {
-  if (lab?.isPlaceholder) return "/laboratorio";
-  return lab?.id ? `/laboratorio/${lab.id}` : "/laboratorio";
-}
-
-function getLabTone(index) {
-  if (index === 0) return "cyan";
-  if (index === 1) return "green";
-  return "violet";
+  return lab?.slug ? `/laboratorio/${lab.slug}` : "/laboratorio";
 }
 
 function getStatusMeta(status) {
@@ -66,10 +44,7 @@ function getStatusMeta(status) {
     .trim();
 
   if (normalized === "activo") {
-    return {
-      label: "Activo",
-      className: "isActive",
-    };
+    return { label: "Activo", className: "isActive" };
   }
 
   return {
@@ -115,74 +90,6 @@ function renderStatIcon(type) {
   }
 }
 
-function renderTechIcon(type) {
-  switch (type) {
-    case "proxmox":
-      return (
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M5 6 11 12 5 18" />
-          <path d="M11 6 17 12 11 18" />
-        </svg>
-      );
-    case "docker":
-      return (
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <rect x="4" y="10" width="3" height="3" rx="0.6" />
-          <rect x="8" y="10" width="3" height="3" rx="0.6" />
-          <rect x="12" y="10" width="3" height="3" rx="0.6" />
-          <rect x="8" y="6" width="3" height="3" rx="0.6" />
-          <rect x="12" y="6" width="3" height="3" rx="0.6" />
-          <path d="M4 14h11.5c2.5 0 4.2-1.1 4.9-3.3.8.1 1.4-.1 2.1-.6-.1 1.2-.6 2.2-1.4 3 0 3.1-2.7 5.4-6.2 5.4H10c-3.3 0-5.4-1.8-6-4.5" />
-        </svg>
-      );
-    case "kubernetes":
-      return (
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M12 2.8 19.2 7v10L12 21.2 4.8 17V7z" />
-          <circle cx="12" cy="12" r="3.2" />
-          <path d="M12 4.8v3M12 16.2v3M6.7 8.1l2.5 1.5M14.8 14.4l2.5 1.5M17.3 8.1l-2.5 1.5M9.2 14.4l-2.5 1.5" />
-        </svg>
-      );
-    case "linux":
-      return (
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M12 4.2c2.2 0 3.6 2.1 3.6 4.7 0 1.2-.3 2.3-.8 3.2.8.7 1.4 1.9 1.7 3.1.3 1.1.9 2 1.7 2.8-.8.9-1.9 1.5-3.1 1.5-.9 0-1.6-.4-2.1-1.1-.4.7-1.1 1.1-2 1.1s-1.6-.4-2-1.1c-.5.7-1.2 1.1-2.1 1.1-1.2 0-2.3-.6-3.1-1.5.8-.8 1.4-1.7 1.7-2.8.3-1.2.9-2.4 1.7-3.1-.5-.9-.8-2-.8-3.2 0-2.6 1.4-4.7 3.6-4.7Z" />
-          <circle cx="10" cy="9.4" r="0.7" />
-          <circle cx="14" cy="9.4" r="0.7" />
-          <path d="M10.2 12.6c1 .6 2.6.6 3.6 0" />
-        </svg>
-      );
-    case "pfsense":
-      return (
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M12 2.8 19.2 7v10L12 21.2 4.8 17V7z" />
-          <circle cx="9.2" cy="11" r="1.3" />
-          <circle cx="14.8" cy="11" r="1.3" />
-          <path d="M8.4 15c.9-.8 2.1-1.2 3.6-1.2s2.7.4 3.6 1.2" />
-        </svg>
-      );
-    case "homeassistant":
-      return (
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M4.5 11.2 12 5l7.5 6.2v7.3a.9.9 0 0 1-.9.9h-4.2v-5h-4.8v5H5.4a.9.9 0 0 1-.9-.9z" />
-          <path d="M9.5 10.2h.01M14.5 10.2h.01" />
-          <path d="M10 12.8c.6.5 1.2.8 2 .8s1.4-.3 2-.8" />
-        </svg>
-      );
-    case "python":
-      return (
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M12 3.5c-3.4 0-3.2 1.5-3.2 1.5v2.3h4.9v.8H6.9S3.5 7.7 3.5 12c0 4.3 2.9 4.1 2.9 4.1h1.7v-2.4s-.1-2.9 2.9-2.9h4.9s2.8 0 2.8-2.7V5.9S19 3.5 15.6 3.5z" />
-          <path d="M12 20.5c3.4 0 3.2-1.5 3.2-1.5v-2.3h-4.9v-.8h6.8s3.4.4 3.4-3.9c0-4.3-2.9-4.1-2.9-4.1h-1.7v2.4s.1 2.9-2.9 2.9H8.1S5.3 13.2 5.3 16v2.1s.1 2.4 3.5 2.4z" />
-          <circle cx="10.2" cy="5.9" r="0.6" />
-          <circle cx="13.8" cy="18.1" r="0.6" />
-        </svg>
-      );
-    default:
-      return <span className={styles.moreTech}>+20</span>;
-  }
-}
-
 function renderLabGlyph(title = "") {
   const normalized = title.toLowerCase();
 
@@ -216,65 +123,38 @@ function renderLabGlyph(title = "") {
   );
 }
 
+function renderTechIcon(type) {
+  switch (type) {
+    case "proxmox":
+      return (
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M5 6 11 12 5 18" />
+          <path d="M11 6 17 12 11 18" />
+        </svg>
+      );
+    default:
+      return <span className={styles.moreTech}>+20</span>;
+  }
+}
+
 export default function LaboratorySection({
   featuredItems = [],
-  loading = false,
-  error = "",
+  statsData = {},
+  topTechnologies = [],
 }) {
   const laboratories = buildLaboratories(featuredItems);
-  const hasLaboratories = laboratories.length > 0;
-
-  if (loading && !hasLaboratories) {
-    return (
-      <section className={`section ${styles.laboratorySection}`}>
-        <div className="container">
-          <div className="section-head-centered">
-            <span className="section-kicker">Laboratorios destacados</span>
-            <h2>Áreas activas en SYSKOVEX</h2>
-            <p>Cargando laboratorios destacados...</p>
-          </div>
-        </div>
-      </section>
-    );
-  }
-
-  if (error && !hasLaboratories) {
-    return (
-      <section className={`section ${styles.laboratorySection}`}>
-        <div className="container">
-          <div className="section-head-centered">
-            <span className="section-kicker">Laboratorios destacados</span>
-            <h2>Áreas activas en SYSKOVEX</h2>
-            <p>No se pudieron cargar los laboratorios en este momento.</p>
-          </div>
-        </div>
-      </section>
-    );
-  }
+  const stats = buildStats(statsData);
 
   return (
     <section className={`section ${styles.laboratorySection}`}>
       <div className="container">
         <div className={styles.block}>
-          <div className={styles.blockHead}>
-            <span className={styles.blockKicker}>Laboratorios destacados</span>
-          </div>
-
           <div className={styles.featuredRow}>
             <div className={styles.featuredScroller}>
               {laboratories.map((lab, index) => {
-                const tone = getLabTone(index);
                 const statusMeta = getStatusMeta(lab.status);
-
                 return (
-                  <article
-                    key={lab.id}
-                    className={`${styles.labCard} ${
-                      styles[
-                        `tone${tone.charAt(0).toUpperCase() + tone.slice(1)}`
-                      ]
-                    }`}
-                  >
+                  <article key={lab.id} className={styles.labCard}>
                     <div className={styles.labCardInner}>
                       <div className={styles.labIconWrap}>
                         <div className={styles.labHex}>
@@ -283,7 +163,6 @@ export default function LaboratorySection({
                           <span className={styles.hexLines} />
                           <span className={styles.hexHalo} />
                           <span className={styles.hexShadow} />
-
                           <span className={styles.labHexIcon}>
                             {renderLabGlyph(lab.title)}
                           </span>
@@ -293,7 +172,6 @@ export default function LaboratorySection({
                       <div className={styles.labContent}>
                         <div className={styles.labTop}>
                           <h3>{lab.title}</h3>
-
                           <span
                             className={`${styles.status} ${styles[statusMeta.className]}`}
                           >
@@ -311,10 +189,8 @@ export default function LaboratorySection({
                           >
                             Ver detalles
                           </a>
-
                           <span className={styles.countBadge}>
-                            {lab.progressCount || lab.documentationCount || 0}{" "}
-                            proyectos
+                            {lab.projects_count || 0} proyectos
                           </span>
                         </div>
                       </div>
@@ -323,16 +199,6 @@ export default function LaboratorySection({
                 );
               })}
             </div>
-
-            <a
-              href="/laboratorio"
-              className={styles.arrowButton}
-              aria-label="Ver más laboratorios"
-            >
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M9 6l6 6-6 6" />
-              </svg>
-            </a>
           </div>
         </div>
 
@@ -363,10 +229,14 @@ export default function LaboratorySection({
             </div>
 
             <div className={styles.techGrid}>
-              {technologies.map((tech) => (
-                <div key={tech.id} className={styles.techCard}>
+              {topTechnologies.map((tech, index) => (
+                <div key={`${tech.label}-${index}`} className={styles.techCard}>
                   <div className={styles.techLogo}>
-                    {renderTechIcon(tech.icon)}
+                    {tech.slug ? (
+                      <StackIcon name={tech.slug} />
+                    ) : (
+                      renderTechIcon("proxmox")
+                    )}
                   </div>
                   <span>{tech.label}</span>
                 </div>

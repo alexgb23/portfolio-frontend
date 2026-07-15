@@ -2,58 +2,82 @@ import { useMemo } from "react";
 import useAsyncResource from "../core/useAsyncResource";
 import { laboratoriosRealesService } from "../../services/api";
 
-const initialValue = { data: [] };
+const initialValue = {
+  stats: {
+    active_laboratories: 0,
+    technologies_count: 0,
+    documents_count: 0,
+    projects_count: 0,
+  },
+  top_technologies: [],
+  featured_laboratories: [],
+};
 
 function normalizeArray(value) {
   return Array.isArray(value) ? value : [];
 }
 
 function normalizeLaboratoryItems(payload) {
-  const source = Array.isArray(payload)
-    ? payload
-    : Array.isArray(payload?.data)
-      ? payload.data
-      : [];
+  const source = Array.isArray(payload?.featured_laboratories)
+    ? payload.featured_laboratories
+    : [];
 
   return source.map((item) => ({
     id: item?.id ?? null,
-    title: item?.title ?? item?.titulo ?? "",
+    title: item?.titulo ?? "",
     slug: item?.slug ?? "",
-    category:
-      item?.category ?? item?.categoria ?? item?.tipo_proyecto ?? "Laboratorio",
-    area: item?.area ?? item?.area_principal ?? "",
-    status: item?.status ?? item?.estado ?? "",
-    summary: item?.summary ?? item?.resumen ?? "",
-    description: item?.description ?? item?.descripcion ?? "",
-    objective: item?.objective ?? item?.objetivo ?? "",
-    currentResult: item?.currentResult ?? item?.resultado_actual ?? "",
-    technicalNotes: item?.technicalNotes ?? item?.notas_tecnicas ?? "",
-    relatedAreas: Array.isArray(item?.relatedAreas)
-      ? item.relatedAreas
-      : Array.isArray(item?.areas_relacionadas)
-        ? item.areas_relacionadas
-        : [],
-    stack: Array.isArray(item?.stack)
-      ? item.stack
-      : Array.isArray(item?.metadata?.stack)
-        ? item.metadata.stack
-        : [],
-    docs: normalizeArray(item?.documentation ?? item?.documentacion),
-    progress: normalizeArray(item?.progress ?? item?.avances),
-    ideas: normalizeArray(item?.ideas),
-    resources: normalizeArray(item?.resources ?? item?.adjuntos),
-    documentationCount:
-      Number(item?.documentationCount ?? item?.documentacion_count) || 0,
-    progressCount: Number(item?.progressCount ?? item?.avances_count) || 0,
-    ideasCount:
-      Number(item?.ideasCount ?? item?.ideas_count) ||
-      normalizeArray(item?.ideas).length,
-    resourcesCount:
-      Number(item?.resourcesCount ?? item?.adjuntos_count) ||
-      normalizeArray(item?.resources ?? item?.adjuntos).length,
-    updatedAt: item?.updatedAt ?? item?.updated_at ?? null,
-    is_featured: Boolean(item?.is_featured ?? item?.es_destacado ?? false),
+    category: item?.categoria ?? "Laboratorio",
+    status: item?.estado ?? "",
+    summary: item?.resumen ?? "",
+    areas_relacionadas: normalizeArray(item?.areas_relacionadas),
+    stack: normalizeArray(item?.stack).map((tech) => ({
+      label: tech?.label ?? "",
+      slug: tech?.slug ?? "",
+    })),
+    projects_count: Number(item?.projects_count) || 0,
+    documentationCount: Number(item?.documentationCount) || 0,
+    progressCount: Number(item?.progressCount) || 0,
+    ideasCount: Number(item?.ideasCount) || 0,
+    is_featured: true,
   }));
+}
+
+function normalizeStats(payload) {
+  const source = payload?.stats ?? {};
+  return {
+    active_laboratories: Number(source?.active_laboratories) || 0,
+    technologies_count: Number(source?.technologies_count) || 0,
+    documents_count: Number(source?.documents_count) || 0,
+    projects_count: Number(source?.projects_count) || 0,
+  };
+}
+
+function getTopTechnologiesFromItems(items = [], limit = 8) {
+  const counter = new Map();
+
+  items.forEach((item) => {
+    normalizeArray(item?.stack).forEach((tech) => {
+      if (!tech?.label) return;
+      const key = tech.slug || tech.label.toLowerCase();
+
+      if (!counter.has(key)) {
+        counter.set(key, {
+          label: tech.label,
+          slug: tech.slug || "",
+          count: 0,
+        });
+      }
+
+      counter.get(key).count += 1;
+    });
+  });
+
+  return Array.from(counter.values())
+    .sort((a, b) => {
+      if (b.count !== a.count) return b.count - a.count;
+      return a.label.localeCompare(b.label, "es");
+    })
+    .slice(0, limit);
 }
 
 export default function useLaboratoryHome(enabled = true) {
@@ -66,17 +90,20 @@ export default function useLaboratoryHome(enabled = true) {
   );
 
   const items = useMemo(() => normalizeLaboratoryItems(data), [data]);
+  const stats = useMemo(() => normalizeStats(data), [data]);
+  const topTechnologies = useMemo(
+    () => getTopTechnologiesFromItems(items, 8),
+    [items],
+  );
 
-  const featuredItems = useMemo(() => {
-    const featured = items.filter((item) => item.is_featured);
-    const fallback = items.filter((item) => !item.is_featured);
-    return featured.length > 0 ? featured : fallback;
-  }, [items]);
+  const featuredItems = useMemo(() => items, [items]);
 
   return {
     laboratoryHome: data,
+    stats,
     items,
     featuredItems,
+    topTechnologies,
     loading,
     error,
     isRefreshing,
