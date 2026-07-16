@@ -1,274 +1,290 @@
+.footer {
+  margin-bottom: 20px;
+}
 
 /* =========================================================
-   TARJETA
-========================================================= */
+   VARIABLES LOCALES DEL FOOTER
+   Heredan del tema global, pero añadimos las rutas de imagen
+   ========================================================= */
+
+:global(:root) {
+  --lab-circuit-image: url("/imgFondoLaboratorio/syskovex-circuit-backgroundDark.webp");
+}
+
+/* Imagen específica para light mode */
+:global(:root[data-theme="light"]) {
+  --lab-circuit-image: url("/imgFondoLaboratorio/syskovex-circuit-backgroundLight.webp");
+}
+
+/* Imagen específica para dark mode */
+:global(:root[data-theme="dark"]) {
+  --lab-circuit-image: url("/imgFondoLaboratorio/syskovex-circuit-backgroundDark.webp");
+}
+
+/* Fallback mientras aún no se ha pintado el data-theme */
+:global(:root:not([data-theme])) {
+  --lab-circuit-image: url("/imgFondoLaboratorio/syskovex-circuit-backgroundDark.webp");
+}
+
+/* =========================================================
+   TARJETA PRINCIPAL
+   ========================================================= */
 
 .card {
   position: relative;
   overflow: hidden;
-
   border-radius: 18px;
 
-  border: 1px solid rgba(37, 181, 255, 0.35);
-
-  background: #050b16;
+  border: 1px solid var(--lab-cta-border);
+  background: linear-gradient(
+    180deg,
+    var(--lab-panel-bg-start),
+    var(--lab-panel-bg-end)
+  );
 
   box-shadow:
-    inset 0 0 0 1px rgba(50, 180, 255, .08),
-    0 0 45px rgba(0, 120, 255, .10);
+    inset 0 0 0 1px rgba(255, 255, 255, 0.03),
+    var(--lab-panel-shadow);
+}
+
+/* Línea superior sutil */
+.card::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 1px;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    color-mix(in srgb, var(--accent) 90%, white 10%),
+    transparent
+  );
+  opacity: 0.85;
+}
+
+/* Glow flotante decorativo */
+.card::after {
+  content: "";
+  position: absolute;
+  width: 320px;
+  height: 320px;
+  right: -160px;
+  top: -160px;
+  border-radius: 50%;
+  pointer-events: none;
+  background: radial-gradient(
+    circle,
+    color-mix(in srgb, var(--accent) 22%, transparent),
+    transparent 70%
+  );
+  animation: floatGlow 8s ease-in-out infinite;
 }
 
 /* =========================================================
-   CAPAS DEL FONDO
-========================================================= */
+   CAPAS DE FONDO
+   ========================================================= */
 
 .background {
   position: absolute;
   inset: 0;
   overflow: hidden;
+  pointer-events: none;
 }
 
+/* Todas las capas se apilan dentro de la tarjeta */
 .gradient,
-.grid,
 .circuit,
-.particles,
 .glow {
   position: absolute;
   inset: 0;
 }
+
+/* Velo general + tintes por esquinas */
 .gradient {
-
   background:
-
     linear-gradient(
-      rgba(3,8,18,.38),
-      rgba(3,8,18,.38)
+      rgba(var(--bg-app-rgb), 0.22),
+      rgba(var(--bg-app-rgb), 0.16)
     ),
-
     radial-gradient(
       circle at 100% 0%,
-      rgba(0,255,180,.08),
+      color-mix(in srgb, var(--lab-accent-end) 12%, transparent),
       transparent 30%
     ),
-
     radial-gradient(
       circle at 0% 100%,
-      rgba(0,130,255,.06),
-      transparent 50%
+      color-mix(in srgb, var(--accent-2) 10%, transparent),
+      transparent 48%
     );
 }
-.grid {
 
-  opacity: .06;
-
-  background-image:
-      linear-gradient(rgba(0,170,255,.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(0,170,255,.03) 1px, transparent 1px);
-
-  background-size: 50px 50px;
+/* Imagen del circuito: cambia sola según el tema */
+.circuit {
+  background: var(--lab-circuit-image) center / cover no-repeat;
+  opacity: 0.30;
+  transform: scale(1.02);
+  animation: circuitFloat 18s ease-in-out infinite;
 }
 
+/* Glow extra para dar profundidad */
 .glow::before {
-
   content: "";
-
   position: absolute;
-
   width: 420px;
   height: 420px;
-
   right: -180px;
   top: -180px;
-
   border-radius: 50%;
-
-  background:
-
-    radial-gradient(
-      circle,
-      rgba(0, 220, 255, .18),
-      transparent 72%
-    );
-
+  background: radial-gradient(
+    circle,
+    color-mix(in srgb, var(--accent) 18%, transparent),
+    transparent 72%
+  );
   filter: blur(20px);
 }
+
 .glow::after {
-
   content: "";
-
   position: absolute;
-
   width: 500px;
   height: 250px;
-
   left: -150px;
   bottom: -180px;
-
-  background:
-
-    radial-gradient(
-      ellipse,
-      rgba(0, 120, 255, .10),
-      transparent 75%
-    );
-
+  background: radial-gradient(
+    ellipse,
+    color-mix(in srgb, var(--accent-2) 12%, transparent),
+    transparent 75%
+  );
   filter: blur(40px);
 }
 
+/* =========================================================
+   CONTENIDO
+   ========================================================= */
+
 .content {
-
   position: relative;
-
   z-index: 5;
-
   display: flex;
-
   justify-content: space-between;
-
   align-items: center;
-
   gap: 60px;
-
-  padding: 20px;
+  padding: 28px;
 }
 
 .left {
-
   max-width: 650px;
 }
 
 .left h2 {
-
   margin: 0 0 14px;
-
-  color: white;
-
+  color: var(--lab-panel-text);
   font-size: clamp(30px, 2vw, 38px);
-
   font-weight: 700;
-
   line-height: 1.2;
 }
 
 .left p {
-
   margin: 0;
-
-  color: #93a9bf;
-
+  color: var(--lab-panel-text-soft);
   font-size: 16px;
-
   line-height: 1.75;
 }
 
+/* =========================================================
+   CTA
+   ========================================================= */
+
 .cta {
+  position: relative;
+  overflow: hidden;
 
   display: flex;
-
   align-items: center;
-
   gap: 18px;
-
   min-width: 470px;
-
   padding: 20px 24px;
-
   border-radius: 14px;
 
   text-decoration: none;
+  backdrop-filter: blur(8px);
 
-  border: 1px solid rgba(38, 184, 255, .25);
-
+  border: 1px solid var(--lab-cta-border);
   background:
-
     linear-gradient(
       180deg,
-      rgba(11, 25, 46, .98),
-      rgba(6, 14, 28, .98)
+      var(--lab-cta-bg-start),
+      var(--lab-cta-bg-end)
     );
 
-  transition: .35s ease;
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.03),
+    0 0 0 8px var(--lab-cta-ring);
 
-  position: relative;
-
-  overflow: hidden;
+  transition:
+    transform 0.35s ease,
+    border-color 0.35s ease,
+    background 0.35s ease,
+    box-shadow 0.35s ease;
 }
 
-.cta{
-
-    backdrop-filter: blur(8px);
-
-    background:
-        rgba(9,22,40,.82);
-
-    border:1px solid rgba(0,180,255,.22);
-}
-
+/* Brillo que recorre el botón */
 .cta::after {
   content: "";
-
   position: absolute;
   top: 0;
   left: -120%;
-
   width: 60%;
   height: 100%;
-
+  transform: skewX(-20deg);
   background: linear-gradient(
     90deg,
     transparent,
-    rgba(255,255,255,.08),
+    rgba(255, 255, 255, 0.08),
     transparent
   );
+  transition: left 0.8s ease;
+}
 
-  transform: skewX(-20deg);
-
-  transition: left .8s ease;
+.cta:hover {
+  transform: translateY(-2px);
+  border-color: color-mix(in srgb, var(--lab-cta-border) 70%, white 30%);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.05),
+    0 0 0 10px color-mix(in srgb, var(--lab-cta-ring) 90%, transparent),
+    0 18px 40px rgba(0, 0, 0, 0.16);
 }
 
 .cta:hover::after {
   left: 160%;
 }
 
-.cta:hover::before{
-
-    opacity:1;
-}
-
 .iconWrapper {
-
   flex-shrink: 0;
 }
 
 .iconCircle {
-
   width: 58px;
-
   height: 58px;
-
   border-radius: 50%;
-
   display: grid;
-
   place-items: center;
 
-  color: #47d8ff;
-
-  border: 1px solid rgba(58, 206, 255, .45);
-
+  color: var(--lab-accent-mid);
+  border: 1px solid color-mix(in srgb, var(--lab-accent-mid) 40%, transparent);
   background:
-
     radial-gradient(
       circle,
-      #113d6d,
-      #081220
+      color-mix(in srgb, var(--accent-2) 28%, var(--bg-elevated)),
+      color-mix(in srgb, var(--bg-app) 70%, black 30%)
     );
 
   box-shadow:
-
-    inset 0 0 12px rgba(255,255,255,.05),
-
-    0 0 25px rgba(0,180,255,.18);
+    inset 0 0 12px rgba(255, 255, 255, 0.05),
+    0 0 25px color-mix(in srgb, var(--accent) 20%, transparent);
 }
 
 .ctaText {
@@ -278,7 +294,7 @@
 }
 
 .title {
-  color: #fff;
+  color: var(--lab-cta-text);
   font-size: 1.45rem;
   font-weight: 700;
   line-height: 1.2;
@@ -286,125 +302,38 @@
 
 .subtitle {
   margin-top: 6px;
-  color: #8ca3b7;
-  font-size: .9rem;
+  color: var(--lab-panel-text-soft);
+  font-size: 0.9rem;
   line-height: 1.5;
 }
+
 .arrow {
-  color: #3ed7ff;
-  transition: .35s ease;
+  color: var(--lab-accent-mid);
+  transition:
+    transform 0.35s ease,
+    color 0.35s ease;
 }
 
 .cta:hover .arrow {
-  transform: translate(5px,-5px);
-}
-.card::before{
-
-   content: "";
-
-  position: absolute;
-
-  left: 0;
-  top: 0;
-
-  width: 100%;
-  height: 1px;
-
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(0, 220, 255, .9),
-    transparent
-  );
-
-    -webkit-mask:
-        linear-gradient(#fff 0 0) content-box,
-        linear-gradient(#fff 0 0);
-
-    -webkit-mask-composite:xor;
-
-            mask-composite:exclude;
-
-    pointer-events:none;
-}
-.card::after{
-
-    content:"";
-
-    position:absolute;
-
-    width:300px;
-    height:300px;
-
-    border-radius:50%;
-
-    right:-150px;
-    top:-150px;
-
-    background:
-
-    radial-gradient(
-        circle,
-        rgba(0,220,255,.18),
-        transparent 70%
-    );
-
-    animation:floatGlow 8s ease-in-out infinite;
-}
-@keyframes floatGlow{
-
-0%{
-
-transform:translateY(0);
+  transform: translate(5px, -5px);
 }
 
-50%{
+/* =========================================================
+   ANIMACIONES
+   ========================================================= */
 
-transform:translateY(20px);
-}
+@keyframes floatGlow {
+  0% {
+    transform: translateY(0);
+  }
 
-100%{
+  50% {
+    transform: translateY(20px);
+  }
 
-transform:translateY(0);
-}
-
-}
-@media (max-width:950px){
-
-.content{
-
-flex-direction:column;
-
-align-items:flex-start;
-
-padding:30px;
-}
-
-.cta{
-
-width:100%;
-
-min-width:unset;
-}
-
-.left{
-
-max-width:none;
-}
-
-}
-
-.circuit {
-  position: absolute;
-  inset: 0;
-
-  background: url("/imgFondoLaboratorio/syskovex-circuit-background.webp") center/cover no-repeat;
-
-  opacity: .55;
-
-  transform: scale(1.02);
-
-  animation: circuitFloat 18s ease-in-out infinite;
+  100% {
+    transform: translateY(0);
+  }
 }
 
 @keyframes circuitFloat {
@@ -418,5 +347,61 @@ max-width:none;
 
   100% {
     transform: scale(1.02) translateX(0) translateY(0);
+  }
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 950px) {
+  .content {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 28px;
+    padding: 30px;
+  }
+
+  .cta {
+    width: 100%;
+    min-width: unset;
+  }
+
+  .left {
+    max-width: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .content {
+    padding: 22px;
+    gap: 22px;
+  }
+
+  .left h2 {
+    font-size: clamp(24px, 7vw, 32px);
+  }
+
+  .left p {
+    font-size: 15px;
+    line-height: 1.7;
+  }
+
+  .cta {
+    gap: 14px;
+    padding: 18px 18px;
+  }
+
+  .iconCircle {
+    width: 52px;
+    height: 52px;
+  }
+
+  .title {
+    font-size: 1.08rem;
+  }
+
+  .subtitle {
+    font-size: 0.84rem;
   }
 }

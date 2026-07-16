@@ -5,42 +5,34 @@ export default function LaboratoryFooter() {
   return (
     <section className={styles.footer}>
       <div className="container_footer">
-
         <div className={styles.card}>
-
-          {/* Fondo */}
-          <div className={styles.background}>
+          {/* Capas visuales del fondo */}
+          <div className={styles.background} aria-hidden="true">
             <div className={styles.gradient}></div>
-            <div className={styles.grid}></div>
             <div className={styles.circuit}></div>
-            <div className={styles.particles}></div>
             <div className={styles.glow}></div>
           </div>
 
-          {/* Contenido */}
+          {/* Contenido principal */}
           <div className={styles.content}>
-
-            {/* Lado izquierdo */}
+            {/* Bloque izquierdo: título + descripción */}
             <div className={styles.left}>
-
-              <h2>
-                ¿Quieres ver todo lo que estoy construyendo?
-              </h2>
+              <h2>¿Quieres ver todo lo que estoy construyendo?</h2>
 
               <p>
                 En SYSKOVEX.com encontrarás documentación completa,
                 tutoriales, diagramas, código abierto y mucho más
                 sobre mis proyectos e investigaciones.
               </p>
-
             </div>
 
-            {/* Botón */}
+            {/* CTA principal */}
             <a
               href="https://syskovex.com"
               target="_blank"
               rel="noopener noreferrer"
               className={styles.cta}
+              aria-label="Abrir SYSKOVEX.com en una nueva pestaña"
             >
               <div className={styles.iconWrapper}>
                 <div className={styles.iconCircle}>
@@ -63,11 +55,8 @@ export default function LaboratoryFooter() {
                 className={styles.arrow}
               />
             </a>
-
           </div>
-
         </div>
-
       </div>
     </section>
   );
