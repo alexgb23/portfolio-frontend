@@ -83,8 +83,8 @@ function HeroSection({ socialLinks = [], onOpenCv }) {
     return safeSocialLinks
       .filter((item) =>
         ["github", "linkedin", "email", "envelope"].includes(
-          (item?.platform || item?.icon_key || "").toLowerCase(),
-        ),
+          (item?.platform || item?.icon_key || "").toLowerCase()
+        )
       )
       .sort((a, b) => (a?.sort_order ?? 999) - (b?.sort_order ?? 999))
       .map((item) => {
@@ -99,7 +99,7 @@ function HeroSection({ socialLinks = [], onOpenCv }) {
           url = `mailto:${url}`;
         }
 
-        return { ...item, url };
+        return { ...item, url, key };
       });
   }, [socialLinks]);
 
@@ -121,8 +121,8 @@ function HeroSection({ socialLinks = [], onOpenCv }) {
 
   return (
     <header
-      className={`hero-centered-section ${isVisible ? "hero-mounted" : ""}`}
       id="inicio"
+      className={`hero-centered-section ${isVisible ? "hero-mounted" : ""}`}
     >
       <div className="container hero-center-content">
         <div className="hero-top-row">
@@ -147,12 +147,22 @@ function HeroSection({ socialLinks = [], onOpenCv }) {
               <picture className="avatar-picture">
                 <source
                   type="image/avif"
-                  srcSet="/imagen_portfolio_mia_retocada-480.avif 480w, /imagen_portfolio_mia_retocada-768.avif 768w, /imagen_portfolio_mia_retocada-960.avif 960w, /imagen_portfolio_mia_retocada-1280.avif 1280w"
+                  srcSet="
+                    /imagen_portfolio_mia_retocada-480.avif 480w,
+                    /imagen_portfolio_mia_retocada-768.avif 768w,
+                    /imagen_portfolio_mia_retocada-960.avif 960w,
+                    /imagen_portfolio_mia_retocada-1280.avif 1280w
+                  "
                   sizes="(max-width: 767px) 300px, (max-width: 1279px) 400px, 450px"
                 />
                 <source
                   type="image/webp"
-                  srcSet="/imagen_portfolio_mia_retocada-480.webp 480w, /imagen_portfolio_mia_retocada-768.webp 768w, /imagen_portfolio_mia_retocada-960.webp 960w, /imagen_portfolio_mia_retocada-1280.webp 1280w"
+                  srcSet="
+                    /imagen_portfolio_mia_retocada-480.webp 480w,
+                    /imagen_portfolio_mia_retocada-768.webp 768w,
+                    /imagen_portfolio_mia_retocada-960.webp 960w,
+                    /imagen_portfolio_mia_retocada-1280.webp 1280w
+                  "
                   sizes="(max-width: 767px) 300px, (max-width: 1279px) 400px, 450px"
                 />
                 <img
@@ -161,9 +171,9 @@ function HeroSection({ socialLinks = [], onOpenCv }) {
                   className="profile-avatar"
                   width="450"
                   height="580"
+                  loading="eager"
                   fetchPriority="high"
                   decoding="async"
-                  loading="eager"
                 />
               </picture>
             </div>
@@ -177,16 +187,17 @@ function HeroSection({ socialLinks = [], onOpenCv }) {
           >
             {staticExpertise.map((item, index) => {
               const Icon =
-                expertiseIconMap[(item?.icon_key || "").toLowerCase()] ||
-                FaCode;
+                expertiseIconMap[(item?.icon_key || "").toLowerCase()] || FaCode;
 
               return (
                 <article
                   key={item.id || item.title || index}
-                  className={`expertise-card expertise-card-hover ${item.tone || "tone-0"} speciality-card`}
+                  className={`expertise-card expertise-card-hover ${
+                    item.tone || "tone-0"
+                  } speciality-card`}
                 >
                   <div className="card-head">
-                    <div className="expertise-icon">
+                    <div className="expertise-icon" aria-hidden="true">
                       <Icon />
                     </div>
 
@@ -204,7 +215,7 @@ function HeroSection({ socialLinks = [], onOpenCv }) {
           <div className="hero-actions">
             <Link to="/laboratorio" className="nav-cta">
               <span>Ver laboratorio</span>
-              <FaArrowRight />
+              <FaArrowRight aria-hidden="true" />
             </Link>
 
             <Link to="/contacto" className="social-btn alt-btn">
@@ -216,7 +227,7 @@ function HeroSection({ socialLinks = [], onOpenCv }) {
               className="social-btn cv-trigger-btn"
               onClick={handleOpenCv}
             >
-              <FaEye />
+              <FaEye aria-hidden="true" />
               <span>Ver / Descargar CV</span>
             </button>
           </div>
@@ -224,12 +235,7 @@ function HeroSection({ socialLinks = [], onOpenCv }) {
           {displayedSocialLinks.length > 0 ? (
             <div className="social-center-links">
               {displayedSocialLinks.map((item, index) => {
-                const key = (
-                  item?.platform ||
-                  item?.icon_key ||
-                  ""
-                ).toLowerCase();
-                const Icon = socialIconMap[key] || FaEnvelope;
+                const Icon = socialIconMap[item.key] || FaEnvelope;
                 const href = item?.url || "#";
                 const isMail = href.startsWith("mailto:");
 
@@ -240,8 +246,9 @@ function HeroSection({ socialLinks = [], onOpenCv }) {
                     className="social-btn"
                     target={isMail ? undefined : "_blank"}
                     rel={isMail ? undefined : "noopener noreferrer"}
+                    aria-label={item.platform || "Social"}
                   >
-                    <Icon />
+                    <Icon aria-hidden="true" />
                     <span>{item.platform || "Social"}</span>
                   </a>
                 );
