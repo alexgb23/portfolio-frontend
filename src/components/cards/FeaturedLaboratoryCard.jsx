@@ -8,6 +8,36 @@ import {
 } from "lucide-react";
 import "./FeaturedLaboratoryCard.css";
 
+function buildResponsiveImageSources(item) {
+  const media = item?.coverImageMedia || item?.cover_image_media || null;
+
+  if (media) {
+    return {
+      avifSrcSet: media.avifSrcSet || media.avif_srcset || "",
+      webpSrcSet: media.webpSrcSet || media.webp_srcset || "",
+      fallbackSrcSet: media.srcSet || media.srcset || "",
+      sizes:
+        media.sizes ||
+        "(max-width: 767px) 92vw, (max-width: 1279px) 48vw, 420px",
+      fallbackSrc: media.src || item?.coverImage || "",
+      width: Number(media.width || 1400),
+      height: Number(media.height || 900),
+    };
+  }
+
+  const baseImage = item?.coverImage || "";
+
+  return {
+    avifSrcSet: "",
+    webpSrcSet: "",
+    fallbackSrcSet: "",
+    sizes: "(max-width: 767px) 92vw, (max-width: 1279px) 48vw, 420px",
+    fallbackSrc: baseImage,
+    width: 1400,
+    height: 900,
+  };
+}
+
 export default function LaboratoryCard({ item, className = "" }) {
   if (!item) return null;
 
@@ -19,11 +49,20 @@ export default function LaboratoryCard({ item, className = "" }) {
     relatedAreas = [],
     documentationCount = 0,
     progressCount = 0,
-    coverImage = null,
   } = item;
 
   const safeRelatedAreas = Array.isArray(relatedAreas) ? relatedAreas : [];
-  const hasImage = Boolean(coverImage);
+  const {
+    avifSrcSet,
+    webpSrcSet,
+    fallbackSrcSet,
+    sizes,
+    fallbackSrc,
+    width,
+    height,
+  } = buildResponsiveImageSources(item);
+
+  const hasImage = Boolean(fallbackSrc);
 
   return (
     <article
@@ -37,15 +76,27 @@ export default function LaboratoryCard({ item, className = "" }) {
     >
       <div className="lab-card-rich__media">
         {hasImage ? (
-          <img
-            src={coverImage}
-            alt={`Vista previa del laboratorio ${title}`}
-            className="lab-card-rich__image"
-            loading="lazy"
-            decoding="async"
-            width="1400"
-            height="900"
-          />
+          <picture>
+            {avifSrcSet ? (
+              <source type="image/avif" srcSet={avifSrcSet} sizes={sizes} />
+            ) : null}
+
+            {webpSrcSet ? (
+              <source type="image/webp" srcSet={webpSrcSet} sizes={sizes} />
+            ) : null}
+
+            <img
+              src={fallbackSrc}
+              srcSet={fallbackSrcSet || undefined}
+              sizes={fallbackSrcSet ? sizes : undefined}
+              alt={`Vista previa del laboratorio ${title}`}
+              className="lab-card-rich__image"
+              loading="lazy"
+              decoding="async"
+              width={width}
+              height={height}
+            />
+          </picture>
         ) : (
           <div className="lab-card-rich__image-fallback" aria-hidden="true">
             <FlaskConical size={28} />

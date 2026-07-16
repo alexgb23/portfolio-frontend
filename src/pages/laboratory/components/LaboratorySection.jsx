@@ -74,8 +74,10 @@ function getExtraTechnologiesCount(statsData = {}) {
   const total = Number(statsData?.technologies_count ?? 0);
   return Math.max(total - FIXED_TECHNOLOGIES.length, 0);
 }
-function getStatDisplayValue(value) {
-  return `${Number(value ?? 0)} +`;
+
+function getStatDisplayValue(value, id) {
+  const safeValue = Number(value ?? 0);
+  return id === "docs" ? `${safeValue}` : `${safeValue} +`;
 }
 
 function getLabHref(lab) {
@@ -83,9 +85,7 @@ function getLabHref(lab) {
 }
 
 function getStatusMeta(status) {
-  const normalized = String(status || "")
-    .toLowerCase()
-    .trim();
+  const normalized = String(status || "").toLowerCase().trim();
 
   if (normalized === "activo") {
     return { label: "Activo", className: "isActive" };
@@ -96,6 +96,17 @@ function getStatusMeta(status) {
       ? normalized.charAt(0).toUpperCase() + normalized.slice(1)
       : "Inactivo",
     className: "isInactive",
+  };
+}
+
+function getLabThemeStyle(lab) {
+  const targetColor = lab?.target_color?.trim();
+
+  return {
+    "--lab-accent": targetColor || "var(--accent, #0891b2)",
+    "--lab-accent-2": targetColor || "var(--accent-2, #0f766e)",
+    "--lab-accent-green": targetColor || "var(--accent-green, #059669)",
+    "--lab-accent-glow": "var(--accent-glow, rgba(8, 145, 178, 0.14))",
   };
 }
 
@@ -122,6 +133,13 @@ function renderStatIcon(type) {
         <svg viewBox="0 0 24 24" aria-hidden="true">
           <rect x="7" y="7" width="10" height="10" rx="2" />
           <path d="M9 1.5v3M15 1.5v3M9 19.5v3M15 19.5v3M1.5 9h3M1.5 15h3M19.5 9h3M19.5 15h3" />
+        </svg>
+      );
+    case "docs":
+      return (
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <rect x="6.5" y="3" width="11" height="18" rx="2" />
+          <path d="M9.5 7.5h5M9.5 11h5M9.5 14.5h5" />
         </svg>
       );
     default:
@@ -223,48 +241,53 @@ export default function LaboratorySection({
                 const statusMeta = getStatusMeta(status);
 
                 return (
-                  <article key={lab.id ?? index} className={styles.labCard}>
-                    <div className={styles.labCardInner}>
-                      <div className={styles.labIconWrap}>
-                        <div className={styles.labHex}>
-                          <span className={styles.hexOuter} />
-                          <span className={styles.hexInner} />
-                          <span className={styles.hexLines} />
-                          <span className={styles.hexHalo} />
-                          <span className={styles.hexShadow} />
-                          <span className={styles.labHexIcon}>
-                            {renderLabGlyph(title)}
-                          </span>
-                        </div>
-                      </div>
+                  <article
+  key={lab.id ?? index}
+  className={styles.labCard}
+  style={getLabThemeStyle(lab)}
+>
+  <header className={styles.labHeader}>
+    <h3>{title}</h3>
 
-                      <div className={styles.labContent}>
-                        <div className={styles.labTop}>
-                          <h3>{title}</h3>
-                          <span
-                            className={`${styles.status} ${styles[statusMeta.className]}`}
-                          >
-                            <span className={styles.statusDot} />
-                            {statusMeta.label}
-                          </span>
-                        </div>
+    <span className={`${styles.status} ${styles[statusMeta.className]}`}>
+      <span className={styles.statusDot} />
+      {statusMeta.label}
+    </span>
+  </header>
 
-                        <p>{summary}</p>
+  <div className={styles.labMain}>
+    <aside className={styles.labAside}>
+      <div className={styles.labHex}>
+        <span className={styles.hexOuter} />
+        <span className={styles.hexInner} />
+        <span className={styles.hexLines} />
+        <span className={styles.hexHalo} />
+        <span className={styles.hexShadow} />
+        <span className={styles.hexGlow} />
+        <span className={styles.labHexIcon}>
+          {renderLabGlyph(title)}
+        </span>
+      </div>
+    </aside>
 
-                        <div className={styles.labActions}>
-                          <a
-                            href={getLabHref(lab)}
-                            className={styles.detailButton}
-                          >
-                            Ver detalles
-                          </a>
-                          <span className={styles.countBadge}>
-                            {lab?.projects_count ?? 0} proyectos
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  </article>
+    <div className={styles.labContent}>
+      <p>{summary}</p>
+    </div>
+  </div>
+
+  <footer className={styles.labFooter}>
+    <a href={getLabHref(lab)} className={styles.detailButton}>
+      Ver detalles
+    </a>
+
+    <span className={styles.countBadge}>
+      Proyectos relacionados{" "}
+      <strong className={styles.countValue}>
+        {lab?.projects_count ?? 0}
+      </strong>
+    </span>
+  </footer>
+</article>
                 );
               })}
             </div>
@@ -283,14 +306,20 @@ export default function LaboratorySection({
               {stats.map((item) => (
                 <div
                   key={item.id}
-                  className={`${styles.statCard} ${styles[`statTone${item.tone.charAt(0).toUpperCase()}${item.tone.slice(1)}`]}`}
+                  className={`${styles.statCard} ${
+                    styles[
+                      `statTone${item.tone.charAt(0).toUpperCase()}${item.tone.slice(
+                        1,
+                      )}`
+                    ]
+                  }`}
                 >
                   <div className={styles.statIcon}>
                     {renderStatIcon(item.icon)}
                   </div>
 
                   <div className={styles.statContent}>
-                    <strong>{getStatDisplayValue(item.value)}</strong>
+                    <strong>{getStatDisplayValue(item.value, item.id)}</strong>
                     <span>{item.label}</span>
                   </div>
                 </div>
@@ -307,7 +336,9 @@ export default function LaboratorySection({
               {FIXED_TECHNOLOGIES.map((tech, index) => (
                 <div
                   key={tech.id}
-                  className={`${styles.techCard} ${styles[`techTone${(index % 6) + 1}`]}`}
+                  className={`${styles.techCard} ${
+                    styles[`techTone${(index % 6) + 1}`]
+                  }`}
                 >
                   <div className={styles.techLogo}>
                     <img

@@ -4,6 +4,7 @@ import { laboratoriosRealesService } from "../../services/api";
 
 const initialValue = {
   featured_laboratories: [],
+  stats: {},
 };
 
 function normalizeArray(value) {
@@ -15,44 +16,46 @@ function normalizeLaboratoryItems(payload) {
     ? payload.featured_laboratories
     : [];
 
-  return source.map((item) => ({
-    id: item?.id ?? null,
-    title: item?.titulo ?? "",
-    slug: item?.slug ?? "",
-    category: item?.categoria ?? "laboratorio",
-    status: item?.estado ?? "",
-    active: Boolean(item?.activo ?? item?.estado === "activo"),
-    summary: item?.resumen ?? "",
-    areas_relacionadas: normalizeArray(item?.areas_relacionadas),
-    stack: normalizeArray(item?.stack).map((tech) => ({
-      label: tech?.label ?? "",
-      slug: tech?.slug ?? "",
-    })),
-    projects_count: Number(item?.projects_count) || 0,
-  }));
+return source.map((item) => ({
+  id: item?.id ?? null,
+  title: item?.titulo ?? "",
+  slug: item?.slug ?? "",
+  category: item?.categoria ?? "laboratorio",
+  status: item?.estado ?? "",
+  active: Boolean(item?.activo ?? item?.estado === "activo"),
+  summary: item?.resumen ?? "",
+  target_color: item?.target_color ?? "",
+  areas_relacionadas: normalizeArray(item?.areas_relacionadas),
+  stack: normalizeArray(item?.stack).map((tech) => ({
+    label: tech?.label ?? "",
+    slug: tech?.slug ?? "",
+  })),
+  projects_count: Number(item?.projects_count) || 0,
+  documentation_count: Number(item?.documentation_count) || 0,
+}));
 }
 
 function computeStatsFromItems(items = []) {
-  // 1) Laboratorios activos
   const activeLabs = items.filter((lab) => lab.active).length;
 
-  // 2) Proyectos asociados
   const projectsCount = items.reduce(
-    (acc, lab) => acc + (lab.projects_count || 0),
+    (acc, lab) => acc + (Number(lab.projects_count) || 0),
     0,
   );
 
-  // 3) Tecnologías utilizadas (únicas por slug)
   const techSlugs = new Set();
   items.forEach((lab) => {
     normalizeArray(lab.stack).forEach((tech) => {
       if (tech.slug) techSlugs.add(tech.slug);
     });
   });
+
   const technologiesCount = techSlugs.size;
 
-  // 4) Documentos técnicos -> ahora mismo no hay datos: 0
-  const documentsCount = 0;
+  const documentsCount = items.reduce(
+    (acc, lab) => acc + (Number(lab.documentation_count) || 0),
+    0,
+  );
 
   return {
     active_laboratories: activeLabs,
@@ -104,7 +107,25 @@ export default function useLaboratoryHome(enabled = true) {
 
   const featuredItems = useMemo(() => items, [items]);
 
-  const stats = useMemo(() => computeStatsFromItems(items), [items]);
+  const stats = useMemo(() => {
+    const computed = computeStatsFromItems(items);
+    const apiStats = data?.stats ?? {};
+
+    return {
+      active_laboratories: Number(
+        apiStats?.active_laboratories ?? computed.active_laboratories ?? 0,
+      ),
+      projects_count: Number(
+        apiStats?.projects_count ?? computed.projects_count ?? 0,
+      ),
+      technologies_count: Number(
+        apiStats?.technologies_count ?? computed.technologies_count ?? 0,
+      ),
+      documents_count: Number(
+        apiStats?.documents_count ?? computed.documents_count ?? 0,
+      ),
+    };
+  }, [data, items]);
 
   const topTechnologies = useMemo(
     () => getTopTechnologiesFromItems(items, 8),
