@@ -76,17 +76,20 @@ function Navbar({ isDarkMode, themeMode, toggleTheme, onOpenCv }) {
           - navega al inicio
           - también cierra el menú móvil
         */}
-        <Link to="/home" className="nav-logo" onClick={closeMenu}>
-          <div className="logo-avatar-wrapper">
-            <img
-              src="/logoPortfolio.png"
-              alt="Logo"
-              className="logo-avatar"
-              width="72"
-              height="72"
-              decoding="async"
-            />
-          </div>
+       <Link to="/home" className="nav-logo" onClick={closeMenu}>
+  <div className="logo-avatar-wrapper">
+    <img
+      src="/logoPortfolio-74.png"
+      srcSet="/logoPortfolio-74.png 1x, /logoPortfolio-144.png 2x"
+      alt="Logo de Alexander Galvez"
+      className="logo-avatar"
+      width="72"
+      height="72"
+      decoding="async"
+      loading="eager"
+    />
+  </div>
+
 
           <div className="logo-meta">
             <div className="logo-text">

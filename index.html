@@ -5,6 +5,20 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+  <link
+  rel="preload"
+  as="image"
+  href="/imagen_portfolio_mia_retocada-960.avif"
+  imagesrcset="
+    /imagen_portfolio_mia_retocada-480.avif 480w,
+    /imagen_portfolio_mia_retocada-768.avif 768w,
+    /imagen_portfolio_mia_retocada-960.avif 960w,
+    /imagen_portfolio_mia_retocada-1280.avif 1280w
+  "
+  imagesizes="(max-width: 767px) 300px, (max-width: 1279px) 400px, 450px"
+  fetchpriority="high"
+/>
+
   <!-- Evita de forma estricta que los navegadores traduzcan automáticamente tu portafolio -->
   <meta name="google" content="notranslate" />
   <meta name="robots" content="index, follow" />
