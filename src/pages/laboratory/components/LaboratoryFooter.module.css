@@ -1,0 +1,422 @@
+
+/* =========================================================
+   TARJETA
+========================================================= */
+
+.card {
+  position: relative;
+  overflow: hidden;
+
+  border-radius: 18px;
+
+  border: 1px solid rgba(37, 181, 255, 0.35);
+
+  background: #050b16;
+
+  box-shadow:
+    inset 0 0 0 1px rgba(50, 180, 255, .08),
+    0 0 45px rgba(0, 120, 255, .10);
+}
+
+/* =========================================================
+   CAPAS DEL FONDO
+========================================================= */
+
+.background {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.gradient,
+.grid,
+.circuit,
+.particles,
+.glow {
+  position: absolute;
+  inset: 0;
+}
+.gradient {
+
+  background:
+
+    linear-gradient(
+      rgba(3,8,18,.38),
+      rgba(3,8,18,.38)
+    ),
+
+    radial-gradient(
+      circle at 100% 0%,
+      rgba(0,255,180,.08),
+      transparent 30%
+    ),
+
+    radial-gradient(
+      circle at 0% 100%,
+      rgba(0,130,255,.06),
+      transparent 50%
+    );
+}
+.grid {
+
+  opacity: .06;
+
+  background-image:
+      linear-gradient(rgba(0,170,255,.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,170,255,.03) 1px, transparent 1px);
+
+  background-size: 50px 50px;
+}
+
+.glow::before {
+
+  content: "";
+
+  position: absolute;
+
+  width: 420px;
+  height: 420px;
+
+  right: -180px;
+  top: -180px;
+
+  border-radius: 50%;
+
+  background:
+
+    radial-gradient(
+      circle,
+      rgba(0, 220, 255, .18),
+      transparent 72%
+    );
+
+  filter: blur(20px);
+}
+.glow::after {
+
+  content: "";
+
+  position: absolute;
+
+  width: 500px;
+  height: 250px;
+
+  left: -150px;
+  bottom: -180px;
+
+  background:
+
+    radial-gradient(
+      ellipse,
+      rgba(0, 120, 255, .10),
+      transparent 75%
+    );
+
+  filter: blur(40px);
+}
+
+.content {
+
+  position: relative;
+
+  z-index: 5;
+
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  gap: 60px;
+
+  padding: 20px;
+}
+
+.left {
+
+  max-width: 650px;
+}
+
+.left h2 {
+
+  margin: 0 0 14px;
+
+  color: white;
+
+  font-size: clamp(30px, 2vw, 38px);
+
+  font-weight: 700;
+
+  line-height: 1.2;
+}
+
+.left p {
+
+  margin: 0;
+
+  color: #93a9bf;
+
+  font-size: 16px;
+
+  line-height: 1.75;
+}
+
+.cta {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 18px;
+
+  min-width: 470px;
+
+  padding: 20px 24px;
+
+  border-radius: 14px;
+
+  text-decoration: none;
+
+  border: 1px solid rgba(38, 184, 255, .25);
+
+  background:
+
+    linear-gradient(
+      180deg,
+      rgba(11, 25, 46, .98),
+      rgba(6, 14, 28, .98)
+    );
+
+  transition: .35s ease;
+
+  position: relative;
+
+  overflow: hidden;
+}
+
+.cta{
+
+    backdrop-filter: blur(8px);
+
+    background:
+        rgba(9,22,40,.82);
+
+    border:1px solid rgba(0,180,255,.22);
+}
+
+.cta::after {
+  content: "";
+
+  position: absolute;
+  top: 0;
+  left: -120%;
+
+  width: 60%;
+  height: 100%;
+
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255,255,255,.08),
+    transparent
+  );
+
+  transform: skewX(-20deg);
+
+  transition: left .8s ease;
+}
+
+.cta:hover::after {
+  left: 160%;
+}
+
+.cta:hover::before{
+
+    opacity:1;
+}
+
+.iconWrapper {
+
+  flex-shrink: 0;
+}
+
+.iconCircle {
+
+  width: 58px;
+
+  height: 58px;
+
+  border-radius: 50%;
+
+  display: grid;
+
+  place-items: center;
+
+  color: #47d8ff;
+
+  border: 1px solid rgba(58, 206, 255, .45);
+
+  background:
+
+    radial-gradient(
+      circle,
+      #113d6d,
+      #081220
+    );
+
+  box-shadow:
+
+    inset 0 0 12px rgba(255,255,255,.05),
+
+    0 0 25px rgba(0,180,255,.18);
+}
+
+.ctaText {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.title {
+  color: #fff;
+  font-size: 1.45rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.subtitle {
+  margin-top: 6px;
+  color: #8ca3b7;
+  font-size: .9rem;
+  line-height: 1.5;
+}
+.arrow {
+  color: #3ed7ff;
+  transition: .35s ease;
+}
+
+.cta:hover .arrow {
+  transform: translate(5px,-5px);
+}
+.card::before{
+
+   content: "";
+
+  position: absolute;
+
+  left: 0;
+  top: 0;
+
+  width: 100%;
+  height: 1px;
+
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(0, 220, 255, .9),
+    transparent
+  );
+
+    -webkit-mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+
+    -webkit-mask-composite:xor;
+
+            mask-composite:exclude;
+
+    pointer-events:none;
+}
+.card::after{
+
+    content:"";
+
+    position:absolute;
+
+    width:300px;
+    height:300px;
+
+    border-radius:50%;
+
+    right:-150px;
+    top:-150px;
+
+    background:
+
+    radial-gradient(
+        circle,
+        rgba(0,220,255,.18),
+        transparent 70%
+    );
+
+    animation:floatGlow 8s ease-in-out infinite;
+}
+@keyframes floatGlow{
+
+0%{
+
+transform:translateY(0);
+}
+
+50%{
+
+transform:translateY(20px);
+}
+
+100%{
+
+transform:translateY(0);
+}
+
+}
+@media (max-width:950px){
+
+.content{
+
+flex-direction:column;
+
+align-items:flex-start;
+
+padding:30px;
+}
+
+.cta{
+
+width:100%;
+
+min-width:unset;
+}
+
+.left{
+
+max-width:none;
+}
+
+}
+
+.circuit {
+  position: absolute;
+  inset: 0;
+
+  background: url("/imgFondoLaboratorio/syskovex-circuit-background.webp") center/cover no-repeat;
+
+  opacity: .55;
+
+  transform: scale(1.02);
+
+  animation: circuitFloat 18s ease-in-out infinite;
+}
+
+@keyframes circuitFloat {
+  0% {
+    transform: scale(1.02) translateX(0) translateY(0);
+  }
+
+  50% {
+    transform: scale(1.03) translateX(-6px) translateY(-3px);
+  }
+
+  100% {
+    transform: scale(1.02) translateX(0) translateY(0);
+  }
+}

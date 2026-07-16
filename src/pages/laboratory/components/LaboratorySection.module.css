@@ -550,7 +550,7 @@
   font-size: clamp(0.62rem, 0.58rem + 0.16vw, 0.74rem);
   color: var(--text-soft);
   line-height: 1.18;
-  overflow: hidden;
+  overflow: visible;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   max-width: none;
