@@ -83,115 +83,52 @@
 /* =========================================================
    TOKENS GLOBALES - DARK
    ========================================================= */
+
 :root[data-theme="dark"] {
   --navbar-height: 82px;
 
-  /* ===============================
-     FONDOS
-  =============================== */
-
   --bg-app: #030814;
   --bg-app-rgb: 3, 8, 20;
-
   --bg-elevated: #07111f;
+  --bg-card: rgba(8, 18, 32, 0.82);
+  --bg-card-2: rgba(11, 23, 40, 0.94);
+  --bg-soft: rgba(255, 255, 255, 0.03);
 
-  --bg-card: rgba(8, 18, 32, .82);
-
-  --bg-card-2: rgba(11, 23, 40, .94);
-
-  --bg-soft: rgba(255,255,255,.03);
-
-  /* ===============================
-     BORDES
-  =============================== */
-
-  --border: rgba(0,190,255,.08);
-
-  --border-strong: rgba(0,210,255,.18);
-
-  /* ===============================
-     TEXTO
-  =============================== */
+  --border: rgba(0, 190, 255, 0.08);
+  --border-strong: rgba(0, 210, 255, 0.18);
 
   --text-main: #ffffff;
-
   --text-soft: #d5deec;
-
   --text-sub: #8ea3bc;
 
-  /* ===============================
-     COLORES SYSKOVEX
-  =============================== */
-
   --accent: #00c8ff;
-
   --accent-2: #008cff;
-
   --accent-green: #14f195;
+  --accent-glow: rgba(0, 200, 255, 0.18);
 
-  --accent-glow: rgba(0,200,255,.18);
+  --shadow-sm: 0 8px 35px rgba(0, 0, 0, 0.30);
+  --shadow-md: 0 18px 55px rgba(0, 15, 40, 0.40);
+  --shadow-lg: 0 30px 90px rgba(0, 30, 80, 0.45);
 
-  /* ===============================
-     SOMBRAS
-  =============================== */
+  --terminal-bg: #08111d;
+  --console-bg: #0b1728;
 
-  --shadow-sm:
-      0 8px 35px rgba(0,0,0,.30);
+  --lab-accent-start: #00bfff;
+  --lab-accent-mid: #28d8ff;
+  --lab-accent-end: #14f195;
 
-  --shadow-md:
-      0 18px 55px rgba(0,15,40,.40);
+  --lab-cta-text: #ffffff;
+  --lab-cta-bg-start: rgba(8, 18, 30, 0.88);
+  --lab-cta-bg-end: rgba(8, 18, 30, 0.74);
+  --lab-cta-border: rgba(0, 210, 255, 0.45);
+  --lab-cta-ring: rgba(0, 210, 255, 0.14);
 
-  --shadow-lg:
-      0 30px 90px rgba(0,30,80,.45);
-
-  /* ===============================
-     TERMINAL
-  =============================== */
-
-  --terminal-bg:#08111d;
-
-  --console-bg:#0b1728;
-
-  /* ===============================
-     LABORATORIO
-  =============================== */
-
-  --lab-accent-start:#00bfff;
-
-  --lab-accent-mid:#28d8ff;
-
-  --lab-accent-end:#14f195;
-
-  --lab-cta-text:#ffffff;
-
-  --lab-cta-bg-start:
-      rgba(8,18,30,.88);
-
-  --lab-cta-bg-end:
-      rgba(8,18,30,.74);
-
-  --lab-cta-border:
-      rgba(0,210,255,.45);
-
-  --lab-cta-ring:
-      rgba(0,210,255,.14);
-
-  --lab-panel-text:#ffffff;
-
-  --lab-panel-text-soft:
-      rgba(255,255,255,.82);
-
-  --lab-panel-bg-start:
-      rgba(6,13,24,.90);
-
-  --lab-panel-bg-end:
-      rgba(8,18,32,.82);
-
-  --lab-panel-border:
-      rgba(0,210,255,.14);
-
-  --lab-panel-shadow:
-      0 20px 60px rgba(0,0,0,.32);
+  --lab-panel-text: #ffffff;
+  --lab-panel-text-soft: rgba(255, 255, 255, 0.82);
+  --lab-panel-bg-start: rgba(6, 13, 24, 0.90);
+  --lab-panel-bg-end: rgba(8, 18, 32, 0.82);
+  --lab-panel-border: rgba(0, 210, 255, 0.14);
+  --lab-panel-shadow: 0 20px 60px rgba(0, 0, 0, 0.32);
 }
 
 /* =========================================================
@@ -200,26 +137,25 @@
 
 :root[data-theme="light"] {
   --navbar-height: 82px;
+
   --bg-app: #f4f8fb;
   --bg-app-rgb: 244, 248, 251;
   --bg-elevated: #ffffff;
   --bg-card: rgba(255, 255, 255, 0.94);
   --bg-card-2: rgba(238, 244, 251, 0.98);
   --bg-soft: rgba(15, 23, 42, 0.05);
+
   --border: rgba(15, 23, 42, 0.09);
   --border-strong: rgba(15, 23, 42, 0.16);
+
   --text-main: #0f172a;
   --text-soft: #27354a;
   --text-sub: #52637a;
 
-  --accent:#009cff;
-
---accent-2:#0074ff;
-
---accent-green:#0ccf88;
-
---accent-glow:
-rgba(0,170,255,.12);
+  --accent: #009cff;
+  --accent-2: #0074ff;
+  --accent-green: #0ccf88;
+  --accent-glow: rgba(0, 170, 255, 0.12);
 
   --shadow-sm: 0 10px 25px rgba(15, 23, 42, 0.05);
   --shadow-md: 0 20px 55px rgba(15, 23, 42, 0.08);
@@ -242,7 +178,7 @@ rgba(0,170,255,.12);
   --lab-panel-text-soft: #334155;
   --lab-panel-bg-start: rgba(255, 255, 255, 0.94);
   --lab-panel-bg-end: rgba(238, 244, 251, 0.96);
-  --lab-panel-border: rgba(15, 23, 42, 0.1);
+  --lab-panel-border: rgba(15, 23, 42, 0.10);
   --lab-panel-shadow: 0 10px 32px rgba(15, 23, 42, 0.08);
 }
 
@@ -251,26 +187,31 @@ rgba(0,170,255,.12);
    ========================================================= */
 
 :root:not([data-theme]) {
-  --bg-app: #0f131a;
-  --bg-app-rgb: 15, 19, 26;
-  --bg-elevated: #151a24;
-  --bg-card: rgba(21, 26, 36, 0.8);
-  --bg-card-2: rgba(28, 35, 49, 0.95);
-  --bg-soft: rgba(255, 255, 255, 0.04);
-  --border: rgba(255, 255, 255, 0.06);
-  --border-strong: rgba(255, 255, 255, 0.12);
-  --text-main: #f8fafc;
-  --text-soft: #cbd5e1;
-  --text-sub: #94a3b8;
-  --accent: #0891b2;
-  --accent-2: #0f766e;
-  --accent-green: #059669;
-  --accent-glow: rgba(8, 145, 178, 0.14);
-  --shadow-sm: 0 8px 32px rgba(0, 0, 0, 0.24);
-  --shadow-md: 0 16px 48px rgba(0, 0, 0, 0.32);
-  --shadow-lg: 0 24px 64px rgba(0, 0, 0, 0.4);
-  --terminal-bg: #161b26;
-  --console-bg: #1c2331;
+  --bg-app: #030814;
+  --bg-app-rgb: 3, 8, 20;
+  --bg-elevated: #07111f;
+  --bg-card: rgba(8, 18, 32, 0.82);
+  --bg-card-2: rgba(11, 23, 40, 0.94);
+  --bg-soft: rgba(255, 255, 255, 0.03);
+
+  --border: rgba(0, 190, 255, 0.08);
+  --border-strong: rgba(0, 210, 255, 0.18);
+
+  --text-main: #ffffff;
+  --text-soft: #d5deec;
+  --text-sub: #8ea3bc;
+
+  --accent: #00c8ff;
+  --accent-2: #008cff;
+  --accent-green: #14f195;
+  --accent-glow: rgba(0, 200, 255, 0.18);
+
+  --shadow-sm: 0 8px 35px rgba(0, 0, 0, 0.30);
+  --shadow-md: 0 18px 55px rgba(0, 15, 40, 0.40);
+  --shadow-lg: 0 30px 90px rgba(0, 30, 80, 0.45);
+
+  --terminal-bg: #08111d;
+  --console-bg: #0b1728;
 }
 
 /* =========================================================
@@ -321,65 +262,115 @@ body {
   font-family: var(--font-body);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
-
   color: var(--text-main);
-
   background:
-
-    /* Glow superior derecho */
     radial-gradient(
       circle at 100% 0%,
-      rgba(0, 200, 255, .08) 0%,
-      transparent 28%
+      color-mix(in srgb, var(--accent) 14%, transparent) 0%,
+      transparent 30%
     ),
-
-    /* Glow inferior izquierdo */
     radial-gradient(
       circle at 0% 100%,
-      rgba(0, 110, 255, .08) 0%,
-      transparent 35%
+      color-mix(in srgb, var(--accent-2) 12%, transparent) 0%,
+      transparent 36%
     ),
-
-    /* Glow central muy sutil */
     radial-gradient(
-      circle at 50% 20%,
-      rgba(0, 255, 180, .025) 0%,
-      transparent 45%
+      circle at 50% 18%,
+      color-mix(in srgb, var(--accent-green) 7%, transparent) 0%,
+      transparent 44%
     ),
-
-    /* Base principal */
     linear-gradient(
       180deg,
-      #020611 0%,
-      #030814 18%,
-      #040b18 42%,
-      #061224 70%,
-      #081728 100%
+      color-mix(in srgb, var(--bg-app) 88%, white 12%) 0%,
+      var(--bg-app) 20%,
+      color-mix(in srgb, var(--bg-app) 94%, black 6%) 68%,
+      color-mix(in srgb, var(--bg-app) 88%, black 12%) 100%
     );
 
+  background-color: var(--bg-app);
   background-attachment: fixed;
-
   transition:
-    background .35s ease,
-    color .35s ease;
+    background 0.35s ease,
+    color 0.35s ease;
 }
 
 body::before {
   content: "";
-
   position: fixed;
   inset: 0;
-
   pointer-events: none;
   z-index: -1;
+  opacity: 0.075;
 
-  opacity: .035;
+  background:
+    /* nodos */
+    radial-gradient(
+      circle at 12% 18%,
+      color-mix(in srgb, var(--accent) 32%, transparent) 0 1.2px,
+      transparent 2.2px
+    ),
+    radial-gradient(
+      circle at 78% 14%,
+      color-mix(in srgb, var(--accent-2) 28%, transparent) 0 1.2px,
+      transparent 2.2px
+    ),
+    radial-gradient(
+      circle at 24% 68%,
+      color-mix(in srgb, var(--accent-green) 24%, transparent) 0 1.4px,
+      transparent 2.4px
+    ),
+    radial-gradient(
+      circle at 86% 72%,
+      color-mix(in srgb, var(--accent) 24%, transparent) 0 1.1px,
+      transparent 2.1px
+    ),
+    radial-gradient(
+      circle at 58% 42%,
+      color-mix(in srgb, var(--accent-2) 18%, transparent) 0 1px,
+      transparent 2px
+    ),
 
-  background-image:
-    linear-gradient(rgba(0, 180, 255, .12) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0, 180, 255, .12) 1px, transparent 1px);
+    /* trazas horizontales */
+    linear-gradient(
+      90deg,
+      transparent 0%,
+      transparent 10%,
+      color-mix(in srgb, var(--accent) 14%, transparent) 10%,
+      color-mix(in srgb, var(--accent) 14%, transparent) 18%,
+      transparent 18%,
+      transparent 100%
+    ),
+    linear-gradient(
+      90deg,
+      transparent 0%,
+      transparent 62%,
+      color-mix(in srgb, var(--accent-2) 12%, transparent) 62%,
+      color-mix(in srgb, var(--accent-2) 12%, transparent) 74%,
+      transparent 74%,
+      transparent 100%
+    ),
 
-  background-size: 48px 48px;
+    /* trazas verticales */
+    linear-gradient(
+      180deg,
+      transparent 0%,
+      transparent 8%,
+      color-mix(in srgb, var(--accent) 10%, transparent) 8%,
+      color-mix(in srgb, var(--accent) 10%, transparent) 34%,
+      transparent 34%,
+      transparent 100%
+    ),
+    linear-gradient(
+      180deg,
+      transparent 0%,
+      transparent 48%,
+      color-mix(in srgb, var(--accent-green) 10%, transparent) 48%,
+      color-mix(in srgb, var(--accent-green) 10%, transparent) 82%,
+      transparent 82%,
+      transparent 100%
+    );
+
+  background-repeat: no-repeat;
 }
 
 h1,
