@@ -374,7 +374,6 @@
   );
   box-shadow: var(--lab-panel-shadow);
   padding: 0.85rem;
-  min-width: 0;
 }
 
 .panelHead {
@@ -383,7 +382,8 @@
 
 .statsGrid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(120px, 136px));
+  justify-content: center;
   gap: 0.7rem;
   width: 100%;
 }
@@ -391,13 +391,12 @@
 .statCard {
   --stat-icon-color: var(--lab-accent-start);
   width: 100%;
-  min-width: 0;
-  aspect-ratio: 1.5 / 1;
+  min-height: 90px;
   display: grid;
-  grid-template-columns: clamp(28px, 2vw, 36px) minmax(0, 1fr);
+  grid-template-columns: 36px minmax(0, 1fr);
   align-items: center;
-  gap: clamp(0.45rem, 0.8vw, 0.6rem);
-  padding: clamp(0.58rem, 0.8vw, 0.72rem);
+  gap: 0.6rem;
+  padding: 0.72rem;
   border-radius: 16px;
   border: 1px solid var(--border);
   background: color-mix(in srgb, var(--bg-card-2) 88%, transparent);
@@ -421,8 +420,8 @@
 }
 
 .statIcon {
-  width: clamp(28px, 2vw, 36px);
-  height: clamp(28px, 2vw, 36px);
+  width: 36px;
+  height: 36px;
   display: grid;
   place-items: center;
   color: var(--stat-icon-color);
@@ -430,7 +429,7 @@
 
 .statIcon::after {
   content: "";
-  width: clamp(20px, 1.8vw, 28px);
+  width: 28px;
   height: 1px;
   border-radius: 999px;
   background: color-mix(in srgb, var(--stat-icon-color) 70%, transparent);
@@ -440,8 +439,8 @@
 }
 
 .statIcon svg {
-  width: clamp(28px, 2vw, 36px);
-  height: clamp(28px, 2vw, 36px);
+  width: 36px;
+  height: 36px;
   stroke: currentColor;
   stroke-width: 1.8;
   fill: none;
@@ -452,109 +451,91 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 0.2rem;
+  gap: 0.25rem;
 }
 
 .statCard strong {
   display: block;
   margin: 0;
   font-family: var(--font-tech);
-  font-size: clamp(0.95rem, 0.95vw, 1.18rem);
+  font-size: 1.28rem;
   line-height: 1;
   color: var(--stat-icon-color);
-  white-space: nowrap;
 }
 
 .statCard span {
-  display: -webkit-box;
+  display: block;
   margin: 0;
-  font-size: clamp(0.62rem, 0.62vw, 0.74rem);
+  font-size: 0.76rem;
   color: var(--text-soft);
-  line-height: 1.18;
-  overflow: hidden;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  max-width: none;
-  text-wrap: balance;
+  line-height: 1.28;
+  max-width: 11ch;
 }
+
 .techGrid {
   display: grid;
-  grid-template-columns: repeat(6, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(84px, 96px));
+  justify-content: center;
   gap: 0.7rem;
   width: 100%;
 }
 
 .techCard {
   width: 100%;
-  min-width: 0;
-  aspect-ratio: 1 / 1;
+  min-height: 90px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  gap: clamp(0.3rem, 0.7vw, 0.55rem);
-  padding: clamp(0.5rem, 0.9vw, 0.85rem);
+  justify-content: flex-start;
+  gap: 0.5rem;
+  padding: 0.72rem 0.45rem;
   text-align: center;
   border-radius: 16px;
   border: 1px solid var(--border);
   background: color-mix(in srgb, var(--bg-card-2) 88%, transparent);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
-  overflow: hidden;
 }
 
 .techLogo {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 0.4rem;
   width: 100%;
-  min-width: 0;
-  flex: 1 1 auto;
+  color: var(--lab-accent-start);
 }
 
 .techLogo img {
-  width: clamp(28px, 3vw, 52px);
-  height: clamp(28px, 3vw, 52px);
+  width: 36px;
+  height: 36px;
   object-fit: contain;
-  display: block;
-  margin: 0 auto;
 }
 
 .techCard span {
-  display: -webkit-box;
-  min-width: 0;
-  min-height: 2.4em;
-  max-height: 2.4em;
-  margin: 0;
-  overflow: hidden;
-  color: var(--text-soft);
-  font-size: clamp(0.58rem, 0.7vw, 0.8rem);
+  padding-top: 0.5rem;
+  font-size: 0.74rem;
   line-height: 1.2;
-  text-align: center;
-  text-wrap: balance;
-  overflow-wrap: anywhere;
-  word-break: break-word;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
+  color: var(--text-soft);
+   margin-top: auto;
 }
 
 .techCard:last-child {
   justify-content: center;
 }
-
 .techCard:last-child span {
-  min-height: auto;
-  max-height: none;
   margin-top: 0;
+  gap: 1rem;
 }
 
 .techCardMore {
   justify-content: center;
-  gap: clamp(0.18rem, 0.5vw, 0.35rem);
+  gap: 0.3rem;
 }
 
 .techMoreValue {
   font-family: var(--font-tech);
-  font-size: clamp(1rem, 1.3vw, 1.45rem);
+  font-size: 1.5rem;
   line-height: 1;
   font-weight: 700;
   color: var(--lab-accent-start);
@@ -587,16 +568,12 @@
     scroll-padding-inline: 1rem;
   }
 
-  .bottomGrid {
-    grid-template-columns: 1fr;
-  }
-
   .statsGrid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(120px, 1fr));
   }
 
   .techGrid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(82px, 1fr));
   }
 }
 
@@ -610,26 +587,9 @@
   }
 }
 
-@media (min-width: 900px) {
- .bottomGrid {
-    grid-template-columns: 1fr 1fr;
-    align-items: start;
-  }
-
-  .statsGrid {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-  }
-
-  .techGrid {
-    grid-template-columns: repeat(6, minmax(0, 1fr));
-  }
-}
-
 @media (min-width: 1024px) {
   .laboratorySection {
-    margin-top: clamp(-110px, -8vw, -150px);
-    position: relative;
-    z-index: 2;
+    margin-top: -150px;
   }
 
   .featuredRow {
@@ -653,9 +613,43 @@
     width: 78px;
   }
 
+  .bottomGrid {
+    grid-template-columns: 1fr 1fr;
+    align-items: start;
+  }
+
   .panel {
     min-height: 100%;
     padding: 0.95rem;
+  }
+
+  .statsGrid {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: center;
+    gap: 0.7rem;
+    width: fit-content;
+    margin-inline: auto;
+  }
+
+  .techGrid {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: center;
+    gap: 0.7rem;
+    width: fit-content;
+    margin-inline: auto;
+  }
+
+  .techCard {
+    width: 90px;
+    min-width: 90px;
+    height: 90px;
+    min-height: 90px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
   }
 
   .arrowButton {

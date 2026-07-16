@@ -7,7 +7,7 @@ const Footer = () => {
       <div className={styles.brand}>
         <div className={styles.logoMark}>
           <img
-            src="/logoSyskovex.png"
+            src="/logoSyskovex-144.png"
             alt="Logo Syskovex"
             className={styles.logoImg}
           />

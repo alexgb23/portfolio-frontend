@@ -84,7 +84,7 @@ const HeaderBanner = () => {
         <div className={styles.logoRow}>
           <div className={styles.logoMark}>
             <img
-              src="/logoSyskovex.png"
+              src="/logoSyskovex-144.png"
               alt="Logo Syskovex"
               className={styles.logoImg}
             />

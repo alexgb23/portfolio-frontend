@@ -54,19 +54,57 @@ function getProjectThemeImages(project, isDark) {
   return lightImages.length ? lightImages : darkImages;
 }
 
-function getImageSources(images) {
+function buildVariant(basePath, width, extension) {
+  if (!basePath) return "";
+  return `${basePath}-${width}.${extension}`;
+}
+
+function buildSrcSet(basePath, extension) {
+  if (!basePath) return "";
+
+  return [
+    `${buildVariant(basePath, 480, extension)} 480w`,
+    `${buildVariant(basePath, 768, extension)} 768w`,
+    `${buildVariant(basePath, 960, extension)} 960w`,
+  ].join(", ");
+}
+
+function getResponsiveImageSources(images) {
   const normalized = normalizeList(images);
 
-  const avif = normalized.find((item) => /\.avif(\?.*)?$/i.test(item)) || "";
-  const webp = normalized.find((item) => /\.webp(\?.*)?$/i.test(item)) || "";
-  const fallback = webp || avif || normalized[0] || "";
+  const avifBase =
+    normalized.find((item) => /avif$/i.test(item) || /avif/i.test(item)) || "";
+  const webpBase =
+    normalized.find((item) => /webp$/i.test(item) || /webp/i.test(item)) || "";
 
-  return { avif, webp, fallback };
+  const avifSrcSet = avifBase ? buildSrcSet(avifBase, "avif") : "";
+  const webpSrcSet = webpBase ? buildSrcSet(webpBase, "webp") : "";
+
+  const fallbackSrc = webpBase
+    ? buildVariant(webpBase, 768, "webp")
+    : avifBase
+      ? buildVariant(avifBase, 768, "avif")
+      : "";
+
+  const fallbackSrcSet = webpBase
+    ? buildSrcSet(webpBase, "webp")
+    : avifBase
+      ? buildSrcSet(avifBase, "avif")
+      : "";
+
+  return {
+    avifSrcSet,
+    webpSrcSet,
+    fallbackSrc,
+    fallbackSrcSet,
+  };
 }
 
 function getProjectIcon(project, techList) {
   const text =
-    `${project?.title || ""} ${project?.short_description || ""} ${project?.stack_summary || ""} ${techList.join(" ")}`.toLowerCase();
+    `${project?.title || ""} ${project?.short_description || ""} ${
+      project?.stack_summary || ""
+    } ${techList.join(" ")}`.toLowerCase();
 
   if (
     text.includes("api") ||
@@ -156,7 +194,7 @@ export default function ProjectCard({
   const techList = useMemo(() => {
     return normalizeList(project?.technologies ?? project?.tecnologías).slice(
       0,
-      maxTags,
+      maxTags
     );
   }, [project?.technologies, project?.tecnologías, maxTags]);
 
@@ -175,10 +213,10 @@ export default function ProjectCard({
   }, [project, isDark]);
 
   const imageSources = useMemo(() => {
-    return getImageSources(themeImages);
+    return getResponsiveImageSources(themeImages);
   }, [themeImages]);
 
-  const hasBackground = Boolean(imageSources.fallback);
+  const hasBackground = Boolean(imageSources.fallbackSrc);
 
   const handleOpenProject = () => {
     if (!projectSlug) return;
@@ -208,20 +246,30 @@ export default function ProjectCard({
         <>
           <div className="project-card-bg" aria-hidden="true">
             <picture className="project-card-bg__picture">
-              {imageSources.avif ? (
-                <source type="image/avif" srcSet={imageSources.avif} />
+              {imageSources.avifSrcSet ? (
+                <source
+                  type="image/avif"
+                  srcSet={imageSources.avifSrcSet}
+                  sizes="(max-width: 767px) calc(100vw - 2rem), (max-width: 1279px) 45vw, 534px"
+                />
               ) : null}
 
-              {imageSources.webp ? (
-                <source type="image/webp" srcSet={imageSources.webp} />
+              {imageSources.webpSrcSet ? (
+                <source
+                  type="image/webp"
+                  srcSet={imageSources.webpSrcSet}
+                  sizes="(max-width: 767px) calc(100vw - 2rem), (max-width: 1279px) 45vw, 534px"
+                />
               ) : null}
 
               <img
-                src={imageSources.fallback}
+                src={imageSources.fallbackSrc}
+                srcSet={imageSources.fallbackSrcSet || undefined}
+                sizes="(max-width: 767px) calc(100vw - 2rem), (max-width: 1279px) 45vw, 534px"
                 alt=""
                 className="project-card-bg__image"
-                width="1672"
-                height="941"
+                width="534"
+                height="313"
                 loading="lazy"
                 decoding="async"
               />

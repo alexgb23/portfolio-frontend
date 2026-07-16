@@ -14,12 +14,6 @@ const FIXED_TECHNOLOGIES = [
       "https://cdn.jsdelivr.net/gh/glincker/thesvg@main/public/icons/docker/default.svg",
   },
   {
-    id: "linux",
-    label: "Linux",
-    iconUrl:
-      "https://cdn.jsdelivr.net/gh/glincker/thesvg@main/public/icons/linux/default.svg",
-  },
-  {
     id: "n8n",
     label: "n8n",
     iconUrl:

@@ -6,12 +6,24 @@ import {
   FileText,
   Orbit,
 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import styles from "./LaboratoryHero.module.css";
 
 function getCurrentTheme() {
   if (typeof document === "undefined") return "dark";
   return document.documentElement.getAttribute("data-theme") || "dark";
+}
+
+function buildVariant(basePath, width, extension) {
+  return `${basePath}-${width}.${extension}`;
+}
+
+function buildSrcSet(basePath, extension) {
+  return [
+    `${buildVariant(basePath, 480, extension)} 480w`,
+    `${buildVariant(basePath, 768, extension)} 768w`,
+    `${buildVariant(basePath, 960, extension)} 960w`,
+  ].join(", ");
 }
 
 export default function LaboratoryHero() {
@@ -37,13 +49,24 @@ export default function LaboratoryHero() {
 
   const isDark = theme === "dark";
 
-  const imageAvif = isDark
-    ? "/imgFondoLaboratorio/fondoLabDarkAvif.avif"
-    : "/imgFondoLaboratorio/fondoLabLightAvif.avif";
+  const imageBase = isDark
+    ? {
+        avif: "/imgFondoLaboratorio/fondoLabDarkAvif",
+        webp: "/imgFondoLaboratorio/fondoLabDarkWebp",
+      }
+    : {
+        avif: "/imgFondoLaboratorio/fondoLabLightAvif",
+        webp: "/imgFondoLaboratorio/fondoLabLightWebp",
+      };
 
-  const imageWebp = isDark
-    ? "/imgFondoLaboratorio/fondoLabDarkWebp.webp"
-    : "/imgFondoLaboratorio/fondoLabLightWebp.webp";
+  const imageSources = useMemo(() => {
+    return {
+      avifSrcSet: buildSrcSet(imageBase.avif, "avif"),
+      webpSrcSet: buildSrcSet(imageBase.webp, "webp"),
+      fallbackSrc: buildVariant(imageBase.webp, 768, "webp"),
+      fallbackSrcSet: buildSrcSet(imageBase.webp, "webp"),
+    };
+  }, [imageBase.avif, imageBase.webp]);
 
   return (
     <section className={`section section-spaced ${styles.hero}`}>
@@ -87,12 +110,29 @@ export default function LaboratoryHero() {
 
           <div className={styles.visual}>
             <picture>
-              <source srcSet={imageAvif} type="image/avif" />
+              <source
+                type="image/avif"
+                srcSet={imageSources.avifSrcSet}
+                sizes="(max-width: 767px) 100vw, (max-width: 1023px) 100vw, 960px"
+              />
+
+              <source
+                type="image/webp"
+                srcSet={imageSources.webpSrcSet}
+                sizes="(max-width: 767px) 100vw, (max-width: 1023px) 100vw, 960px"
+              />
+
               <img
-                src={imageWebp}
+                src={imageSources.fallbackSrc}
+                srcSet={imageSources.fallbackSrcSet}
+                sizes="(max-width: 767px) 100vw, (max-width: 1023px) 100vw, 960px"
                 alt="Vista principal del laboratorio SYSKOVEX"
                 className={styles.visualImage}
                 loading="eager"
+                fetchPriority="high"
+                decoding="async"
+                width="960"
+                height="960"
               />
             </picture>
           </div>
