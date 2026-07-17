@@ -1,7 +1,6 @@
 /* =========================================================
    PROJECT CARD BACKGROUND
-   CSS completo para el JSX actual
-   ========================================================= */
+========================================================= */
 
 .expertise-card.has-project-bg {
   position: relative;
@@ -25,6 +24,8 @@
   display: block;
   width: 100%;
   height: 100%;
+  transition: opacity 180ms ease, visibility 180ms ease;
+  will-change: opacity;
 }
 
 .project-card-bg__image {
@@ -33,6 +34,26 @@
   height: 100%;
   object-fit: cover;
   object-position: center center;
+}
+
+.project-card-bg__picture--light {
+  opacity: 1;
+  visibility: visible;
+}
+
+.project-card-bg__picture--dark {
+  opacity: 0;
+  visibility: hidden;
+}
+
+:root[data-theme="dark"] .project-card-bg__picture--light {
+  opacity: 0;
+  visibility: hidden;
+}
+
+:root[data-theme="dark"] .project-card-bg__picture--dark {
+  opacity: 1;
+  visibility: visible;
 }
 
 .expertise-card.has-project-bg .expertise-card-overlay {

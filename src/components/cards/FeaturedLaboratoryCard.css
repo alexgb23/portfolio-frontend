@@ -143,6 +143,7 @@
 
 .lab-card-rich__media {
   min-height: 220px;
+  position: relative;
   border-radius: var(--lab-card-radius-inner);
   overflow: hidden;
   border: 1px solid color-mix(in srgb, var(--accent) 10%, var(--border));
@@ -153,6 +154,36 @@
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.04),
     0 16px 34px rgba(0, 0, 0, 0.2);
+}
+
+.lab-card-rich__picture {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  transition: opacity 180ms ease, visibility 180ms ease;
+  will-change: opacity;
+}
+
+.lab-card-rich__picture--light {
+  opacity: 1;
+  visibility: visible;
+}
+
+.lab-card-rich__picture--dark {
+  opacity: 0;
+  visibility: hidden;
+}
+
+:root[data-theme="dark"] .lab-card-rich__picture--light {
+  opacity: 0;
+  visibility: hidden;
+}
+
+:root[data-theme="dark"] .lab-card-rich__picture--dark {
+  opacity: 1;
+  visibility: visible;
 }
 
 .lab-card-rich__image {
@@ -167,6 +198,7 @@
 .lab-card-rich__overlay {
   position: absolute;
   inset: 0;
+  z-index: 1;
   background:
     linear-gradient(180deg, rgba(8, 145, 178, 0.08), transparent 32%),
     linear-gradient(0deg, rgba(8, 13, 20, 0.82), rgba(8, 13, 20, 0.08));

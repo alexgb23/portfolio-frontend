@@ -8,8 +8,8 @@ import {
 } from "lucide-react";
 import "./FeaturedLaboratoryCard.css";
 
-function buildResponsiveImageSources(item) {
-  const media = item?.coverImageMedia || item?.cover_image_media || null;
+function buildResponsiveImageSources(mediaLike, fallbackImage = "") {
+  const media = mediaLike || null;
 
   if (media) {
     return {
@@ -19,23 +19,85 @@ function buildResponsiveImageSources(item) {
       sizes:
         media.sizes ||
         "(max-width: 767px) 92vw, (max-width: 1279px) 48vw, 420px",
-      fallbackSrc: media.src || item?.coverImage || "",
+      fallbackSrc: media.src || fallbackImage || "",
       width: Number(media.width || 1400),
       height: Number(media.height || 900),
     };
   }
-
-  const baseImage = item?.coverImage || "";
 
   return {
     avifSrcSet: "",
     webpSrcSet: "",
     fallbackSrcSet: "",
     sizes: "(max-width: 767px) 92vw, (max-width: 1279px) 48vw, 420px",
-    fallbackSrc: baseImage,
+    fallbackSrc: fallbackImage || "",
     width: 1400,
     height: 900,
   };
+}
+
+function getThemeImageSources(item) {
+  const lightMedia =
+    item?.coverImageMediaLight ||
+    item?.cover_image_media_light ||
+    item?.coverImageMedia?.light ||
+    item?.cover_image_media?.light ||
+    null;
+
+  const darkMedia =
+    item?.coverImageMediaDark ||
+    item?.cover_image_media_dark ||
+    item?.coverImageMedia?.dark ||
+    item?.cover_image_media?.dark ||
+    null;
+
+  const lightImage =
+    item?.coverImageLight ||
+    item?.cover_image_light ||
+    item?.coverImage ||
+    "";
+
+  const darkImage =
+    item?.coverImageDark ||
+    item?.cover_image_dark ||
+    item?.coverImage ||
+    "";
+
+  const light = buildResponsiveImageSources(lightMedia, lightImage);
+  const dark = buildResponsiveImageSources(darkMedia, darkImage);
+
+  return {
+    light: light?.fallbackSrc ? light : dark,
+    dark: dark?.fallbackSrc ? dark : light,
+  };
+}
+
+function BackgroundPicture({ sources, className, alt }) {
+  if (!sources?.fallbackSrc) return null;
+
+  return (
+    <picture className={className} aria-hidden={alt ? undefined : "true"}>
+      {sources.avifSrcSet ? (
+        <source type="image/avif" srcSet={sources.avifSrcSet} sizes={sources.sizes} />
+      ) : null}
+
+      {sources.webpSrcSet ? (
+        <source type="image/webp" srcSet={sources.webpSrcSet} sizes={sources.sizes} />
+      ) : null}
+
+      <img
+        src={sources.fallbackSrc}
+        srcSet={sources.fallbackSrcSet || undefined}
+        sizes={sources.fallbackSrcSet ? sources.sizes : undefined}
+        alt={alt || ""}
+        className="lab-card-rich__image"
+        loading="lazy"
+        decoding="async"
+        width={sources.width}
+        height={sources.height}
+      />
+    </picture>
+  );
 }
 
 export default function LaboratoryCard({ item, className = "" }) {
@@ -52,17 +114,10 @@ export default function LaboratoryCard({ item, className = "" }) {
   } = item;
 
   const safeRelatedAreas = Array.isArray(relatedAreas) ? relatedAreas : [];
-  const {
-    avifSrcSet,
-    webpSrcSet,
-    fallbackSrcSet,
-    sizes,
-    fallbackSrc,
-    width,
-    height,
-  } = buildResponsiveImageSources(item);
-
-  const hasImage = Boolean(fallbackSrc);
+  const themeSources = getThemeImageSources(item);
+  const hasImage = Boolean(
+    themeSources?.light?.fallbackSrc || themeSources?.dark?.fallbackSrc
+  );
 
   return (
     <article
@@ -76,27 +131,19 @@ export default function LaboratoryCard({ item, className = "" }) {
     >
       <div className="lab-card-rich__media">
         {hasImage ? (
-          <picture>
-            {avifSrcSet ? (
-              <source type="image/avif" srcSet={avifSrcSet} sizes={sizes} />
-            ) : null}
-
-            {webpSrcSet ? (
-              <source type="image/webp" srcSet={webpSrcSet} sizes={sizes} />
-            ) : null}
-
-            <img
-              src={fallbackSrc}
-              srcSet={fallbackSrcSet || undefined}
-              sizes={fallbackSrcSet ? sizes : undefined}
-              alt={`Vista previa del laboratorio ${title}`}
-              className="lab-card-rich__image"
-              loading="lazy"
-              decoding="async"
-              width={width}
-              height={height}
+          <>
+            <BackgroundPicture
+              sources={themeSources.light}
+              className="lab-card-rich__picture lab-card-rich__picture--light"
+              alt=""
             />
-          </picture>
+
+            <BackgroundPicture
+              sources={themeSources.dark}
+              className="lab-card-rich__picture lab-card-rich__picture--dark"
+              alt=""
+            />
+          </>
         ) : (
           <div className="lab-card-rich__image-fallback" aria-hidden="true">
             <FlaskConical size={28} />

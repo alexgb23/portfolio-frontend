@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
 import { useNavigate } from "react-router";
 import {
   FaCode,
@@ -41,17 +41,6 @@ function normalizeList(value) {
   }
 
   return [];
-}
-
-function getProjectThemeImages(project, isDark) {
-  const darkImages = normalizeList(project?.card_background_dark);
-  const lightImages = normalizeList(project?.card_background_light);
-
-  if (isDark) {
-    return darkImages.length ? darkImages : lightImages;
-  }
-
-  return lightImages.length ? lightImages : darkImages;
 }
 
 function buildVariant(basePath, width, extension) {
@@ -157,39 +146,48 @@ function getProjectIcon(project, techList) {
   return <FaCode />;
 }
 
+function BackgroundPicture({ sources, className }) {
+  if (!sources?.fallbackSrc) return null;
+
+  return (
+    <picture className={className} aria-hidden="true">
+      {sources.avifSrcSet ? (
+        <source
+          type="image/avif"
+          srcSet={sources.avifSrcSet}
+          sizes="(max-width: 767px) calc(100vw - 2rem), (max-width: 1279px) 45vw, 534px"
+        />
+      ) : null}
+
+      {sources.webpSrcSet ? (
+        <source
+          type="image/webp"
+          srcSet={sources.webpSrcSet}
+          sizes="(max-width: 767px) calc(100vw - 2rem), (max-width: 1279px) 45vw, 534px"
+        />
+      ) : null}
+
+      <img
+        src={sources.fallbackSrc}
+        srcSet={sources.fallbackSrcSet || undefined}
+        sizes="(max-width: 767px) calc(100vw - 2rem), (max-width: 1279px) 45vw, 534px"
+        alt=""
+        className="project-card-bg__image"
+        width="534"
+        height="313"
+        loading="lazy"
+        decoding="async"
+      />
+    </picture>
+  );
+}
+
 export default function ProjectCard({
   project = null,
   index = 0,
   maxTags = 3,
 }) {
   const navigate = useNavigate();
-
-  const [isDark, setIsDark] = useState(() => {
-    if (typeof document !== "undefined") {
-      return document.documentElement.getAttribute("data-theme") === "dark";
-    }
-    return false;
-  });
-
-  useEffect(() => {
-    if (typeof document === "undefined") return;
-
-    const root = document.documentElement;
-
-    const syncTheme = () => {
-      setIsDark(root.getAttribute("data-theme") === "dark");
-    };
-
-    syncTheme();
-
-    const observer = new MutationObserver(syncTheme);
-    observer.observe(root, {
-      attributes: true,
-      attributeFilter: ["data-theme"],
-    });
-
-    return () => observer.disconnect();
-  }, []);
 
   const techList = useMemo(() => {
     return normalizeList(project?.technologies ?? project?.tecnologías).slice(
@@ -208,15 +206,17 @@ export default function ProjectCard({
     return getProjectIcon(project, techList);
   }, [project, techList]);
 
-  const themeImages = useMemo(() => {
-    return getProjectThemeImages(project, isDark);
-  }, [project, isDark]);
+  const darkSources = useMemo(() => {
+    return getResponsiveImageSources(project?.card_background_dark);
+  }, [project?.card_background_dark]);
 
-  const imageSources = useMemo(() => {
-    return getResponsiveImageSources(themeImages);
-  }, [themeImages]);
+  const lightSources = useMemo(() => {
+    return getResponsiveImageSources(project?.card_background_light);
+  }, [project?.card_background_light]);
 
-  const hasBackground = Boolean(imageSources.fallbackSrc);
+  const hasBackground = Boolean(
+    darkSources?.fallbackSrc || lightSources?.fallbackSrc
+  );
 
   const handleOpenProject = () => {
     if (!projectSlug) return;
@@ -245,35 +245,15 @@ export default function ProjectCard({
       {hasBackground ? (
         <>
           <div className="project-card-bg" aria-hidden="true">
-            <picture className="project-card-bg__picture">
-              {imageSources.avifSrcSet ? (
-                <source
-                  type="image/avif"
-                  srcSet={imageSources.avifSrcSet}
-                  sizes="(max-width: 767px) calc(100vw - 2rem), (max-width: 1279px) 45vw, 534px"
-                />
-              ) : null}
+            <BackgroundPicture
+              sources={lightSources?.fallbackSrc ? lightSources : darkSources}
+              className="project-card-bg__picture project-card-bg__picture--light"
+            />
 
-              {imageSources.webpSrcSet ? (
-                <source
-                  type="image/webp"
-                  srcSet={imageSources.webpSrcSet}
-                  sizes="(max-width: 767px) calc(100vw - 2rem), (max-width: 1279px) 45vw, 534px"
-                />
-              ) : null}
-
-              <img
-                src={imageSources.fallbackSrc}
-                srcSet={imageSources.fallbackSrcSet || undefined}
-                sizes="(max-width: 767px) calc(100vw - 2rem), (max-width: 1279px) 45vw, 534px"
-                alt=""
-                className="project-card-bg__image"
-                width="534"
-                height="313"
-                loading="lazy"
-                decoding="async"
-              />
-            </picture>
+            <BackgroundPicture
+              sources={darkSources?.fallbackSrc ? darkSources : lightSources}
+              className="project-card-bg__picture project-card-bg__picture--dark"
+            />
           </div>
 
           <div className="expertise-card-overlay" aria-hidden="true" />
