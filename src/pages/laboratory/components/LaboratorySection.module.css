@@ -545,7 +545,6 @@
   border-radius: 13px;
   font-size: clamp(0.76rem, 0.72rem + 0.16vw, 0.88rem);
   color: var(--lab-badge-text);
-  -webkit-text-stroke: 0.75px rgba(8, 12, 18, 0.493);
   background:
     linear-gradient(
       180deg,
@@ -578,7 +577,10 @@
   color: transparent;
   font-weight: 800;
   font-size: clamp(0.84rem, 0.8rem + 0.18vw, 0.96rem);
-  text-shadow: 0 0 12px var(--lab-glow);
+  -webkit-text-stroke: 0.85px rgba(8, 12, 18, 0.88);
+  text-shadow:
+    0 1px 0 rgba(0, 0, 0, 0.22),
+    0 0 12px var(--lab-glow);
 }
 
 /* =========================================================
