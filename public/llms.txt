@@ -1,20 +1,40 @@
 # Alexander Galvez - Portfolio Técnico
 
-Información estructurada sobre el portfolio profesional de Alexander Galvez, especializado en desarrollo de software, infraestructura IT, seguridad perimetral, redes y automatización.
+Portfolio profesional de Alexander Galvez, centrado en infraestructura IT, redes, virtualización, automatización y desarrollo de software.
 
-## Detalles del Perfil
-- **Nombre:** Alexander Galvez
-- **Especialidad:** Systems, Infrastructure and Software Engineer
-- **Ubicación:** Barakaldo, País Vasco, España
-- **Tecnologías Clave:** Proxmox, pfSense, Docker, Linux, PostgreSQL, Bash, KNX, IA, React, Laravel, .
+## Perfil
+- Nombre: Alexander Galvez
+- Alias: Alex Galvez
+- Rol: Systems, Infrastructure and Software Technician
+- Ubicación: Barakaldo, País Vasco, España
 
-## Secciones Disponibles
-- **Inicio (Hero):** Presentación del ecosistema tecnológico y enlaces a redes profesionales (GitHub, LinkedIn).
-- **Sobre mí:** Resumen detallado del perfil orientado a sistemas, redes e integración de soluciones de infraestructura real.
-- **Proyectos:** Desarrollos destacados en programación orientada a objetos (Java), orquestación de contenedores y pasarelas IoT.
-- **Laboratorio:** Resumen operativo de la infraestructura física del homelab, monitorización de métricas ambientales y gestión de nodos conectados.
+## Áreas principales
+- Infraestructura IT
+- Redes y conectividad
+- Virtualización
+- Automatización de sistemas
+- Linux
+- Docker
+- PostgreSQL
+- Proxmox
+- pfSense
+- React
+- Laravel
+- Bash scripting
+- IoT
+- Domótica e inmótica
 
-## Canales Oficiales
-- **Sitio Web:** https://syskovex.com
-- **GitHub:** https://github.com/alexgb23
-- **LinkedIn:** https://www.linkedin.com/in/alexander-galvez-benavides-450917281/
+## Secciones del portfolio
+- Inicio: presentación general, enlaces profesionales y acceso a contenidos destacados
+- Sobre mí: perfil técnico y enfoque profesional
+- Proyectos: trabajos y desarrollos destacados
+- Laboratorio: laboratorio técnico y experimentación práctica
+- Contacto: enlaces y canales profesionales
+
+## Canales oficiales
+- Portfolio: https://alex.syskovex.com/
+- GitHub: https://github.com/alexgb23
+- LinkedIn: https://www.linkedin.com/in/alexander-galvez-benavides-450917281/
+
+## Proyecto relacionado
+- SYSKOVEX: https://syskovex.com

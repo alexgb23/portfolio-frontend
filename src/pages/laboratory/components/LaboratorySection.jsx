@@ -100,18 +100,23 @@ function getStatusMeta(status) {
 }
 
 function getLabThemeStyle(lab) {
-  const normalizedTargetColor =
+  const raw =
     typeof lab?.target_color === "string" ? lab.target_color.trim() : "";
 
-  const resolvedTargetColor = normalizedTargetColor.startsWith("--")
-    ? `var(${normalizedTargetColor})`
-    : normalizedTargetColor;
+  const accent = raw
+    ? raw.startsWith("--")
+      ? `var(${raw})`
+      : raw
+    : "var(--accent, #0891b2)";
 
   return {
-    "--lab-accent": resolvedTargetColor || "var(--accent, #0891b2)",
-    "--lab-accent-2": resolvedTargetColor || "var(--accent-2, #0f766e)",
-    "--lab-accent-green": resolvedTargetColor || "var(--accent-green, #059669)",
-    "--lab-accent-glow": "var(--accent-glow, rgba(8, 145, 178, 0.14))",
+    "--lab-accent": accent,
+    "--lab-accent-start": `color-mix(in srgb, ${accent} 82%, white 18%)`,
+    "--lab-accent-mid": accent,
+    "--lab-accent-end": `color-mix(in srgb, ${accent} 70%, var(--accent-2, #0f766e) 30%)`,
+    "--lab-panel-border": `color-mix(in srgb, ${accent} 24%, var(--border, rgba(255,255,255,0.14)) 76%)`,
+    "--lab-cta-border": `color-mix(in srgb, ${accent} 52%, var(--border, rgba(255,255,255,0.18)) 48%)`,
+    "--lab-badge-border": `color-mix(in srgb, ${accent} 32%, var(--border, rgba(255,255,255,0.16)) 68%)`,
   };
 }
 

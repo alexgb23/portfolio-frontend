@@ -92,19 +92,19 @@ export default function LaboratoryHero() {
                 rel="noopener noreferrer"
                 className={styles.cta}
               >
-                <span>Explorar laboratorio</span>
+                <span>Explorar laboratorio completo</span>
                 <ArrowRight size={18} />
               </a>
 
-              <a
-                href="https://syskovex.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className={styles.siteLink}
-              >
-                <span>syskovex.com</span>
-                <ExternalLink size={16} />
-              </a>
+             <a
+  href="https://syskovex.com"
+  target="_blank"
+  rel="noopener noreferrer"
+  className={styles.siteLink}
+>
+  <span>syskovex.com</span>
+  <ExternalLink className={styles.siteLinkIcon} />
+</a>
             </div>
           </div>
 

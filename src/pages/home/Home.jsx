@@ -45,42 +45,60 @@ function Home() {
   const hasSocialLinks = Array.isArray(socialLinks) && socialLinks.length > 0;
   const hasHomeContent = hasProjects || hasLaboratory || hasSocialLinks;
 
-  const personSchema = useMemo(
+  const homeSchema = useMemo(
     () => ({
       "@context": "https://schema.org",
-      "@type": "Person",
-      "@id": "https://alex.syskovex.com/#alexander-galvez",
-      name: "Alexander Galvez",
-      url: "https://alex.syskovex.com/",
-      image: "https://alex.syskovex.com/imagen_portfolio_mia_retocada-960.avif",
-      jobTitle: "Systems, Infrastructure and Software Engineer",
-      description:
-        "Perfil técnico especializado en infraestructura IT, redes, virtualización, automatización y desarrollo de software.",
-      knowsAbout: [
-        "Infraestructura IT",
-        "Administración de sistemas",
-        "Virtualización",
-        "Redes",
-        "Seguridad perimetral",
-        "Automatización",
-        "IoT",
-        "Linux",
-        "APIs",
-        "Desarrollo de software",
-      ],
-      sameAs: [
-        "https://github.com/alexgb23",
-        "https://www.linkedin.com/in/alexander-galvez-benavides-450917281/",
-        "https://instagram.com/_aaleex_88",
-        "https://www.facebook.com/alexander.galvez.benavides",
-      ],
+      "@graph": [
+        {
+          "@type": "WebSite",
+          "@id": "https://alex.syskovex.com/#website",
+          url: "https://alex.syskovex.com/",
+          name: "Portfolio de Alexander Galvez",
+          description:
+            "Portfolio técnico de Alexander Galvez especializado en infraestructura IT, redes, virtualización, automatización y desarrollo de software.",
+          inLanguage: "es",
+        },
+        {
+          "@type": "Person",
+          "@id": "https://alex.syskovex.com/#alexander-galvez",
+          name: "Alexander Galvez",
+          alternateName: "Alex Galvez",
+          url: "https://alex.syskovex.com/",
+          image:
+            "https://alex.syskovex.com/imagen_portfolio_mia_retocada-960.avif",
+          jobTitle: "Systems, Infrastructure and Software Tecnic",
+          description:
+            "Perfil técnico especializado en infraestructura IT, redes, virtualización, automatización y desarrollo de software.",
+          knowsAbout: [
+            "Infraestructura IT",
+            "Administración de sistemas",
+            "Virtualización",
+            "Redes",
+            "Seguridad perimetral",
+            "Automatización",
+            "IoT",
+            "Linux",
+            "APIs",
+            "Desarrollo de software"
+          ],
+          sameAs: [
+            "https://github.com/alexgb23",
+            "https://www.linkedin.com/in/alexander-galvez-benavides-450917281/",
+            "https://instagram.com/_aaleex_88",
+            "https://www.facebook.com/alexander.galvez.benavides"
+          ],
+          mainEntityOfPage: {
+            "@id": "https://alex.syskovex.com/#website"
+          }
+        }
+      ]
     }),
     [],
   );
 
   const safeJsonLd = useMemo(
-    () => JSON.stringify(personSchema).replace(/<\//g, "<\\/"),
-    [personSchema],
+    () => JSON.stringify(homeSchema).replace(/<\//g, "<\\/"),
+    [homeSchema],
   );
 
   return (
