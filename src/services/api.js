@@ -61,6 +61,7 @@ export const portfolioService = {
 
 export const laboratoriosRealesService = {
   getHome: () => getRequest("/laboratorios-reales/home", "Laboratorios Home"),
+  getHomeLab: () => getRequest("/laboratorios-reales/home-lab", "Laboratorios HomeLab"),
   getList: () => getRequest("/laboratorios-reales", "Laboratorios List"),
   getDetail: (slug) =>
     getRequest(`/laboratorios-reales/${slug}`, "Laboratorio Detail"),

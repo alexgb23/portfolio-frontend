@@ -11,28 +11,39 @@ function normalizeArray(value) {
   return Array.isArray(value) ? value : [];
 }
 
+function normalizeFirstString(value) {
+  if (Array.isArray(value)) {
+    const first = value.find(
+      (item) => typeof item === "string" && item.trim().length > 0,
+    );
+    return first?.trim() ?? "";
+  }
+
+  return typeof value === "string" ? value.trim() : "";
+}
+
 function normalizeLaboratoryItems(payload) {
   const source = Array.isArray(payload?.featured_laboratories)
     ? payload.featured_laboratories
     : [];
 
-return source.map((item) => ({
-  id: item?.id ?? null,
-  title: item?.titulo ?? "",
-  slug: item?.slug ?? "",
-  category: item?.categoria ?? "laboratorio",
-  status: item?.estado ?? "",
-  active: Boolean(item?.activo ?? item?.estado === "activo"),
-  summary: item?.resumen ?? "",
-  target_color: item?.target_color ?? "",
-  areas_relacionadas: normalizeArray(item?.areas_relacionadas),
-  stack: normalizeArray(item?.stack).map((tech) => ({
-    label: tech?.label ?? "",
-    slug: tech?.slug ?? "",
-  })),
-  projects_count: Number(item?.projects_count) || 0,
-  documentation_count: Number(item?.documentation_count) || 0,
-}));
+  return source.map((item) => ({
+    id: item?.id ?? null,
+    title: item?.titulo ?? "",
+    slug: item?.slug ?? "",
+    category: item?.categoria ?? "laboratorio",
+    status: item?.estado ?? "",
+    active: Boolean(item?.activo ?? item?.estado === "activo"),
+    summary: item?.resumen ?? "",
+    target_color: normalizeFirstString(item?.target_color),
+    areas_relacionadas: normalizeArray(item?.areas_relacionadas),
+    stack: normalizeArray(item?.stack).map((tech) => ({
+      label: tech?.label ?? "",
+      slug: tech?.slug ?? "",
+    })),
+    projects_count: Number(item?.projects_count) || 0,
+    documentation_count: Number(item?.documentacion_count) || 0,
+  }));
 }
 
 function computeStatsFromItems(items = []) {
@@ -96,7 +107,7 @@ function getTopTechnologiesFromItems(items = [], limit = 8) {
 
 export default function useLaboratoryHome(enabled = true) {
   const { data, loading, error, isRefreshing } = useAsyncResource(
-    laboratoriosRealesService.getHome,
+    laboratoriosRealesService.getHomeLab,
     initialValue,
     [],
     "Laboratory home",

@@ -129,6 +129,10 @@
   --lab-panel-bg-end: rgba(8, 18, 32, 0.82);
   --lab-panel-border: rgba(0, 210, 255, 0.14);
   --lab-panel-shadow: 0 20px 60px rgba(0, 0, 0, 0.32);
+
+  --prueba-color-tarjeta-lab1:#00ffc8;
+  --prueba-color-tarjeta-lab2:#ff00aa;
+
 }
 
 /* =========================================================
@@ -217,12 +221,6 @@
 /* =========================================================
    MEDIA QUERIES DE TOKENS GLOBALES
    ========================================================= */
-
-@media (min-width: 721px) {
-  :root {
-    --navbar-height: 88px;
-  }
-}
 
 @media (min-width: 1280px) and (max-width: 1439px) {
   :root {

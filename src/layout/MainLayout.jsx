@@ -4,6 +4,7 @@ import {
   useCallback,
   useEffect,
   useMemo,
+  useRef,
   useState,
 } from "react";
 import { Outlet } from "react-router";
@@ -14,6 +15,8 @@ const CvModal = lazy(() => import("../modal/CvModal"));
 const THEME_STORAGE_KEY = "syskovex-theme-mode";
 
 function MainLayout() {
+  const navbarWrapperRef = useRef(null);
+
   const [themeMode, setThemeMode] = useState(() => {
     if (typeof window === "undefined") return "system";
 
@@ -72,7 +75,7 @@ function MainLayout() {
     try {
       window.localStorage.setItem(THEME_STORAGE_KEY, themeMode);
     } catch {
-      // Ignora errores de acceso a storage
+      // Ignora errores de storage
     }
   }, [themeMode]);
 
@@ -84,6 +87,33 @@ function MainLayout() {
     document.documentElement.setAttribute("data-theme", resolvedTheme);
     document.documentElement.style.colorScheme = resolvedTheme;
   }, [isDarkMode]);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    if (!navbarWrapperRef.current) return;
+
+    const updateNavbarHeight = () => {
+      const height = navbarWrapperRef.current?.offsetHeight ?? 82;
+      document.documentElement.style.setProperty(
+        "--navbar-height",
+        `${height}px`,
+      );
+    };
+
+    updateNavbarHeight();
+
+    const resizeObserver = new ResizeObserver(() => {
+      updateNavbarHeight();
+    });
+
+    resizeObserver.observe(navbarWrapperRef.current);
+    window.addEventListener("resize", updateNavbarHeight);
+
+    return () => {
+      resizeObserver.disconnect();
+      window.removeEventListener("resize", updateNavbarHeight);
+    };
+  }, []);
 
   const toggleTheme = useCallback(() => {
     setThemeMode((currentMode) => {
@@ -130,12 +160,14 @@ function MainLayout() {
         dangerouslySetInnerHTML={{ __html: safeJsonLd }}
       />
 
-      <Navbar
-        isDarkMode={isDarkMode}
-        themeMode={themeMode}
-        toggleTheme={toggleTheme}
-        onOpenCv={openCvModal}
-      />
+      <div ref={navbarWrapperRef}>
+        <Navbar
+          isDarkMode={isDarkMode}
+          themeMode={themeMode}
+          toggleTheme={toggleTheme}
+          onOpenCv={openCvModal}
+        />
+      </div>
 
       <main className="container">
         <Outlet

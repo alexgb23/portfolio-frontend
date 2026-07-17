@@ -100,12 +100,21 @@ function getStatusMeta(status) {
 }
 
 function getLabThemeStyle(lab) {
-  const targetColor = lab?.target_color?.trim();
+  const rawTargetColor = Array.isArray(lab?.target_color)
+    ? lab.target_color[0]
+    : lab?.target_color;
+
+  const normalizedTargetColor =
+    typeof rawTargetColor === "string" ? rawTargetColor.trim() : "";
+
+  const resolvedTargetColor = normalizedTargetColor.startsWith("--")
+    ? `var(${normalizedTargetColor})`
+    : normalizedTargetColor;
 
   return {
-    "--lab-accent": targetColor || "var(--accent, #0891b2)",
-    "--lab-accent-2": targetColor || "var(--accent-2, #0f766e)",
-    "--lab-accent-green": targetColor || "var(--accent-green, #059669)",
+    "--lab-accent": resolvedTargetColor || "var(--accent, #0891b2)",
+    "--lab-accent-2": resolvedTargetColor || "var(--accent-2, #0f766e)",
+    "--lab-accent-green": resolvedTargetColor || "var(--accent-green, #059669)",
     "--lab-accent-glow": "var(--accent-glow, rgba(8, 145, 178, 0.14))",
   };
 }
