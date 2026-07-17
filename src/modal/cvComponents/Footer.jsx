@@ -7,10 +7,13 @@ const Footer = () => {
       <div className={styles.brand}>
         <div className={styles.logoMark}>
           <img
-            src="/logoSyskovex-144.png"
-            alt="Logo Syskovex"
-            className={styles.logoImg}
-          />
+  src="/logoSyskovex-144.webp"
+  alt="Logo Syskovex"
+  className={styles.logoImg}
+  width={72}
+  height={72}
+  fetchPriority="high"
+/>
         </div>
         <span className={styles.logo}>SYSKOVEX</span>
       </div>
