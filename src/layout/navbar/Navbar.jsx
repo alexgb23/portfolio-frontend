@@ -76,7 +76,14 @@ function Navbar({ isDarkMode, themeMode, toggleTheme, onOpenCv }) {
           - navega al inicio
           - también cierra el menú móvil
         */}
-        <Link to="/home" className="nav-logo" onClick={closeMenu}>
+        <Link
+  to="/home"
+  className="nav-logo"
+  onClick={(e) => {
+    closeMenu();
+    e.currentTarget.blur();
+  }}
+>
           <div className="logo-avatar-wrapper">
            <img
   src="/logoPortfolio-144.webp"

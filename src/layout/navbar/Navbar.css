@@ -2,12 +2,6 @@
    NAVBAR — MOBILE FIRST
    ========================================================= */
 
-/*
-  Barra principal fija arriba.
-  - fixed: siempre visible al hacer scroll
-  - inset: equivale a top/right/bottom/left abreviado
-  - backdrop-filter: efecto cristal / blur
-*/
 .navbar {
   position: fixed;
   inset: 0 0 auto;
@@ -18,44 +12,49 @@
   backdrop-filter: blur(18px) saturate(140%);
 }
 
-/*
-  Contenedor interno:
-  - centra el contenido
-  - separa logo, links y acciones
-*/
 .nav-container {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   gap: 1rem;
-  width: min(var(--container), calc(100% - 2rem));
   height: 100%;
+  width: 100%;
+  max-width: var(--container);
   margin: 0 auto;
+  padding-inline: 0 12px;
 }
 
-/*
-  Logo clicable hacia home
-*/
 .nav-logo {
   display: inline-flex;
   align-items: center;
   gap: 0;
   text-decoration: none;
+  flex: 0 0 auto;
+  min-width: 0;
 }
 
-/*
-  Bloque de texto del logo
-*/
+.nav-logo:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+.nav-logo:focus:not(:focus-visible) {
+  outline: none;
+  box-shadow: none;
+}
+
+.nav-logo:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--accent-glow);
+  border-radius: 12px;
+}
+
 .logo-meta {
   display: flex;
   flex-direction: column;
   text-align: center;
-  margin-left: -8px;
+  margin-left: -10px;
 }
 
-/*
-  Avatar circular del logo
-*/
 .logo-avatar-wrapper {
   display: block;
   width: 72px;
@@ -63,17 +62,14 @@
   flex-shrink: 0;
   line-height: 0;
 }
-
 .logo-avatar {
   display: block;
   width: 72px;
   height: 72px;
   object-fit: contain;
+  object-position: left center;
 }
 
-/*
-  Texto principal del logo
-*/
 .logo-text {
   color: var(--text-main);
   font-size: 1.25rem;
@@ -83,9 +79,6 @@
   white-space: nowrap;
 }
 
-/*
-  Subtexto decorativo del logo
-*/
 .logo-subtext {
   position: relative;
   width: 100%;
@@ -112,21 +105,14 @@
   color: var(--accent);
 }
 
-/*
-  Acciones de la derecha:
-  - botón tema
-  - CTA contacto desktop
-  - menú móvil
-*/
 .nav-actions {
   display: flex;
   align-items: center;
   gap: 0.75rem;
+  flex: 0 0 auto;
+  margin-left: auto;
 }
 
-/*
-  Botón hamburguesa móvil
-*/
 .mobile-menu-btn {
   display: inline-flex;
   align-items: center;
@@ -137,11 +123,9 @@
   color: var(--text-main);
   font-size: 1.4rem;
   cursor: pointer;
+  flex-shrink: 0;
 }
 
-/*
-  Botón de cambio de tema
-*/
 .theme-toggle {
   display: inline-flex;
   align-items: center;
@@ -154,6 +138,7 @@
   color: var(--text-main);
   box-shadow: var(--shadow-sm);
   backdrop-filter: blur(10px);
+  flex-shrink: 0;
   transition:
     transform 0.25s ease,
     border-color 0.25s ease,
@@ -166,13 +151,9 @@
   box-shadow: 0 0 0 4px var(--accent-glow);
 }
 
-/*
-  Menú de navegación en móvil:
-  oculto por defecto y aparece al activar .active
-*/
 .nav-links {
-   top: var(--navbar-height);
   position: fixed;
+  top: var(--navbar-height);
   left: 0;
   z-index: 999;
   display: flex;
@@ -180,6 +161,7 @@
   align-items: flex-start;
   gap: 1.5rem;
   width: 100%;
+  min-width: 0;
   padding: 1.5rem;
   border-bottom: 1px solid var(--border);
   background: var(--bg-card);
@@ -198,9 +180,6 @@
   transform: translateY(0);
 }
 
-/*
-  Estilo base de TODOS los links del navbar
-*/
 .nav-links a {
   position: relative;
   width: 100%;
@@ -215,11 +194,6 @@
     transform 0.2s ease;
 }
 
-/*
-  Esta barra inferior NO es underline nativo.
-  Es una línea decorativa creada con ::after.
-  Por eso text-decoration: none no te la quitaba.
-*/
 .nav-links a::after {
   content: "";
   position: absolute;
@@ -242,9 +216,6 @@
   width: 60%;
 }
 
-/*
-  CTA principal de contacto en desktop
-*/
 .nav-cta {
   display: none;
   align-items: center;
@@ -256,6 +227,8 @@
   font-weight: 700;
   text-decoration: none;
   box-shadow: var(--shadow-md);
+  white-space: nowrap;
+  flex-shrink: 0;
   transition:
     transform 0.25s ease,
     box-shadow 0.25s ease,
@@ -280,13 +253,6 @@
    LINK "VER CV"
    ========================================================= */
 
-/*
-  Este es el link especial del CV dentro de nav-links.
-  Queremos que:
-  - se vea como item del navbar
-  - tenga icono
-  - NO muestre la línea decorativa inferior
-*/
 .nav-cv-inline {
   display: inline-flex;
   align-items: center;
@@ -295,10 +261,6 @@
   text-decoration: none;
 }
 
-/*
-  Cubrimos todos los estados del enlace
-  para evitar color azul o subrayado nativo.
-*/
 .nav-cv-inline:link,
 .nav-cv-inline:visited,
 .nav-cv-inline:hover,
@@ -308,11 +270,6 @@
   text-decoration: none;
 }
 
-/*
-  AQUÍ está la corrección clave:
-  anulamos la línea decorativa global del navbar
-  solo para este link.
-*/
 .nav-cv-inline::after,
 .nav-cv-inline:hover::after,
 .nav-cv-inline.active::after {
@@ -321,9 +278,6 @@
   content: none;
 }
 
-/*
-  Icono de descarga
-*/
 .nav-cv-inline svg {
   font-size: 0.85rem;
   opacity: 1;
@@ -334,23 +288,12 @@
     color 0.2s ease;
 }
 
-/*
-  Hover del link de CV
-*/
 .nav-cv-inline:hover svg {
   color: var(--accent-2);
   opacity: 1;
   transform: translateY(1px);
 }
 
-.nav-cv-inline:hover svg {
-  opacity: 1;
-  transform: translateY(1px);
-}
-
-/*
-  Focus accesible sin subrayado feo
-*/
 .nav-cv-inline:focus-visible {
   outline: none;
   box-shadow: 0 0 0 3px var(--accent-glow);
@@ -362,18 +305,9 @@
    ========================================================= */
 
 @media (width >= 721px) {
-   .nav-container {
-    width: min(var(--container), calc(100% - 2.5rem));
-  }
-
   .nav-links {
     padding: 1.875rem 1.5rem;
     gap: 1.875rem;
-  }
-
-  .nav-cta {
-    display: inline-flex;
-    margin-left: 0.75rem;
   }
 }
 
@@ -382,17 +316,26 @@
    ========================================================= */
 
 @media (width >= 961px) {
-   /*
-    En desktop el menú deja de ser panel móvil
-    y pasa a estar inline dentro de la barra.
-  */
+  .nav-container {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 1rem;
+    height: 100%;
+  }
+
+  .nav-logo {
+    justify-self: start;
+  }
+
   .nav-links {
     position: static;
     display: flex;
     flex-direction: row;
     align-items: center;
-    gap: 2.625rem;
-    width: auto;
+    justify-content: center;
+    gap: 2.25rem;
+    width: 100%;
     padding: 0;
     border-bottom: 0;
     background: transparent;
@@ -400,25 +343,26 @@
     opacity: 1;
     pointer-events: auto;
     transform: none;
+    overflow: visible;
   }
 
   .nav-links a {
     width: auto;
     padding: 0;
     font-size: 0.94rem;
+    white-space: nowrap;
   }
 
   .nav-actions {
-    gap: 1.125rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-left: 0;
+    justify-self: end;
   }
 
   .mobile-menu-btn {
     display: none;
-  }
-
-  .nav-cta {
-    display: inline-flex;
-    margin-left: 0.75rem;
   }
 
   .nav-contact-mobile {

@@ -3,6 +3,7 @@
 ========================================================= */
 .laboratorySection {
   overflow: hidden;
+  margin-top: clamp(-80px, -8vw, -40px);
 }
 
 /* =========================================================
@@ -724,12 +725,6 @@
    DESKTOP GRANDE
 ========================================================= */
 @media (min-width: 1024px) {
-  .laboratorySection {
-    margin-top: clamp(-110px, -8vw, -150px);
-    position: relative;
-    z-index: 2;
-  }
-
   .featuredRow {
     grid-template-columns: minmax(0, 1fr) 54px;
     gap: 1rem;

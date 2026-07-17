@@ -92,7 +92,7 @@ export default function LaboratoryHero() {
                 rel="noopener noreferrer"
                 className={styles.cta}
               >
-                <span>Explorar laboratorio completo</span>
+                <span>Explorar laboratorio</span>
                 <ArrowRight size={18} />
               </a>
 
