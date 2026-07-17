@@ -7,6 +7,8 @@ const initialValue = {
   stats: {},
 };
 
+const IMAGE_SCALES = [480, 768, 960];
+
 function normalizeArray(value) {
   return Array.isArray(value) ? value : [];
 }
@@ -20,6 +22,61 @@ function normalizeFirstString(value) {
   }
 
   return typeof value === "string" ? value.trim() : "";
+}
+
+function buildResponsiveSources(basePath, extension) {
+  const cleanBase =
+    typeof basePath === "string" && basePath.trim().length > 0
+      ? basePath.trim()
+      : "";
+
+  if (!cleanBase) {
+    return {
+      src: "",
+      srcSet: "",
+      byScale: {},
+    };
+  }
+
+  const byScale = IMAGE_SCALES.reduce((acc, size) => {
+    acc[size] = `${cleanBase}-${size}.${extension}`;
+    return acc;
+  }, {});
+
+  const srcSet = IMAGE_SCALES.map((size) => `${byScale[size]} ${size}w`).join(", ");
+
+  return {
+    src: byScale[960] || byScale[768] || byScale[480] || "",
+    srcSet,
+    byScale,
+  };
+}
+
+function buildLaboratoryBackgrounds(item) {
+  const darkAvifBase = normalizeFirstString(item?.fondo_tarjeta_dark?.[0]);
+  const darkWebpBase = normalizeFirstString(item?.fondo_tarjeta_dark?.[1]);
+
+  const lightAvifBase = normalizeFirstString(item?.fondo_tarjeta_light?.[0]);
+  const lightWebpBase = normalizeFirstString(item?.fondo_tarjeta_light?.[1]);
+
+  return {
+    dark: {
+      avif: buildResponsiveSources(darkAvifBase, "avif"),
+      webp: buildResponsiveSources(darkWebpBase, "webp"),
+      fallback:
+        buildResponsiveSources(darkWebpBase, "webp").src ||
+        buildResponsiveSources(darkAvifBase, "avif").src ||
+        "",
+    },
+    light: {
+      avif: buildResponsiveSources(lightAvifBase, "avif"),
+      webp: buildResponsiveSources(lightWebpBase, "webp"),
+      fallback:
+        buildResponsiveSources(lightWebpBase, "webp").src ||
+        buildResponsiveSources(lightAvifBase, "avif").src ||
+        "",
+    },
+  };
 }
 
 function normalizeLaboratoryItems(payload) {
@@ -43,6 +100,7 @@ function normalizeLaboratoryItems(payload) {
     })),
     projects_count: Number(item?.projects_count) || 0,
     documentation_count: Number(item?.documentacion_count) || 0,
+    background: buildLaboratoryBackgrounds(item),
   }));
 }
 
@@ -115,7 +173,6 @@ export default function useLaboratoryHome(enabled = true) {
   );
 
   const items = useMemo(() => normalizeLaboratoryItems(data), [data]);
-
   const featuredItems = useMemo(() => items, [items]);
 
   const stats = useMemo(() => {

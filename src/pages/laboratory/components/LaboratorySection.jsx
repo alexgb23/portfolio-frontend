@@ -100,12 +100,8 @@ function getStatusMeta(status) {
 }
 
 function getLabThemeStyle(lab) {
-  const rawTargetColor = Array.isArray(lab?.target_color)
-    ? lab.target_color[0]
-    : lab?.target_color;
-
   const normalizedTargetColor =
-    typeof rawTargetColor === "string" ? rawTargetColor.trim() : "";
+    typeof lab?.target_color === "string" ? lab.target_color.trim() : "";
 
   const resolvedTargetColor = normalizedTargetColor.startsWith("--")
     ? `var(${normalizedTargetColor})`
@@ -145,12 +141,6 @@ function renderStatIcon(type) {
         </svg>
       );
     case "docs":
-      return (
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <rect x="6.5" y="3" width="11" height="18" rx="2" />
-          <path d="M9.5 7.5h5M9.5 11h5M9.5 14.5h5" />
-        </svg>
-      );
     default:
       return (
         <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -191,6 +181,67 @@ function renderLabGlyph(title = "") {
       <path d="M9.5 10.5c.45-.9 1.2-1.35 2.1-1.35 1.05 0 1.9.6 2.35 1.5" />
       <path d="M9.4 13.4c.55.75 1.45 1.2 2.6 1.2s2.05-.45 2.6-1.2" />
     </svg>
+  );
+}
+
+function LabCardBackground({ lab, title }) {
+  const dark = lab?.background?.dark;
+  const light = lab?.background?.light;
+
+  return (
+    <>
+      <picture className={`${styles.labBackgroundPicture} ${styles.bgLight}`} aria-hidden="true">
+        {light?.avif?.srcSet ? (
+          <source
+            type="image/avif"
+            srcSet={light.avif.srcSet}
+            sizes="(max-width: 480px) 100vw, (max-width: 768px) 50vw, 33vw"
+          />
+        ) : null}
+        {light?.webp?.srcSet ? (
+          <source
+            type="image/webp"
+            srcSet={light.webp.srcSet}
+            sizes="(max-width: 480px) 100vw, (max-width: 768px) 50vw, 33vw"
+          />
+        ) : null}
+        {light?.fallback ? (
+          <img
+            src={light.fallback}
+            alt=""
+            loading="lazy"
+            decoding="async"
+          />
+        ) : null}
+      </picture>
+
+      <picture className={`${styles.labBackgroundPicture} ${styles.bgDark}`} aria-hidden="true">
+        {dark?.avif?.srcSet ? (
+          <source
+            type="image/avif"
+            srcSet={dark.avif.srcSet}
+            sizes="(max-width: 480px) 100vw, (max-width: 768px) 50vw, 33vw"
+          />
+        ) : null}
+        {dark?.webp?.srcSet ? (
+          <source
+            type="image/webp"
+            srcSet={dark.webp.srcSet}
+            sizes="(max-width: 480px) 100vw, (max-width: 768px) 50vw, 33vw"
+          />
+        ) : null}
+        {dark?.fallback ? (
+          <img
+            src={dark.fallback}
+            alt=""
+            loading="lazy"
+            decoding="async"
+          />
+        ) : null}
+      </picture>
+
+      <span className={styles.labBackgroundOverlay} aria-hidden="true" />
+    </>
   );
 }
 
@@ -251,52 +302,54 @@ export default function LaboratorySection({
 
                 return (
                   <article
-  key={lab.id ?? index}
-  className={styles.labCard}
-  style={getLabThemeStyle(lab)}
->
-  <header className={styles.labHeader}>
-    <h3>{title}</h3>
+                    key={lab.id ?? index}
+                    className={styles.labCard}
+                    style={getLabThemeStyle(lab)}
+                  >
+                    <LabCardBackground lab={lab} title={title} />
 
-    <span className={`${styles.status} ${styles[statusMeta.className]}`}>
-      <span className={styles.statusDot} />
-      {statusMeta.label}
-    </span>
-  </header>
+                    <header className={styles.labHeader}>
+                      <h3>{title}</h3>
 
-  <div className={styles.labMain}>
-    <aside className={styles.labAside}>
-      <div className={styles.labHex}>
-        <span className={styles.hexOuter} />
-        <span className={styles.hexInner} />
-        <span className={styles.hexLines} />
-        <span className={styles.hexHalo} />
-        <span className={styles.hexShadow} />
-        <span className={styles.hexGlow} />
-        <span className={styles.labHexIcon}>
-          {renderLabGlyph(title)}
-        </span>
-      </div>
-    </aside>
+                      <span className={`${styles.status} ${styles[statusMeta.className]}`}>
+                        <span className={styles.statusDot} />
+                        {statusMeta.label}
+                      </span>
+                    </header>
 
-    <div className={styles.labContent}>
-      <p>{summary}</p>
-    </div>
-  </div>
+                    <div className={styles.labMain}>
+                      <aside className={styles.labAside}>
+                        <div className={styles.labHex}>
+                          <span className={styles.hexOuter} />
+                          <span className={styles.hexInner} />
+                          <span className={styles.hexLines} />
+                          <span className={styles.hexHalo} />
+                          <span className={styles.hexShadow} />
+                          <span className={styles.hexGlow} />
+                          <span className={styles.labHexIcon}>
+                            {renderLabGlyph(title)}
+                          </span>
+                        </div>
+                      </aside>
 
-  <footer className={styles.labFooter}>
-    <a href={getLabHref(lab)} className={styles.detailButton}>
-      Ver detalles
-    </a>
+                      <div className={styles.labContent}>
+                        <p>{summary}</p>
+                      </div>
+                    </div>
 
-    <span className={styles.countBadge}>
-      Proyectos relacionados{" "}
-      <strong className={styles.countValue}>
-        {lab?.projects_count ?? 0}
-      </strong>
-    </span>
-  </footer>
-</article>
+                    <footer className={styles.labFooter}>
+                      <a href={getLabHref(lab)} className={styles.detailButton}>
+                        Ver detalles
+                      </a>
+
+                      <span className={styles.countBadge}>
+                        Proyectos relacionados{" "}
+                        <strong className={styles.countValue}>
+                          {lab?.projects_count ?? 0}
+                        </strong>
+                      </span>
+                    </footer>
+                  </article>
                 );
               })}
             </div>
@@ -306,9 +359,7 @@ export default function LaboratorySection({
         <div className={styles.bottomGrid}>
           <article className={styles.panel}>
             <div className={styles.panelHead}>
-              <span className={styles.panelTitle}>
-                Mi laboratorio en cifras
-              </span>
+              <span className={styles.panelTitle}>Mi laboratorio en cifras</span>
             </div>
 
             <div className={styles.statsGrid}>
@@ -317,15 +368,11 @@ export default function LaboratorySection({
                   key={item.id}
                   className={`${styles.statCard} ${
                     styles[
-                      `statTone${item.tone.charAt(0).toUpperCase()}${item.tone.slice(
-                        1,
-                      )}`
+                      `statTone${item.tone.charAt(0).toUpperCase()}${item.tone.slice(1)}`
                     ]
                   }`}
                 >
-                  <div className={styles.statIcon}>
-                    {renderStatIcon(item.icon)}
-                  </div>
+                  <div className={styles.statIcon}>{renderStatIcon(item.icon)}</div>
 
                   <div className={styles.statContent}>
                     <strong>{getStatDisplayValue(item.value, item.id)}</strong>
@@ -345,9 +392,7 @@ export default function LaboratorySection({
               {FIXED_TECHNOLOGIES.map((tech, index) => (
                 <div
                   key={tech.id}
-                  className={`${styles.techCard} ${
-                    styles[`techTone${(index % 6) + 1}`]
-                  }`}
+                  className={`${styles.techCard} ${styles[`techTone${(index % 6) + 1}`]}`}
                 >
                   <div className={styles.techLogo}>
                     <img
@@ -366,9 +411,7 @@ export default function LaboratorySection({
                 <div
                   className={`${styles.techCard} ${styles.techCardMore} ${styles.techToneMore}`}
                 >
-                  <div className={styles.techMoreValue}>
-                    + {extraTechnologiesCount}
-                  </div>
+                  <div className={styles.techMoreValue}>+ {extraTechnologiesCount}</div>
                   <span>Más</span>
                 </div>
               )}
