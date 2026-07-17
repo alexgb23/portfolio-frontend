@@ -3,51 +3,24 @@
 }
 
 /* =========================================================
-   VARIABLES LOCALES DEL FOOTER
-   Heredan del tema global, pero añadimos las rutas de imagen
-   ========================================================= */
-
-:global(:root) {
-  --lab-circuit-image: url("/imgFondoLaboratorio/syskovex-circuit-backgroundDark.webp");
-}
-
-/* Imagen específica para light mode */
-:global(:root[data-theme="light"]) {
-  --lab-circuit-image: url("/imgFondoLaboratorio/syskovex-circuit-backgroundLight.webp");
-}
-
-/* Imagen específica para dark mode */
-:global(:root[data-theme="dark"]) {
-  --lab-circuit-image: url("/imgFondoLaboratorio/syskovex-circuit-backgroundDark.webp");
-}
-
-/* Fallback mientras aún no se ha pintado el data-theme */
-:global(:root:not([data-theme])) {
-  --lab-circuit-image: url("/imgFondoLaboratorio/syskovex-circuit-backgroundDark.webp");
-}
-
-/* =========================================================
    TARJETA PRINCIPAL
-   ========================================================= */
+========================================================= */
 
 .card {
   position: relative;
   overflow: hidden;
   border-radius: 18px;
-
   border: 1px solid var(--lab-cta-border);
   background: linear-gradient(
     180deg,
     var(--lab-panel-bg-start),
     var(--lab-panel-bg-end)
   );
-
   box-shadow:
     inset 0 0 0 1px rgba(255, 255, 255, 0.03),
     var(--lab-panel-shadow);
 }
 
-/* Línea superior sutil */
 .card::before {
   content: "";
   position: absolute;
@@ -56,6 +29,7 @@
   width: 100%;
   height: 1px;
   pointer-events: none;
+  z-index: 3;
   background: linear-gradient(
     90deg,
     transparent,
@@ -65,7 +39,6 @@
   opacity: 0.85;
 }
 
-/* Glow flotante decorativo */
 .card::after {
   content: "";
   position: absolute;
@@ -75,6 +48,7 @@
   top: -160px;
   border-radius: 50%;
   pointer-events: none;
+  z-index: 2;
   background: radial-gradient(
     circle,
     color-mix(in srgb, var(--accent) 22%, transparent),
@@ -85,25 +59,25 @@
 
 /* =========================================================
    CAPAS DE FONDO
-   ========================================================= */
+========================================================= */
 
 .background {
   position: absolute;
   inset: 0;
   overflow: hidden;
   pointer-events: none;
+  z-index: 0;
 }
 
-/* Todas las capas se apilan dentro de la tarjeta */
 .gradient,
-.circuit,
+.circuitLayer,
 .glow {
   position: absolute;
   inset: 0;
 }
 
-/* Velo general + tintes por esquinas */
 .gradient {
+  z-index: 0;
   background:
     linear-gradient(
       rgba(var(--bg-app-rgb), 0.22),
@@ -121,15 +95,55 @@
     );
 }
 
-/* Imagen del circuito: cambia sola según el tema */
-.circuit {
-  background: var(--lab-circuit-image) center / cover no-repeat;
-  opacity: 0.30;
+.circuitLayer {
+  z-index: 1;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  opacity: 0;
+  visibility: hidden;
   transform: scale(1.02);
   animation: circuitFloat 18s ease-in-out infinite;
+  transition: opacity 180ms ease, visibility 180ms ease;
+  will-change: opacity;
 }
 
-/* Glow extra para dar profundidad */
+.circuitLight {
+  background-image: url("/imgFondoLaboratorio/syskovex-circuit-backgroundLight.webp");
+  opacity: 1;
+  visibility: visible;
+}
+
+.circuitDark {
+  background-image: url("/imgFondoLaboratorio/syskovex-circuit-backgroundDark.webp");
+}
+
+:global([data-theme="dark"]) .circuitLight {
+  opacity: 0;
+  visibility: hidden;
+}
+
+:global([data-theme="dark"]) .circuitDark {
+  opacity: 0.3;
+  visibility: visible;
+}
+
+:global([data-theme="light"]) .circuitLight,
+:global(:root:not([data-theme])) .circuitLight {
+  opacity: 0.3;
+  visibility: visible;
+}
+
+:global([data-theme="light"]) .circuitDark,
+:global(:root:not([data-theme])) .circuitDark {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.glow {
+  z-index: 2;
+}
+
 .glow::before {
   content: "";
   position: absolute;
@@ -163,7 +177,7 @@
 
 /* =========================================================
    CONTENIDO
-   ========================================================= */
+========================================================= */
 
 .content {
   position: relative;
@@ -196,34 +210,28 @@
 
 /* =========================================================
    CTA
-   ========================================================= */
+========================================================= */
 
 .cta {
   position: relative;
   overflow: hidden;
-
   display: flex;
   align-items: center;
   gap: 18px;
   min-width: 470px;
   padding: 20px 24px;
   border-radius: 14px;
-
   text-decoration: none;
   backdrop-filter: blur(8px);
-
   border: 1px solid var(--lab-cta-border);
-  background:
-    linear-gradient(
-      180deg,
-      var(--lab-cta-bg-start),
-      var(--lab-cta-bg-end)
-    );
-
+  background: linear-gradient(
+    180deg,
+    var(--lab-cta-bg-start),
+    var(--lab-cta-bg-end)
+  );
   box-shadow:
     inset 0 0 0 1px rgba(255, 255, 255, 0.03),
     0 0 0 8px var(--lab-cta-ring);
-
   transition:
     transform 0.35s ease,
     border-color 0.35s ease,
@@ -231,7 +239,6 @@
     box-shadow 0.35s ease;
 }
 
-/* Brillo que recorre el botón */
 .cta::after {
   content: "";
   position: absolute;
@@ -272,16 +279,13 @@
   border-radius: 50%;
   display: grid;
   place-items: center;
-
   color: var(--lab-accent-mid);
   border: 1px solid color-mix(in srgb, var(--lab-accent-mid) 40%, transparent);
-  background:
-    radial-gradient(
-      circle,
-      color-mix(in srgb, var(--accent-2) 28%, var(--bg-elevated)),
-      color-mix(in srgb, var(--bg-app) 70%, black 30%)
-    );
-
+  background: radial-gradient(
+    circle,
+    color-mix(in srgb, var(--accent-2) 28%, var(--bg-elevated)),
+    color-mix(in srgb, var(--bg-app) 70%, black 30%)
+  );
   box-shadow:
     inset 0 0 12px rgba(255, 255, 255, 0.05),
     0 0 25px color-mix(in srgb, var(--accent) 20%, transparent);
@@ -320,7 +324,7 @@
 
 /* =========================================================
    ANIMACIONES
-   ========================================================= */
+========================================================= */
 
 @keyframes floatGlow {
   0% {
@@ -352,7 +356,7 @@
 
 /* =========================================================
    RESPONSIVE
-   ========================================================= */
+========================================================= */
 
 @media (max-width: 950px) {
   .content {
@@ -389,7 +393,7 @@
 
   .cta {
     gap: 14px;
-    padding: 18px 18px;
+    padding: 18px;
   }
 
   .iconCircle {
@@ -403,5 +407,24 @@
 
   .subtitle {
     font-size: 0.84rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card::after,
+  .circuitLayer,
+  .cta,
+  .cta::after,
+  .arrow {
+    animation: none;
+    transition: none;
+  }
+
+  .cta:hover {
+    transform: none;
+  }
+
+  .cta:hover .arrow {
+    transform: none;
   }
 }

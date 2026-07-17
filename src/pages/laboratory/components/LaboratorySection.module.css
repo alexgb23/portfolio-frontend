@@ -7,6 +7,50 @@
 }
 
 /* =========================================================
+   TOKENS DERIVADOS DE COLOR
+========================================================= */
+.laboratorySection,
+.labCard,
+.panel,
+.statCard,
+.techCard,
+.arrowButton {
+  --lab-accent: var(--accent, #0891b2);
+
+  --lab-accent-soft: color-mix(in srgb, var(--lab-accent) 22%, white 78%);
+  --lab-accent-light: color-mix(in srgb, var(--lab-accent) 38%, white 62%);
+  --lab-accent-bright: color-mix(in srgb, var(--lab-accent) 68%, white 32%);
+  --lab-accent-mid: color-mix(in srgb, var(--lab-accent) 84%, white 16%);
+  --lab-accent-strong: color-mix(in srgb, var(--lab-accent) 92%, black 8%);
+  --lab-accent-deep: color-mix(in srgb, var(--lab-accent) 72%, black 28%);
+
+  --lab-gradient-start: color-mix(in srgb, var(--lab-accent) 62%, white 38%);
+  --lab-gradient-mid: color-mix(in srgb, var(--lab-accent) 88%, white 12%);
+  --lab-gradient-end: color-mix(in srgb, var(--lab-accent) 76%, black 24%);
+
+  --lab-border-soft: color-mix(
+    in srgb,
+    var(--lab-accent) 18%,
+    rgba(255, 255, 255, 0.16) 82%
+  );
+  --lab-border-strong: color-mix(
+    in srgb,
+    var(--lab-accent) 36%,
+    rgba(255, 255, 255, 0.20) 64%
+  );
+
+  --lab-surface-tint: color-mix(in srgb, var(--lab-accent) 10%, transparent);
+  --lab-surface-tint-strong: color-mix(in srgb, var(--lab-accent) 16%, transparent);
+
+  --lab-glow: color-mix(in srgb, var(--lab-accent) 24%, transparent);
+  --lab-glow-strong: color-mix(in srgb, var(--lab-accent) 38%, transparent);
+
+  --lab-text-accent: color-mix(in srgb, var(--lab-accent) 88%, white 12%);
+  --lab-badge-text: color-mix(in srgb, var(--text-soft) 74%, var(--lab-accent) 26%);
+  --lab-button-text: color-mix(in srgb, var(--lab-accent) 8%, #041318 92%);
+}
+
+/* =========================================================
    CABECERA DEL BLOQUE
 ========================================================= */
 .block {
@@ -29,11 +73,11 @@
   border-radius: 999px;
   background: linear-gradient(
     90deg,
-    var(--lab-accent-start, var(--accent, #0891b2)),
-    var(--lab-accent-mid, var(--accent, #0891b2)),
-    var(--lab-accent-end, var(--accent-2, #0f766e))
+    var(--lab-gradient-start),
+    var(--lab-gradient-mid),
+    var(--lab-gradient-end)
   );
-  box-shadow: 0 0 16px color-mix(in srgb, var(--lab-accent, var(--accent, #0891b2)) 24%, transparent);
+  box-shadow: 0 0 16px var(--lab-glow);
 }
 
 .blockKicker,
@@ -43,7 +87,7 @@
   line-height: 1;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: color-mix(in srgb, var(--lab-accent-mid, var(--accent, #0891b2)) 78%, var(--text-main) 22%);
+  color: color-mix(in srgb, var(--lab-gradient-mid) 78%, var(--text-main) 22%);
 }
 
 /* =========================================================
@@ -62,10 +106,14 @@
   grid-auto-columns: 100%;
   gap: 0.9rem;
   overflow-x: auto;
+  overflow-y: visible;
   padding-bottom: 0.25rem;
   scroll-snap-type: x mandatory;
   scrollbar-width: none;
   align-items: stretch;
+  background: transparent;
+  box-shadow: none;
+  border-radius: 16px;
 }
 
 .featuredScroller::-webkit-scrollbar {
@@ -81,11 +129,7 @@
   isolation: isolate;
   scroll-snap-align: start;
   border-radius: 22px;
-  border: 1px solid color-mix(
-    in srgb,
-    var(--lab-accent, var(--accent, #0891b2)) 18%,
-    rgba(255, 255, 255, 0.18)
-  );
+  border: 1px solid var(--lab-border-soft);
   background:
     linear-gradient(
       180deg,
@@ -94,12 +138,12 @@
     ),
     linear-gradient(
       180deg,
-      color-mix(in srgb, var(--bg-card, #0c1220) 88%, transparent) 0%,
-      color-mix(in srgb, var(--bg-card-2, #0a101b) 92%, transparent) 100%
+      color-mix(in srgb, var(--bg-card, #0c1220) 90%, var(--lab-surface-tint) 10%) 0%,
+      color-mix(in srgb, var(--bg-card-2, #0a101b) 94%, var(--lab-surface-tint-strong) 6%) 100%
     );
   box-shadow:
-    0 20px 50px rgba(0, 0, 0, 0.24),
-    0 6px 18px rgba(0, 0, 0, 0.14),
+    0 8px 18px rgba(0, 0, 0, 0.16),
+    0 3px 8px rgba(0, 0, 0, 0.10),
     inset 0 1px 0 rgba(255, 255, 255, 0.08);
   backdrop-filter: blur(18px) saturate(1.08);
   -webkit-backdrop-filter: blur(18px) saturate(1.08);
@@ -116,15 +160,15 @@
   inset: 0;
   border-radius: inherit;
   pointer-events: none;
-  z-index: 1;
+  z-index: 3;
   background:
     linear-gradient(
       145deg,
-      rgba(255, 255, 255, 0.20) 0%,
+      rgba(255, 255, 255, 0.2) 0%,
       rgba(255, 255, 255, 0.08) 12%,
       transparent 32%,
       transparent 68%,
-      color-mix(in srgb, var(--lab-accent, var(--accent, #0891b2)) 20%, transparent) 100%
+      color-mix(in srgb, var(--lab-accent) 20%, transparent) 100%
     );
   opacity: 0.9;
 }
@@ -138,19 +182,19 @@
   border-radius: 999px;
   background: radial-gradient(
     circle,
-    color-mix(in srgb, var(--lab-accent, var(--accent, #0891b2)) 18%, transparent) 0%,
-    color-mix(in srgb, var(--lab-accent, var(--accent, #0891b2)) 10%, transparent) 28%,
+    color-mix(in srgb, var(--lab-accent) 18%, transparent) 0%,
+    color-mix(in srgb, var(--lab-accent) 10%, transparent) 28%,
     transparent 70%
   );
   filter: blur(16px);
   opacity: 0.85;
   pointer-events: none;
-  z-index: 1;
+  z-index: 2;
 }
 
 .labCard > *:not(.labBackgroundPicture):not(.labBackgroundOverlay) {
   position: relative;
-  z-index: 3;
+  z-index: 4;
 }
 
 /* =========================================================
@@ -161,6 +205,8 @@
   inset: 0;
   z-index: 0;
   pointer-events: none;
+  transition: opacity 180ms ease, visibility 180ms ease;
+  will-change: opacity;
 }
 
 .labBackgroundPicture img {
@@ -175,32 +221,36 @@
 .labBackgroundOverlay {
   position: absolute;
   inset: 0;
-  z-index: 2;
+  z-index: 1;
   pointer-events: none;
   background:
     linear-gradient(
       180deg,
-      rgba(6, 10, 18, 0.02) 0%,
-      rgba(6, 10, 18, 0.03) 34%,
-      rgba(6, 10, 18, 0.07) 72%,
-      rgba(6, 10, 18, 0.12) 100%
+      rgba(6, 10, 18, 0.04) 0%,
+      rgba(6, 10, 18, 0.06) 34%,
+      rgba(6, 10, 18, 0.10) 72%,
+      rgba(6, 10, 18, 0.16) 100%
     );
 }
 
 .bgLight {
-  display: block;
+  opacity: 1;
+  visibility: visible;
 }
 
 .bgDark {
-  display: none;
+  opacity: 0;
+  visibility: hidden;
 }
 
 :global([data-theme="dark"]) .bgLight {
-  display: none;
+  opacity: 0;
+  visibility: hidden;
 }
 
 :global([data-theme="dark"]) .bgDark {
-  display: block;
+  opacity: 1;
+  visibility: visible;
 }
 
 /* =========================================================
@@ -223,23 +273,25 @@
   line-height: 1.06;
   letter-spacing: -0.03em;
   font-weight: 800;
-  color: var(--lab-accent, var(--accent, #0891b2));
-  text-shadow: 0 1px 12px color-mix(in srgb, var(--lab-accent, var(--accent, #0891b2)) 12%, transparent);
+  color: var(--lab-text-accent);
+  -webkit-text-stroke: 0.75px rgba(8, 12, 18, 0.329);
+  text-shadow: 0 1px 12px var(--lab-glow);
 }
 
 @supports ((-webkit-background-clip: text) or (background-clip: text)) {
   .labHeader h3 {
     background-image: linear-gradient(
       135deg,
-      color-mix(in srgb, var(--lab-accent, var(--accent, #0891b2)) 76%, white 24%) 0%,
-      var(--lab-accent, var(--accent, #0891b2)) 52%,
-      color-mix(in srgb, var(--lab-accent, var(--accent, #0891b2)) 72%, var(--accent-2, #0f766e) 28%) 100%
+      var(--lab-gradient-start) 0%,
+      var(--lab-gradient-mid) 52%,
+      var(--lab-gradient-end) 100%
     );
     background-size: 100% 100%;
     background-repeat: no-repeat;
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
+    color: transparent;
   }
 }
 
@@ -250,22 +302,18 @@
   min-height: 30px;
   padding: 0.34rem 0.62rem;
   border-radius: 999px;
-  border: 1px solid color-mix(
-    in srgb,
-    var(--lab-accent, var(--accent, #0891b2)) 14%,
-    rgba(255,255,255,0.16)
-  );
+  border: 1px solid var(--lab-border-soft);
   background:
     linear-gradient(
       180deg,
-      rgba(255,255,255,0.08) 0%,
-      rgba(255,255,255,0.03) 100%
+      rgba(255, 255, 255, 0.08) 0%,
+      rgba(255, 255, 255, 0.03) 100%
     ),
-    color-mix(in srgb, var(--lab-accent, var(--accent, #0891b2)) 6%, transparent);
+    color-mix(in srgb, var(--lab-accent) 6%, transparent);
   color: var(--text-soft);
   font-size: clamp(0.72rem, 0.7rem + 0.14vw, 0.83rem);
   white-space: nowrap;
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.06);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
 }
 
 .statusDot {
@@ -345,12 +393,12 @@
 .hexOuter {
   background: linear-gradient(
     180deg,
-    color-mix(in srgb, var(--lab-accent, var(--accent, #0891b2)) 78%, white 22%),
-    color-mix(in srgb, var(--lab-accent, var(--accent, #0891b2)) 74%, var(--accent-2, #0f766e) 26%)
+    var(--lab-gradient-start),
+    var(--lab-gradient-end)
   );
   filter:
-    drop-shadow(0 0 6px color-mix(in srgb, var(--lab-accent, var(--accent, #0891b2)) 22%, transparent))
-    drop-shadow(0 0 14px color-mix(in srgb, var(--lab-accent, var(--accent, #0891b2)) 10%, transparent));
+    drop-shadow(0 0 6px var(--lab-glow))
+    drop-shadow(0 0 14px var(--lab-glow-strong));
 }
 
 .hexInner {
@@ -358,13 +406,13 @@
   background:
     linear-gradient(
       180deg,
-      rgba(255,255,255,0.08) 0%,
-      rgba(255,255,255,0.02) 100%
+      rgba(255, 255, 255, 0.08) 0%,
+      rgba(255, 255, 255, 0.02) 100%
     ),
     linear-gradient(
       180deg,
-      color-mix(in srgb, var(--bg-card, #0c1220) 76%, var(--lab-accent, var(--accent, #0891b2)) 24%) 0%,
-      color-mix(in srgb, var(--bg-card-2, #09101a) 86%, var(--lab-accent, var(--accent, #0891b2)) 14%) 100%
+      color-mix(in srgb, var(--bg-card, #0c1220) 76%, var(--lab-accent) 24%) 0%,
+      color-mix(in srgb, var(--bg-card-2, #09101a) 86%, var(--lab-accent) 14%) 100%
     );
 }
 
@@ -374,13 +422,13 @@
     linear-gradient(
       45deg,
       transparent 49.2%,
-      color-mix(in srgb, var(--lab-accent, var(--accent, #0891b2)) 8%, transparent) 50%,
+      color-mix(in srgb, var(--lab-accent) 8%, transparent) 50%,
       transparent 50.8%
     ),
     linear-gradient(
       -45deg,
       transparent 49.2%,
-      color-mix(in srgb, var(--lab-accent, var(--accent, #0891b2)) 6%, transparent) 50%,
+      color-mix(in srgb, var(--lab-accent) 6%, transparent) 50%,
       transparent 50.8%
     );
   opacity: 0.22;
@@ -390,8 +438,8 @@
   inset: 9px;
   background: radial-gradient(
     circle,
-    color-mix(in srgb, var(--lab-accent, var(--accent, #0891b2)) 14%, transparent) 0%,
-    color-mix(in srgb, var(--lab-accent, var(--accent, #0891b2)) 8%, transparent) 34%,
+    color-mix(in srgb, var(--lab-accent) 14%, transparent) 0%,
+    color-mix(in srgb, var(--lab-accent) 8%, transparent) 34%,
     transparent 76%
   );
   opacity: 0.8;
@@ -410,14 +458,14 @@
 
 .hexGlow {
   inset: 2px;
-  box-shadow: inset 0 0 12px color-mix(in srgb, var(--lab-accent, var(--accent, #0891b2)) 10%, transparent);
+  box-shadow: inset 0 0 12px color-mix(in srgb, var(--lab-accent) 10%, transparent);
   opacity: 0.82;
 }
 
 .labHexIcon {
   position: relative;
   z-index: 8;
-  color: color-mix(in srgb, var(--lab-accent, var(--accent, #0891b2)) 86%, white 14%);
+  color: var(--lab-text-accent);
   display: grid;
   place-items: center;
 }
@@ -428,7 +476,7 @@
   stroke: currentColor;
   stroke-width: 1.7;
   fill: none;
-  filter: drop-shadow(0 0 5px color-mix(in srgb, var(--lab-accent, var(--accent, #0891b2)) 42%, transparent));
+  filter: drop-shadow(0 0 5px var(--lab-glow-strong));
 }
 
 /* =========================================================
@@ -456,26 +504,18 @@
   font-weight: 700;
   text-align: center;
   text-decoration: none;
-  border: 1px solid color-mix(
-    in srgb,
-    var(--lab-accent, var(--accent, #0891b2)) 26%,
-    rgba(255,255,255,0.20)
+  border: 1px solid var(--lab-border-strong);
+  color: var(--lab-button-text);
+  background: linear-gradient(
+    135deg,
+    var(--lab-gradient-start) 0%,
+    var(--lab-gradient-mid) 48%,
+    var(--lab-gradient-end) 100%
   );
-  color: color-mix(in srgb, var(--lab-accent, var(--accent, #0891b2)) 88%, white 12%);
-  background:
-    linear-gradient(
-      180deg,
-      rgba(255,255,255,0.12) 0%,
-      rgba(255,255,255,0.04) 100%
-    ),
-    linear-gradient(
-      180deg,
-      color-mix(in srgb, var(--lab-accent, var(--accent, #0891b2)) 12%, transparent) 0%,
-      color-mix(in srgb, var(--lab-accent, var(--accent, #0891b2)) 6%, transparent) 100%
-    );
   box-shadow:
-    inset 0 1px 0 rgba(255,255,255,0.10),
-    0 8px 20px color-mix(in srgb, var(--lab-accent, var(--accent, #0891b2)) 10%, transparent);
+    inset 0 1px 0 rgba(255, 255, 255, 0.18),
+    0 10px 22px var(--lab-glow),
+    0 4px 12px color-mix(in srgb, var(--lab-accent) 18%, transparent);
   transition:
     transform 200ms cubic-bezier(0.22, 1, 0.36, 1),
     border-color 200ms ease,
@@ -486,25 +526,11 @@
 
 .detailButton:hover {
   transform: translateY(-1px);
-  border-color: color-mix(
-    in srgb,
-    var(--lab-accent, var(--accent, #0891b2)) 38%,
-    rgba(255,255,255,0.24)
-  );
-  background:
-    linear-gradient(
-      180deg,
-      rgba(255,255,255,0.16) 0%,
-      rgba(255,255,255,0.05) 100%
-    ),
-    linear-gradient(
-      180deg,
-      color-mix(in srgb, var(--lab-accent, var(--accent, #0891b2)) 18%, transparent) 0%,
-      color-mix(in srgb, var(--lab-accent, var(--accent, #0891b2)) 10%, transparent) 100%
-    );
+  border-color: var(--lab-accent-mid);
   box-shadow:
-    inset 0 1px 0 rgba(255,255,255,0.12),
-    0 14px 26px color-mix(in srgb, var(--lab-accent, var(--accent, #0891b2)) 12%, transparent);
+    inset 0 1px 0 rgba(255, 255, 255, 0.22),
+    0 14px 28px var(--lab-glow-strong),
+    0 6px 14px color-mix(in srgb, var(--lab-accent) 24%, transparent);
 }
 
 .countBadge {
@@ -518,28 +544,41 @@
   padding: 0.72rem 0.84rem;
   border-radius: 13px;
   font-size: clamp(0.76rem, 0.72rem + 0.16vw, 0.88rem);
-  color: var(--text-soft);
+  color: var(--lab-badge-text);
+  -webkit-text-stroke: 0.75px rgba(8, 12, 18, 0.493);
   background:
     linear-gradient(
       180deg,
-      rgba(255,255,255,0.08) 0%,
-      rgba(255,255,255,0.03) 100%
+      rgba(255, 255, 255, 0.08) 0%,
+      rgba(255, 255, 255, 0.03) 100%
     ),
-    color-mix(in srgb, var(--lab-accent, var(--accent, #0891b2)) 6%, transparent);
-  border: 1px solid color-mix(
-    in srgb,
-    var(--lab-accent, var(--accent, #0891b2)) 16%,
-    rgba(255,255,255,0.16)
-  );
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--lab-accent) 8%, transparent) 0%,
+      color-mix(in srgb, var(--lab-accent) 12%, transparent) 100%
+    );
+  border: 1px solid var(--lab-border-soft);
   text-align: center;
   white-space: normal;
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.06);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
 }
 
 .countValue {
-  color: color-mix(in srgb, var(--lab-accent, var(--accent, #0891b2)) 88%, white 12%);
+  background-image: linear-gradient(
+    135deg,
+    var(--lab-gradient-start) 0%,
+    var(--lab-gradient-mid) 50%,
+    var(--lab-gradient-end) 100%
+  );
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
   font-weight: 800;
   font-size: clamp(0.84rem, 0.8rem + 0.18vw, 0.96rem);
+  text-shadow: 0 0 12px var(--lab-glow);
 }
 
 /* =========================================================
@@ -552,20 +591,16 @@
   width: 44px;
   height: 44px;
   border-radius: 999px;
-  border: 1px solid color-mix(
-    in srgb,
-    var(--lab-accent, var(--accent, #0891b2)) 16%,
-    var(--border, rgba(255,255,255,0.16))
-  );
+  border: 1px solid var(--lab-border-soft);
   background:
     linear-gradient(
       180deg,
-      rgba(255,255,255,0.10) 0%,
-      rgba(255,255,255,0.03) 100%
+      rgba(255, 255, 255, 0.1) 0%,
+      rgba(255, 255, 255, 0.03) 100%
     ),
     var(--bg-card, rgba(10, 15, 22, 0.92));
   box-shadow: var(--shadow-sm);
-  color: var(--text-main);
+  color: var(--lab-text-accent);
   transition:
     transform 0.2s ease,
     border-color 0.2s ease,
@@ -575,7 +610,10 @@
 
 .arrowButton:hover {
   transform: translateY(-1px);
-  border-color: color-mix(in srgb, var(--lab-accent, var(--accent, #0891b2)) 30%, rgba(255,255,255,0.24));
+  border-color: var(--lab-border-strong);
+  box-shadow:
+    var(--shadow-sm),
+    0 0 16px var(--lab-glow);
 }
 
 .arrowButton svg {
@@ -601,16 +639,12 @@
   flex-direction: column;
   height: auto;
   border-radius: 18px;
-  border: 1px solid color-mix(
-    in srgb,
-    var(--lab-accent, var(--accent, #0891b2)) 14%,
-    var(--border, rgba(255,255,255,0.16))
-  );
+  border: 1px solid var(--lab-border-soft);
   background:
     linear-gradient(
       180deg,
-      rgba(255,255,255,0.06) 0%,
-      rgba(255,255,255,0.02) 100%
+      rgba(255, 255, 255, 0.06) 0%,
+      rgba(255, 255, 255, 0.02) 100%
     ),
     linear-gradient(
       180deg,
@@ -637,7 +671,7 @@
 }
 
 .statCard {
-  --stat-icon-color: var(--lab-accent-start, var(--accent, #0891b2));
+  --stat-icon-color: var(--lab-gradient-mid);
   width: 100%;
   min-width: 0;
   aspect-ratio: 1.5 / 1;
@@ -647,31 +681,32 @@
   gap: clamp(0.45rem, 0.8vw, 0.6rem);
   padding: clamp(0.58rem, 0.8vw, 0.72rem);
   border-radius: 16px;
-  border: 1px solid color-mix(in srgb, var(--stat-icon-color) 16%, var(--border, rgba(255,255,255,0.14)));
+  border: 1px solid
+    color-mix(in srgb, var(--stat-icon-color) 16%, var(--border, rgba(255, 255, 255, 0.14)));
   background:
     linear-gradient(
       180deg,
-      rgba(255,255,255,0.06) 0%,
-      rgba(255,255,255,0.02) 100%
+      rgba(255, 255, 255, 0.06) 0%,
+      rgba(255, 255, 255, 0.02) 100%
     ),
     color-mix(in srgb, var(--bg-card-2) 88%, transparent);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
 }
 
 .statCard:nth-child(1) {
-  --stat-icon-color: var(--lab-accent-start, var(--accent, #0891b2));
+  --stat-icon-color: var(--lab-gradient-start);
 }
 
 .statCard:nth-child(2) {
-  --stat-icon-color: var(--lab-accent-end, var(--accent-2, #0f766e));
+  --stat-icon-color: var(--lab-gradient-end);
 }
 
 .statCard:nth-child(3) {
-  --stat-icon-color: var(--lab-accent-end, var(--accent-2, #0f766e));
+  --stat-icon-color: var(--lab-gradient-mid);
 }
 
 .statCard:nth-child(4) {
-  --stat-icon-color: var(--lab-accent-start, var(--accent, #0891b2));
+  --stat-icon-color: var(--lab-accent-bright);
 }
 
 .statIcon {
@@ -758,8 +793,8 @@
   background:
     linear-gradient(
       180deg,
-      rgba(255,255,255,0.06) 0%,
-      rgba(255,255,255,0.02) 100%
+      rgba(255, 255, 255, 0.06) 0%,
+      rgba(255, 255, 255, 0.02) 100%
     ),
     color-mix(in srgb, var(--bg-card-2) 88%, transparent);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
@@ -821,7 +856,7 @@
   font-size: clamp(1rem, 1.3vw, 1.45rem);
   line-height: 1;
   font-weight: 700;
-  color: var(--lab-accent-start, var(--accent, #0891b2));
+  color: var(--lab-gradient-mid);
 }
 
 /* =========================================================
@@ -960,7 +995,8 @@
 @media (prefers-reduced-motion: reduce) {
   .labCard,
   .detailButton,
-  .arrowButton {
+  .arrowButton,
+  .labBackgroundPicture {
     transition: none;
   }
 

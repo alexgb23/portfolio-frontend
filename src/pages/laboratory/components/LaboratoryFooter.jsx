@@ -6,27 +6,24 @@ export default function LaboratoryFooter() {
     <section className={styles.footer}>
       <div className="container_footer">
         <div className={styles.card}>
-          {/* Capas visuales del fondo */}
           <div className={styles.background} aria-hidden="true">
-            <div className={styles.gradient}></div>
-            <div className={styles.circuit}></div>
-            <div className={styles.glow}></div>
+            <div className={styles.gradient} />
+            <div className={`${styles.circuitLayer} ${styles.circuitLight}`} />
+            <div className={`${styles.circuitLayer} ${styles.circuitDark}`} />
+            <div className={styles.glow} />
           </div>
 
-          {/* Contenido principal */}
           <div className={styles.content}>
-            {/* Bloque izquierdo: título + descripción */}
             <div className={styles.left}>
               <h2>¿Quieres ver todo lo que estoy construyendo?</h2>
 
               <p>
-                En SYSKOVEX.com encontrarás documentación completa,
-                tutoriales, diagramas, código abierto y mucho más
-                sobre mis proyectos e investigaciones.
+                En SYSKOVEX.com encontrarás documentación completa, tutoriales,
+                diagramas, código abierto y mucho más sobre mis proyectos e
+                investigaciones.
               </p>
             </div>
 
-            {/* CTA principal */}
             <a
               href="https://syskovex.com"
               target="_blank"
@@ -41,19 +38,14 @@ export default function LaboratoryFooter() {
               </div>
 
               <div className={styles.ctaText}>
-                <span className={styles.title}>
-                  Explorar SYSKOVEX.com
-                </span>
+                <span className={styles.title}>Explorar SYSKOVEX.com</span>
 
                 <span className={styles.subtitle}>
                   Laboratorio completo, documentación y recursos
                 </span>
               </div>
 
-              <ArrowUpRight
-                size={22}
-                className={styles.arrow}
-              />
+              <ArrowUpRight size={22} className={styles.arrow} />
             </a>
           </div>
         </div>

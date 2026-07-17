@@ -111,12 +111,32 @@ function getLabThemeStyle(lab) {
 
   return {
     "--lab-accent": accent,
-    "--lab-accent-start": `color-mix(in srgb, ${accent} 82%, white 18%)`,
-    "--lab-accent-mid": accent,
-    "--lab-accent-end": `color-mix(in srgb, ${accent} 70%, var(--accent-2, #0f766e) 30%)`,
-    "--lab-panel-border": `color-mix(in srgb, ${accent} 24%, var(--border, rgba(255,255,255,0.14)) 76%)`,
-    "--lab-cta-border": `color-mix(in srgb, ${accent} 52%, var(--border, rgba(255,255,255,0.18)) 48%)`,
-    "--lab-badge-border": `color-mix(in srgb, ${accent} 32%, var(--border, rgba(255,255,255,0.16)) 68%)`,
+
+    /* escala principal */
+    "--lab-accent-soft": `color-mix(in srgb, ${accent} 22%, white 78%)`,
+    "--lab-accent-light": `color-mix(in srgb, ${accent} 38%, white 62%)`,
+    "--lab-accent-bright": `color-mix(in srgb, ${accent} 68%, white 32%)`,
+    "--lab-accent-mid": `color-mix(in srgb, ${accent} 84%, white 16%)`,
+    "--lab-accent-strong": `color-mix(in srgb, ${accent} 92%, black 8%)`,
+    "--lab-accent-deep": `color-mix(in srgb, ${accent} 72%, black 28%)`,
+
+    /* gradiente principal adaptable */
+    "--lab-gradient-start": `color-mix(in srgb, ${accent} 62%, white 38%)`,
+    "--lab-gradient-mid": `color-mix(in srgb, ${accent} 88%, white 12%)`,
+    "--lab-gradient-end": `color-mix(in srgb, ${accent} 76%, black 24%)`,
+
+    /* bordes y fondos con alpha perceptual */
+    "--lab-border-soft": `color-mix(in srgb, ${accent} 18%, rgba(255,255,255,0.16) 82%)`,
+    "--lab-border-strong": `color-mix(in srgb, ${accent} 36%, rgba(255,255,255,0.20) 64%)`,
+    "--lab-surface-tint": `color-mix(in srgb, ${accent} 10%, transparent)`,
+    "--lab-surface-tint-strong": `color-mix(in srgb, ${accent} 16%, transparent)`,
+    "--lab-glow": `color-mix(in srgb, ${accent} 24%, transparent)`,
+    "--lab-glow-strong": `color-mix(in srgb, ${accent} 38%, transparent)`,
+
+    /* texto/cta */
+    "--lab-text-accent": `color-mix(in srgb, ${accent} 88%, white 12%)`,
+    "--lab-button-text": `color-mix(in srgb, ${accent} 8%, #041318 92%)`,
+    "--lab-badge-text": `color-mix(in srgb, var(--text-soft) 74%, ${accent} 26%)`,
   };
 }
 
@@ -189,13 +209,19 @@ function renderLabGlyph(title = "") {
   );
 }
 
-function LabCardBackground({ lab, title }) {
+function LabCardBackground({ lab, priority = false }) {
   const dark = lab?.background?.dark;
   const light = lab?.background?.light;
 
+  const loading = priority ? "eager" : "lazy";
+  const fetchPriority = priority ? "high" : "auto";
+
   return (
     <>
-      <picture className={`${styles.labBackgroundPicture} ${styles.bgLight}`} aria-hidden="true">
+      <picture
+        className={`${styles.labBackgroundPicture} ${styles.bgLight}`}
+        aria-hidden="true"
+      >
         {light?.avif?.srcSet ? (
           <source
             type="image/avif"
@@ -214,13 +240,17 @@ function LabCardBackground({ lab, title }) {
           <img
             src={light.fallback}
             alt=""
-            loading="lazy"
+            loading={loading}
+            fetchPriority={fetchPriority}
             decoding="async"
           />
         ) : null}
       </picture>
 
-      <picture className={`${styles.labBackgroundPicture} ${styles.bgDark}`} aria-hidden="true">
+      <picture
+        className={`${styles.labBackgroundPicture} ${styles.bgDark}`}
+        aria-hidden="true"
+      >
         {dark?.avif?.srcSet ? (
           <source
             type="image/avif"
@@ -239,7 +269,8 @@ function LabCardBackground({ lab, title }) {
           <img
             src={dark.fallback}
             alt=""
-            loading="lazy"
+            loading={loading}
+            fetchPriority={fetchPriority}
             decoding="async"
           />
         ) : null}
@@ -250,7 +281,7 @@ function LabCardBackground({ lab, title }) {
   );
 }
 
-export default function LaboratorySection({
+function LaboratorySection({
   featuredItems = [],
   statsData = {},
   loading = false,
@@ -311,12 +342,14 @@ export default function LaboratorySection({
                     className={styles.labCard}
                     style={getLabThemeStyle(lab)}
                   >
-                    <LabCardBackground lab={lab} title={title} />
+                    <LabCardBackground lab={lab} priority={index < 3} />
 
                     <header className={styles.labHeader}>
                       <h3>{title}</h3>
 
-                      <span className={`${styles.status} ${styles[statusMeta.className]}`}>
+                      <span
+                        className={`${styles.status} ${styles[statusMeta.className]}`}
+                      >
                         <span className={styles.statusDot} />
                         {statusMeta.label}
                       </span>
@@ -374,7 +407,7 @@ export default function LaboratorySection({
                   className={`${styles.statCard} ${
                     styles[
                       `statTone${item.tone.charAt(0).toUpperCase()}${item.tone.slice(1)}`
-                    ]
+                    ] || ""
                   }`}
                 >
                   <div className={styles.statIcon}>{renderStatIcon(item.icon)}</div>
@@ -397,7 +430,9 @@ export default function LaboratorySection({
               {FIXED_TECHNOLOGIES.map((tech, index) => (
                 <div
                   key={tech.id}
-                  className={`${styles.techCard} ${styles[`techTone${(index % 6) + 1}`]}`}
+                  className={`${styles.techCard} ${
+                    styles[`techTone${(index % 6) + 1}`] || ""
+                  }`}
                 >
                   <div className={styles.techLogo}>
                     <img
@@ -414,9 +449,11 @@ export default function LaboratorySection({
 
               {extraTechnologiesCount > 0 && (
                 <div
-                  className={`${styles.techCard} ${styles.techCardMore} ${styles.techToneMore}`}
+                  className={`${styles.techCard} ${styles.techCardMore} ${styles.techToneMore || ""}`}
                 >
-                  <div className={styles.techMoreValue}>+ {extraTechnologiesCount}</div>
+                  <div className={styles.techMoreValue}>
+                    + {extraTechnologiesCount}
+                  </div>
                   <span>Más</span>
                 </div>
               )}
@@ -427,3 +464,5 @@ export default function LaboratorySection({
     </section>
   );
 }
+
+export default LaboratorySection;
