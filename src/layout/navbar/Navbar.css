@@ -171,8 +171,8 @@
   oculto por defecto y aparece al activar .active
 */
 .nav-links {
+   top: var(--navbar-height);
   position: fixed;
-  top: 82px;
   left: 0;
   z-index: 999;
   display: flex;
@@ -362,16 +362,11 @@
    ========================================================= */
 
 @media (width >= 721px) {
-  .navbar {
-    height: 88px;
-  }
-
-  .nav-container {
+   .nav-container {
     width: min(var(--container), calc(100% - 2.5rem));
   }
 
   .nav-links {
-    top: 88px;
     padding: 1.875rem 1.5rem;
     gap: 1.875rem;
   }

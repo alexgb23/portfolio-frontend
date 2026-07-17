@@ -15,8 +15,7 @@ const CvModal = lazy(() => import("../modal/CvModal"));
 const THEME_STORAGE_KEY = "syskovex-theme-mode";
 
 function MainLayout() {
-  const navbarWrapperRef = useRef(null);
-
+  
   const [themeMode, setThemeMode] = useState(() => {
     if (typeof window === "undefined") return "system";
 
@@ -88,33 +87,6 @@ function MainLayout() {
     document.documentElement.style.colorScheme = resolvedTheme;
   }, [isDarkMode]);
 
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    if (!navbarWrapperRef.current) return;
-
-    const updateNavbarHeight = () => {
-      const height = navbarWrapperRef.current?.offsetHeight ?? 82;
-      document.documentElement.style.setProperty(
-        "--navbar-height",
-        `${height}px`,
-      );
-    };
-
-    updateNavbarHeight();
-
-    const resizeObserver = new ResizeObserver(() => {
-      updateNavbarHeight();
-    });
-
-    resizeObserver.observe(navbarWrapperRef.current);
-    window.addEventListener("resize", updateNavbarHeight);
-
-    return () => {
-      resizeObserver.disconnect();
-      window.removeEventListener("resize", updateNavbarHeight);
-    };
-  }, []);
-
   const toggleTheme = useCallback(() => {
     setThemeMode((currentMode) => {
       const currentIsDark =
@@ -160,24 +132,23 @@ function MainLayout() {
         dangerouslySetInnerHTML={{ __html: safeJsonLd }}
       />
 
-      <div ref={navbarWrapperRef}>
-        <Navbar
-          isDarkMode={isDarkMode}
-          themeMode={themeMode}
-          toggleTheme={toggleTheme}
-          onOpenCv={openCvModal}
-        />
-      </div>
+      <Navbar
+  isDarkMode={isDarkMode}
+  themeMode={themeMode}
+  toggleTheme={toggleTheme}
+  onOpenCv={openCvModal}
+/>
+{/* ✅ Cambiado de "container" a "layout-main" */}
+<main className="layout-main">
+  <Outlet
+    context={{
+      openCvModal,
+      closeCvModal,
+      setCvSocialLinks: updateCvSocialLinks,
+    }}
+  />
+</main>
 
-      <main className="container">
-        <Outlet
-          context={{
-            openCvModal,
-            closeCvModal,
-            setCvSocialLinks: updateCvSocialLinks,
-          }}
-        />
-      </main>
 
       <Suspense fallback={null}>
         {isCvOpen ? (

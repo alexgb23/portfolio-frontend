@@ -222,6 +222,12 @@
    MEDIA QUERIES DE TOKENS GLOBALES
    ========================================================= */
 
+   @media (min-width: 721px) {
+  :root {
+    --navbar-height: 88px;
+  }
+}
+
 @media (min-width: 1280px) and (max-width: 1439px) {
   :root {
     --container: 1200px;
@@ -256,7 +262,6 @@ html {
 
 body {
   margin: 0;
-  padding-top: var(--navbar-height);
   font-family: var(--font-body);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -363,12 +368,25 @@ a {
    HELPERS GLOBALES
    ========================================================= */
 
+/* 1. Layout Principal Global (Afecta a todas las páginas por igual) */
+.layout-main {
+  width: 100%;
+  max-width: var(--container);
+  margin-inline: auto;
+  padding-inline: 12px;
+  padding-top: var(--navbar-height); /* Se aplica una sola vez globalmente */
+}
+
+/* 2. Clase Container Limpia (Para usar dentro de la Home o cualquier otra subpágina) */
 .container {
   width: 100%;
   max-width: var(--container);
   margin-inline: auto;
   padding-inline: 12px;
+  /* Aquí ya NO va el padding-top, evitando duplicaciones */
 }
+
+
 
 @media (min-width: 721px) {
   .container {
