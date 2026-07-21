@@ -83,8 +83,8 @@ function HeroSection({ socialLinks = [], onOpenCv }) {
     return safeSocialLinks
       .filter((item) =>
         ["github", "linkedin", "email", "envelope"].includes(
-          (item?.platform || item?.icon_key || "").toLowerCase()
-        )
+          (item?.platform || item?.icon_key || "").toLowerCase(),
+        ),
       )
       .sort((a, b) => (a?.sort_order ?? 999) - (b?.sort_order ?? 999))
       .map((item) => {
@@ -143,7 +143,11 @@ function HeroSection({ socialLinks = [], onOpenCv }) {
           </div>
 
           <div className="avatar-block">
-            <div className="avatar-wrapper">
+            <Link
+              to="/sobre-mi"
+              className="avatar-wrapper avatar-link"
+              aria-label="Ir a la sección Sobre mí"
+            >
               <picture className="avatar-picture">
                 <source
                   type="image/avif"
@@ -153,7 +157,7 @@ function HeroSection({ socialLinks = [], onOpenCv }) {
                     /imagen_portfolio_mia_retocada-960.avif 960w,
                     /imagen_portfolio_mia_retocada-1280.avif 1280w
                   "
-                  sizes="(max-width: 767px) 300px, (max-width: 1279px) 400px, 450px"
+                  sizes="(max-width: 767px) 320px, (max-width: 1279px) 420px, 640px"
                 />
                 <source
                   type="image/webp"
@@ -163,20 +167,20 @@ function HeroSection({ socialLinks = [], onOpenCv }) {
                     /imagen_portfolio_mia_retocada-960.webp 960w,
                     /imagen_portfolio_mia_retocada-1280.webp 1280w
                   "
-                  sizes="(max-width: 767px) 300px, (max-width: 1279px) 400px, 450px"
+                  sizes="(max-width: 767px) 320px, (max-width: 1279px) 420px, 640px"
                 />
                 <img
-                  src="/imagen_portfolio_mia_retocada-960.avif"
+                  src="/imagen_portfolio_mia_retocada-1280.avif"
                   alt={avatarAlt}
                   className="profile-avatar"
-                  width="450"
-                  height="580"
+                  width="640"
+                  height="820"
                   loading="eager"
                   fetchPriority="high"
                   decoding="async"
                 />
               </picture>
-            </div>
+            </Link>
           </div>
         </div>
 
@@ -187,7 +191,8 @@ function HeroSection({ socialLinks = [], onOpenCv }) {
           >
             {staticExpertise.map((item, index) => {
               const Icon =
-                expertiseIconMap[(item?.icon_key || "").toLowerCase()] || FaCode;
+                expertiseIconMap[(item?.icon_key || "").toLowerCase()] ||
+                FaCode;
 
               return (
                 <article

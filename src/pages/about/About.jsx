@@ -91,7 +91,10 @@ function About() {
   } = usePortfolioAbout();
 
   const knowsAbout = useMemo(() => {
-    const fromExpertise = staticExpertise.flatMap((item) => [item.title, item.text]);
+    const fromExpertise = staticExpertise.flatMap((item) => [
+      item.title,
+      item.text,
+    ]);
     return uniqueStrings([...fromExpertise, ...extraKnowsAbout]);
   }, []);
 
@@ -186,25 +189,36 @@ function About() {
           </div>
 
           <div className="about-right">
-            <div className="photo-wrapper">
-              <div className="photo-container">
-                <picture className="about-picture">
+            <div className="about-avatar-block">
+              <div className="about-avatar-frame">
+                <picture className="about-avatar-picture">
                   <source
                     type="image/avif"
-                    srcSet="/imagen_portfolio_mia_retocada-480.avif 480w, /imagen_portfolio_mia_retocada-768.avif 768w, /imagen_portfolio_mia_retocada-960.avif 960w, /imagen_portfolio_mia_retocada-1280.avif 1280w"
-                    sizes="(max-width: 767px) 300px, (max-width: 1279px) 400px, 450px"
+                    srcSet="
+                      /imagen_portfolio_mia_retocada-480.avif 480w,
+                      /imagen_portfolio_mia_retocada-768.avif 768w,
+                      /imagen_portfolio_mia_retocada-960.avif 960w,
+                      /imagen_portfolio_mia_retocada-1280.avif 1280w
+                    "
+                    sizes="(max-width: 767px) 320px, (max-width: 1279px) 420px, 640px"
                   />
                   <source
                     type="image/webp"
-                    srcSet="/imagen_portfolio_mia_retocada-480.webp 480w, /imagen_portfolio_mia_retocada-768.webp 768w, /imagen_portfolio_mia_retocada-960.webp 960w, /imagen_portfolio_mia_retocada-1280.webp 1280w"
-                    sizes="(max-width: 767px) 300px, (max-width: 1279px) 400px, 450px"
+                    srcSet="
+                      /imagen_portfolio_mia_retocada-480.webp 480w,
+                      /imagen_portfolio_mia_retocada-768.webp 768w,
+                      /imagen_portfolio_mia_retocada-960.webp 960w,
+                      /imagen_portfolio_mia_retocada-1280.webp 1280w
+                    "
+                    sizes="(max-width: 767px) 320px, (max-width: 1279px) 420px, 640px"
                   />
                   <img
-                    src="/imagen_portfolio_mia_retocada-960.avif"
+                    src="/imagen_portfolio_mia_retocada-1280.avif"
                     alt="Retrato profesional de Alex Galvez"
-                    className="profile-photo"
-                    width="450"
-                    height="580"
+                    className="about-profile-avatar"
+                    width="640"
+                    height="820"
+                    loading="eager"
                     fetchPriority="high"
                     decoding="async"
                   />
@@ -249,7 +263,8 @@ function About() {
           <div className="expertise-grid grid-4xl">
             {staticExpertise.map((item, index) => {
               const Icon =
-                expertiseIconMap[(item?.icon_key || "").toLowerCase()] || FaCode;
+                expertiseIconMap[(item?.icon_key || "").toLowerCase()] ||
+                FaCode;
 
               return (
                 <article
