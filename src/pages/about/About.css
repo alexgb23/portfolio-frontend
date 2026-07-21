@@ -382,6 +382,27 @@
   text-align: center;
 }
 
+
+/*Respponsive mobile*/
+@media (max-width: 767px) {
+  .about-avatar-block {
+    justify-content: center;
+  }
+
+  .about-avatar-frame {
+    --avatar-width: min(100%, 340px);
+    --avatar-radius: 24px;
+    --avatar-padding: 10px;
+
+    margin-left: auto;
+    margin-right: auto;
+    transform: perspective(1000px) rotateY(-3deg) translateX(0);
+  }
+
+  .about-avatar-picture::before {
+    inset: 8px;
+  }
+}
 /* =========================================================
    RESPONSIVE: TABLET
    ========================================================= */

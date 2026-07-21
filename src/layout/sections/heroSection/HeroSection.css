@@ -515,7 +515,6 @@
 /* =========================================================
    MOBILE
    ========================================================= */
-
 @media (max-width: 767px) {
   .hero-main-title {
     font-size: clamp(2rem, 9vw, 3.4rem);
@@ -526,10 +525,18 @@
     font-size: 0.72rem;
   }
 
+  .avatar-block {
+    justify-content: center;
+  }
+
   .avatar-wrapper {
     --avatar-width: min(100%, 340px);
     --avatar-radius: 24px;
     --avatar-padding: 10px;
+
+    margin-left: auto;
+    margin-right: auto;
+    transform: perspective(1000px) rotateY(-3deg) translateX(0);
   }
 
   .avatar-picture::before {
