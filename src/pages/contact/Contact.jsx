@@ -5,7 +5,6 @@ import {
   FaEnvelope,
   FaGlobe,
   FaInstagram,
-  FaFacebook,
 } from "react-icons/fa";
 
 import usePageTitle from "../../hooks/usePageTitle";
@@ -17,8 +16,16 @@ function SocialCard({ href = "", icon, label, title, text, className = "" }) {
   const isLink = Boolean(href);
   const isMail = href.startsWith("mailto:");
 
-  const content = (
-    <>
+  if (!isLink) return null;
+
+  return (
+    <a
+      href={href}
+      target={isMail ? undefined : "_blank"}
+      rel={isMail ? undefined : "noopener noreferrer"}
+      className={`social-mini-card${className ? ` ${className}` : ""}`}
+      aria-label={`${label}: ${title || text || href}`}
+    >
       <div className="social-mini-front">
         <div className="social-mini-shine" aria-hidden="true"></div>
 
@@ -35,32 +42,27 @@ function SocialCard({ href = "", icon, label, title, text, className = "" }) {
       </div>
 
       <div className="social-mini-shadow" aria-hidden="true"></div>
-    </>
-  );
-
-  if (!isLink) return null;
-
-  return (
-    <a
-      href={href}
-      target={isMail ? undefined : "_blank"}
-      rel={isMail ? undefined : "noopener noreferrer"}
-      className={`social-mini-card${className ? ` ${className}` : ""}`}
-      aria-label={`${label}: ${title ?? text ?? href}`}
-    >
-      {content}
     </a>
   );
 }
 
 function getSocialIcon(item) {
-  const key = `${item.icon_key ?? ""} ${item.platform ?? ""}`.toLowerCase();
+  const key =
+    `${item.icon_key ?? ""} ${item.platform ?? ""} ${item.label ?? ""}`.toLowerCase();
 
   if (key.includes("github")) return <FaGithub />;
   if (key.includes("linkedin")) return <FaLinkedin />;
   if (key.includes("email") || key.includes("mail")) return <FaEnvelope />;
   if (key.includes("instagram")) return <FaInstagram />;
-  if (key.includes("facebook")) return <FaFacebook />;
+  if (
+    key.includes("web") ||
+    key.includes("website") ||
+    key.includes("syskovex") ||
+    key.includes("laboratorio")
+  ) {
+    return <FaGlobe />;
+  }
+
   return <FaGlobe />;
 }
 
@@ -84,6 +86,10 @@ function normalizeHref(item) {
     return raw.startsWith("mailto:") ? raw : `mailto:${raw}`;
   }
 
+  if (!raw.startsWith("http://") && !raw.startsWith("https://")) {
+    return `https://${raw}`;
+  }
+
   return raw;
 }
 
@@ -102,8 +108,16 @@ function Contact() {
   const { loading, error, success, sendMessage } = useContactChat();
 
   const visibleSocialLinks = useMemo(() => {
-    return (socialLinks ?? [])
-      .map((item) => ({
+    const baseLinks = Array.isArray(socialLinks) ? socialLinks : [];
+
+    const cleanedLinks = baseLinks
+      .filter((item) => {
+        const key =
+          `${item?.platform ?? ""} ${item?.icon_key ?? ""} ${item?.label ?? ""}`.toLowerCase();
+        return !key.includes("facebook");
+      })
+      .map((item, index) => ({
+        id: item.id ?? `social-${index}`,
         href: normalizeHref(item),
         icon: getSocialIcon(item),
         label: item.label || item.platform || "Enlace",
@@ -111,6 +125,22 @@ function Contact() {
         text: item.text || item.url || "",
       }))
       .filter((item) => item.href);
+
+    cleanedLinks.push({
+      id: "syskovex-link",
+      href: "https://syskovex.com",
+      icon: <FaGlobe />,
+      label: "Syskovex",
+      title: "Laboratorio",
+      text: "syskovex.com",
+    });
+
+    const uniqueLinks = cleanedLinks.filter(
+      (item, index, array) =>
+        array.findIndex((entry) => entry.href === item.href) === index,
+    );
+
+    return uniqueLinks;
   }, [socialLinks]);
 
   function handleChange(event) {
@@ -158,7 +188,7 @@ function Contact() {
           <div className="social-mini-grid">
             {visibleSocialLinks.map((item) => (
               <SocialCard
-                key={`${item.label}-${item.title}-${item.href}`}
+                key={item.id}
                 href={item.href}
                 icon={item.icon}
                 label={item.label}

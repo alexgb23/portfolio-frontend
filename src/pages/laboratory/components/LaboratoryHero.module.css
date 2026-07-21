@@ -1,14 +1,17 @@
 .hero {
   overflow: visible;
+  background: transparent;
 }
 
 .container {
   padding: 0;
   margin: 0;
+  background: transparent;
 }
 
 .section-spaced {
   padding: 0;
+  background: transparent;
 }
 
 .shell {
@@ -16,16 +19,19 @@
   grid-template-columns: 1fr;
   align-items: start;
   gap: clamp(1.25rem, 3vw, 1.75rem);
+  background: transparent;
 }
 
 .aside {
   padding: 0;
+  background: transparent;
 }
 
 .copy,
 .visual,
 .panel {
   min-width: 0;
+  background: transparent;
 }
 
 .copy {
@@ -152,6 +158,7 @@
   overflow: visible;
   min-height: auto;
   aspect-ratio: 1 / 1;
+  background: transparent !important;
 }
 
 .visualPicture {
@@ -162,6 +169,7 @@
   transition: opacity 180ms ease, visibility 180ms ease;
   will-change: opacity;
   pointer-events: none;
+  background: transparent !important;
 }
 
 .visualLight {
@@ -184,35 +192,50 @@
   visibility: visible;
 }
 
-.visual::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  z-index: 2;
-  background:
-    linear-gradient(to top, var(--bg-app) 0%, transparent 20%),
-    linear-gradient(to left, var(--bg-app) 0%, transparent 16%);
-  opacity: 0.5;
-}
-
 .visualImage {
   display: block;
   width: 100%;
   height: 100%;
   object-fit: contain;
+  background: transparent !important;
+  filter: none;
+  mix-blend-mode: normal;
   mask-image:
-    linear-gradient(to bottom, transparent 0%, black 12%, black 90%, transparent 100%),
+    linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%),
     linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
   mask-composite: intersect;
   -webkit-mask-image:
-    linear-gradient(to bottom, transparent 0%, black 12%, black 90%, transparent 100%),
+    linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%),
     linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
   -webkit-mask-composite: destination-in;
 }
 
+:global([data-theme="light"]) .visualImage {
+  opacity: 0.94;
+  mix-blend-mode: multiply;
+  filter: saturate(0.96) contrast(1.02);
+}
+
+:global([data-theme="dark"]) .visualImage {
+  opacity: 1;
+  mix-blend-mode: normal;
+  filter: saturate(1.02) contrast(1.04);
+}
+
+.visual,
+.visualPicture,
+.visualImage {
+  background: transparent !important;
+}
+
+.visual::before,
+.visual::after {
+  display: none !important;
+}
+
 .panel {
   display: none;
+  background: transparent;
 }
 
 .panelBrand {
@@ -329,6 +352,10 @@
     padding: 1.05rem 1rem 1.1rem;
     border-radius: 16px;
     border: 1px solid var(--lab-panel-border);
+    background: transparent;
+    box-shadow: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
   }
 }
 
@@ -342,7 +369,6 @@
     display: grid;
     grid-template-columns: minmax(280px, 0.92fr) minmax(0, 1.45fr);
     align-items: center;
-    column-gap: clamp(1.5rem, 3vw, 2.5rem);
     padding-right: 260px;
   }
 
