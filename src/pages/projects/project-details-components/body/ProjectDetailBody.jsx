@@ -1,12 +1,13 @@
-import "./ProjectDetailBody.css";
+import BodyHead from "./BodyHead";
+import styles from "./ProjectDetailBody.module.css";
 
-function ProjectDetailBody({ project, isRefreshing }) {
+function ProjectDetailBody({ project }) {
+  if (!project) return null;
+
   return (
-    <main className="project-detail__body">
-      <p>BODY</p>
-      <p>{project?.short_description || project?.description}</p>
-      {isRefreshing ? <p>Refreshing...</p> : null}
-    </main>
+    <div className={styles.body}>
+      <BodyHead project={project} />
+    </div>
   );
 }
 

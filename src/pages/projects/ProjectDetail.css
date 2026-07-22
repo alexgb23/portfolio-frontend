@@ -25,7 +25,12 @@
   }
 
   .project-detail__shell {
-    grid-template-columns: 320px minmax(0, 1fr);
+    grid-template-columns: 76px minmax(0, 1fr);
     gap: 1.25rem;
+  }
+
+  .project-detail-mobilebar,
+  .project-detail-drawer {
+    display: none;
   }
 }
