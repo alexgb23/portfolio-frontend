@@ -374,7 +374,7 @@ a {
    HELPERS GLOBALES
    ========================================================= */
 
-/* 1. Layout Principal Global (Afecta a todas las páginas por igual) */
+/* Layout Principal Global (Afecta a todas las páginas por igual) */
 .layout-main {
   width: 100%;
   max-width: var(--container);
@@ -383,7 +383,15 @@ a {
   padding-top: var(--navbar-height); /* Se aplica una sola vez globalmente */
 }
 
-/* 2. Clase Container Limpia (Para usar dentro de la Home o cualquier otra subpágina) */
+/* Layout comportamiento en projectDetail (Para usar dentro de projectDetail) */
+.layout-main--project-detail {
+  width: 100%;
+  max-width: none;
+  padding-top: 0;
+  padding-inline: 0;
+}
+
+/* Clase Container Limpia (Para usar dentro de la Home o cualquier otra subpágina) */
 .container {
   width: 100%;
   max-width: var(--container);

@@ -4,10 +4,9 @@ import {
   useCallback,
   useEffect,
   useMemo,
-  useRef,
   useState,
 } from "react";
-import { Outlet } from "react-router";
+import { Outlet, useLocation } from "react-router";
 import Navbar from "./navbar/Navbar";
 
 const CvModal = lazy(() => import("../modal/CvModal"));
@@ -15,7 +14,10 @@ const CvModal = lazy(() => import("../modal/CvModal"));
 const THEME_STORAGE_KEY = "syskovex-theme-mode";
 
 function MainLayout() {
-  
+  const location = useLocation();
+
+  const isProjectDetailRoute = /^\/proyectos\/[^/]+$/.test(location.pathname);
+
   const [themeMode, setThemeMode] = useState(() => {
     if (typeof window === "undefined") return "system";
 
@@ -132,23 +134,30 @@ function MainLayout() {
         dangerouslySetInnerHTML={{ __html: safeJsonLd }}
       />
 
-      <Navbar
-  isDarkMode={isDarkMode}
-  themeMode={themeMode}
-  toggleTheme={toggleTheme}
-  onOpenCv={openCvModal}
-/>
-{/* ✅ Cambiado de "container" a "layout-main" */}
-<main className="layout-main">
-  <Outlet
-    context={{
-      openCvModal,
-      closeCvModal,
-      setCvSocialLinks: updateCvSocialLinks,
-    }}
-  />
-</main>
+      {!isProjectDetailRoute && (
+        <Navbar
+          isDarkMode={isDarkMode}
+          themeMode={themeMode}
+          toggleTheme={toggleTheme}
+          onOpenCv={openCvModal}
+        />
+      )}
 
+      <main
+        className={
+          isProjectDetailRoute
+            ? "layout-main layout-main--project-detail"
+            : "layout-main"
+        }
+      >
+        <Outlet
+          context={{
+            openCvModal,
+            closeCvModal,
+            setCvSocialLinks: updateCvSocialLinks,
+          }}
+        />
+      </main>
 
       <Suspense fallback={null}>
         {isCvOpen ? (

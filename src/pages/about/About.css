@@ -368,6 +368,8 @@
   text-align: center;
 }
 
+
+
 /* =========================================================
    RESPONSIVE MOBILE
    ========================================================= */
@@ -390,6 +392,10 @@
   .about-avatar-picture::before {
     inset: 8px;
   }
+
+  :root[data-theme="light"] .expertise-card.expertise-card-hover {
+    box-shadow: none;
+}
 }
 
 /* =========================================================
