@@ -58,7 +58,7 @@
       rgba(3, 8, 20, 0.04) 30%,
       rgba(3, 8, 20, 0.02) 100%
     ),
-    url("/imgFondoProjects/img_dark_footer.png");
+    url("/imgFondoProjects/img_dark_footer.webp");
 }
 
 :root[data-theme="light"] .project-footer__background,
@@ -70,7 +70,7 @@
       rgba(244, 248, 251, 0.04) 30%,
       rgba(244, 248, 251, 0.01) 100%
     ),
-    url("/imgFondoProjects/img_light_footer.png");
+    url("/imgFondoProjects/img_light_footer.webp");
 }
 
 .project-footer__content {

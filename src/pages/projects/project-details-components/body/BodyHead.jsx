@@ -4,7 +4,8 @@ import {
   Code2,
   Download,
   ExternalLink,
-  FileText,
+  FileCode2,
+  FileArchive,
   Globe,
   HeartPulse,
   Sparkles,
@@ -35,18 +36,28 @@ function BodyHead({ project }) {
   const mainActions = visibleAdjuntos
     .filter((item) => item.es_destacado)
     .slice(0, 4);
-  const quickLinks = visibleAdjuntos.slice(0, 6);
+
+  const hiddenTitles = ["api base", "frontend público", "frontend publico"];
+
+  const quickLinks = visibleAdjuntos
+    .filter((item) => {
+      const title = String(item.titulo || "")
+        .toLowerCase()
+        .trim();
+      return !hiddenTitles.includes(title);
+    })
+    .slice(0, 6);
 
   const area = String(project?.area_principal || "").toLowerCase();
   const heroIcon =
     area === "frontend"
-      ? "/imgFondoProjects/icono_frontend.png"
-      : "/imgFondoProjects/icono_backend.png";
+      ? "/imgFondoProjects/icono_frontend.webp"
+      : "/imgFondoProjects/icono_backend.webp";
 
   return (
     <section className={styles.head}>
       <div className={styles.backRow}>
-        <Link to="/projects" className={styles.backLink}>
+        <Link to="/proyectos" className={styles.backLink}>
           <ArrowLeft size={16} />
           <span>Volver a Proyectos</span>
         </Link>
@@ -92,22 +103,47 @@ function BodyHead({ project }) {
             </div>
           </div>
 
-          {mainActions.length > 0 ? (
-            <div className={styles.heroFooter}>
-              {mainActions.map((item) => (
-                <a
-                  key={item.id}
-                  href={item.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={styles.actionButton}
-                >
-                  {getActionIcon(item)}
-                  <span>{item.titulo}</span>
-                </a>
-              ))}
-            </div>
-          ) : null}
+          <div className={styles.heroFooter}>
+            <a
+              href="https://github.com/tu-repo"
+              target="_blank"
+              rel="noopener noreferrer"
+              className={styles.actionButton}
+            >
+              <span className={styles.actionIcon}>{"</>"}</span>
+              <span>Ver Código</span>
+            </a>
+
+            <a
+              href="https://tu-demo.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className={styles.actionButton}
+            >
+              <span className={styles.actionIcon}>▶</span>
+              <span>Ver Demo</span>
+            </a>
+
+            <a
+              href="https://tu-docs.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className={styles.actionButton}
+            >
+              <FileArchive className={styles.actionIcon} size={18} />
+              <span>Documentación</span>
+            </a>
+
+            <a
+              href="/archivo.zip"
+              target="_blank"
+              rel="noopener noreferrer"
+              className={styles.actionButton}
+            >
+              <Download className={styles.actionIcon} size={18} />
+              <span>Descargar</span>
+            </a>
+          </div>
         </article>
 
         <div className={styles.sideCards}>
@@ -223,7 +259,7 @@ function getActionIcon(item) {
 
   if (title.includes("frontend") || title.includes("demo"))
     return <Globe size={18} />;
-  if (title.includes("documentación")) return <FileText size={18} />;
+  if (title.includes("documentación")) return <FileArchive size={18} />;
   if (title.includes("json") || title.includes("descargar"))
     return <Download size={18} />;
   return <Code2 size={18} />;
@@ -233,7 +269,7 @@ function getQuickIcon(item) {
   const title = String(item?.titulo || "").toLowerCase();
   const group = String(item?.grupo || "").toLowerCase();
 
-  if (title.includes("documentación")) return <FileText size={17} />;
+  if (title.includes("documentación")) return <FileArchive size={17} />;
   if (title.includes("health")) return <HeartPulse size={17} />;
   if (group === "general") return <Globe size={17} />;
   if (group === "api" || group === "backend") return <Code2 size={17} />;

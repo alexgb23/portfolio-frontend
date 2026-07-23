@@ -327,8 +327,11 @@
   }
 
   .sideCards {
-    grid-template-columns: 1fr;
+    grid-template-rows: 2fr;
   }
+  .heroFooter {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
 }
 
 @media (max-width: 700px) {
@@ -347,21 +350,21 @@
     grid-template-columns: 1fr;
   }
 
-  .heroMedia {
+  /* .heroMedia {
     justify-content: flex-start;
-  }
+  } */
 
   .heroImage {
     max-width: 170px;
   }
 
-  .heroFooter {
+  /* .heroFooter {
     grid-template-columns: 1fr;
-  }
+  } */
 
-  .sideCards {
+  /* .sideCards {
     grid-template-columns: 1fr;
-  }
+  } */
 }
 
 @media (prefers-reduced-motion: reduce) {
