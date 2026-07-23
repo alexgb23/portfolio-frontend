@@ -1,13 +1,13 @@
 import {
   ArrowLeft,
-  ArrowUpRight,
   Code2,
+  DatabaseZap,
   Download,
   ExternalLink,
-  FileCode2,
-  FileArchive,
+  FileText,
   Globe,
   HeartPulse,
+  Play,
   Sparkles,
 } from "lucide-react";
 import { Link } from "react-router";
@@ -33,26 +33,15 @@ function BodyHead({ project }) {
         .sort((a, b) => (a.orden ?? 999) - (b.orden ?? 999))
     : [];
 
-  const mainActions = visibleAdjuntos
-    .filter((item) => item.es_destacado)
-    .slice(0, 4);
-
-  const hiddenTitles = ["api base", "frontend público", "frontend publico"];
-
-  const quickLinks = visibleAdjuntos
-    .filter((item) => {
-      const title = String(item.titulo || "")
-        .toLowerCase()
-        .trim();
-      return !hiddenTitles.includes(title);
-    })
-    .slice(0, 6);
+  const quickLinks = visibleAdjuntos.slice(0, 6);
 
   const area = String(project?.area_principal || "").toLowerCase();
   const heroIcon =
     area === "frontend"
       ? "/imgFondoProjects/icono_frontend.webp"
       : "/imgFondoProjects/icono_backend.webp";
+
+  const progressValue = getProjectProgress(project);
 
   return (
     <section className={styles.head}>
@@ -110,8 +99,8 @@ function BodyHead({ project }) {
               rel="noopener noreferrer"
               className={styles.actionButton}
             >
-              <span className={styles.actionIcon}>{"</>"}</span>
-              <span>Ver Código</span>
+              <Code2 className={styles.actionIcon} size={18} />
+              <span className={styles.actionLabel}>Ver Código</span>
             </a>
 
             <a
@@ -120,8 +109,8 @@ function BodyHead({ project }) {
               rel="noopener noreferrer"
               className={styles.actionButton}
             >
-              <span className={styles.actionIcon}>▶</span>
-              <span>Ver Demo</span>
+              <Play className={styles.actionIcon} size={18} />
+              <span className={styles.actionLabel}>Ver Demo</span>
             </a>
 
             <a
@@ -130,8 +119,8 @@ function BodyHead({ project }) {
               rel="noopener noreferrer"
               className={styles.actionButton}
             >
-              <FileArchive className={styles.actionIcon} size={18} />
-              <span>Documentación</span>
+              <FileText className={styles.actionIcon} size={18} />
+              <span className={styles.actionLabel}>Documentación</span>
             </a>
 
             <a
@@ -141,7 +130,7 @@ function BodyHead({ project }) {
               className={styles.actionButton}
             >
               <Download className={styles.actionIcon} size={18} />
-              <span>Descargar</span>
+              <span className={styles.actionLabel}>Descargar</span>
             </a>
           </div>
         </article>
@@ -180,30 +169,85 @@ function BodyHead({ project }) {
                 <dd>{getProjectType(project)}</dd>
               </div>
             </dl>
+
+            <div className={styles.progressWrap}>
+              <div
+                className={styles.progressRing}
+                style={{ "--progress": `${progressValue}%` }}
+              >
+                <div className={styles.progressInner}>
+                  <strong>{progressValue}%</strong>
+                  <small>Completado</small>
+                </div>
+              </div>
+            </div>
           </article>
 
           <article className={styles.card}>
             <h2>Enlaces Rápidos</h2>
 
             <div className={styles.quickLinks}>
-              {quickLinks.map((item) => (
-                <a
-                  key={item.id}
-                  href={item.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={styles.quickLink}
-                >
-                  <span className={styles.quickIcon}>{getQuickIcon(item)}</span>
+              {quickLinks.map((item) => {
+                const normalizedTitle = String(item?.titulo || "")
+                  .toLowerCase()
+                  .trim()
+                  .replace(/\s+/g, " ");
 
-                  <span className={styles.quickText}>
-                    <strong>{item.titulo}</strong>
-                    <small>{item.subtitulo || item.grupo || "Recurso"}</small>
-                  </span>
+                const isBaseApiItem =
+                  normalizedTitle === "api base" ||
+                  normalizedTitle === "base api";
 
-                  <ArrowUpRight size={15} />
-                </a>
-              ))}
+               if (isBaseApiItem) {
+                 return (
+                   <div
+                     key={item.id}
+                     className={`${styles.quickLink} ${styles.quickLinkStatic}`}
+                   >
+                     <span
+                       className={`${styles.quickIcon} ${styles.quickIconBaseApi}`}
+                     >
+                       <DatabaseZap size={17} strokeWidth={2} />
+                     </span>
+
+                     <span className={styles.quickText}>
+                       <strong>{item.titulo}</strong>
+                       <small>
+                         {item.subtitulo || item.grupo || "Recurso"}
+                       </small>
+                     </span>
+
+                     <span
+                       className={`${styles.quickArrow} ${styles.quickArrowStatic}`}
+                     >
+                       <DatabaseZap size={15} strokeWidth={2} />
+                     </span>
+                   </div>
+                 );
+               }
+
+                return (
+                  <a
+                    key={item.id}
+                    href={item.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={styles.quickLink}
+                  >
+                    <span className={styles.quickIcon}>
+                      {getQuickIcon(item)}
+                    </span>
+
+                    <span className={styles.quickText}>
+                      <strong>{item.titulo}</strong>
+                      <small>{item.subtitulo || item.grupo || "Recurso"}</small>
+                    </span>
+
+                    <span className={styles.quickArrow}>
+                      <ExternalLink size={15} strokeWidth={2} />
+                    </span>
+                  </a>
+                );
+              })}
             </div>
           </article>
         </div>
@@ -216,14 +260,26 @@ function getStatusLabel(project) {
   const estado = String(
     project?.laboratorio_origen?.estado || "",
   ).toLowerCase();
+
   if (estado === "activo") return "Activo";
   if (estado === "completado") return "Completado";
   if (estado === "pausado") return "Pausado";
   return "En progreso";
 }
 
+function getProjectProgress(project) {
+  const estado = String(
+    project?.laboratorio_origen?.estado || "",
+  ).toLowerCase();
+
+  if (estado === "completado") return 100;
+  if (estado === "pausado") return 68;
+  return 92;
+}
+
 function getProjectType(project) {
   const area = String(project?.area_principal || "").toLowerCase();
+
   if (area === "backend") return "Backend / API";
   if (area === "frontend") return "Frontend";
   if (area === "fullstack") return "Full Stack";
@@ -254,26 +310,35 @@ function getDurationLabel(start, end) {
   return `${months} meses`;
 }
 
-function getActionIcon(item) {
-  const title = String(item?.titulo || "").toLowerCase();
-
-  if (title.includes("frontend") || title.includes("demo"))
-    return <Globe size={18} />;
-  if (title.includes("documentación")) return <FileArchive size={18} />;
-  if (title.includes("json") || title.includes("descargar"))
-    return <Download size={18} />;
-  return <Code2 size={18} />;
-}
-
 function getQuickIcon(item) {
-  const title = String(item?.titulo || "").toLowerCase();
-  const group = String(item?.grupo || "").toLowerCase();
+  const title = String(item?.titulo || "")
+    .toLowerCase()
+    .trim();
+  const group = String(item?.grupo || "")
+    .toLowerCase()
+    .trim();
 
-  if (title.includes("documentación")) return <FileArchive size={17} />;
-  if (title.includes("health")) return <HeartPulse size={17} />;
-  if (group === "general") return <Globe size={17} />;
-  if (group === "api" || group === "backend") return <Code2 size={17} />;
-  return <ExternalLink size={17} />;
+  if (title.includes("documentación")) {
+    return <FileText size={17} strokeWidth={2} />;
+  }
+
+  if (title.includes("demo") || title.includes("frontend")) {
+    return <Play size={17} strokeWidth={2} />;
+  }
+
+  if (title.includes("health")) {
+    return <HeartPulse size={17} strokeWidth={2} />;
+  }
+
+  if (group === "general") {
+    return <Globe size={17} strokeWidth={2} />;
+  }
+
+  if (group === "api" || group === "backend") {
+    return <Code2 size={17} strokeWidth={2} />;
+  }
+
+  return <ExternalLink size={17} strokeWidth={2} />;
 }
 
 export default BodyHead;

@@ -186,6 +186,7 @@
 
 :root[data-theme="light"] .project-footer__button--primary,
 :root:not([data-theme]) .project-footer__button--primary {
+  background: linear-gradient(135deg, var(--accent-2), var(--accent));
   color: white;
 }
 
