@@ -10,8 +10,9 @@ export default function useProjectDetail(slug) {
     Boolean(slug),
   );
 
+
   return {
-    project: data,
+    project: data ?? null,
     loading,
     error,
     isRefreshing,

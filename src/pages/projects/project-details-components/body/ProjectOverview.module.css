@@ -1,0 +1,563 @@
+.section {
+  display: grid;
+  margin-top: clamp(1rem, 2vw, 1.6rem);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.9rem;
+  align-items: stretch;
+}
+
+.infoCard,
+.diagramCard {
+  position: relative;
+  overflow: hidden;
+  min-width: 0;
+  padding: 0.95rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--lab-panel-border);
+  background:
+    radial-gradient(
+      circle at top left,
+      color-mix(in srgb, var(--accent) 12%, transparent),
+      transparent 34%
+    ),
+    radial-gradient(
+      circle at bottom right,
+      color-mix(in srgb, var(--accent-green) 8%, transparent),
+      transparent 30%
+    ),
+    linear-gradient(
+      180deg,
+      var(--lab-panel-bg-start),
+      var(--lab-panel-bg-end)
+    );
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--accent) 8%, transparent),
+    var(--lab-panel-shadow);
+  backdrop-filter: blur(12px);
+}
+
+.infoCard::before,
+.diagramCard::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      color-mix(in srgb, var(--accent) 10%, transparent),
+      transparent
+    );
+  opacity: 0.55;
+}
+
+.cardHeader {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: 0.3rem;
+  margin-bottom: 0.9rem;
+}
+
+.eyebrow {
+  color: var(--accent);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.cardHeader h2 {
+  margin: 0;
+  color: var(--lab-panel-text);
+  font-size: clamp(1rem, 0.92rem + 0.5vw, 1.28rem);
+  line-height: 1.12;
+}
+
+.description {
+  margin: 0;
+  color: var(--lab-panel-text-soft);
+  font-size: clamp(0.9rem, 0.84rem + 0.2vw, 1rem);
+  line-height: 1.68;
+}
+
+.infoScroll {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: 0.9rem;
+  max-height: 15.2rem;
+  overflow-y: auto;
+  padding-right: 0.2rem;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.infoScroll::-webkit-scrollbar {
+  display: none;
+}
+
+.featureList {
+  display: grid;
+  gap: 0.7rem;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.featureList li {
+  display: grid;
+  grid-template-columns: 16px minmax(0, 1fr);
+  gap: 0.62rem;
+  align-items: start;
+  color: var(--text-soft);
+  font-size: 0.9rem;
+  line-height: 1.46;
+}
+
+.featureList li::before {
+  content: "";
+  width: 16px;
+  height: 16px;
+  margin-top: 0.1rem;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--accent-green) 70%, white 10%);
+  background:
+    radial-gradient(
+      circle at center,
+      color-mix(in srgb, var(--accent-green) 85%, white 5%) 0 34%,
+      transparent 38%
+    ),
+    color-mix(in srgb, var(--accent-green) 12%, transparent);
+  box-shadow:
+    0 0 0 2px color-mix(in srgb, var(--accent-green) 10%, transparent),
+    0 0 12px color-mix(in srgb, var(--accent-green) 18%, transparent);
+}
+
+.diagram {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: 0.85rem;
+  min-width: 0;
+}
+
+.rowTop {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 20px minmax(0, 1fr);
+  gap: 0.55rem;
+  align-items: stretch;
+  min-width: 0;
+}
+
+.node {
+  min-width: 0;
+  min-height: 152px;
+  padding: 0.8rem 0.72rem;
+  border-radius: 16px;
+  border: 1px solid color-mix(in srgb, var(--accent) 18%, var(--border));
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--bg-card-2) 92%, transparent),
+      color-mix(in srgb, var(--bg-card) 96%, transparent)
+    );
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--accent) 4%, transparent),
+    0 0 20px color-mix(in srgb, var(--accent-2) 8%, transparent);
+  display: grid;
+  align-content: start;
+  justify-items: center;
+  text-align: center;
+  gap: 0.62rem;
+}
+
+.nodeTitle,
+.nodeGroupTitle,
+.bottomPanelTitle {
+  color: var(--accent);
+  font-size: 0.64rem;
+  font-weight: 800;
+  letter-spacing: 0.075em;
+  text-transform: uppercase;
+}
+
+.nodeIcon {
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border-radius: 14px;
+  color: var(--accent);
+  background:
+    radial-gradient(
+      circle at 30% 30%,
+      color-mix(in srgb, var(--accent) 22%, transparent),
+      transparent 55%
+    ),
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--bg-card-2) 96%, white 4%),
+      color-mix(in srgb, var(--bg-card) 96%, black 4%)
+    );
+  border: 1px solid color-mix(in srgb, var(--accent) 20%, transparent);
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--accent) 4%, transparent),
+    0 0 18px color-mix(in srgb, var(--accent-glow) 70%, transparent);
+}
+
+.node strong {
+  color: var(--text-main);
+  font-size: 0.84rem;
+  line-height: 1.14;
+  text-wrap: balance;
+}
+
+.node small {
+  color: var(--text-sub);
+  font-size: 0.68rem;
+  line-height: 1.3;
+  text-wrap: pretty;
+}
+
+.connector {
+  position: relative;
+  align-self: center;
+  height: 2px;
+  border-radius: 999px;
+  background: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--accent) 18%, transparent),
+    var(--accent-green),
+    color-mix(in srgb, var(--accent) 18%, transparent)
+  );
+  box-shadow: 0 0 12px color-mix(in srgb, var(--accent-green) 24%, transparent);
+}
+
+.connector::after {
+  content: "";
+  position: absolute;
+  right: -1px;
+  top: 50%;
+  width: 7px;
+  height: 7px;
+  border-top: 2px solid var(--accent-green);
+  border-right: 2px solid var(--accent-green);
+  transform: translateY(-50%) rotate(45deg);
+}
+
+.nodeGroup {
+  grid-column: 1 / -1;
+  min-width: 0;
+  padding: 0.78rem;
+  border-radius: 16px;
+  border: 1px solid color-mix(in srgb, var(--accent) 16%, var(--border));
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--bg-card-2) 92%, transparent),
+      color-mix(in srgb, var(--bg-card) 96%, transparent)
+    );
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--accent) 4%, transparent),
+    0 0 20px color-mix(in srgb, var(--accent-2) 6%, transparent);
+  display: grid;
+  gap: 0.7rem;
+}
+
+.nodeMiniGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.55rem;
+}
+
+.miniNode,
+.stackNode {
+  min-width: 0;
+  min-height: 72px;
+  padding: 0.6rem 0.48rem;
+  border-radius: 13px;
+  border: 1px solid color-mix(in srgb, var(--accent) 14%, var(--border));
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--bg-card-2) 90%, transparent),
+      color-mix(in srgb, var(--bg-card) 96%, transparent)
+    );
+  display: grid;
+  justify-items: center;
+  align-content: center;
+  gap: 0.28rem;
+  text-align: center;
+  color: var(--accent);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent) 3%, transparent);
+}
+
+.miniNode strong,
+.stackNode strong {
+  color: var(--text-main);
+  font-size: 0.72rem;
+  line-height: 1.08;
+  text-wrap: balance;
+}
+
+.miniNode small,
+.stackNode small {
+  color: var(--text-sub);
+  font-size: 0.62rem;
+  line-height: 1.22;
+  text-wrap: pretty;
+}
+
+.rowBottom {
+  display: grid;
+}
+
+.bottomPanel {
+  position: relative;
+  padding: 0.75rem;
+  border-radius: 16px;
+  border: 1px dashed color-mix(in srgb, var(--accent) 22%, var(--border));
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--bg-card-2) 84%, transparent),
+      color-mix(in srgb, var(--bg-card) 92%, transparent)
+    );
+  display: grid;
+  gap: 0.7rem;
+}
+
+.bottomGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.55rem;
+}
+
+.diagramCard::after {
+  content: "";
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 3px;
+  height: 68px;
+  border-radius: 999px;
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--accent) 8%, transparent),
+    var(--accent-green),
+    color-mix(in srgb, var(--accent) 8%, transparent)
+  );
+  box-shadow: 0 0 14px color-mix(in srgb, var(--accent-green) 20%, transparent);
+}
+.miniNodeIcon,
+.iconFallback {
+  display: grid;
+  place-items: center;
+}
+
+.nodeIcon img,
+.miniNodeIcon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.miniNodeIcon img {
+  width: 20px;
+  height: 20px;
+}
+
+.nodeIcon img {
+  width: 24px;
+  height: 24px;
+}
+
+/* 560px */
+@media (min-width: 35rem) {
+  .infoCard,
+  .diagramCard {
+    padding: 1rem;
+  }
+
+  .rowTop {
+    grid-template-columns: minmax(0, 0.95fr) 22px minmax(0, 0.95fr);
+  }
+
+  .node {
+    min-height: 160px;
+  }
+
+  .nodeIcon {
+    width: 48px;
+    height: 48px;
+  }
+
+  .nodeMiniGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .bottomGrid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+/* 768px */
+@media (min-width: 48rem) {
+  .grid {
+    gap: 1rem;
+  }
+
+  .infoCard,
+  .diagramCard {
+    padding: 1.05rem;
+  }
+
+  .rowTop {
+    grid-template-columns: minmax(120px, 0.74fr) 28px minmax(140px, 0.92fr) 28px minmax(220px, 1.08fr);
+    align-items: center;
+    gap: 0.65rem;
+  }
+
+  .nodeGroup {
+    grid-column: auto;
+    padding: 0.82rem;
+  }
+
+  .node {
+    min-height: 166px;
+    padding: 0.86rem 0.74rem;
+  }
+
+  .node strong {
+    font-size: 0.88rem;
+  }
+
+  .node small {
+    font-size: 0.7rem;
+  }
+
+  .miniNode,
+  .stackNode {
+    min-height: 78px;
+  }
+
+  .miniNode strong,
+  .stackNode strong {
+    font-size: 0.74rem;
+  }
+
+  .miniNode small,
+  .stackNode small {
+    font-size: 0.63rem;
+  }
+
+  .bottomPanel {
+    padding: 0.8rem;
+  }
+}
+
+/* 1024px */
+@media (min-width: 64rem) {
+  .grid {
+    grid-template-columns: minmax(0, 0.94fr) minmax(0, 1.42fr);
+    gap: 1.05rem;
+  }
+
+  .infoCard,
+  .diagramCard {
+    padding: 1.1rem;
+  }
+
+  .cardHeader {
+    margin-bottom: 1rem;
+  }
+
+  .infoScroll {
+    max-height: 17.5rem;
+  }
+
+  .rowTop {
+    grid-template-columns: minmax(110px, 0.72fr) 30px minmax(140px, 0.95fr) 30px minmax(210px, 1.08fr);
+    gap: 0.7rem;
+  }
+
+  .node {
+    min-height: 174px;
+  }
+
+  .nodeIcon {
+    width: 52px;
+    height: 52px;
+  }
+
+  .nodeMiniGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.6rem;
+  }
+
+  .bottomGrid {
+    grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+    gap: 0.6rem;
+  }
+
+  .miniNode,
+  .stackNode {
+    min-height: 76px;
+    padding: 0.56rem 0.42rem;
+  }
+
+  .miniNode strong,
+  .stackNode strong {
+    font-size: 0.7rem;
+  }
+
+  .miniNode small,
+  .stackNode small {
+    font-size: 0.6rem;
+  }
+}
+
+/* 1280px */
+@media (min-width: 80rem) {
+  .grid {
+    grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.55fr);
+    gap: 1.15rem;
+  }
+
+  .infoCard,
+  .diagramCard {
+    padding: 1.2rem;
+  }
+
+  .infoScroll {
+    max-height: 18.5rem;
+  }
+
+  .rowTop {
+    grid-template-columns: minmax(112px, 0.7fr) 34px minmax(144px, 0.96fr) 34px minmax(230px, 1.12fr);
+  }
+
+  .node {
+    min-height: 182px;
+    padding: 0.9rem 0.8rem;
+    gap: 0.72rem;
+  }
+
+  .node strong {
+    font-size: 0.9rem;
+  }
+
+  .node small {
+    font-size: 0.74rem;
+  }
+
+  .bottomGrid {
+    grid-template-columns: repeat(auto-fit, minmax(102px, 1fr));
+  }
+}

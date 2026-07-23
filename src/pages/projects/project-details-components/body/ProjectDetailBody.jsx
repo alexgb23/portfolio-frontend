@@ -1,4 +1,5 @@
 import BodyHead from "./BodyHead";
+import ProjectOverview from "./ProjectOverview";
 import styles from "./ProjectDetailBody.module.css";
 
 function ProjectDetailBody({ project }) {
@@ -7,6 +8,7 @@ function ProjectDetailBody({ project }) {
   return (
     <div className={styles.body}>
       <BodyHead project={project} />
+      <ProjectOverview project={project} />
     </div>
   );
 }
