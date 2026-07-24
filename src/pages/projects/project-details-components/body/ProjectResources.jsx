@@ -201,7 +201,11 @@ function ProjectResources({ project }) {
   const cards = getResourceCards(project);
 
   return (
-    <section className={styles.section} aria-label="Recursos del proyecto">
+    <section
+      className={styles.section}
+      id="resources"
+      aria-label="Recursos del proyecto"
+    >
       <div className={styles.track} onWheel={handleTrackWheel}>
         {cards.map((card) => {
           const Icon = card.icon;

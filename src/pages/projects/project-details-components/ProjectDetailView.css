@@ -1,7 +1,8 @@
-/* .project-detail {
+.project-detail {
   position: relative;
   width: 100%;
   color: var(--text-main);
+  margin-top: 3rem;
 }
 
 .project-detail__container {
@@ -17,11 +18,12 @@
   grid-template-columns: 1fr;
   gap: 1rem;
   align-items: start;
-} */
+}
 
 .project-detail-mobilebar {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 0.9rem;
   margin-bottom: 1rem;
   padding: 0.85rem 0.95rem;
@@ -183,3 +185,20 @@
     transition: none;
   }
 }
+
+
+/* @media (min-width: 1024px) {
+  .project-detail__container {
+    padding-block: 1.25rem 2.5rem;
+  }
+
+  .project-detail__shell {
+    grid-template-columns: 76px minmax(0, 1fr);
+    gap: 1.25rem;
+  }
+
+  .project-detail-mobilebar,
+  .project-detail-drawer {
+    display: none;
+  }
+} */

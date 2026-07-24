@@ -3,19 +3,27 @@
   min-width: 0;
   margin-top: clamp(1rem, 2vw, 1.35rem);
   padding: 0.95rem 0.85rem 1rem;
-  border-radius: 16px;
-  border: 1px solid rgba(31, 118, 178, 0.14);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--lab-panel-border);
   background:
-    radial-gradient(circle at top center, rgba(18, 92, 165, 0.08), transparent 38%),
-    linear-gradient(180deg, rgba(5, 12, 24, 0.98), rgba(3, 8, 18, 0.985));
+    radial-gradient(
+      circle at top center,
+      color-mix(in srgb, var(--lab-accent-mid) 10%, transparent),
+      transparent 38%
+    ),
+    linear-gradient(
+      180deg,
+      var(--lab-panel-bg-start),
+      var(--lab-panel-bg-end)
+    );
   box-shadow:
-    inset 0 0 0 1px rgba(74, 132, 205, 0.04),
-    0 8px 24px rgba(0, 0, 0, 0.18);
+    inset 0 0 0 1px color-mix(in srgb, var(--lab-accent-mid) 5%, transparent),
+    var(--lab-panel-shadow);
 }
 
 .heading {
   margin: 0 0 0.8rem;
-  color: #eef4ff;
+  color: var(--lab-panel-text);
   font-size: 0.96rem;
   font-weight: 800;
   line-height: 1.1;
@@ -55,14 +63,14 @@
   border-radius: 999px;
   background: linear-gradient(
     90deg,
-    rgba(69, 140, 194, 0.18) 0%,
-    rgba(72, 176, 224, 0.24) 35%,
-    rgba(84, 212, 208, 0.22) 72%,
-    rgba(125, 228, 111, 0.2) 100%
+    color-mix(in srgb, var(--lab-accent-start) 30%, transparent) 0%,
+    color-mix(in srgb, var(--lab-accent-mid) 42%, transparent) 35%,
+    color-mix(in srgb, var(--lab-accent-mid) 38%, transparent) 72%,
+    color-mix(in srgb, var(--lab-accent-end) 34%, transparent) 100%
   );
   box-shadow:
-    0 0 10px rgba(64, 155, 215, 0.1),
-    0 0 18px rgba(64, 155, 215, 0.05);
+    0 0 10px color-mix(in srgb, var(--lab-accent-mid) 16%, transparent),
+    0 0 18px color-mix(in srgb, var(--lab-accent-mid) 8%, transparent);
 }
 
 .railArrow {
@@ -72,7 +80,7 @@
   width: 12px;
   height: 12px;
   transform: translateY(-50%) rotate(180deg);
-  opacity: 0.18;
+  opacity: 0.2;
 }
 
 .railArrow::before,
@@ -83,7 +91,7 @@
   width: 7px;
   height: 2px;
   border-radius: 999px;
-  background: rgba(90, 176, 220, 0.42);
+  background: color-mix(in srgb, var(--lab-accent-mid) 55%, transparent);
   transform-origin: right center;
 }
 
@@ -116,7 +124,7 @@
 
 .date {
   margin: 0;
-  color: rgba(194, 207, 228, 0.72);
+  color: var(--text-sub);
   font-size: 0.7rem;
   font-weight: 600;
   letter-spacing: 0.01em;
@@ -153,69 +161,96 @@
 
 .pulseblue {
   background:
-    radial-gradient(circle at center, rgba(101, 219, 255, 0.96) 0 11%, rgba(101, 219, 255, 0.42) 22%, transparent 42%),
+    radial-gradient(
+      circle at center,
+      color-mix(in srgb, var(--lab-accent-start) 96%, white 4%) 0 11%,
+      color-mix(in srgb, var(--lab-accent-start) 42%, transparent) 22%,
+      transparent 42%
+    ),
     linear-gradient(
       90deg,
-      rgba(101, 219, 255, 0.12) 0%,
-      rgba(101, 219, 255, 0.22) 16%,
-      rgba(101, 219, 255, 0.34) 32%,
-      rgba(101, 219, 255, 0.52) 50%,
-      rgba(101, 219, 255, 0.34) 68%,
-      rgba(101, 219, 255, 0.22) 84%,
-      rgba(101, 219, 255, 0.12) 100%
+      color-mix(in srgb, var(--lab-accent-start) 12%, transparent) 0%,
+      color-mix(in srgb, var(--lab-accent-start) 22%, transparent) 16%,
+      color-mix(in srgb, var(--lab-accent-start) 34%, transparent) 32%,
+      color-mix(in srgb, var(--lab-accent-start) 52%, transparent) 50%,
+      color-mix(in srgb, var(--lab-accent-start) 34%, transparent) 68%,
+      color-mix(in srgb, var(--lab-accent-start) 22%, transparent) 84%,
+      color-mix(in srgb, var(--lab-accent-start) 12%, transparent) 100%
     );
 }
 
 .pulseblue::before {
   background:
-    radial-gradient(circle at center, rgba(101, 219, 255, 0.24) 0 13%, transparent 50%);
+    radial-gradient(
+      circle at center,
+      color-mix(in srgb, var(--lab-accent-start) 24%, transparent) 0 13%,
+      transparent 50%
+    );
 }
 
 .pulseteal {
   background:
-    radial-gradient(circle at center, rgba(126, 228, 216, 0.94) 0 11%, rgba(126, 228, 216, 0.4) 22%, transparent 42%),
+    radial-gradient(
+      circle at center,
+      color-mix(in srgb, var(--lab-accent-mid) 94%, white 6%) 0 11%,
+      color-mix(in srgb, var(--lab-accent-mid) 40%, transparent) 22%,
+      transparent 42%
+    ),
     linear-gradient(
       90deg,
-      rgba(126, 228, 216, 0.12) 0%,
-      rgba(126, 228, 216, 0.22) 16%,
-      rgba(126, 228, 216, 0.34) 32%,
-      rgba(126, 228, 216, 0.52) 50%,
-      rgba(126, 228, 216, 0.34) 68%,
-      rgba(126, 228, 216, 0.22) 84%,
-      rgba(126, 228, 216, 0.12) 100%
+      color-mix(in srgb, var(--lab-accent-mid) 12%, transparent) 0%,
+      color-mix(in srgb, var(--lab-accent-mid) 22%, transparent) 16%,
+      color-mix(in srgb, var(--lab-accent-mid) 34%, transparent) 32%,
+      color-mix(in srgb, var(--lab-accent-mid) 52%, transparent) 50%,
+      color-mix(in srgb, var(--lab-accent-mid) 34%, transparent) 68%,
+      color-mix(in srgb, var(--lab-accent-mid) 22%, transparent) 84%,
+      color-mix(in srgb, var(--lab-accent-mid) 12%, transparent) 100%
     );
 }
 
 .pulseteal::before {
   background:
-    radial-gradient(circle at center, rgba(126, 228, 216, 0.22) 0 13%, transparent 50%);
+    radial-gradient(
+      circle at center,
+      color-mix(in srgb, var(--lab-accent-mid) 22%, transparent) 0 13%,
+      transparent 50%
+    );
 }
 
 .pulsegreen {
   background:
-    radial-gradient(circle at center, rgba(139, 241, 107, 0.98) 0 11%, rgba(139, 241, 107, 0.44) 22%, transparent 42%),
+    radial-gradient(
+      circle at center,
+      color-mix(in srgb, var(--lab-accent-end) 98%, white 2%) 0 11%,
+      color-mix(in srgb, var(--lab-accent-end) 44%, transparent) 22%,
+      transparent 42%
+    ),
     linear-gradient(
       90deg,
-      rgba(139, 241, 107, 0.12) 0%,
-      rgba(139, 241, 107, 0.22) 16%,
-      rgba(139, 241, 107, 0.36) 32%,
-      rgba(139, 241, 107, 0.56) 50%,
-      rgba(139, 241, 107, 0.36) 68%,
-      rgba(139, 241, 107, 0.22) 84%,
-      rgba(139, 241, 107, 0.12) 100%
+      color-mix(in srgb, var(--lab-accent-end) 12%, transparent) 0%,
+      color-mix(in srgb, var(--lab-accent-end) 22%, transparent) 16%,
+      color-mix(in srgb, var(--lab-accent-end) 36%, transparent) 32%,
+      color-mix(in srgb, var(--lab-accent-end) 56%, transparent) 50%,
+      color-mix(in srgb, var(--lab-accent-end) 36%, transparent) 68%,
+      color-mix(in srgb, var(--lab-accent-end) 22%, transparent) 84%,
+      color-mix(in srgb, var(--lab-accent-end) 12%, transparent) 100%
     );
 }
 
 .pulsegreen::before {
   background:
-    radial-gradient(circle at center, rgba(139, 241, 107, 0.24) 0 13%, transparent 50%);
+    radial-gradient(
+      circle at center,
+      color-mix(in srgb, var(--lab-accent-end) 24%, transparent) 0 13%,
+      transparent 50%
+    );
 }
 
 .dot {
   width: 14px;
   height: 14px;
   border-radius: 999px;
-  border: 2px solid rgba(236, 247, 255, 0.92);
+  border: 2px solid color-mix(in srgb, var(--bg-elevated) 82%, white 18%);
   position: relative;
   z-index: 2;
 }
@@ -228,36 +263,48 @@
 }
 
 .dotblue {
-  background: #67dcff;
+  background: var(--lab-accent-start);
   box-shadow:
-    0 0 0 4px rgba(103, 220, 255, 0.08),
-    0 0 14px rgba(103, 220, 255, 0.26);
+    0 0 0 4px color-mix(in srgb, var(--lab-accent-start) 8%, transparent),
+    0 0 14px color-mix(in srgb, var(--lab-accent-start) 26%, transparent);
 }
 
 .dotblue::before {
-  background: radial-gradient(circle, rgba(103, 220, 255, 0.18), transparent 72%);
+  background: radial-gradient(
+    circle,
+    color-mix(in srgb, var(--lab-accent-start) 18%, transparent),
+    transparent 72%
+  );
 }
 
 .dotteal {
-  background: #7fe4d8;
+  background: var(--lab-accent-mid);
   box-shadow:
-    0 0 0 4px rgba(127, 228, 216, 0.08),
-    0 0 14px rgba(127, 228, 216, 0.28);
+    0 0 0 4px color-mix(in srgb, var(--lab-accent-mid) 8%, transparent),
+    0 0 14px color-mix(in srgb, var(--lab-accent-mid) 28%, transparent);
 }
 
 .dotteal::before {
-  background: radial-gradient(circle, rgba(127, 228, 216, 0.18), transparent 72%);
+  background: radial-gradient(
+    circle,
+    color-mix(in srgb, var(--lab-accent-mid) 18%, transparent),
+    transparent 72%
+  );
 }
 
 .dotgreen {
-  background: #8cf16c;
+  background: var(--lab-accent-end);
   box-shadow:
-    0 0 0 4px rgba(140, 241, 108, 0.1),
-    0 0 16px rgba(140, 241, 108, 0.34);
+    0 0 0 4px color-mix(in srgb, var(--lab-accent-end) 10%, transparent),
+    0 0 16px color-mix(in srgb, var(--lab-accent-end) 34%, transparent);
 }
 
 .dotgreen::before {
-  background: radial-gradient(circle, rgba(140, 241, 108, 0.22), transparent 72%);
+  background: radial-gradient(
+    circle,
+    color-mix(in srgb, var(--lab-accent-end) 22%, transparent),
+    transparent 72%
+  );
 }
 
 .title {
@@ -270,21 +317,21 @@
 }
 
 .titleblue {
-  color: #7fe4ff;
+  color: color-mix(in srgb, var(--lab-accent-start) 78%, var(--text-main) 22%);
 }
 
 .titleteal {
-  color: #91e7dc;
+  color: color-mix(in srgb, var(--lab-accent-mid) 72%, var(--text-main) 28%);
 }
 
 .titlegreen {
-  color: #8ceb73;
+  color: color-mix(in srgb, var(--lab-accent-end) 78%, var(--text-main) 22%);
 }
 
 .description {
   margin: 0.28rem 0 0;
   padding: 0 0.5rem;
-  color: rgba(223, 232, 246, 0.82);
+  color: var(--lab-panel-text-soft);
   font-size: 0.74rem;
   line-height: 1.22;
   text-wrap: balance;
@@ -293,7 +340,7 @@
 @media (min-width: 768px) {
   .section {
     padding: 1rem 1rem 1.05rem;
-    border-radius: 18px;
+    border-radius: var(--radius-md);
   }
 
   .heading {

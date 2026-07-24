@@ -32,7 +32,7 @@ function ProjectShowcase({ project }) {
   const techTitle = metadata.tech_title || "Tecnologías Utilizadas";
 
   return (
-    <section className={styles.section}>
+    <section className={styles.section} id="showcase">
       <div className={styles.grid}>
         <article className={`${styles.panel} ${styles.panelStretch}`}>
           <ProjectFoldersModule title={title} tree={tree} badge={badge} />

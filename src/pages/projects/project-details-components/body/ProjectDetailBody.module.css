@@ -3,3 +3,9 @@
   gap: 1rem;
   min-height: 60vh;
 }
+
+@media (min-width: 1024px) {
+.body{
+  padding-left: 2rem;
+}
+}

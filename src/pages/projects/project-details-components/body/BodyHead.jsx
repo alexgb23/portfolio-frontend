@@ -44,14 +44,7 @@ function BodyHead({ project }) {
   const progressValue = getProjectProgress(project);
 
   return (
-    <section className={styles.head}>
-      <div className={styles.backRow}>
-        <Link to="/proyectos" className={styles.backLink}>
-          <ArrowLeft size={16} />
-          <span>Volver a Proyectos</span>
-        </Link>
-      </div>
-
+    <section className={styles.head} id="project-top">
       <div className={styles.layout}>
         <article className={styles.heroCard}>
           <div className={styles.heroMain}>
@@ -197,33 +190,33 @@ function BodyHead({ project }) {
                   normalizedTitle === "api base" ||
                   normalizedTitle === "base api";
 
-               if (isBaseApiItem) {
-                 return (
-                   <div
-                     key={item.id}
-                     className={`${styles.quickLink} ${styles.quickLinkStatic}`}
-                   >
-                     <span
-                       className={`${styles.quickIcon} ${styles.quickIconBaseApi}`}
-                     >
-                       <DatabaseZap size={17} strokeWidth={2} />
-                     </span>
+                if (isBaseApiItem) {
+                  return (
+                    <div
+                      key={item.id}
+                      className={`${styles.quickLink} ${styles.quickLinkStatic}`}
+                    >
+                      <span
+                        className={`${styles.quickIcon} ${styles.quickIconBaseApi}`}
+                      >
+                        <DatabaseZap size={17} strokeWidth={2} />
+                      </span>
 
-                     <span className={styles.quickText}>
-                       <strong>{item.titulo}</strong>
-                       <small>
-                         {item.subtitulo || item.grupo || "Recurso"}
-                       </small>
-                     </span>
+                      <span className={styles.quickText}>
+                        <strong>{item.titulo}</strong>
+                        <small>
+                          {item.subtitulo || item.grupo || "Recurso"}
+                        </small>
+                      </span>
 
-                     <span
-                       className={`${styles.quickArrow} ${styles.quickArrowStatic}`}
-                     >
-                       <DatabaseZap size={15} strokeWidth={2} />
-                     </span>
-                   </div>
-                 );
-               }
+                      <span
+                        className={`${styles.quickArrow} ${styles.quickArrowStatic}`}
+                      >
+                        <DatabaseZap size={15} strokeWidth={2} />
+                      </span>
+                    </div>
+                  );
+                }
 
                 return (
                   <a

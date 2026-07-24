@@ -53,13 +53,20 @@
   padding: 0.85rem;
   border-radius: 14px;
   border: 1px solid color-mix(in srgb, var(--accent) 10%, var(--border));
-  background: color-mix(in srgb, var(--bg-card) 88%, black 12%);
-  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent) 3%, transparent);
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--bg-elevated) 94%, var(--bg-card-2) 6%),
+      color-mix(in srgb, var(--bg-card) 98%, var(--bg-elevated) 2%)
+    );
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--accent) 3%, transparent);
 }
 
 .customScroll {
   scrollbar-width: thin;
-  scrollbar-color: var(--scrollbar-thumb, color-mix(in srgb, var(--accent) 24%, transparent))
+  scrollbar-color:
+    var(--scrollbar-thumb, color-mix(in srgb, var(--accent) 24%, transparent))
     var(--scrollbar-track, transparent);
 }
 

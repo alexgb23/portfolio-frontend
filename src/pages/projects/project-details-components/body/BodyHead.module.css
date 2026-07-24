@@ -3,11 +3,6 @@
   gap: clamp(0.8rem, 2vw, 1.4rem);
 }
 
-.backRow {
-  display: flex;
-  align-items: center;
-}
-
 .backLink {
   display: inline-flex;
   align-items: center;

@@ -1,11 +1,7 @@
 .project-detail__footer {
   display: grid;
   gap: 1rem;
-  margin-top: 1rem;
-}
-
-.project-detail__footer {
-  margin-top: 1rem;
+  margin-top: 2rem;
 }
 
 .project-footer {

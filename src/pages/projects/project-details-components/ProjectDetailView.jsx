@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { FiMenu, FiX } from "react-icons/fi";
 
 import ProjectDetailSidebar from "./sidebar/ProjectDetailSidebar";
@@ -6,8 +6,21 @@ import ProjectDetailBody from "./body/ProjectDetailBody";
 import ProjectDetailFooter from "./footer/ProjectDetailFooter";
 import "./ProjectDetailView.css";
 
-function ProjectDetailView({ slug, loading, error, isRefreshing, project }) {
+function ProjectDetailView({
+  slug,
+  loading,
+  error,
+  isRefreshing,
+  project,
+  onOpenCv,
+}) {
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
+  const [activeSectionId, setActiveSectionId] = useState("overview");
+
+  const sectionIds = useMemo(
+    () => ["overview", "showcase", "resources", "timeline", "stack"],
+    [],
+  );
 
   useEffect(() => {
     const handleEscape = (event) => {
@@ -17,15 +30,58 @@ function ProjectDetailView({ slug, loading, error, isRefreshing, project }) {
     };
 
     document.addEventListener("keydown", handleEscape);
-    return () => document.removeEventListener("keydown", handleEscape);
+
+    return () => {
+      document.removeEventListener("keydown", handleEscape);
+    };
   }, []);
 
   useEffect(() => {
     document.body.style.overflow = isMobileSidebarOpen ? "hidden" : "";
+
     return () => {
       document.body.style.overflow = "";
     };
   }, [isMobileSidebarOpen]);
+
+  useEffect(() => {
+    if (!project) return;
+
+    const elements = sectionIds
+      .map((id) => document.getElementById(id))
+      .filter(Boolean);
+
+    if (!elements.length) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visibleEntries = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+
+        if (visibleEntries[0]?.target?.id) {
+          setActiveSectionId(visibleEntries[0].target.id);
+        }
+      },
+      {
+        root: null,
+        rootMargin: "-18% 0px -48% 0px",
+        threshold: [0.2, 0.35, 0.5, 0.7],
+      },
+    );
+
+    elements.forEach((element) => observer.observe(element));
+
+    return () => {
+      elements.forEach((element) => observer.unobserve(element));
+      observer.disconnect();
+    };
+  }, [project, sectionIds]);
+
+  useEffect(() => {
+    setActiveSectionId("overview");
+    setIsMobileSidebarOpen(false);
+  }, [project?.slug]);
 
   if (loading) {
     return (
@@ -56,6 +112,15 @@ function ProjectDetailView({ slug, loading, error, isRefreshing, project }) {
     <section className="project-detail">
       <div className="project-detail__container">
         <div className="project-detail-mobilebar">
+          <div className="project-detail-mobilebar__title-wrap">
+            <span className="project-detail-mobilebar__kicker">
+              {project?.area_principal || "Proyecto"}
+            </span>
+            <strong className="project-detail-mobilebar__title">
+              {project?.title}
+            </strong>
+          </div>
+
           <button
             type="button"
             className="project-detail-mobilebar__toggle"
@@ -66,19 +131,15 @@ function ProjectDetailView({ slug, loading, error, isRefreshing, project }) {
           >
             <FiMenu />
           </button>
-
-          <div className="project-detail-mobilebar__title-wrap">
-            <span className="project-detail-mobilebar__kicker">
-              {project?.area_principal || "Proyecto"}
-            </span>
-            <strong className="project-detail-mobilebar__title">
-              {project?.title}
-            </strong>
-          </div>
         </div>
 
         <div className="project-detail__shell">
-          <ProjectDetailSidebar project={project} />
+          <ProjectDetailSidebar
+            project={project}
+            activeSectionId={activeSectionId}
+            onOpenCv={onOpenCv}
+          />
+
           <ProjectDetailBody project={project} isRefreshing={isRefreshing} />
         </div>
 
@@ -86,7 +147,9 @@ function ProjectDetailView({ slug, loading, error, isRefreshing, project }) {
       </div>
 
       <div
-        className={`project-detail-drawer ${isMobileSidebarOpen ? "is-open" : ""}`}
+        className={`project-detail-drawer ${
+          isMobileSidebarOpen ? "is-open" : ""
+        }`}
         aria-hidden={!isMobileSidebarOpen}
       >
         <button
@@ -124,6 +187,8 @@ function ProjectDetailView({ slug, loading, error, isRefreshing, project }) {
           <ProjectDetailSidebar
             project={project}
             isMobile
+            activeSectionId={activeSectionId}
+            onOpenCv={onOpenCv}
             onNavigate={() => setIsMobileSidebarOpen(false)}
           />
         </aside>

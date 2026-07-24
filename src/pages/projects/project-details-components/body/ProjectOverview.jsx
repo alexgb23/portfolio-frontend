@@ -188,7 +188,7 @@ function ProjectOverview({ project }) {
     stack.length > 0;
 
   return (
-    <section className={styles.section}>
+    <section className={styles.section} id="overview">
       <div className={styles.grid}>
         <article className={styles.infoCard}>
           <div className={styles.cardHeader}>

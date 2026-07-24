@@ -54,6 +54,7 @@ function ProjectTimelime({ project }) {
   return (
     <section
       className={styles.section}
+      id="timeline"
       aria-label={section.titulo || "Timeline del desarrollo"}
     >
       <h2 className={styles.heading}>

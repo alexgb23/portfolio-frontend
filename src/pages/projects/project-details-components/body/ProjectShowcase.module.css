@@ -28,10 +28,12 @@
     ),
     linear-gradient(
       180deg,
-      color-mix(in srgb, var(--bg-card-2) 94%, transparent),
-      color-mix(in srgb, var(--bg-card) 98%, transparent)
+      color-mix(in srgb, var(--bg-card-2) 96%, transparent),
+      color-mix(in srgb, var(--bg-card) 100%, transparent)
     );
-  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent) 4%, transparent);
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--accent) 4%, transparent),
+    var(--shadow-sm);
 }
 
 .panelStretch {
@@ -115,7 +117,14 @@
   max-height: 100%;
   border-radius: 14px;
   border: 1px solid color-mix(in srgb, var(--accent) 10%, var(--border));
-  background: color-mix(in srgb, var(--bg-card) 88%, black 12%);
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--bg-elevated) 92%, var(--bg-card-2) 8%),
+      color-mix(in srgb, var(--bg-card) 96%, var(--bg-elevated) 4%)
+    );
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--accent) 3%, transparent);
 }
 
 .codeBlock {
@@ -177,6 +186,11 @@
   height: 100%;
   border-radius: inherit;
   background: linear-gradient(90deg, var(--accent), var(--accent-green));
+}
+
+.emptyState {
+  color: var(--text-sub);
+  font-size: 0.84rem;
 }
 
 @media (min-width: 768px) {

@@ -17,7 +17,7 @@ function ProjectDetailFooter({ project }) {
     visibleLinks[1];
 
   return (
-    <footer className="project-detail__footer project-footer">
+    <footer className="project-detail__footer project-footer" id="stack">
       <div className="project-footer__card">
         <div className="project-footer__background" aria-hidden="true" />
 
