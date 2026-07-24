@@ -11,36 +11,32 @@ import {
 } from "lucide-react";
 import styles from "./ProjectFoldersModule.module.css";
 
-function getNodeIcon(node) {
-  if (node.type === "folder") return Folder;
-
-  if (node.name.endsWith(".php")) return FileCode2;
-  if (node.name.endsWith(".json")) return FileJson2;
-  if (node.name.endsWith(".md")) return FileText;
-  if (node.name.toLowerCase().includes("docker")) return Settings2;
-
-  return Braces;
-}
-
-function getFileKind(node) {
-  if (node.type === "folder") return "folder";
-  if (node.name === ".env" || node.name === ".env.example") return "env";
-  if (node.name.endsWith(".blade.php")) return "blade";
-  if (node.name.endsWith(".php")) return "php";
-  if (node.name.endsWith(".json")) return "json";
-  if (node.name.endsWith(".md")) return "md";
-  if (node.name.toLowerCase().includes("docker")) return "docker";
-  return "default";
+function resolveNodeMeta(node) {
+  if (node.type === "folder") return { Icon: Folder, kind: "folder" };
+  if (node.name === ".env" || node.name === ".env.example") {
+    return { Icon: Braces, kind: "env" };
+  }
+  if (node.name.endsWith(".blade.php")) {
+    return { Icon: FileCode2, kind: "blade" };
+  }
+  if (node.name.endsWith(".php")) return { Icon: FileCode2, kind: "php" };
+  if (node.name.endsWith(".json")) return { Icon: FileJson2, kind: "json" };
+  if (node.name.endsWith(".md")) return { Icon: FileText, kind: "md" };
+  if (node.name.toLowerCase().includes("docker")) {
+    return { Icon: Settings2, kind: "docker" };
+  }
+  return { Icon: Braces, kind: "default" };
 }
 
 function FileRow({ node, depth = 0 }) {
-  const Icon = getNodeIcon(node);
-  const kind = getFileKind(node);
+  const { Icon, kind } = resolveNodeMeta(node);
 
   return (
     <li className={styles.treeItem} style={{ "--depth": depth }}>
       <div
-        className={`${styles.treeRow} ${styles.treeFileRow} ${styles[`kind${kind[0].toUpperCase()}${kind.slice(1)}`] || ""}`}
+        className={`${styles.treeRow} ${styles.treeFileRow} ${
+          styles[`kind${kind[0].toUpperCase()}${kind.slice(1)}`] || ""
+        }`}
       >
         <span className={styles.treeIndent} />
         <span className={styles.treeIcon}>
@@ -53,9 +49,7 @@ function FileRow({ node, depth = 0 }) {
 }
 
 function FolderNode({ node, depth = 0, defaultOpen = false }) {
-  const hasChildren = node.children?.length > 0;
-
-  if (!hasChildren) {
+  if (!node.children?.length) {
     return <FileRow node={node} depth={depth} />;
   }
 
@@ -77,9 +71,9 @@ function FolderNode({ node, depth = 0, defaultOpen = false }) {
         </summary>
 
         <ul className={styles.treeList}>
-          {node.children.map((child) => (
+          {node.children.map((child, index) => (
             <FolderNode
-              key={`${node.name}-${child.name}`}
+              key={`${node.name}-${child.name}-${index}`}
               node={child}
               depth={depth + 1}
               defaultOpen={depth < 1}
@@ -94,20 +88,35 @@ function FolderNode({ node, depth = 0, defaultOpen = false }) {
 function ProjectFoldersModule({
   title = "Estructura del Proyecto",
   tree = [],
+  badge = "Proyecto",
   className = "",
 }) {
   return (
-    <article className={`${styles.panel} ${styles.treeModule} ${className}`}>
-      <div className={styles.panelHeader}>
+    <article className={`${className} ${styles.treeModule}`}>
+      <div className={styles.treeHeader}>
         <h3>{title}</h3>
+        <span className={styles.fileBadge}>{badge}</span>
       </div>
 
-      <div className={styles.treePanel}>
-        <ul className={styles.treeList}>
-          {tree.map((node) => (
-            <FolderNode key={node.name} node={node} depth={0} defaultOpen />
-          ))}
-        </ul>
+      <div className={styles.treeShell}>
+        <div className={`${styles.treePanel} ${styles.customScroll}`}>
+          {tree.length ? (
+            <ul className={styles.treeList}>
+              {tree.map((node, index) => (
+                <FolderNode
+                  key={`${node.name}-${index}`}
+                  node={node}
+                  depth={0}
+                  defaultOpen
+                />
+              ))}
+            </ul>
+          ) : (
+            <div className={styles.emptyState}>
+              No hay estructura disponible.
+            </div>
+          )}
+        </div>
       </div>
     </article>
   );
