@@ -1,0 +1,161 @@
+.section {
+  margin-top: 1rem;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.9rem;
+}
+
+.panel {
+  min-width: 0;
+  padding: 1rem;
+  border-radius: 18px;
+  border: 1px solid color-mix(in srgb, var(--accent) 14%, var(--border));
+  background:
+    radial-gradient(
+      circle at top left,
+      color-mix(in srgb, var(--accent) 10%, transparent),
+      transparent 28%
+    ),
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--bg-card-2) 94%, transparent),
+      color-mix(in srgb, var(--bg-card) 98%, transparent)
+    );
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent) 4%, transparent);
+}
+
+.panelHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.95rem;
+}
+
+.panelHeader h3 {
+  margin: 0;
+  font-size: clamp(1rem, 0.94rem + 0.35vw, 1.15rem);
+  color: var(--text-main);
+}
+
+.fileBadge {
+  padding: 0.38rem 0.55rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  color: var(--text-sub);
+  background: color-mix(in srgb, var(--accent) 9%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent) 12%, transparent);
+}
+
+.treePanel,
+.codeBlock {
+  border-radius: 14px;
+  border: 1px solid color-mix(in srgb, var(--accent) 10%, var(--border));
+  background: color-mix(in srgb, var(--bg-card) 88%, black 12%);
+}
+
+.treePanel {
+  padding: 0.8rem;
+  overflow: auto;
+}
+
+.treeList {
+  display: grid;
+  gap: 0.28rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.treeItem {
+  min-width: 0;
+}
+
+.treeRow {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  min-height: 24px;
+  padding-left: calc(var(--depth, 0) * 0.9rem);
+  color: var(--text-sub);
+  font-size: 0.82rem;
+}
+
+.treeRow svg {
+  flex: 0 0 auto;
+  color: var(--accent);
+}
+
+.codePanel {
+  min-width: 0;
+}
+
+.codeBlock {
+  padding: 0.85rem;
+  overflow: auto;
+}
+
+.codeLine {
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr);
+  gap: 0.7rem;
+  font-size: 0.82rem;
+  line-height: 1.55;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+.lineNumber {
+  color: var(--text-sub);
+  opacity: 0.7;
+  text-align: right;
+}
+
+.codeLine code {
+  white-space: pre-wrap;
+  color: var(--text-main);
+}
+
+.techList {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.techItem {
+  display: grid;
+  gap: 0.38rem;
+}
+
+.techMeta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+  font-size: 0.84rem;
+  color: var(--text-main);
+}
+
+.techBar {
+  height: 7px;
+  border-radius: 999px;
+  overflow: hidden;
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
+}
+
+.techBar span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--accent), var(--accent-green));
+}
+
+
+
+@media (min-width: 1024px) {
+  .grid {
+    grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.55fr) minmax(0, 0.9fr);
+    align-items: start;
+  }
+}

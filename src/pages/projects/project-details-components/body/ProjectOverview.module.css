@@ -1,43 +1,36 @@
 .section {
   display: grid;
-  margin-top: clamp(1rem, 2vw, 1.6rem);
+  margin-top: clamp(14px, 2vw, 22px);
+  min-width: 0;
 }
 
 .grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 0.9rem;
-  align-items: stretch;
+  gap: 12px;
+  align-items: start;
+  min-width: 0;
 }
 
 .infoCard,
 .diagramCard {
   position: relative;
-  overflow: hidden;
+  overflow: visible;
   min-width: 0;
-  padding: 0.95rem;
-  border-radius: var(--radius-md);
+  padding: 12px;
+  border-radius: 13px;
   border: 1px solid var(--lab-panel-border);
   background:
     radial-gradient(
       circle at top left,
-      color-mix(in srgb, var(--accent) 12%, transparent),
-      transparent 34%
-    ),
-    radial-gradient(
-      circle at bottom right,
-      color-mix(in srgb, var(--accent-green) 8%, transparent),
+      color-mix(in srgb, var(--accent) 9%, transparent),
       transparent 30%
     ),
-    linear-gradient(
-      180deg,
-      var(--lab-panel-bg-start),
-      var(--lab-panel-bg-end)
-    );
+    linear-gradient(180deg, var(--lab-panel-bg-start), var(--lab-panel-bg-end));
   box-shadow:
-    inset 0 0 0 1px color-mix(in srgb, var(--accent) 8%, transparent),
-    var(--lab-panel-shadow);
-  backdrop-filter: blur(12px);
+    inset 0 0 0 1px color-mix(in srgb, var(--accent) 5%, transparent),
+    0 8px 24px color-mix(in srgb, black 15%, transparent);
+  backdrop-filter: blur(8px);
 }
 
 .infoCard::before,
@@ -46,54 +39,57 @@
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background:
-    linear-gradient(
-      90deg,
-      transparent,
-      color-mix(in srgb, var(--accent) 10%, transparent),
-      transparent
-    );
-  opacity: 0.55;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    color-mix(in srgb, var(--accent) 6%, transparent),
+    transparent
+  );
+  opacity: 0.3;
 }
 
 .cardHeader {
   position: relative;
   z-index: 1;
   display: grid;
-  gap: 0.3rem;
-  margin-bottom: 0.9rem;
+  gap: 4px;
+  margin-bottom: 11px;
+  min-width: 0;
 }
 
 .eyebrow {
   color: var(--accent);
-  font-size: 0.68rem;
+  font-size: clamp(10px, 0.64vw, 11px);
   font-weight: 700;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.05em;
   text-transform: uppercase;
 }
 
 .cardHeader h2 {
   margin: 0;
   color: var(--lab-panel-text);
-  font-size: clamp(1rem, 0.92rem + 0.5vw, 1.28rem);
+  font-size: clamp(14px, 1vw, 17px);
   line-height: 1.12;
+  overflow-wrap: anywhere;
+  text-wrap: balance;
 }
 
 .description {
   margin: 0;
   color: var(--lab-panel-text-soft);
-  font-size: clamp(0.9rem, 0.84rem + 0.2vw, 1rem);
-  line-height: 1.68;
+  font-size: clamp(12px, 0.88vw, 14px);
+  line-height: 1.5;
 }
 
 .infoScroll {
   position: relative;
   z-index: 1;
   display: grid;
-  gap: 0.9rem;
-  max-height: 15.2rem;
+  gap: 11px;
+  max-height: 210px;
   overflow-y: auto;
-  padding-right: 0.2rem;
+  padding-right: 2px;
+  min-width: 0;
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
@@ -104,7 +100,7 @@
 
 .featureList {
   display: grid;
-  gap: 0.7rem;
+  gap: 8px;
   padding: 0;
   margin: 0;
   list-style: none;
@@ -112,131 +108,146 @@
 
 .featureList li {
   display: grid;
-  grid-template-columns: 16px minmax(0, 1fr);
-  gap: 0.62rem;
+  grid-template-columns: 11px minmax(0, 1fr);
+  gap: 8px;
   align-items: start;
   color: var(--text-soft);
-  font-size: 0.9rem;
-  line-height: 1.46;
+  font-size: clamp(12px, 0.84vw, 13px);
+  line-height: 1.38;
+  min-width: 0;
 }
 
 .featureList li::before {
   content: "";
-  width: 16px;
-  height: 16px;
-  margin-top: 0.1rem;
+  width: 11px;
+  height: 11px;
+  margin-top: 3px;
   border-radius: 999px;
-  border: 1px solid color-mix(in srgb, var(--accent-green) 70%, white 10%);
+  border: 1px solid color-mix(in srgb, var(--accent-green) 64%, white 8%);
   background:
     radial-gradient(
       circle at center,
-      color-mix(in srgb, var(--accent-green) 85%, white 5%) 0 34%,
-      transparent 38%
+      color-mix(in srgb, var(--accent-green) 82%, white 4%) 0 38%,
+      transparent 42%
     ),
-    color-mix(in srgb, var(--accent-green) 12%, transparent);
-  box-shadow:
-    0 0 0 2px color-mix(in srgb, var(--accent-green) 10%, transparent),
-    0 0 12px color-mix(in srgb, var(--accent-green) 18%, transparent);
+    color-mix(in srgb, var(--accent-green) 10%, transparent);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent-green) 8%, transparent);
 }
 
 .diagram {
   position: relative;
   z-index: 1;
   display: grid;
-  gap: 0.85rem;
+  gap: 10px;
   min-width: 0;
 }
 
+/* MOBILE FIRST */
 .rowTop {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 20px minmax(0, 1fr);
-  gap: 0.55rem;
+  grid-template-columns:
+    minmax(0, 1fr)
+    8px
+    minmax(0, 1fr)
+    8px
+    minmax(0, 1fr);
+  grid-template-rows: auto 12px auto;
+  gap: 4px;
   align-items: stretch;
   min-width: 0;
 }
 
 .node {
   min-width: 0;
-  min-height: 152px;
-  padding: 0.8rem 0.72rem;
-  border-radius: 16px;
-  border: 1px solid color-mix(in srgb, var(--accent) 18%, var(--border));
-  background:
-    linear-gradient(
-      180deg,
-      color-mix(in srgb, var(--bg-card-2) 92%, transparent),
-      color-mix(in srgb, var(--bg-card) 96%, transparent)
-    );
-  box-shadow:
-    inset 0 0 0 1px color-mix(in srgb, var(--accent) 4%, transparent),
-    0 0 20px color-mix(in srgb, var(--accent-2) 8%, transparent);
+  width: 100%;
+  min-height: 84px;
+  padding: 7px 5px 8px;
+  border-radius: 10px;
+  border: 1px solid color-mix(in srgb, var(--accent) 12%, var(--border));
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--bg-card-2) 92%, transparent),
+    color-mix(in srgb, var(--bg-card) 97%, transparent)
+  );
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent) 2%, transparent);
   display: grid;
-  align-content: start;
   justify-items: center;
+  align-content: start;
   text-align: center;
-  gap: 0.62rem;
+  gap: 4px;
 }
 
 .nodeTitle,
 .nodeGroupTitle,
 .bottomPanelTitle {
   color: var(--accent);
-  font-size: 0.64rem;
+  font-size: 8px;
   font-weight: 800;
-  letter-spacing: 0.075em;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
+  line-height: 1.08;
+  overflow-wrap: anywhere;
+  text-align: center;
 }
 
 .nodeIcon {
-  width: 44px;
-  height: 44px;
+  width: 26px;
+  height: 26px;
   display: grid;
   place-items: center;
-  border-radius: 14px;
+  border-radius: 8px;
   color: var(--accent);
-  background:
-    radial-gradient(
-      circle at 30% 30%,
-      color-mix(in srgb, var(--accent) 22%, transparent),
-      transparent 55%
-    ),
-    linear-gradient(
-      180deg,
-      color-mix(in srgb, var(--bg-card-2) 96%, white 4%),
-      color-mix(in srgb, var(--bg-card) 96%, black 4%)
-    );
-  border: 1px solid color-mix(in srgb, var(--accent) 20%, transparent);
-  box-shadow:
-    inset 0 0 0 1px color-mix(in srgb, var(--accent) 4%, transparent),
-    0 0 18px color-mix(in srgb, var(--accent-glow) 70%, transparent);
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--bg-card-2) 94%, white 2%),
+    color-mix(in srgb, var(--bg-card) 96%, black 2%)
+  );
+  border: 1px solid color-mix(in srgb, var(--accent) 12%, transparent);
+  box-shadow: none;
 }
 
-.node strong {
+.nodeMain {
   color: var(--text-main);
-  font-size: 0.84rem;
-  line-height: 1.14;
+  font-size: 10px;
+  line-height: 1.08;
+  min-height: 22px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  overflow-wrap: anywhere;
+  word-break: break-word;
   text-wrap: balance;
 }
 
-.node small {
+.nodeSub {
   color: var(--text-sub);
-  font-size: 0.68rem;
-  line-height: 1.3;
+  font-size: 8px;
+  line-height: 1.08;
+  min-height: 16px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  overflow-wrap: anywhere;
+  word-break: break-word;
   text-wrap: pretty;
 }
 
 .connector {
+  display: block;
   position: relative;
   align-self: center;
   height: 2px;
+  min-width: 0;
   border-radius: 999px;
   background: linear-gradient(
     90deg,
-    color-mix(in srgb, var(--accent) 18%, transparent),
+    color-mix(in srgb, var(--accent) 16%, transparent),
     var(--accent-green),
-    color-mix(in srgb, var(--accent) 18%, transparent)
+    color-mix(in srgb, var(--accent) 16%, transparent)
   );
-  box-shadow: 0 0 12px color-mix(in srgb, var(--accent-green) 24%, transparent);
+  box-shadow: 0 0 6px color-mix(in srgb, var(--accent-green) 16%, transparent);
 }
 
 .connector::after {
@@ -244,158 +255,396 @@
   position: absolute;
   right: -1px;
   top: 50%;
-  width: 7px;
-  height: 7px;
-  border-top: 2px solid var(--accent-green);
-  border-right: 2px solid var(--accent-green);
+  width: 4px;
+  height: 4px;
+  border-top: 1.5px solid var(--accent-green);
+  border-right: 1.5px solid var(--accent-green);
   transform: translateY(-50%) rotate(45deg);
+}
+
+.connectorDown {
+  grid-column: 1 / -1;
+  grid-row: 2;
+  justify-self: center;
+  align-self: start;
+  width: 2px;
+  height: 12px;
+  min-height: 12px;
+  border-radius: 999px;
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--accent) 16%, transparent),
+    var(--accent-green),
+    color-mix(in srgb, var(--accent) 16%, transparent)
+  );
+  box-shadow: 0 0 6px color-mix(in srgb, var(--accent-green) 16%, transparent);
+  position: relative;
+}
+
+.connectorDown::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -1px;
+  width: 4px;
+  height: 4px;
+  border-top: 1.5px solid var(--accent-green);
+  border-right: 1.5px solid var(--accent-green);
+  transform: translateX(-50%) rotate(135deg);
 }
 
 .nodeGroup {
   grid-column: 1 / -1;
+  grid-row: 3;
   min-width: 0;
-  padding: 0.78rem;
-  border-radius: 16px;
-  border: 1px solid color-mix(in srgb, var(--accent) 16%, var(--border));
-  background:
-    linear-gradient(
-      180deg,
-      color-mix(in srgb, var(--bg-card-2) 92%, transparent),
-      color-mix(in srgb, var(--bg-card) 96%, transparent)
-    );
-  box-shadow:
-    inset 0 0 0 1px color-mix(in srgb, var(--accent) 4%, transparent),
-    0 0 20px color-mix(in srgb, var(--accent-2) 6%, transparent);
+  width: 100%;
+  overflow: hidden;
+  padding: 8px;
+  border-radius: 10px;
+  border: 1px solid color-mix(in srgb, var(--accent) 12%, var(--border));
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--bg-card-2) 92%, transparent),
+    color-mix(in srgb, var(--bg-card) 96%, transparent)
+  );
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent) 2%, transparent);
   display: grid;
-  gap: 0.7rem;
+  gap: 7px;
+  justify-self: stretch;
+  align-content: start;
 }
 
 .nodeMiniGrid {
   display: grid;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0.55rem;
+  gap: 6px;
+  align-items: stretch;
+}
+
+.bottomPanels {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  min-width: 0;
+  align-items: start;
+}
+
+.bottomPanel {
+  position: relative;
+  min-width: 0;
+  padding: 8px;
+  border-radius: 10px;
+  border: 1px dashed color-mix(in srgb, var(--accent) 16%, var(--border));
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--bg-card-2) 84%, transparent),
+    color-mix(in srgb, var(--bg-card) 92%, transparent)
+  );
+  display: grid;
+  gap: 7px;
+  align-content: start;
+}
+
+.bottomGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px;
+  min-width: 0;
+  align-items: stretch;
 }
 
 .miniNode,
 .stackNode {
   min-width: 0;
-  min-height: 72px;
-  padding: 0.6rem 0.48rem;
-  border-radius: 13px;
-  border: 1px solid color-mix(in srgb, var(--accent) 14%, var(--border));
-  background:
-    linear-gradient(
-      180deg,
-      color-mix(in srgb, var(--bg-card-2) 90%, transparent),
-      color-mix(in srgb, var(--bg-card) 96%, transparent)
-    );
+  width: 100%;
+  min-height: 68px;
+  padding: 6px 4px;
+  border-radius: 8px;
+  border: 1px solid color-mix(in srgb, var(--accent) 10%, var(--border));
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--bg-card-2) 90%, transparent),
+    color-mix(in srgb, var(--bg-card) 96%, transparent)
+  );
   display: grid;
+  grid-template-rows: auto auto 1fr;
   justify-items: center;
-  align-content: center;
-  gap: 0.28rem;
+  align-content: start;
+  gap: 3px;
   text-align: center;
-  color: var(--accent);
-  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent) 3%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent) 2%, transparent);
+}
+
+.miniNode strong,
+.stackNode strong,
+.miniNode small,
+.stackNode small,
+.nodeMain,
+.nodeSub {
+  min-width: 0;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .miniNode strong,
 .stackNode strong {
   color: var(--text-main);
-  font-size: 0.72rem;
+  font-size: 9px;
   line-height: 1.08;
+  min-height: 20px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
   text-wrap: balance;
 }
 
 .miniNode small,
 .stackNode small {
   color: var(--text-sub);
-  font-size: 0.62rem;
-  line-height: 1.22;
+  font-size: 8px;
+  line-height: 1.08;
+  min-height: 16px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
   text-wrap: pretty;
 }
 
-.rowBottom {
-  display: grid;
-}
-
-.bottomPanel {
-  position: relative;
-  padding: 0.75rem;
-  border-radius: 16px;
-  border: 1px dashed color-mix(in srgb, var(--accent) 22%, var(--border));
-  background:
-    linear-gradient(
-      180deg,
-      color-mix(in srgb, var(--bg-card-2) 84%, transparent),
-      color-mix(in srgb, var(--bg-card) 92%, transparent)
-    );
-  display: grid;
-  gap: 0.7rem;
-}
-
-.bottomGrid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0.55rem;
-}
-
 .diagramCard::after {
-  content: "";
-  position: absolute;
-  top: 14px;
-  right: 14px;
-  width: 3px;
-  height: 68px;
-  border-radius: 999px;
-  background: linear-gradient(
-    180deg,
-    color-mix(in srgb, var(--accent) 8%, transparent),
-    var(--accent-green),
-    color-mix(in srgb, var(--accent) 8%, transparent)
-  );
-  box-shadow: 0 0 14px color-mix(in srgb, var(--accent-green) 20%, transparent);
+  display: none;
 }
-.miniNodeIcon,
-.iconFallback {
+
+.brandIcon {
+  position: relative;
   display: grid;
   place-items: center;
+  width: 100%;
+  height: 100%;
+  min-width: 0;
 }
 
-.nodeIcon img,
-.miniNodeIcon img {
+.themeIcon {
+  grid-area: 1 / 1;
   width: 100%;
   height: 100%;
   object-fit: contain;
+  display: block;
 }
 
-.miniNodeIcon img {
-  width: 20px;
-  height: 20px;
+.themeDarkAsset {
+  display: none;
 }
 
-.nodeIcon img {
-  width: 24px;
-  height: 24px;
+.themeLightAsset {
+  display: block;
 }
 
-/* 560px */
-@media (min-width: 35rem) {
-  .infoCard,
-  .diagramCard {
-    padding: 1rem;
-  }
+.nodeIcon .themeIcon {
+  width: 12px;
+  height: 12px;
+}
 
+.miniNodeIcon .themeIcon {
+  width: 10px;
+  height: 10px;
+}
+
+.nodeIcon > svg,
+.miniNodeIcon > svg,
+.iconFallback > svg {
+  display: block;
+}
+
+.iconFallback {
+  display: none;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  grid-area: 1 / 1;
+}
+
+.brandIcon[data-icon-error="true"] .themeIcon {
+  display: none !important;
+}
+
+.brandIcon[data-icon-error="true"] .iconFallback {
+  display: grid;
+}
+
+.miniNodeIcon {
+  width: 10px;
+  height: 10px;
+  display: grid;
+  place-items: center;
+  margin-bottom: 0;
+}
+
+:global(html[data-theme="light"]) .themeDarkAsset {
+  display: block;
+}
+
+:global(html[data-theme="light"]) .themeLightAsset {
+  display: none;
+}
+
+:global(html[data-theme="dark"]) .themeDarkAsset {
+  display: none;
+}
+
+:global(html[data-theme="dark"]) .themeLightAsset {
+  display: block;
+}
+
+:global(html[data-theme="light"]) .brandResend .themeDarkAsset {
+  display: none;
+}
+
+:global(html[data-theme="light"]) .brandResend .themeLightAsset {
+  display: block;
+}
+
+:global(html[data-theme="dark"]) .brandResend .themeDarkAsset {
+  display: block;
+}
+
+:global(html[data-theme="dark"]) .brandResend .themeLightAsset {
+  display: none;
+}
+
+:global(html[data-theme="light"]) .brandRender .themeIcon:only-of-type {
+  filter: brightness(0);
+}
+
+:global(html[data-theme="dark"]) .brandRender .themeIcon:only-of-type {
+  filter: brightness(0) invert(1);
+}
+
+.brandIcon > img:only-of-type {
+  grid-area: 1 / 1;
+  display: block;
+}
+
+@media (min-width: 480px) {
   .rowTop {
-    grid-template-columns: minmax(0, 0.95fr) 22px minmax(0, 0.95fr);
+    grid-template-columns:
+      minmax(0, 1fr)
+      10px
+      minmax(0, 1fr)
+      10px
+      minmax(0, 1fr);
+    grid-template-rows: auto 12px auto;
+    gap: 5px;
   }
 
   .node {
-    min-height: 160px;
+    min-height: 88px;
+  }
+
+  .connectorDown {
+    height: 12px;
+    min-height: 12px;
+  }
+
+  .nodeMiniGrid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 768px) {
+  .grid {
+    gap: 14px;
+  }
+
+  .infoCard,
+  .diagramCard {
+    padding: 14px;
+  }
+
+  .rowTop {
+    grid-template-columns:
+      minmax(88px, 98px)
+      10px
+      minmax(88px, 98px)
+      10px
+      minmax(88px, 98px)
+      10px
+      minmax(0, 1fr);
+    grid-template-rows: auto;
+    gap: 6px;
+  }
+
+  .node {
+    min-height: 92px;
+    padding: 8px 6px 9px;
   }
 
   .nodeIcon {
-    width: 48px;
-    height: 48px;
+    width: 30px;
+    height: 30px;
+  }
+
+  .nodeIcon .themeIcon {
+    width: 14px;
+    height: 14px;
+  }
+
+  .miniNodeIcon .themeIcon {
+    width: 12px;
+    height: 12px;
+  }
+
+  .miniNodeIcon {
+    width: 12px;
+    height: 12px;
+  }
+
+  .nodeMain {
+    font-size: 11px;
+  }
+
+  .nodeSub {
+    font-size: 9px;
+  }
+
+  .nodeGroup {
+    grid-column: auto;
+    grid-row: auto;
+    padding: 8px;
+  }
+
+  .connectorDown {
+    grid-column: auto;
+    grid-row: auto;
+    justify-self: stretch;
+    align-self: center;
+    width: auto;
+    height: 2px;
+    min-height: 0;
+    background: linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--accent) 16%, transparent),
+      var(--accent-green),
+      color-mix(in srgb, var(--accent) 16%, transparent)
+    );
+    box-shadow: 0 0 6px color-mix(in srgb, var(--accent-green) 16%, transparent);
+  }
+
+  .connectorDown::after {
+    left: auto;
+    right: -1px;
+    top: 50%;
+    bottom: auto;
+    width: 5px;
+    height: 5px;
+    border-top: 1.5px solid var(--accent-green);
+    border-right: 1.5px solid var(--accent-green);
+    transform: translateY(-50%) rotate(45deg);
   }
 
   .nodeMiniGrid {
@@ -405,159 +654,75 @@
   .bottomGrid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
-}
-
-/* 768px */
-@media (min-width: 48rem) {
-  .grid {
-    gap: 1rem;
-  }
-
-  .infoCard,
-  .diagramCard {
-    padding: 1.05rem;
-  }
-
-  .rowTop {
-    grid-template-columns: minmax(120px, 0.74fr) 28px minmax(140px, 0.92fr) 28px minmax(220px, 1.08fr);
-    align-items: center;
-    gap: 0.65rem;
-  }
-
-  .nodeGroup {
-    grid-column: auto;
-    padding: 0.82rem;
-  }
-
-  .node {
-    min-height: 166px;
-    padding: 0.86rem 0.74rem;
-  }
-
-  .node strong {
-    font-size: 0.88rem;
-  }
-
-  .node small {
-    font-size: 0.7rem;
-  }
 
   .miniNode,
   .stackNode {
-    min-height: 78px;
-  }
-
-  .miniNode strong,
-  .stackNode strong {
-    font-size: 0.74rem;
-  }
-
-  .miniNode small,
-  .stackNode small {
-    font-size: 0.63rem;
-  }
-
-  .bottomPanel {
-    padding: 0.8rem;
+    min-height: 72px;
   }
 }
 
-/* 1024px */
-@media (min-width: 64rem) {
+@media (min-width: 1024px) {
   .grid {
-    grid-template-columns: minmax(0, 0.94fr) minmax(0, 1.42fr);
-    gap: 1.05rem;
+    grid-template-columns: minmax(0, 0.94fr) minmax(0, 1.16fr);
+    gap: 15px;
   }
 
   .infoCard,
   .diagramCard {
-    padding: 1.1rem;
+    padding: 15px;
   }
 
   .cardHeader {
-    margin-bottom: 1rem;
+    margin-bottom: 12px;
   }
 
   .infoScroll {
-    max-height: 17.5rem;
+    max-height: 236px;
   }
 
   .rowTop {
-    grid-template-columns: minmax(110px, 0.72fr) 30px minmax(140px, 0.95fr) 30px minmax(210px, 1.08fr);
-    gap: 0.7rem;
+    grid-template-columns:
+      minmax(92px, 102px)
+      12px
+      minmax(92px, 102px)
+      12px
+      minmax(92px, 102px)
+      12px
+      minmax(0, 1fr);
   }
 
   .node {
-    min-height: 174px;
-  }
-
-  .nodeIcon {
-    width: 52px;
-    height: 52px;
-  }
-
-  .nodeMiniGrid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 0.6rem;
+    min-height: 96px;
   }
 
   .bottomGrid {
-    grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
-    gap: 0.6rem;
-  }
-
-  .miniNode,
-  .stackNode {
-    min-height: 76px;
-    padding: 0.56rem 0.42rem;
-  }
-
-  .miniNode strong,
-  .stackNode strong {
-    font-size: 0.7rem;
-  }
-
-  .miniNode small,
-  .stackNode small {
-    font-size: 0.6rem;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 
-/* 1280px */
-@media (min-width: 80rem) {
+@media (min-width: 1280px) {
   .grid {
-    grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.55fr);
-    gap: 1.15rem;
+    grid-template-columns: minmax(0, 0.96fr) minmax(0, 1.2fr);
+    gap: 16px;
   }
 
   .infoCard,
   .diagramCard {
-    padding: 1.2rem;
+    padding: 16px;
   }
 
   .infoScroll {
-    max-height: 18.5rem;
+    max-height: 252px;
   }
 
   .rowTop {
-    grid-template-columns: minmax(112px, 0.7fr) 34px minmax(144px, 0.96fr) 34px minmax(230px, 1.12fr);
-  }
-
-  .node {
-    min-height: 182px;
-    padding: 0.9rem 0.8rem;
-    gap: 0.72rem;
-  }
-
-  .node strong {
-    font-size: 0.9rem;
-  }
-
-  .node small {
-    font-size: 0.74rem;
-  }
-
-  .bottomGrid {
-    grid-template-columns: repeat(auto-fit, minmax(102px, 1fr));
+    grid-template-columns:
+      minmax(94px, 106px)
+      14px
+      minmax(94px, 106px)
+      14px
+      minmax(94px, 106px)
+      14px
+      minmax(0, 1fr);
   }
 }

@@ -1,5 +1,6 @@
 import BodyHead from "./BodyHead";
 import ProjectOverview from "./ProjectOverview";
+import ProjectShowcase from "./ProjectShowcase"
 import styles from "./ProjectDetailBody.module.css";
 
 function ProjectDetailBody({ project }) {
@@ -9,6 +10,7 @@ function ProjectDetailBody({ project }) {
     <div className={styles.body}>
       <BodyHead project={project} />
       <ProjectOverview project={project} />
+      <ProjectShowcase project={project} />
     </div>
   );
 }
