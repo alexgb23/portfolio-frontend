@@ -1,4 +1,4 @@
-.project-detail {
+/* .project-detail {
   position: relative;
   width: 100%;
   color: var(--text-main);
@@ -17,7 +17,7 @@
   grid-template-columns: 1fr;
   gap: 1rem;
   align-items: start;
-}
+} */
 
 .project-detail-mobilebar {
   display: flex;
@@ -165,7 +165,9 @@
 
   .project-detail-mobilebar,
   .project-detail-drawer {
-    display: none;
+    display: none !important;
+    pointer-events: none;
+    visibility: hidden;
   }
 }
 

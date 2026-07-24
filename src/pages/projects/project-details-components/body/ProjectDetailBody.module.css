@@ -1,6 +1,5 @@
-.project-detail__body {
+.body {
   display: grid;
   gap: 1rem;
   min-height: 60vh;
-  padding: 1rem;
 }

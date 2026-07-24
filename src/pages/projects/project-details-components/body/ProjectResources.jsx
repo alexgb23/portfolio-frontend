@@ -185,6 +185,16 @@ function getResourceCards(project) {
   ];
 }
 
+function handleTrackWheel(event) {
+  const el = event.currentTarget;
+  const canScrollHorizontally = el.scrollWidth > el.clientWidth;
+
+  if (!canScrollHorizontally) return;
+
+  event.preventDefault();
+  el.scrollLeft += event.deltaY;
+}
+
 function ProjectResources({ project }) {
   if (!project) return null;
 
@@ -192,7 +202,7 @@ function ProjectResources({ project }) {
 
   return (
     <section className={styles.section} aria-label="Recursos del proyecto">
-      <div className={styles.track}>
+      <div className={styles.track} onWheel={handleTrackWheel}>
         {cards.map((card) => {
           const Icon = card.icon;
 
