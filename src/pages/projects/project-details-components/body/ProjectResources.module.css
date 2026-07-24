@@ -1,0 +1,142 @@
+.section {
+  width: 100%;
+  min-width: 0;
+  margin-top: clamp(1rem, 2vw, 1.4rem);
+  padding: 0;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+}
+
+.track {
+  width: 100%;
+  min-width: 0;
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 0.95rem;
+  align-items: stretch;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 0.1rem 0 0.35rem 0;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.track::-webkit-scrollbar {
+  display: none;
+}
+
+.card {
+  flex: 0 0 230px;
+  max-width: 230px;
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 1rem 1.15rem;
+  border-radius: 16px;
+  border: 1px solid rgba(42, 190, 255, 0.16);
+  background: linear-gradient(180deg, rgba(7, 14, 28, 0.98), rgba(4, 10, 20, 0.98));
+  box-shadow:
+    inset 0 0 0 1px rgba(74, 132, 205, 0.06),
+    0 8px 20px rgba(0, 0, 0, 0.18);
+  scroll-snap-align: start;
+  text-decoration: none;
+}
+
+.iconBox {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.texts {
+  min-width: 0;
+  display: grid;
+  gap: 0.2rem;
+}
+
+.title {
+  margin: 0;
+  color: #eef4ff;
+  font-size: 0.98rem;
+  font-weight: 700;
+  line-height: 1.15;
+  white-space: nowrap;
+}
+
+.subtitle {
+  margin: 0;
+  color: rgba(173, 190, 218, 0.88);
+  font-size: 0.84rem;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.accentcyan {
+  color: #8fe8ff;
+  background: rgba(22, 170, 226, 0.12);
+}
+
+.accentviolet {
+  color: #9f8cff;
+  background: rgba(122, 92, 255, 0.12);
+}
+
+.accentwhite {
+  color: #f3f6fb;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.accentgreen {
+  color: #56df83;
+  background: rgba(43, 209, 106, 0.12);
+}
+
+.accentblue {
+  color: #51c4ff;
+  background: rgba(41, 121, 255, 0.12);
+}
+
+.accentlime {
+  color: #7ee071;
+  background: rgba(111, 209, 67, 0.12);
+}
+
+.accentcyanSoft {
+  color: #79dfff;
+  background: rgba(72, 195, 255, 0.1);
+}
+
+@media (max-width: 640px) {
+  .section {
+    margin-top: 0.95rem;
+  }
+
+  .card {
+    flex: 0 0 215px;
+    max-width: 215px;
+    padding: 0.9rem 1rem;
+    gap: 0.75rem;
+  }
+
+  .iconBox {
+    width: 38px;
+    height: 38px;
+    border-radius: 11px;
+  }
+
+  .title {
+    font-size: 0.92rem;
+  }
+
+  .subtitle {
+    font-size: 0.79rem;
+  }
+}
