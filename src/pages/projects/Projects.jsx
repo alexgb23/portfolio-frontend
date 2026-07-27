@@ -3,7 +3,7 @@ import { useProjects } from "../../hooks/usePortfolioData";
 import usePageTitle from "../../hooks/usePageTitle";
 
 function Projects() {
-  usePageTitle("Proyectos de Desarrollo e Integración | Alex González");
+  usePageTitle("Proyectos de Desarrollo e Integración | Alexander Galvez");
 
   const projectsState = useProjects();
 

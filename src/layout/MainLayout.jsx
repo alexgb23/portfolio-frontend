@@ -115,7 +115,7 @@ function MainLayout() {
       "@context": "https://schema.org",
       "@type": "WebSite",
       "@id": "https://alex.syskovex.com/#website",
-      name: "Portfolio técnico de Alex Galvez",
+      name: "Portfolio técnico de Alexander Galvez",
       url: "https://alex.syskovex.com/",
       inLanguage: "es-ES",
     }),
