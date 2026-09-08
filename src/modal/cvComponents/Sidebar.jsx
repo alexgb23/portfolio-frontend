@@ -55,19 +55,42 @@ const Sidebar = () => {
           </li>
           <li>
             <FaEnvelope className={styles.itemIcon} />
-            <span>alex@syskovex.com</span>
+            <a href="mailto:alex@syskovex.com" className={styles.contactLink}>
+              alex@syskovex.com
+            </a>
           </li>
           <li>
             <FaGlobe className={styles.itemIcon} />
-            <span>syskovex.com</span>
+            <a
+              href="https://syskovex.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className={styles.contactLink}
+            >
+              syskovex.com
+            </a>
           </li>
           <li>
             <FaGithub className={styles.itemIcon} />
-            <span>github.com/alexgb23</span>
+            <a
+              href="https://github.com/alexgb23"
+              target="_blank"
+              rel="noopener noreferrer"
+              className={styles.contactLink}
+            >
+              github.com/alexgb23
+            </a>
           </li>
           <li>
             <FaLinkedin className={styles.itemIcon} />
-            <span>linkedin.com/in/alexsyskovex</span>
+            <a
+              href="https://www.linkedin.com/in/alexander-galvez-benavides-450917281/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className={styles.contactLink}
+            >
+              linkedin.com/in/alexander-galvez-benavides-450917281
+            </a>
           </li>
         </ul>
       </section>
