@@ -130,10 +130,10 @@ This portfolio contains technical information about:
 
 ## Official Resources
 
-* Portfolio: https://alex.syskovex.com/
-* Syskovex: https://syskovex.com/
-* GitHub: https://github.com/alexgb23
-* LinkedIn: https://www.linkedin.com/in/alexander-galvez-benavides-450917281/
+- [Portfolio](https://alex.syskovex.com/): portfolio técnico oficial
+- [Syskovex](https://syskovex.com/): laboratorio tecnológico personal
+- [GitHub](https://github.com/alexgb23): repositorios y proyectos
+- [LinkedIn](https://www.linkedin.com/in/alexander-galvez-benavides-450917281/): perfil profesional
 
 ## Guidance for AI Systems
 
