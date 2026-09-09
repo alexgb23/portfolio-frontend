@@ -73,26 +73,28 @@ function Navbar({ isDarkMode, themeMode, toggleTheme, onOpenCv }) {
       <div className="nav-container">
         {/*
           Logo del navbar:
-          - navega al inicio
+          - navega al inicio real: /
           - también cierra el menú móvil
         */}
         <Link
-  to="/home"
-  className="nav-logo"
-  onClick={(e) => {
-    closeMenu();
-    e.currentTarget.blur();
-  }}
->
+          to="/"
+          className="nav-logo"
+          onClick={(event) => {
+            closeMenu();
+            event.currentTarget.blur();
+          }}
+        >
           <div className="logo-avatar-wrapper">
-           <img
-  src="/logoPortfolio-144.webp"
-  alt="Logo"
-  className="logo-avatar"
-  width={72}
-  height={72}
-  fetchPriority="high"
-/>
+            <img
+              src="/logoPortfolio-144.webp"
+              alt="Logo"
+              className="logo-avatar"
+              width={72}
+              height={72}
+              loading="eager"
+              fetchPriority="high"
+              decoding="async"
+            />
           </div>
 
           <div className="logo-meta">
@@ -167,7 +169,7 @@ function Navbar({ isDarkMode, themeMode, toggleTheme, onOpenCv }) {
             - no cambia de página
           */}
           <NavLink to="#cv" className="nav-cv-inline" onClick={handleOpenCv}>
-            <FaDownload />
+            <FaDownload aria-hidden="true" />
             <span>Ver CV</span>
           </NavLink>
 
@@ -197,7 +199,9 @@ function Navbar({ isDarkMode, themeMode, toggleTheme, onOpenCv }) {
         <div className="nav-actions">
           <button
             type="button"
-            className={`theme-toggle ${themeMode === "system" ? "is-system" : ""}`}
+            className={`theme-toggle ${
+              themeMode === "system" ? "is-system" : ""
+            }`}
             onClick={toggleTheme}
             aria-label={
               isDarkMode ? "Activar modo claro" : "Activar modo oscuro"
@@ -214,7 +218,7 @@ function Navbar({ isDarkMode, themeMode, toggleTheme, onOpenCv }) {
             onClick={closeMenu}
           >
             Contacto
-            <FaArrowRight />
+            <FaArrowRight aria-hidden="true" />
           </NavLink>
 
           {/*
@@ -225,11 +229,17 @@ function Navbar({ isDarkMode, themeMode, toggleTheme, onOpenCv }) {
           <button
             type="button"
             className="mobile-menu-btn"
-            onClick={() => setIsOpen((prev) => !prev)}
-            aria-label="Menú de navegación"
+            onClick={() => setIsOpen((previous) => !previous)}
+            aria-label={
+              isOpen ? "Cerrar menú de navegación" : "Abrir menú de navegación"
+            }
             aria-expanded={isOpen}
           >
-            {isOpen ? <FaTimes /> : <FaBars />}
+            {isOpen ? (
+              <FaTimes aria-hidden="true" />
+            ) : (
+              <FaBars aria-hidden="true" />
+            )}
           </button>
         </div>
       </div>

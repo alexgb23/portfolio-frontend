@@ -2,9 +2,11 @@
 <html lang="es" class="notranslate">
 
 
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
 
 
   <!-- Evita de forma estricta que los navegadores traduzcan automáticamente tu portafolio -->
@@ -13,7 +15,9 @@
 
 
 
+
   <title>Portafolio de Alexander Galvez | Técnico Superior en Informática - INFRAESTRUCTURA, SISTEMAS Y SOFTWARE</title>
+
 
 
 
@@ -22,8 +26,22 @@
     content="Portfolio técnico de Alexander Galvez. Proyectos y experiencia en infraestructura IT, redes, virtualización, automatización y desarrollo de software con React y Laravel." />
 
 
+
   <!-- CORREGIDO: Apunta al subdominio canónico real -->
   <link rel="canonical" href="https://alex.syskovex.com/" />
+
+
+
+  <!-- Logo LCP: se descubre desde el HTML inicial sin duplicar el elemento visual -->
+  <link rel="preload" as="image" href="/logoPortfolio-144.webp" type="image/webp" fetchpriority="high" />
+
+
+
+  <!-- Fuentes críticas del primer viewport -->
+  <link rel="preload" href="/fonts/inter-v20-latin-regular.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="/fonts/inter-v20-latin-700.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="/fonts/space-grotesk-v22-latin-700.woff2" as="font" type="font/woff2" crossorigin />
+
 
 
   <link rel="icon" href="/favicon.ico" />
@@ -31,6 +49,7 @@
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png" />
   <link rel="manifest" href="/site.webmanifest" />
+
 
 
   <!-- Open Graph / Facebook -->
@@ -49,6 +68,7 @@
   <meta property="og:image:alt" content="Vista previa del portfolio técnico de Alex Galvez" />
 
 
+
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Alexander Galvez - Infraestructura, automatización y software" />
@@ -59,10 +79,12 @@
 </head>
 
 
+
 <body>
   <div id="root"></div>
   <script type="module" src="/src/main.jsx"></script>
 </body>
+
 
 
 </html>
