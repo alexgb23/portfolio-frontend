@@ -7,34 +7,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <script>
-    (() => {
-      const storageKey = "syskovex-theme-mode";
-
-      try {
-        const savedMode = localStorage.getItem(storageKey);
-        const systemPrefersDark = window.matchMedia(
-          "(prefers-color-scheme: dark)",
-        ).matches;
-
-        const resolvedTheme =
-          savedMode === "dark"
-            ? "dark"
-            : savedMode === "light"
-              ? "light"
-              : systemPrefersDark
-                ? "dark"
-                : "light";
-
-        document.documentElement.setAttribute("data-theme", resolvedTheme);
-        document.documentElement.style.colorScheme = resolvedTheme;
-      } catch {
-        document.documentElement.setAttribute("data-theme", "dark");
-        document.documentElement.style.colorScheme = "dark";
-      }
-    })();
-  </script>
-
+<script src="/scripts/theme-init.js"></script>
 
   <!-- Evita de forma estricta que los navegadores traduzcan automáticamente tu portafolio -->
   <meta name="google" content="notranslate" />
