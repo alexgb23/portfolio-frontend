@@ -14,14 +14,19 @@ function AboutPreview() {
 
   useEffect(() => {
     const el = sliderRef.current;
-    if (!el || typeof window === "undefined") return;
 
-    const isMobile = window.innerWidth <= 767;
+    if (!el || typeof window === "undefined") {
+      return undefined;
+    }
+
+    const isMobile = window.matchMedia("(max-width: 767px)").matches;
     const prefersReducedMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
     ).matches;
 
-    if (!isMobile || prefersReducedMotion) return;
+    if (!isMobile || prefersReducedMotion) {
+      return undefined;
+    }
 
     if (!el.dataset.cloned) {
       const children = Array.from(el.children);
@@ -37,20 +42,18 @@ function AboutPreview() {
 
     let frameId = 0;
     let pausedUntil = 0;
+    let halfWidth = 0;
+
+    const updateHalfWidth = () => {
+      halfWidth = el.scrollWidth / 2;
+    };
 
     const pause = () => {
       pausedUntil = Date.now() + 1800;
     };
 
     const tick = () => {
-      const halfWidth = el.scrollWidth / 2;
-
-      if (Date.now() < pausedUntil) {
-        frameId = window.requestAnimationFrame(tick);
-        return;
-      }
-
-      if (halfWidth > 0) {
+      if (Date.now() >= pausedUntil && halfWidth > 0) {
         if (el.scrollLeft >= halfWidth) {
           el.scrollLeft = 0;
         } else {
@@ -61,15 +64,31 @@ function AboutPreview() {
       frameId = window.requestAnimationFrame(tick);
     };
 
+    updateHalfWidth();
+
+    const resizeObserver =
+      typeof ResizeObserver !== "undefined"
+        ? new ResizeObserver(updateHalfWidth)
+        : null;
+
+    resizeObserver?.observe(el);
+
     el.addEventListener("touchstart", pause, { passive: true });
     el.addEventListener("touchmove", pause, { passive: true });
+    el.addEventListener("pointerdown", pause, { passive: true });
+    el.addEventListener("pointermove", pause, { passive: true });
 
     frameId = window.requestAnimationFrame(tick);
 
     return () => {
       window.cancelAnimationFrame(frameId);
+
+      resizeObserver?.disconnect();
+
       el.removeEventListener("touchstart", pause);
       el.removeEventListener("touchmove", pause);
+      el.removeEventListener("pointerdown", pause);
+      el.removeEventListener("pointermove", pause);
     };
   }, []);
 
@@ -93,7 +112,7 @@ function AboutPreview() {
       >
         <article className="expertise-card expertise-card-hover tone-0">
           <div className="card-head">
-            <div className="expertise-icon">
+            <div className="expertise-icon" aria-hidden="true">
               <FaCode />
             </div>
 
@@ -110,7 +129,7 @@ function AboutPreview() {
 
         <article className="expertise-card expertise-card-hover tone-1">
           <div className="card-head">
-            <div className="expertise-icon">
+            <div className="expertise-icon" aria-hidden="true">
               <FaServer />
             </div>
 
@@ -127,7 +146,7 @@ function AboutPreview() {
 
         <article className="expertise-card expertise-card-hover tone-2">
           <div className="card-head">
-            <div className="expertise-icon">
+            <div className="expertise-icon" aria-hidden="true">
               <FaNetworkWired />
             </div>
 
@@ -144,7 +163,7 @@ function AboutPreview() {
 
         <article className="expertise-card expertise-card-hover tone-3">
           <div className="card-head">
-            <div className="expertise-icon">
+            <div className="expertise-icon" aria-hidden="true">
               <FaMicrochip />
             </div>
 
@@ -163,7 +182,7 @@ function AboutPreview() {
       <div className="section-more">
         <Link to="/sobre-mi" className="inline-link">
           <span>Ver perfil completo</span>
-          <FaArrowRight />
+          <FaArrowRight aria-hidden="true" />
         </Link>
       </div>
     </section>
