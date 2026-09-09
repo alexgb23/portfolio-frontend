@@ -3,7 +3,7 @@
 }
 
 @media (max-width: 767px) {
- .expertise-grid.grid-4xl.about-preview-grid {
+  .expertise-grid.grid-4xl.about-preview-grid {
     display: grid;
     grid-auto-flow: column;
     grid-auto-columns: 84%;
@@ -17,6 +17,7 @@
     scrollbar-width: none;
     -ms-overflow-style: none;
     scroll-snap-type: none;
+    contain: layout paint;
   }
 
   .expertise-grid.grid-4xl.about-preview-grid::-webkit-scrollbar {
