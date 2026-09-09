@@ -1,6 +1,7 @@
 import { lazy, Suspense } from "react";
 import { Routes, Route, Navigate } from "react-router";
 import MainLayout from "../layout/MainLayout";
+import Home from "../pages/home/Home";
 
 function lazyWithPreload(importer) {
   const Component = lazy(importer);
@@ -8,20 +9,28 @@ function lazyWithPreload(importer) {
   return Component;
 }
 
-export const Home = lazyWithPreload(() => import("../pages/home/Home"));
+// Home se importa directamente porque es la ruta inicial
+// y contiene el contenido LCP de la portada.
+
+// Las páginas secundarias se mantienen en lazy loading.
 export const About = lazyWithPreload(() => import("../pages/about/About"));
+
 export const Projects = lazyWithPreload(
   () => import("../pages/projects/Projects"),
 );
+
 export const Certifications = lazyWithPreload(
   () => import("../pages/certificaciones/Certificaciones"),
 );
+
 export const ProjectDetail = lazyWithPreload(
   () => import("../pages/projects/ProjectDetail"),
 );
+
 export const Contact = lazyWithPreload(
   () => import("../pages/contact/Contact"),
 );
+
 export const Laboratory = lazyWithPreload(
   () => import("../pages/laboratory/Laboratory"),
 );
@@ -30,14 +39,7 @@ export default function AppRouter() {
   return (
     <Routes>
       <Route path="/" element={<MainLayout />}>
-        <Route
-          index
-          element={
-            <Suspense fallback={null}>
-              <Home />
-            </Suspense>
-          }
-        />
+        <Route index element={<Home />} />
 
         <Route
           path="sobre-mi"

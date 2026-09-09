@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useOutletContext } from "react-router";
 import HeroSection from "../../layout/sections/heroSection/HeroSection";
 import AboutPreview from "../../layout/sections/aboutPreview/AboutPreview";
@@ -10,10 +10,38 @@ import usePageTitle from "../../hooks/usePageTitle";
 
 function Home() {
   const { openCvModal, setCvSocialLinks } = useOutletContext();
+  const [shouldLoadHomeData, setShouldLoadHomeData] = useState(false);
 
   usePageTitle(
     "Alexander Galvez | Sistemas, infraestructura y desarrollo de software",
   );
+
+  useEffect(() => {
+    let idleCallbackId;
+    let timeoutId;
+
+    const loadHomeData = () => {
+      setShouldLoadHomeData(true);
+    };
+
+    if ("requestIdleCallback" in window) {
+      idleCallbackId = window.requestIdleCallback(loadHomeData, {
+        timeout: 2500,
+      });
+    } else {
+      timeoutId = window.setTimeout(loadHomeData, 1000);
+    }
+
+    return () => {
+      if (idleCallbackId) {
+        window.cancelIdleCallback(idleCallbackId);
+      }
+
+      if (timeoutId) {
+        window.clearTimeout(timeoutId);
+      }
+    };
+  }, []);
 
   const {
     socialLinks,
@@ -22,7 +50,7 @@ function Home() {
     loading: homeLoading,
     error: homeError,
     isRefreshing,
-  } = usePortfolioHome();
+  } = usePortfolioHome(shouldLoadHomeData);
 
   useEffect(() => {
     if (typeof setCvSocialLinks === "function") {
@@ -79,19 +107,19 @@ function Home() {
             "IoT",
             "Linux",
             "APIs",
-            "Desarrollo de software"
+            "Desarrollo de software",
           ],
           sameAs: [
             "https://github.com/alexgb23",
             "https://www.linkedin.com/in/alexander-galvez-benavides-450917281/",
             "https://instagram.com/_aaleex_88",
-            "https://www.facebook.com/alexander.galvez.benavides"
+            "https://www.facebook.com/alexander.galvez.benavides",
           ],
           mainEntityOfPage: {
-            "@id": "https://alex.syskovex.com/#website"
-          }
-        }
-      ]
+            "@id": "https://alex.syskovex.com/#website",
+          },
+        },
+      ],
     }),
     [],
   );
@@ -122,14 +150,14 @@ function Home() {
         <>
           <FeaturedProjects
             projects={featuredProjects}
-            loading={homeLoading}
+            loading={!shouldLoadHomeData || homeLoading}
             isRefreshing={isRefreshing}
             error={homeError}
           />
 
           <FeaturedLaboratory
             item={featuredLaboratory}
-            loading={homeLoading}
+            loading={!shouldLoadHomeData || homeLoading}
             isRefreshing={isRefreshing}
             error={homeError}
           />
