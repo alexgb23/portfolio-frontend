@@ -1,0 +1,138 @@
+/* =========================================================
+   FOOTER — PROFESIONAL Y TRANSPARENTE (CON ICONOS)
+   ========================================================= */
+
+.site-footer {
+  position: relative;
+  z-index: 1;
+  border-top: 1px solid var(--border);
+  background: rgb(var(--bg-app-rgb) / 30%);
+  backdrop-filter: blur(12px) saturate(130%);
+  padding: 2rem 0;
+}
+
+.footer-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 0 12px;
+  gap: 2rem;
+}
+
+.footer-brand {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  min-width: 0;
+}
+
+.footer-copyright {
+  color: var(--text-main);
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.footer-domain {
+  color: var(--text-sub);
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+.footer-links {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-shrink: 0;
+  flex-wrap: wrap;
+}
+
+.footer-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--bg-card);
+  color: var(--text-sub);
+  font-size: 1.1rem;
+  box-shadow: var(--shadow-sm);
+  text-decoration: none;
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    color 0.2s ease;
+}
+
+.footer-link:hover {
+  transform: translateY(-2px);
+  border-color: var(--border-strong);
+  box-shadow: 0 0 0 4px var(--accent-glow);
+  color: var(--text-main);
+}
+
+.footer-link:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--accent-glow);
+}
+
+/* =========================================================
+   MÓVIL
+   ========================================================= */
+
+@media (max-width: 720px) {
+  .footer-content {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 1rem;
+  }
+
+  .footer-brand {
+    align-items: center;
+  }
+
+  .footer-links {
+    justify-content: center;
+    gap: 0.75rem;
+  }
+
+  .footer-link {
+    width: 38px;
+    height: 38px;
+    font-size: 1rem;
+  }
+}
+
+/* =========================================================
+   TABLET / DESKTOP
+   ========================================================= */
+
+@media (min-width: 721px) {
+
+  .footer-copyright {
+    font-size: 0.88rem;
+  }
+
+  .footer-domain {
+    font-size: 0.85rem;
+  }
+}
+
+@media (min-width: 1100px) {
+
+  .footer-copyright {
+    font-size: 0.9rem;
+  }
+
+  .footer-domain {
+    font-size: 0.88rem;
+  }
+}

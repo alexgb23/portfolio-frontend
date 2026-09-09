@@ -1,56 +1,27 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo } from "react";
 import { useOutletContext } from "react-router";
 import HeroSection from "../../layout/sections/heroSection/HeroSection";
 import AboutPreview from "../../layout/sections/aboutPreview/AboutPreview";
 import FeaturedProjects from "../../layout/sections/FeaturedProjects";
 import FeaturedLaboratory from "../../layout/sections/FeaturedLaboratory";
 import ContactPreview from "../../layout/sections/ContactPreview";
-import { usePortfolioHome } from "../../hooks/usePortfolioData";
 import usePageTitle from "../../hooks/usePageTitle";
 
 function Home() {
-  const { openCvModal, setCvSocialLinks } = useOutletContext();
-  const [shouldLoadHomeData, setShouldLoadHomeData] = useState(false);
+  const {
+    openCvModal,
+    setCvSocialLinks,
+    socialLinks,
+    projects,
+    laboratories,
+    loading,
+    error,
+    isRefreshing,
+  } = useOutletContext();
 
   usePageTitle(
     "Alexander Galvez | Sistemas, infraestructura y desarrollo de software",
   );
-
-  useEffect(() => {
-    let idleCallbackId;
-    let timeoutId;
-
-    const loadHomeData = () => {
-      setShouldLoadHomeData(true);
-    };
-
-    if ("requestIdleCallback" in window) {
-      idleCallbackId = window.requestIdleCallback(loadHomeData, {
-        timeout: 2500,
-      });
-    } else {
-      timeoutId = window.setTimeout(loadHomeData, 1000);
-    }
-
-    return () => {
-      if (idleCallbackId) {
-        window.cancelIdleCallback(idleCallbackId);
-      }
-
-      if (timeoutId) {
-        window.clearTimeout(timeoutId);
-      }
-    };
-  }, []);
-
-  const {
-    socialLinks,
-    projects,
-    laboratories,
-    loading: homeLoading,
-    error: homeError,
-    isRefreshing,
-  } = usePortfolioHome(shouldLoadHomeData);
 
   useEffect(() => {
     if (typeof setCvSocialLinks === "function") {
@@ -140,7 +111,7 @@ function Home() {
 
       <AboutPreview />
 
-      {homeError && !hasHomeContent ? (
+      {error && !hasHomeContent ? (
         <section className="section section-spaced section-separated">
           <div className="empty-inline-state">
             <p>No se pudieron cargar los datos de inicio en este momento.</p>
@@ -150,16 +121,16 @@ function Home() {
         <>
           <FeaturedProjects
             projects={featuredProjects}
-            loading={!shouldLoadHomeData || homeLoading}
+            loading={loading}
             isRefreshing={isRefreshing}
-            error={homeError}
+            error={error}
           />
 
           <FeaturedLaboratory
             item={featuredLaboratory}
-            loading={!shouldLoadHomeData || homeLoading}
+            loading={loading}
             isRefreshing={isRefreshing}
-            error={homeError}
+            error={error}
           />
 
           <ContactPreview socialLinks={socialLinks} />

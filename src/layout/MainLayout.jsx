@@ -8,6 +8,8 @@ import {
 } from "react";
 import { Outlet, useLocation } from "react-router";
 import Navbar from "./navbar/Navbar";
+import Footer from "./footer/Footer";
+import { usePortfolioHome } from "../hooks/usePortfolioData";
 
 const CvModal = lazy(() => import("../modal/CvModal"));
 
@@ -53,6 +55,10 @@ function MainLayout() {
     useState(getSystemPrefersDark);
   const [isCvOpen, setIsCvOpen] = useState(false);
   const [cvSocialLinks, setCvSocialLinks] = useState([]);
+
+  // ÚNICA PETICIÓN DE DATOS DE HOME PARA TODO EL LAYOUT
+  const { socialLinks, projects, laboratories, loading, error, isRefreshing } =
+    usePortfolioHome();
 
   const isDarkMode =
     themeMode === "dark" || (themeMode === "system" && systemPrefersDark);
@@ -168,9 +174,17 @@ function MainLayout() {
             openCvModal,
             closeCvModal,
             setCvSocialLinks: updateCvSocialLinks,
+            socialLinks,
+            projects,
+            laboratories,
+            loading,
+            error,
+            isRefreshing,
           }}
         />
       </main>
+
+      <Footer socialLinks={socialLinks} />
 
       <Suspense fallback={null}>
         {isCvOpen ? (
