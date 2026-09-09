@@ -13,41 +13,54 @@ const CvModal = lazy(() => import("../modal/CvModal"));
 
 const THEME_STORAGE_KEY = "syskovex-theme-mode";
 
+function getStoredThemeMode() {
+  if (typeof window === "undefined") {
+    return "system";
+  }
+
+  try {
+    const savedMode = window.localStorage.getItem(THEME_STORAGE_KEY);
+
+    if (
+      savedMode === "light" ||
+      savedMode === "dark" ||
+      savedMode === "system"
+    ) {
+      return savedMode;
+    }
+  } catch {
+    return "system";
+  }
+
+  return "system";
+}
+
+function getSystemPrefersDark() {
+  if (typeof window === "undefined") {
+    return false;
+  }
+
+  return window.matchMedia("(prefers-color-scheme: dark)").matches;
+}
+
 function MainLayout() {
   const location = useLocation();
 
   const isProjectDetailRoute = /^\/proyectos\/[^/]+$/.test(location.pathname);
 
-  const [themeMode, setThemeMode] = useState(() => {
-    if (typeof window === "undefined") return "system";
-
-    try {
-      const savedMode = window.localStorage.getItem(THEME_STORAGE_KEY);
-
-      if (
-        savedMode === "light" ||
-        savedMode === "dark" ||
-        savedMode === "system"
-      ) {
-        return savedMode;
-      }
-    } catch {
-      return "system";
-    }
-
-    return "system";
-  });
-
+  const [themeMode, setThemeMode] = useState(getStoredThemeMode);
+  const [systemPrefersDark, setSystemPrefersDark] =
+    useState(getSystemPrefersDark);
   const [isCvOpen, setIsCvOpen] = useState(false);
   const [cvSocialLinks, setCvSocialLinks] = useState([]);
 
-  const [systemPrefersDark, setSystemPrefersDark] = useState(() => {
-    if (typeof window === "undefined") return false;
-    return window.matchMedia("(prefers-color-scheme: dark)").matches;
-  });
+  const isDarkMode =
+    themeMode === "dark" || (themeMode === "system" && systemPrefersDark);
 
   useEffect(() => {
-    if (typeof window === "undefined") return;
+    if (typeof window === "undefined") {
+      return undefined;
+    }
 
     const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
 
@@ -71,20 +84,20 @@ function MainLayout() {
   }, []);
 
   useEffect(() => {
-    if (typeof window === "undefined") return;
+    if (typeof window === "undefined") {
+      return;
+    }
 
     try {
       window.localStorage.setItem(THEME_STORAGE_KEY, themeMode);
     } catch {
-      // Ignora errores de storage
+      // Ignora errores de localStorage.
     }
   }, [themeMode]);
 
-  const isDarkMode =
-    themeMode === "dark" || (themeMode === "system" && systemPrefersDark);
-
   useEffect(() => {
     const resolvedTheme = isDarkMode ? "dark" : "light";
+
     document.documentElement.setAttribute("data-theme", resolvedTheme);
     document.documentElement.style.colorScheme = resolvedTheme;
   }, [isDarkMode]);
