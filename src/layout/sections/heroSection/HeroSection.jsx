@@ -153,6 +153,7 @@ function HeroSection({ socialLinks = [], onOpenCv }) {
                   type="image/avif"
                   srcSet="
                     /imagen_portfolio_mia_retocada-480.avif 480w,
+                    /imagen_portfolio_mia_retocada-640.avif 640w,
                     /imagen_portfolio_mia_retocada-768.avif 768w,
                     /imagen_portfolio_mia_retocada-960.avif 960w,
                     /imagen_portfolio_mia_retocada-1280.avif 1280w
@@ -163,6 +164,7 @@ function HeroSection({ socialLinks = [], onOpenCv }) {
                   type="image/webp"
                   srcSet="
                     /imagen_portfolio_mia_retocada-480.webp 480w,
+                    /imagen_portfolio_mia_retocada-640.webp 640w,
                     /imagen_portfolio_mia_retocada-768.webp 768w,
                     /imagen_portfolio_mia_retocada-960.webp 960w,
                     /imagen_portfolio_mia_retocada-1280.webp 1280w
@@ -174,7 +176,7 @@ function HeroSection({ socialLinks = [], onOpenCv }) {
                   alt={avatarAlt}
                   className="profile-avatar"
                   width="640"
-                  height="820"
+                  height="640"
                   loading="eager"
                   fetchPriority="high"
                   decoding="async"
