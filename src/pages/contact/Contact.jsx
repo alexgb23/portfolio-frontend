@@ -16,7 +16,9 @@ function SocialCard({ href = "", icon, label, title, text, className = "" }) {
   const isLink = Boolean(href);
   const isMail = href.startsWith("mailto:");
 
-  if (!isLink) return null;
+  if (!isLink) {
+    return null;
+  }
 
   return (
     <a
@@ -27,7 +29,7 @@ function SocialCard({ href = "", icon, label, title, text, className = "" }) {
       aria-label={`${label}: ${title || text || href}`}
     >
       <div className="social-mini-front">
-        <div className="social-mini-shine" aria-hidden="true"></div>
+        <div className="social-mini-shine" aria-hidden="true" />
 
         <div className="social-mini-icon expertise-icon" aria-hidden="true">
           {icon}
@@ -41,7 +43,7 @@ function SocialCard({ href = "", icon, label, title, text, className = "" }) {
         <span className="social-mini-meta">{title}</span>
       </div>
 
-      <div className="social-mini-shadow" aria-hidden="true"></div>
+      <div className="social-mini-shadow" aria-hidden="true" />
     </a>
   );
 }
@@ -50,10 +52,22 @@ function getSocialIcon(item) {
   const key =
     `${item.icon_key ?? ""} ${item.platform ?? ""} ${item.label ?? ""}`.toLowerCase();
 
-  if (key.includes("github")) return <FaGithub />;
-  if (key.includes("linkedin")) return <FaLinkedin />;
-  if (key.includes("email") || key.includes("mail")) return <FaEnvelope />;
-  if (key.includes("instagram")) return <FaInstagram />;
+  if (key.includes("github")) {
+    return <FaGithub />;
+  }
+
+  if (key.includes("linkedin")) {
+    return <FaLinkedin />;
+  }
+
+  if (key.includes("email") || key.includes("mail")) {
+    return <FaEnvelope />;
+  }
+
+  if (key.includes("instagram")) {
+    return <FaInstagram />;
+  }
+
   if (
     key.includes("web") ||
     key.includes("website") ||
@@ -68,7 +82,10 @@ function getSocialIcon(item) {
 
 function normalizeHref(item) {
   const raw = item?.url?.trim() ?? "";
-  if (!raw) return "";
+
+  if (!raw) {
+    return "";
+  }
 
   const platform = (item?.platform ?? "").toLowerCase();
   const iconKey = (item?.icon_key ?? "").toLowerCase();
@@ -93,6 +110,14 @@ function normalizeHref(item) {
   return raw;
 }
 
+function formatElapsed(ms) {
+  if (!Number.isFinite(ms) || ms <= 0) {
+    return "0.0 s";
+  }
+
+  return `${(ms / 1000).toFixed(1)} s`;
+}
+
 function Contact() {
   usePageTitle("Contacto | Alexander Galvez");
 
@@ -105,7 +130,7 @@ function Contact() {
     message: "",
   });
 
-  const { loading, error, success, sendMessage } = useContactChat();
+  const { loading, error, success, elapsed, sendMessage } = useContactChat();
 
   const visibleSocialLinks = useMemo(() => {
     const baseLinks = Array.isArray(socialLinks) ? socialLinks : [];
@@ -114,6 +139,7 @@ function Contact() {
       .filter((item) => {
         const key =
           `${item?.platform ?? ""} ${item?.icon_key ?? ""} ${item?.label ?? ""}`.toLowerCase();
+
         return !key.includes("facebook");
       })
       .map((item, index) => ({
@@ -135,17 +161,19 @@ function Contact() {
       text: "syskovex.com",
     });
 
-    const uniqueLinks = cleanedLinks.filter(
+    return cleanedLinks.filter(
       (item, index, array) =>
         array.findIndex((entry) => entry.href === item.href) === index,
     );
-
-    return uniqueLinks;
   }, [socialLinks]);
 
   function handleChange(event) {
     const { name, value } = event.target;
-    setForm((current) => ({ ...current, [name]: value }));
+
+    setForm((current) => ({
+      ...current,
+      [name]: value,
+    }));
   }
 
   async function handleSubmit(event) {
@@ -165,14 +193,20 @@ function Contact() {
         subject: "",
         message: "",
       });
-    } catch {}
+    } catch {
+      // El hook ya establece el mensaje de error para el usuario.
+    }
   }
+
+  const isServerStarting = loading && elapsed >= 8_000;
 
   return (
     <section className="section section-spaced section-separated">
       <div className="section-head-centered contact-page-head">
         <span className="section-kicker">Contacto</span>
+
         <h1>Canales profesionales y colaboración</h1>
+
         <p>
           Disponible para colaboraciones, soporte técnico, desarrollo,
           automatización, infraestructura y soluciones integradas.
@@ -202,10 +236,11 @@ function Contact() {
         <div className="neo-terminal">
           <div className="term-top-bar">
             <div className="term-controls">
-              <span className="c-red"></span>
-              <span className="c-yellow"></span>
-              <span className="c-green"></span>
+              <span className="c-red" />
+              <span className="c-yellow" />
+              <span className="c-green" />
             </div>
+
             <span className="term-tab-title">contact@alex-sys:~</span>
           </div>
 
@@ -227,6 +262,7 @@ function Contact() {
             <form className="cmd-form" onSubmit={handleSubmit}>
               <div className="cmd-input-line">
                 <label htmlFor="name">NOMBRE</label>
+
                 <input
                   type="text"
                   id="name"
@@ -234,12 +270,14 @@ function Contact() {
                   placeholder="Tu nombre"
                   value={form.name}
                   onChange={handleChange}
+                  disabled={loading}
                   required
                 />
               </div>
 
               <div className="cmd-input-line">
                 <label htmlFor="email">EMAIL</label>
+
                 <input
                   type="email"
                   id="email"
@@ -247,12 +285,14 @@ function Contact() {
                   placeholder="tu-correo@empresa.com"
                   value={form.email}
                   onChange={handleChange}
+                  disabled={loading}
                   required
                 />
               </div>
 
               <div className="cmd-input-line">
                 <label htmlFor="subject">ASUNTO</label>
+
                 <input
                   type="text"
                   id="subject"
@@ -260,11 +300,13 @@ function Contact() {
                   placeholder="Consulta, propuesta o proyecto"
                   value={form.subject}
                   onChange={handleChange}
+                  disabled={loading}
                 />
               </div>
 
               <div className="cmd-input-line">
                 <label htmlFor="message">MENSAJE</label>
+
                 <textarea
                   id="message"
                   name="message"
@@ -272,13 +314,43 @@ function Contact() {
                   rows="4"
                   value={form.message}
                   onChange={handleChange}
+                  disabled={loading}
                   required
-                ></textarea>
+                />
               </div>
+
+              {loading && (
+                <div
+                  className="contact-server-wakeup"
+                  role="status"
+                  aria-live="polite"
+                >
+                  <span className="contact-server-spinner" aria-hidden="true" />
+
+                  <span className="contact-server-text">
+                    <strong>
+                      {isServerStarting
+                        ? "Servidor iniciándose…"
+                        : "Conectando con el servidor…"}
+                    </strong>
+
+                    <small>
+                      {isServerStarting
+                        ? "Render está despertando el backend. El mensaje se enviará al estar disponible."
+                        : "Enviando tu mensaje de forma segura."}
+                    </small>
+                  </span>
+
+                  <span className="contact-server-time">
+                    {formatElapsed(elapsed)}
+                  </span>
+                </div>
+              )}
 
               {error && (
                 <p className="cmd-feedback cmd-feedback-error">{error}</p>
               )}
+
               {success && (
                 <p className="cmd-feedback cmd-feedback-success">{success}</p>
               )}
@@ -288,7 +360,7 @@ function Contact() {
                 className="cmd-submit-btn"
                 disabled={loading}
               >
-                {loading ? "enviando()" : "enviar()"}
+                {loading ? "conectando()" : "enviar()"}
               </button>
             </form>
           </div>

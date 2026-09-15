@@ -612,6 +612,72 @@
   transform: translateY(1px);
 }
 
+.contact-server-wakeup {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  margin-top: 0.85rem;
+  padding: 0.75rem 0.85rem;
+  border: 1px solid rgb(250 204 21 / 0.28);
+  border-radius: 0.55rem;
+  background: rgb(250 204 21 / 0.06);
+  color: var(--color-text-muted);
+}
+
+.contact-server-spinner {
+  width: 0.85rem;
+  height: 0.85rem;
+  flex: 0 0 auto;
+  border: 2px solid rgb(250 204 21 / 0.22);
+  border-top-color: #facc15;
+  border-radius: 50%;
+  animation: contact-server-spin 0.8s linear infinite;
+}
+
+.contact-server-text {
+  display: grid;
+  min-width: 0;
+  gap: 0.12rem;
+}
+
+.contact-server-text strong {
+  color: #facc15;
+  font-size: 0.78rem;
+  line-height: 1.2;
+}
+
+.contact-server-text small {
+  color: var(--color-text-subtle);
+  font-size: 0.7rem;
+  line-height: 1.35;
+}
+
+.contact-server-time {
+  margin-left: auto;
+  color: var(--color-text-subtle);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  white-space: nowrap;
+}
+
+.cmd-form input:disabled,
+.cmd-form textarea:disabled {
+  cursor: wait;
+  opacity: 0.65;
+}
+
+@keyframes contact-server-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .contact-server-spinner {
+    animation: none;
+  }
+}
+
 /* ==========================================================================
    RESPONSIVE PC
    ========================================================================== */

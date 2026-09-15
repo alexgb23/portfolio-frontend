@@ -15,7 +15,10 @@ function normalizeList(value) {
 
   if (typeof value === "string") {
     const trimmed = value.trim();
-    if (!trimmed) return [];
+
+    if (!trimmed) {
+      return [];
+    }
 
     try {
       const parsed = JSON.parse(trimmed);
@@ -43,7 +46,9 @@ function normalizeList(value) {
 }
 
 function normalizeProjects(items) {
-  if (!Array.isArray(items)) return [];
+  if (!Array.isArray(items)) {
+    return [];
+  }
 
   return items.map((item) => ({
     ...item,
@@ -54,7 +59,9 @@ function normalizeProjects(items) {
 }
 
 function normalizeLaboratories(items) {
-  if (!Array.isArray(items)) return [];
+  if (!Array.isArray(items)) {
+    return [];
+  }
 
   return items.map((item) => ({
     id: item?.id ?? null,
@@ -77,6 +84,26 @@ export default function usePortfolioHome(enabled = true) {
     [],
     "Home",
     enabled,
+    {
+      /*
+       * Si Render está suspendido, sigue probando hasta que arranque.
+       * Solo afecta a este hook de Home.
+       */
+      retryOnError: true,
+
+      /*
+       * Guarda la última respuesta válida en sessionStorage.
+       * Al pulsar F5 en la misma pestaña se renderizan primero
+       * esos datos y se actualizan en segundo plano.
+       */
+      persistCache: true,
+
+      /*
+       * Actualiza automáticamente los datos de Home cada minuto.
+       * Pon 0 si prefieres cargar solo al entrar/recargar.
+       */
+      refreshInterval: 60_000,
+    },
   );
 
   const socialLinks = useMemo(

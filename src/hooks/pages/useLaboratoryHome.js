@@ -9,6 +9,12 @@ const initialValue = {
 
 const IMAGE_SCALES = [480, 768, 960];
 
+const laboratoryAsyncOptions = {
+  retryOnError: true,
+  persistCache: true,
+  refreshInterval: 60_000,
+};
+
 function normalizeArray(value) {
   return Array.isArray(value) ? value : [];
 }
@@ -18,6 +24,7 @@ function normalizeFirstString(value) {
     const first = value.find(
       (item) => typeof item === "string" && item.trim().length > 0,
     );
+
     return first?.trim() ?? "";
   }
 
@@ -38,12 +45,14 @@ function buildResponsiveSources(basePath, extension) {
     };
   }
 
-  const byScale = IMAGE_SCALES.reduce((acc, size) => {
-    acc[size] = `${cleanBase}-${size}.${extension}`;
-    return acc;
+  const byScale = IMAGE_SCALES.reduce((accumulator, size) => {
+    accumulator[size] = `${cleanBase}-${size}.${extension}`;
+    return accumulator;
   }, {});
 
-  const srcSet = IMAGE_SCALES.map((size) => `${byScale[size]} ${size}w`).join(", ");
+  const srcSet = IMAGE_SCALES.map((size) => `${byScale[size]} ${size}w`).join(
+    ", ",
+  );
 
   return {
     src: byScale[960] || byScale[768] || byScale[480] || "",
@@ -59,22 +68,21 @@ function buildLaboratoryBackgrounds(item) {
   const lightAvifBase = normalizeFirstString(item?.fondo_tarjeta_light?.[0]);
   const lightWebpBase = normalizeFirstString(item?.fondo_tarjeta_light?.[1]);
 
+  const darkAvif = buildResponsiveSources(darkAvifBase, "avif");
+  const darkWebp = buildResponsiveSources(darkWebpBase, "webp");
+  const lightAvif = buildResponsiveSources(lightAvifBase, "avif");
+  const lightWebp = buildResponsiveSources(lightWebpBase, "webp");
+
   return {
     dark: {
-      avif: buildResponsiveSources(darkAvifBase, "avif"),
-      webp: buildResponsiveSources(darkWebpBase, "webp"),
-      fallback:
-        buildResponsiveSources(darkWebpBase, "webp").src ||
-        buildResponsiveSources(darkAvifBase, "avif").src ||
-        "",
+      avif: darkAvif,
+      webp: darkWebp,
+      fallback: darkWebp.src || darkAvif.src || "",
     },
     light: {
-      avif: buildResponsiveSources(lightAvifBase, "avif"),
-      webp: buildResponsiveSources(lightWebpBase, "webp"),
-      fallback:
-        buildResponsiveSources(lightWebpBase, "webp").src ||
-        buildResponsiveSources(lightAvifBase, "avif").src ||
-        "",
+      avif: lightAvif,
+      webp: lightWebp,
+      fallback: lightWebp.src || lightAvif.src || "",
     },
   };
 }
@@ -108,21 +116,24 @@ function computeStatsFromItems(items = []) {
   const activeLabs = items.filter((lab) => lab.active).length;
 
   const projectsCount = items.reduce(
-    (acc, lab) => acc + (Number(lab.projects_count) || 0),
+    (accumulator, lab) => accumulator + (Number(lab.projects_count) || 0),
     0,
   );
 
   const techSlugs = new Set();
+
   items.forEach((lab) => {
     normalizeArray(lab.stack).forEach((tech) => {
-      if (tech.slug) techSlugs.add(tech.slug);
+      if (tech.slug) {
+        techSlugs.add(tech.slug);
+      }
     });
   });
 
   const technologiesCount = techSlugs.size;
 
   const documentsCount = items.reduce(
-    (acc, lab) => acc + (Number(lab.documentation_count) || 0),
+    (accumulator, lab) => accumulator + (Number(lab.documentation_count) || 0),
     0,
   );
 
@@ -139,7 +150,9 @@ function getTopTechnologiesFromItems(items = [], limit = 8) {
 
   items.forEach((lab) => {
     normalizeArray(lab.stack).forEach((tech) => {
-      if (!tech.label) return;
+      if (!tech.label) {
+        return;
+      }
 
       const key = tech.slug || tech.label.toLowerCase();
 
@@ -156,9 +169,12 @@ function getTopTechnologiesFromItems(items = [], limit = 8) {
   });
 
   return Array.from(counter.values())
-    .sort((a, b) => {
-      if (b.count !== a.count) return b.count - a.count;
-      return a.label.localeCompare(b.label, "es");
+    .sort((first, second) => {
+      if (second.count !== first.count) {
+        return second.count - first.count;
+      }
+
+      return first.label.localeCompare(second.label, "es");
     })
     .slice(0, limit);
 }
@@ -170,9 +186,11 @@ export default function useLaboratoryHome(enabled = true) {
     [],
     "Laboratory home",
     enabled,
+    laboratoryAsyncOptions,
   );
 
   const items = useMemo(() => normalizeLaboratoryItems(data), [data]);
+
   const featuredItems = useMemo(() => items, [items]);
 
   const stats = useMemo(() => {
