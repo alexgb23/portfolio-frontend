@@ -5,39 +5,31 @@ import usePageTitle from "../../hooks/usePageTitle";
 function Projects() {
   usePageTitle("Proyectos de Desarrollo e Integración | Alexander Galvez");
 
-  const projectsState = useProjects();
+  const {
+    projects = [],
+    loading = false,
+    error = "",
+    isRefreshing = false,
+    isRetrying = false,
+  } = useProjects();
 
-  const { projects, loading, error } = projectsState ?? {};
+  const safeProjects = Array.isArray(projects) ? projects : [];
+  const hasProjects = safeProjects.length > 0;
 
-  const hasProjects = Array.isArray(projects) && projects.length > 0;
-
-  if (loading) return null;
-
-  if (error) {
-    return (
-      <section className="section section-spaced">
-        <div className="section-head-centered">
-          <span className="section-kicker">Portfolio</span>
-          <h1>Proyectos de desarrollo e integración</h1>
-          <p>
-            Aplicaciones, paneles, integraciones y herramientas técnicas
-            orientadas a resolver necesidades reales con software útil.
-          </p>
-        </div>
-
-        <div className="state-wrapper error centered">
-          <h2>Error al cargar proyectos</h2>
-          <p>{error?.message || String(error)}</p>
-        </div>
-      </section>
-    );
-  }
+  /*
+   * Un servidor despertando no es un error.
+   * Si existen datos cacheados, se mantienen visibles mientras el hook
+   * actualiza la respuesta en segundo plano.
+   */
+  const isConnecting = Boolean(isRetrying || (loading && !hasProjects));
 
   return (
     <section className="section section-spaced">
       <div className="section-head-centered">
         <span className="section-kicker">Portfolio</span>
+
         <h1>Proyectos de desarrollo e integración</h1>
+
         <p>
           Aplicaciones, paneles, integraciones y herramientas técnicas
           orientadas a resolver necesidades reales con software útil.
@@ -46,18 +38,41 @@ function Projects() {
 
       {hasProjects ? (
         <>
+          {isRefreshing || isRetrying ? (
+            <div className="section-inline-status" aria-live="polite">
+              <p>
+                {isRetrying
+                  ? "Conectando con el servidor para actualizar los proyectos..."
+                  : "Actualizando proyectos..."}
+              </p>
+            </div>
+          ) : null}
+
           <h2 className="sr-only">Listado de proyectos</h2>
 
           <div className="grid-cards">
-            {projects.map((project, index) => (
+            {safeProjects.map((project, index) => (
               <ProjectCard
-                key={project.slug ?? project.id ?? `${project.title}-${index}`}
+                key={
+                  project?.slug ??
+                  project?.id ??
+                  `${project?.title || "project"}-${index}`
+                }
                 project={project}
                 index={index}
               />
             ))}
           </div>
         </>
+      ) : isConnecting ? (
+        <div className="empty-inline-state" aria-live="polite">
+          <p>Conectando con el servidor. Los proyectos aparecerán en breve.</p>
+        </div>
+      ) : error ? (
+        <div className="state-wrapper error centered" role="alert">
+          <h2>Error al cargar proyectos</h2>
+          <p>{typeof error === "string" ? error : "Inténtalo más tarde."}</p>
+        </div>
       ) : (
         <div className="empty-inline-state">
           <p>No hay proyectos cargados actualmente.</p>

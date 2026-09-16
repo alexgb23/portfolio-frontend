@@ -1,12 +1,15 @@
 import { Link } from "react-router";
 import { FaGithub, FaLinkedin, FaEnvelope, FaArrowRight } from "react-icons/fa";
+
 import "../../pages/contact/Contact.css";
 
 function normalizeHref(href = "", type = "") {
   const safeHref = typeof href === "string" ? href.trim() : "";
   const normalizedType = String(type || "").toLowerCase();
 
-  if (!safeHref) return "#";
+  if (!safeHref) {
+    return "#";
+  }
 
   if (
     ["email", "envelope"].includes(normalizedType) &&
@@ -31,7 +34,7 @@ function SocialCard({ href = "#", icon, label, title, text, className = "" }) {
       aria-label={`${label}: ${title}`}
     >
       <div className="social-mini-front">
-        <div className="social-mini-shine" aria-hidden="true"></div>
+        <div className="social-mini-shine" aria-hidden="true" />
 
         <div className="expertise-icon" aria-hidden="true">
           {icon}
@@ -45,12 +48,17 @@ function SocialCard({ href = "#", icon, label, title, text, className = "" }) {
         <span className="social-mini-meta">{title}</span>
       </div>
 
-      <div className="social-mini-shadow" aria-hidden="true"></div>
+      <div className="social-mini-shadow" aria-hidden="true" />
     </a>
   );
 }
 
-function ContactPreview({ socialLinks = [] }) {
+function ContactPreview({
+  socialLinks = [],
+  loading = false,
+  isRefreshing = false,
+  isRetrying = false,
+}) {
   const safeLinks = Array.isArray(socialLinks) ? socialLinks : [];
 
   const github = safeLinks.find(
@@ -71,11 +79,19 @@ function ContactPreview({ socialLinks = [] }) {
 
   const hasAnySocial = Boolean(github?.url || linkedin?.url || email?.url);
 
+  /*
+   * Si todavía no hay enlaces pero Render se está iniciando,
+   * no interpretamos ese array vacío como falta de configuración.
+   */
+  const isConnecting = Boolean(isRetrying || (loading && !hasAnySocial));
+
   return (
     <section className="section section-spaced section-separated">
       <div className="section-head-centered">
         <span className="section-kicker">Contacto</span>
+
         <h2>Hablemos de tu proyecto</h2>
+
         <p>
           Desarrollo, infraestructura, automatización y soporte técnico para
           proyectos reales.
@@ -86,51 +102,68 @@ function ContactPreview({ socialLinks = [] }) {
         <div className="contact-card">
           <h3>Canales principales</h3>
 
-          <div className="social-mini-grid">
-            {github?.url ? (
-              <SocialCard
-                href={normalizeHref(github.url, "github")}
-                icon={<FaGithub />}
-                label="GitHub"
-                title={github.label || github.username || "GitHub"}
-                text="Repos y código"
-              />
-            ) : null}
+          {hasAnySocial ? (
+            <>
+              {isRefreshing || isRetrying ? (
+                <div className="section-inline-status" aria-live="polite">
+                  <p>
+                    {isRetrying
+                      ? "Conectando con el servidor para cargar los canales..."
+                      : "Actualizando canales de contacto..."}
+                  </p>
+                </div>
+              ) : null}
 
-            {linkedin?.url ? (
-              <SocialCard
-                href={normalizeHref(linkedin.url, "linkedin")}
-                icon={<FaLinkedin />}
-                label="LinkedIn"
-                title={linkedin.label || "LinkedIn"}
-                text="Perfil profesional"
-              />
-            ) : null}
+              <div className="social-mini-grid">
+                {github?.url ? (
+                  <SocialCard
+                    href={normalizeHref(github.url, "github")}
+                    icon={<FaGithub />}
+                    label="GitHub"
+                    title={github.label || github.username || "GitHub"}
+                    text="Repos y código"
+                  />
+                ) : null}
 
-            {email?.url ? (
-              <SocialCard
-                href={normalizeHref(
-                  email.url,
-                  email?.platform || email?.icon_key || "email",
-                )}
-                icon={<FaEnvelope />}
-                label="Correo"
-                title={email.label || "Email"}
-                text="Contacto directo"
-              />
-            ) : null}
-          </div>
+                {linkedin?.url ? (
+                  <SocialCard
+                    href={normalizeHref(linkedin.url, "linkedin")}
+                    icon={<FaLinkedin />}
+                    label="LinkedIn"
+                    title={linkedin.label || "LinkedIn"}
+                    text="Perfil profesional"
+                  />
+                ) : null}
 
-          {!hasAnySocial ? (
+                {email?.url ? (
+                  <SocialCard
+                    href={normalizeHref(
+                      email.url,
+                      email?.platform || email?.icon_key || "email",
+                    )}
+                    icon={<FaEnvelope />}
+                    label="Correo"
+                    title={email.label || "Email"}
+                    text="Contacto directo"
+                  />
+                ) : null}
+              </div>
+            </>
+          ) : isConnecting ? (
+            <p className="empty-inline-copy" aria-live="polite">
+              Conectando con el servidor. Los canales de contacto aparecerán en
+              breve.
+            </p>
+          ) : (
             <p className="empty-inline-copy">
               Los canales directos estarán disponibles aquí en breve.
             </p>
-          ) : null}
+          )}
 
           <div className="section-more left">
             <Link to="/contacto" className="inline-link">
               <span>Ir a contacto</span>
-              <FaArrowRight />
+              <FaArrowRight aria-hidden="true" />
             </Link>
           </div>
         </div>
@@ -138,10 +171,11 @@ function ContactPreview({ socialLinks = [] }) {
         <div className="neo-terminal">
           <div className="term-top-bar">
             <div className="term-controls">
-              <span className="c-red"></span>
-              <span className="c-yellow"></span>
-              <span className="c-green"></span>
+              <span className="c-red" />
+              <span className="c-yellow" />
+              <span className="c-green" />
             </div>
+
             <span className="term-tab-title">contact@alex-sys:~</span>
           </div>
 
@@ -162,7 +196,7 @@ function ContactPreview({ socialLinks = [] }) {
             <div className="section-more left">
               <Link to="/contacto" className="inline-link">
                 <span>Abrir formulario completo</span>
-                <FaArrowRight />
+                <FaArrowRight aria-hidden="true" />
               </Link>
             </div>
           </div>

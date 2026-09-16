@@ -1,20 +1,30 @@
+import { Link } from "react-router";
 import { FiCode, FiPlay, FiSend } from "react-icons/fi";
+
 import "./ProjectDetailFooter.css";
 
 function ProjectDetailFooter({ project }) {
   const visibleLinks = Array.isArray(project?.adjuntos)
-    ? project.adjuntos.filter((item) => item.es_visible)
+    ? project.adjuntos.filter(
+        (item) =>
+          item &&
+          item.es_visible !== false &&
+          typeof item.url === "string" &&
+          item.url.trim().length > 0,
+      )
     : [];
 
   const codeLink =
     visibleLinks.find((item) => item.grupo === "backend") ||
     visibleLinks.find((item) => item.grupo === "api") ||
-    visibleLinks[0];
+    visibleLinks[0] ||
+    null;
 
   const demoLink =
     visibleLinks.find((item) => item.grupo === "general") ||
     visibleLinks.find((item) => item.es_destacado) ||
-    visibleLinks[1];
+    visibleLinks[1] ||
+    null;
 
   return (
     <footer className="project-detail__footer project-footer" id="stack">
@@ -26,6 +36,7 @@ function ProjectDetailFooter({ project }) {
 
           <div className="project-footer__copy">
             <h2>¿Te interesa este proyecto?</h2>
+
             <p>
               Si tienes alguna pregunta o quieres colaborar en algo similar,
               estaré encantado de hablar contigo.
@@ -39,8 +50,9 @@ function ProjectDetailFooter({ project }) {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="project-footer__button"
+                aria-label="Abrir código del proyecto en una pestaña nueva"
               >
-                <FiCode />
+                <FiCode aria-hidden="true" />
                 <span>Ver código</span>
               </a>
             ) : null}
@@ -51,19 +63,21 @@ function ProjectDetailFooter({ project }) {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="project-footer__button"
+                aria-label="Abrir demostración del proyecto en una pestaña nueva"
               >
-                <FiPlay />
+                <FiPlay aria-hidden="true" />
                 <span>Ver demo</span>
               </a>
             ) : null}
 
-            <a
-              href="/contact"
+            <Link
+              to="/contacto"
               className="project-footer__button project-footer__button--primary"
+              aria-label="Ir a la página de contacto"
             >
-              <FiSend />
+              <FiSend aria-hidden="true" />
               <span>Contactar</span>
-            </a>
+            </Link>
           </div>
         </div>
       </div>

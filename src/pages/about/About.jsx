@@ -6,8 +6,10 @@ import {
   FaDatabase,
   FaServer,
 } from "react-icons/fa";
+
 import usePageTitle from "../../hooks/usePageTitle";
 import { usePortfolioAbout } from "../../hooks/usePortfolioData";
+
 import "./About.css";
 
 const expertiseIconMap = {
@@ -78,7 +80,14 @@ const extraKnowsAbout = [
 ];
 
 function uniqueStrings(values = []) {
-  return [...new Set(values.filter(Boolean).map((item) => item.trim()))];
+  return [
+    ...new Set(
+      values
+        .filter(Boolean)
+        .map((item) => String(item).trim())
+        .filter(Boolean),
+    ),
+  ];
 }
 
 function About() {
@@ -88,13 +97,21 @@ function About() {
     highlights = [],
     loading: aboutLoading,
     error: aboutError,
+    isRefreshing: aboutRefreshing,
+    isRetrying: aboutRetrying,
   } = usePortfolioAbout();
+
+  const hasHighlights = highlights.length > 0;
+  const isConnecting = Boolean(
+    aboutRetrying || (aboutLoading && !hasHighlights),
+  );
 
   const knowsAbout = useMemo(() => {
     const fromExpertise = staticExpertise.flatMap((item) => [
       item.title,
       item.text,
     ]);
+
     return uniqueStrings([...fromExpertise, ...extraKnowsAbout]);
   }, []);
 
@@ -202,6 +219,7 @@ function About() {
                     "
                     sizes="(max-width: 767px) 320px, (max-width: 1279px) 420px, 640px"
                   />
+
                   <source
                     type="image/webp"
                     srcSet="
@@ -212,6 +230,7 @@ function About() {
                     "
                     sizes="(max-width: 767px) 320px, (max-width: 1279px) 420px, 640px"
                   />
+
                   <img
                     src="/imagen_portfolio_mia_retocada-1280.avif"
                     alt="Retrato profesional de Alex Galvez"
@@ -228,18 +247,19 @@ function About() {
           </div>
         </div>
 
-        {aboutError ? (
+        {hasHighlights ? (
           <section className="technical-section">
-            <div className="technical-line"></div>
-            <div className="empty-inline-state">
-              <p>No se pudo cargar la sección técnica en este momento.</p>
-            </div>
-          </section>
-        ) : null}
+            <div className="technical-line" />
 
-        {!aboutLoading && highlights.length > 0 ? (
-          <section className="technical-section">
-            <div className="technical-line"></div>
+            {aboutRefreshing || aboutRetrying ? (
+              <div className="section-inline-status" aria-live="polite">
+                <p>
+                  {aboutRetrying
+                    ? "Conectando con el servidor para actualizar la información técnica..."
+                    : "Actualizando información técnica..."}
+                </p>
+              </div>
+            ) : null}
 
             <div className="technical-timeline">
               {highlights.map((item, index) => (
@@ -257,6 +277,28 @@ function About() {
               ))}
             </div>
           </section>
+        ) : isConnecting ? (
+          <section className="technical-section">
+            <div className="technical-line" />
+
+            <div className="empty-inline-state" aria-live="polite">
+              <p>
+                Conectando con el servidor. La información técnica aparecerá en
+                breve.
+              </p>
+            </div>
+          </section>
+        ) : aboutError ? (
+          <section className="technical-section">
+            <div className="technical-line" />
+
+            <div className="empty-inline-state" role="alert">
+              <p>
+                No se pudo cargar la sección técnica en este momento. Inténtalo
+                de nuevo más tarde.
+              </p>
+            </div>
+          </section>
         ) : null}
 
         <section className="expertise-section">
@@ -269,10 +311,12 @@ function About() {
               return (
                 <article
                   key={item.id || item.title || index}
-                  className={`expertise-card expertise-card-hover ${item.tone || "tone-0"}`}
+                  className={`expertise-card expertise-card-hover ${
+                    item.tone || "tone-0"
+                  }`}
                 >
                   <div className="card-head">
-                    <div className="expertise-icon">
+                    <div className="expertise-icon" aria-hidden="true">
                       <Icon />
                     </div>
 

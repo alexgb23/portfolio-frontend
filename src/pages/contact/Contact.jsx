@@ -10,6 +10,7 @@ import {
 import usePageTitle from "../../hooks/usePageTitle";
 import useContactChat from "../../hooks/pages/useContactChat";
 import { usePortfolioHome } from "../../hooks/usePortfolioData";
+
 import "./Contact.css";
 
 function SocialCard({ href = "", icon, label, title, text, className = "" }) {
@@ -49,46 +50,29 @@ function SocialCard({ href = "", icon, label, title, text, className = "" }) {
 }
 
 function getSocialIcon(item) {
-  const key =
-    `${item.icon_key ?? ""} ${item.platform ?? ""} ${item.label ?? ""}`.toLowerCase();
+  const key = `${item?.icon_key ?? ""} ${item?.platform ?? ""} ${
+    item?.label ?? ""
+  }`.toLowerCase();
 
-  if (key.includes("github")) {
-    return <FaGithub />;
-  }
-
-  if (key.includes("linkedin")) {
-    return <FaLinkedin />;
-  }
-
+  if (key.includes("github")) return <FaGithub />;
+  if (key.includes("linkedin")) return <FaLinkedin />;
   if (key.includes("email") || key.includes("mail")) {
     return <FaEnvelope />;
   }
-
-  if (key.includes("instagram")) {
-    return <FaInstagram />;
-  }
-
-  if (
-    key.includes("web") ||
-    key.includes("website") ||
-    key.includes("syskovex") ||
-    key.includes("laboratorio")
-  ) {
-    return <FaGlobe />;
-  }
+  if (key.includes("instagram")) return <FaInstagram />;
 
   return <FaGlobe />;
 }
 
 function normalizeHref(item) {
-  const raw = item?.url?.trim() ?? "";
+  const raw = typeof item?.url === "string" ? item.url.trim() : "";
 
   if (!raw) {
     return "";
   }
 
-  const platform = (item?.platform ?? "").toLowerCase();
-  const iconKey = (item?.icon_key ?? "").toLowerCase();
+  const platform = String(item?.platform ?? "").toLowerCase();
+  const iconKey = String(item?.icon_key ?? "").toLowerCase();
 
   if (
     raw.includes("@") &&
@@ -121,7 +105,13 @@ function formatElapsed(ms) {
 function Contact() {
   usePageTitle("Contacto | Alexander Galvez");
 
-  const { socialLinks, error: homeError } = usePortfolioHome();
+  const {
+    socialLinks,
+    loading: socialLinksLoading,
+    error: socialLinksError,
+    isRefreshing: socialLinksRefreshing,
+    isRetrying: socialLinksRetrying,
+  } = usePortfolioHome();
 
   const [form, setForm] = useState({
     name: "",
@@ -130,28 +120,38 @@ function Contact() {
     message: "",
   });
 
-  const { loading, error, success, elapsed, sendMessage } = useContactChat();
+  const {
+    loading: chatLoading,
+    error: chatError,
+    success,
+    elapsed,
+    sendMessage,
+  } = useContactChat();
 
   const visibleSocialLinks = useMemo(() => {
     const baseLinks = Array.isArray(socialLinks) ? socialLinks : [];
 
     const cleanedLinks = baseLinks
       .filter((item) => {
-        const key =
-          `${item?.platform ?? ""} ${item?.icon_key ?? ""} ${item?.label ?? ""}`.toLowerCase();
+        const key = `${item?.platform ?? ""} ${item?.icon_key ?? ""} ${
+          item?.label ?? ""
+        }`.toLowerCase();
 
         return !key.includes("facebook");
       })
       .map((item, index) => ({
-        id: item.id ?? `social-${index}`,
+        id: item?.id ?? `social-${index}`,
         href: normalizeHref(item),
         icon: getSocialIcon(item),
-        label: item.label || item.platform || "Enlace",
-        title: item.title || item.platform || "",
-        text: item.text || item.url || "",
+        label: item?.label || item?.platform || "Enlace",
+        title: item?.title || item?.platform || "",
+        text: item?.text || item?.url || "",
       }))
       .filter((item) => item.href);
 
+    /*
+     * Este enlace no depende del backend y siempre sigue visible.
+     */
     cleanedLinks.push({
       id: "syskovex-link",
       href: "https://syskovex.com",
@@ -166,6 +166,18 @@ function Contact() {
         array.findIndex((entry) => entry.href === item.href) === index,
     );
   }, [socialLinks]);
+
+  const socialLinksFromBackend = visibleSocialLinks.filter(
+    (item) => item.id !== "syskovex-link",
+  );
+
+  const hasBackendSocialLinks = socialLinksFromBackend.length > 0;
+
+  const isSocialLinksConnecting = Boolean(
+    socialLinksRetrying || (socialLinksLoading && !hasBackendSocialLinks),
+  );
+
+  const isServerStarting = chatLoading && elapsed >= 8_000;
 
   function handleChange(event) {
     const { name, value } = event.target;
@@ -194,11 +206,9 @@ function Contact() {
         message: "",
       });
     } catch {
-      // El hook ya establece el mensaje de error para el usuario.
+      // useContactChat ya muestra el mensaje correspondiente.
     }
   }
-
-  const isServerStarting = loading && elapsed >= 8_000;
 
   return (
     <section className="section section-spaced section-separated">
@@ -217,7 +227,28 @@ function Contact() {
         <div className="contact-card">
           <h2>Enlaces</h2>
 
-          {homeError && <p>{homeError}</p>}
+          {isSocialLinksConnecting ? (
+            <div className="section-inline-status" aria-live="polite">
+              <p>
+                Conectando con el servidor. Los canales de contacto aparecerán
+                en breve.
+              </p>
+            </div>
+          ) : null}
+
+          {socialLinksRefreshing && hasBackendSocialLinks ? (
+            <div className="section-inline-status" aria-live="polite">
+              <p>Actualizando canales de contacto...</p>
+            </div>
+          ) : null}
+
+          {socialLinksError &&
+          !hasBackendSocialLinks &&
+          !isSocialLinksConnecting ? (
+            <p className="cmd-feedback cmd-feedback-error" role="alert">
+              No se pudieron cargar los canales de contacto en este momento.
+            </p>
+          ) : null}
 
           <div className="social-mini-grid">
             {visibleSocialLinks.map((item) => (
@@ -270,7 +301,7 @@ function Contact() {
                   placeholder="Tu nombre"
                   value={form.name}
                   onChange={handleChange}
-                  disabled={loading}
+                  disabled={chatLoading}
                   required
                 />
               </div>
@@ -285,7 +316,7 @@ function Contact() {
                   placeholder="tu-correo@empresa.com"
                   value={form.email}
                   onChange={handleChange}
-                  disabled={loading}
+                  disabled={chatLoading}
                   required
                 />
               </div>
@@ -300,7 +331,7 @@ function Contact() {
                   placeholder="Consulta, propuesta o proyecto"
                   value={form.subject}
                   onChange={handleChange}
-                  disabled={loading}
+                  disabled={chatLoading}
                 />
               </div>
 
@@ -314,12 +345,12 @@ function Contact() {
                   rows="4"
                   value={form.message}
                   onChange={handleChange}
-                  disabled={loading}
+                  disabled={chatLoading}
                   required
                 />
               </div>
 
-              {loading && (
+              {chatLoading ? (
                 <div
                   className="contact-server-wakeup"
                   role="status"
@@ -345,22 +376,22 @@ function Contact() {
                     {formatElapsed(elapsed)}
                   </span>
                 </div>
-              )}
+              ) : null}
 
-              {error && (
-                <p className="cmd-feedback cmd-feedback-error">{error}</p>
-              )}
+              {chatError ? (
+                <p className="cmd-feedback cmd-feedback-error">{chatError}</p>
+              ) : null}
 
-              {success && (
+              {success ? (
                 <p className="cmd-feedback cmd-feedback-success">{success}</p>
-              )}
+              ) : null}
 
               <button
                 type="submit"
                 className="cmd-submit-btn"
-                disabled={loading}
+                disabled={chatLoading}
               >
-                {loading ? "conectando()" : "enviar()"}
+                {chatLoading ? "conectando()" : "enviar()"}
               </button>
             </form>
           </div>

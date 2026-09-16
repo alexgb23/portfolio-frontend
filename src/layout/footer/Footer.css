@@ -83,6 +83,12 @@
   box-shadow: 0 0 0 3px var(--accent-glow);
 }
 
+.footer-sync-status {
+  color: var(--text-muted);
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.65rem;
+  opacity: 0.75;
+}
 /* =========================================================
    MÓVIL
    ========================================================= */

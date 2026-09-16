@@ -1,6 +1,6 @@
-import { useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import { Link, NavLink } from "react-router";
-import "./ProjectDetailSidebar.css";
+
 import {
   FiHome,
   FiUser,
@@ -14,6 +14,8 @@ import {
   FiClock,
   FiArrowLeft,
 } from "react-icons/fi";
+
+import "./ProjectDetailSidebar.css";
 
 function ProjectDetailSidebar({
   project,
@@ -29,31 +31,40 @@ function ProjectDetailSidebar({
         .length
     : 0;
 
-  const closeMenu = () => {
+  const closeMenu = useCallback(() => {
     if (typeof onNavigate === "function") {
       onNavigate();
     }
-  };
+  }, [onNavigate]);
 
-  const handleOpenCv = (event) => {
-    if (event) event.preventDefault();
+  const handleOpenCv = useCallback(
+    (event) => {
+      event?.preventDefault();
 
-    if (typeof onOpenCv === "function") {
-      onOpenCv();
-    }
+      if (typeof onOpenCv === "function") {
+        onOpenCv();
+      }
 
-    closeMenu();
-  };
+      closeMenu();
+    },
+    [onOpenCv, closeMenu],
+  );
 
-  const scrollToSection = (id) => {
-    const element = document.getElementById(id);
+  const scrollToSection = useCallback(
+    (id) => {
+      const element = document.getElementById(id);
 
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
+      if (element) {
+        element.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+      }
 
-    closeMenu();
-  };
+      closeMenu();
+    },
+    [closeMenu],
+  );
 
   const portfolioLinks = useMemo(
     () => [
@@ -61,67 +72,89 @@ function ProjectDetailSidebar({
         type: "route",
         to: "/",
         label: "Inicio",
-        icon: <FiHome />,
+        icon: <FiHome aria-hidden="true" />,
         accent: "cyan",
       },
       {
         type: "route",
         to: "/sobre-mi",
         label: "Sobre mí",
-        icon: <FiUser />,
+        icon: <FiUser aria-hidden="true" />,
         accent: "violet",
       },
       {
         type: "route",
         to: "/proyectos",
         label: "Proyectos",
-        icon: <FiFolder />,
+        icon: <FiFolder aria-hidden="true" />,
         accent: "blue",
       },
       {
         type: "route",
         to: "/laboratorio",
         label: "Laboratorio",
-        icon: <FiCpu />,
+        icon: <FiCpu aria-hidden="true" />,
         accent: "green",
       },
       {
         type: "action",
         action: handleOpenCv,
         label: "Ver CV",
-        icon: <FiDownload />,
+        icon: <FiDownload aria-hidden="true" />,
         accent: "lime",
       },
       {
         type: "route",
         to: "/contacto",
         label: "Contacto",
-        icon: <FiMail />,
+        icon: <FiMail aria-hidden="true" />,
         accent: "pink",
       },
     ],
-    [],
+    [handleOpenCv],
   );
 
   const projectLinks = useMemo(
     () => [
-      { id: "overview", label: "Resumen", icon: <FiLayers />, accent: "cyan" },
-      { id: "showcase", label: "Estructura", icon: <FiCode />, accent: "blue" },
+      {
+        id: "overview",
+        label: "Resumen",
+        icon: <FiLayers aria-hidden="true" />,
+        accent: "cyan",
+      },
+      {
+        id: "showcase",
+        label: "Estructura",
+        icon: <FiCode aria-hidden="true" />,
+        accent: "blue",
+      },
       {
         id: "resources",
         label: "Recursos",
-        icon: <FiFolder />,
+        icon: <FiFolder aria-hidden="true" />,
         accent: "violet",
       },
-      { id: "timeline", label: "Timeline", icon: <FiClock />, accent: "green" },
-      { id: "stack", label: "Stack", icon: <FiGitBranch />, accent: "lime" },
+      {
+        id: "timeline",
+        label: "Timeline",
+        icon: <FiClock aria-hidden="true" />,
+        accent: "green",
+      },
+      {
+        id: "stack",
+        label: "Stack",
+        icon: <FiGitBranch aria-hidden="true" />,
+        accent: "lime",
+      },
     ],
     [],
   );
 
   return (
     <aside
-      className={`project-detail__sidebar ${isMobile ? "is-mobile-drawer" : ""}`}
+      className={`project-detail__sidebar ${
+        isMobile ? "is-mobile-drawer" : ""
+      }`}
     >
       <div className="project-sidebar__top">
         <Link
@@ -131,7 +164,7 @@ function ProjectDetailSidebar({
           title="Volver a proyectos"
           onClick={closeMenu}
         >
-          <FiArrowLeft />
+          <FiArrowLeft aria-hidden="true" />
           <span className="project-sidebar__tooltip">Volver a proyectos</span>
         </Link>
 
@@ -158,7 +191,9 @@ function ProjectDetailSidebar({
                 key={item.to}
                 to={item.to}
                 className={({ isActive }) =>
-                  `project-sidebar__item project-sidebar__item--${item.accent} ${isActive ? "is-active" : ""}`
+                  `project-sidebar__item project-sidebar__item--${item.accent} ${
+                    isActive ? "is-active" : ""
+                  }`
                 }
                 aria-label={item.label}
                 title={item.label}
@@ -177,23 +212,27 @@ function ProjectDetailSidebar({
           className="project-sidebar__nav"
           aria-label="Secciones del proyecto"
         >
-          {projectLinks.map((item, index) => (
-            <button
-              key={item.id}
-              type="button"
-              className={`project-sidebar__item project-sidebar__item--${item.accent} ${
-                activeSectionId === item.id || (!activeSectionId && index === 0)
-                  ? "is-active"
-                  : ""
-              }`}
-              aria-label={item.label}
-              title={item.label}
-              onClick={() => scrollToSection(item.id)}
-            >
-              {item.icon}
-              <span className="project-sidebar__tooltip">{item.label}</span>
-            </button>
-          ))}
+          {projectLinks.map((item, index) => {
+            const isActive =
+              activeSectionId === item.id || (!activeSectionId && index === 0);
+
+            return (
+              <button
+                key={item.id}
+                type="button"
+                className={`project-sidebar__item project-sidebar__item--${item.accent} ${
+                  isActive ? "is-active" : ""
+                }`}
+                aria-label={item.label}
+                title={item.label}
+                aria-current={isActive ? "location" : undefined}
+                onClick={() => scrollToSection(item.id)}
+              >
+                {item.icon}
+                <span className="project-sidebar__tooltip">{item.label}</span>
+              </button>
+            );
+          })}
         </nav>
       </div>
 
@@ -202,6 +241,7 @@ function ProjectDetailSidebar({
           <span className="project-sidebar__badge">
             {project?.area_principal || "project"}
           </span>
+
           <span className="project-sidebar__count">
             {sectionsCount} secciones
           </span>
@@ -210,12 +250,12 @@ function ProjectDetailSidebar({
         <button
           type="button"
           className="project-sidebar__avatar"
-          aria-label={project?.title || "Proyecto"}
+          aria-label={`Ir al inicio de ${project?.title || "Proyecto"}`}
           title={project?.title || "Proyecto"}
           onClick={() => scrollToSection("project-top")}
         >
           <span>{firstLetter}</span>
-          <i className="project-sidebar__status" />
+          <i className="project-sidebar__status" aria-hidden="true" />
         </button>
       </div>
     </aside>

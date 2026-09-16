@@ -43,7 +43,7 @@ function handleTrackWheel(event) {
   el.scrollLeft += event.deltaY;
 }
 
-function ProjectTimelime({ project }) {
+function ProjectTimeline({ project }) {
   if (!project) return null;
 
   const section = getTimelineSection(project);
@@ -101,4 +101,4 @@ function ProjectTimelime({ project }) {
   );
 }
 
-export default ProjectTimelime;
+export default ProjectTimeline;

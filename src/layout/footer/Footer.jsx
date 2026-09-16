@@ -6,34 +6,33 @@ import {
   FaInstagram,
   FaGlobe,
 } from "react-icons/fa";
+
 import "./Footer.css";
 
 function getSocialIcon(item) {
-  const key =
-    `${item.icon_key ?? ""} ${item.platform ?? ""} ${item.label ?? ""}`.toLowerCase();
+  const key = `${item?.icon_key ?? ""} ${item?.platform ?? ""} ${
+    item?.label ?? ""
+  }`.toLowerCase();
 
-  if (key.includes("github")) return <FaGithub />;
-  if (key.includes("linkedin")) return <FaLinkedin />;
-  if (key.includes("email") || key.includes("mail")) return <FaEnvelope />;
-  if (key.includes("instagram")) return <FaInstagram />;
-  if (
-    key.includes("web") ||
-    key.includes("website") ||
-    key.includes("syskovex") ||
-    key.includes("laboratorio")
-  ) {
-    return <FaGlobe />;
+  if (key.includes("github")) return <FaGithub aria-hidden="true" />;
+  if (key.includes("linkedin")) return <FaLinkedin aria-hidden="true" />;
+  if (key.includes("email") || key.includes("mail")) {
+    return <FaEnvelope aria-hidden="true" />;
   }
+  if (key.includes("instagram")) return <FaInstagram aria-hidden="true" />;
 
-  return <FaGlobe />;
+  return <FaGlobe aria-hidden="true" />;
 }
 
 function normalizeHref(item) {
-  const raw = item?.url?.trim() ?? "";
-  if (!raw) return "";
+  const raw = typeof item?.url === "string" ? item.url.trim() : "";
 
-  const platform = (item?.platform ?? "").toLowerCase();
-  const iconKey = (item?.icon_key ?? "").toLowerCase();
+  if (!raw) {
+    return "";
+  }
+
+  const platform = String(item?.platform ?? "").toLowerCase();
+  const iconKey = String(item?.icon_key ?? "").toLowerCase();
 
   if (
     raw.includes("@") &&
@@ -55,13 +54,18 @@ function normalizeHref(item) {
   return raw;
 }
 
-function Footer({ socialLinks = [] }) {
+function Footer({
+  socialLinks = [],
+  loading = false,
+  isRefreshing = false,
+  isRetrying = false,
+}) {
   const currentYear = new Date().getFullYear();
   const [shouldRenderFooter, setShouldRenderFooter] = useState(false);
 
   useEffect(() => {
-    let idleCallbackId;
-    let timeoutId;
+    let idleCallbackId = null;
+    let timeoutId = null;
 
     const enableFooter = () => {
       setShouldRenderFooter(true);
@@ -76,10 +80,11 @@ function Footer({ socialLinks = [] }) {
     }
 
     return () => {
-      if (idleCallbackId) {
+      if (idleCallbackId !== null && "cancelIdleCallback" in window) {
         window.cancelIdleCallback(idleCallbackId);
       }
-      if (timeoutId) {
+
+      if (timeoutId !== null) {
         window.clearTimeout(timeoutId);
       }
     };
@@ -90,37 +95,37 @@ function Footer({ socialLinks = [] }) {
 
     const cleanedLinks = baseLinks
       .filter((item) => {
-        const key =
-          `${item?.platform ?? ""} ${item?.icon_key ?? ""} ${item?.label ?? ""}`.toLowerCase();
+        const key = `${item?.platform ?? ""} ${item?.icon_key ?? ""} ${
+          item?.label ?? ""
+        }`.toLowerCase();
+
         return !key.includes("facebook");
       })
       .map((item) => ({
         href: normalizeHref(item),
         icon: getSocialIcon(item),
-        label: item.label || item.platform || "Enlace",
+        label: item?.label || item?.platform || "Enlace",
       }))
       .filter((item) => item.href);
 
-    // Añade Home Lab explícito
+    /*
+     * Este enlace siempre existe, aunque Render esté iniciando.
+     */
     cleanedLinks.push({
       href: "https://syskovex.com",
-      icon: <FaGlobe />,
+      icon: <FaGlobe aria-hidden="true" />,
       label: "Home Lab",
     });
 
-    // Orden: Home Lab primero, luego el resto
     const ordered = [
-      ...cleanedLinks.filter((l) => l.label === "Home Lab"),
-      ...cleanedLinks.filter((l) => l.label !== "Home Lab"),
+      ...cleanedLinks.filter((link) => link.label === "Home Lab"),
+      ...cleanedLinks.filter((link) => link.label !== "Home Lab"),
     ];
 
-    // Evita duplicados por href
-    const unique = ordered.filter(
+    return ordered.filter(
       (item, index, array) =>
         array.findIndex((entry) => entry.href === item.href) === index,
     );
-
-    return unique;
   }, [socialLinks]);
 
   const footerSchema = useMemo(
@@ -145,6 +150,10 @@ function Footer({ socialLinks = [] }) {
     [footerSchema],
   );
 
+  const isConnecting = Boolean(
+    isRetrying || (loading && footerLinks.length <= 1),
+  );
+
   if (!shouldRenderFooter) {
     return null;
   }
@@ -161,23 +170,38 @@ function Footer({ socialLinks = [] }) {
           <span className="footer-copyright">
             &copy; 2025–{currentYear} Alexander Galvez
           </span>
+
           <span className="footer-domain">alex.syskovex.com</span>
+
+          {isConnecting ? (
+            <span className="footer-sync-status" aria-live="polite">
+              Conectando…
+            </span>
+          ) : isRefreshing ? (
+            <span className="footer-sync-status" aria-live="polite">
+              Actualizando…
+            </span>
+          ) : null}
         </div>
 
         <div className="footer-links">
-          {footerLinks.map((link, index) => (
-            <a
-              key={`${link.href}-${index}`}
-              href={link.href}
-              className="footer-link"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={link.label}
-              title={link.label}
-            >
-              {link.icon}
-            </a>
-          ))}
+          {footerLinks.map((link, index) => {
+            const isMail = link.href.startsWith("mailto:");
+
+            return (
+              <a
+                key={`${link.href}-${index}`}
+                href={link.href}
+                className="footer-link"
+                target={isMail ? undefined : "_blank"}
+                rel={isMail ? undefined : "noopener noreferrer"}
+                aria-label={link.label}
+                title={link.label}
+              >
+                {link.icon}
+              </a>
+            );
+          })}
         </div>
       </div>
     </footer>

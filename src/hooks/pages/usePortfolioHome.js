@@ -8,6 +8,12 @@ const initialValue = {
   laboratories: [],
 };
 
+const portfolioAsyncOptions = {
+  retryOnError: true,
+  persistCache: true,
+  refreshInterval: 60_000,
+};
+
 function normalizeList(value) {
   if (Array.isArray(value)) {
     return value.map((item) => String(item).trim()).filter(Boolean);
@@ -78,32 +84,13 @@ function normalizeLaboratories(items) {
 }
 
 export default function usePortfolioHome(enabled = true) {
-  const { data, loading, error, isRefreshing } = useAsyncResource(
+  const { data, loading, error, isRefreshing, isRetrying } = useAsyncResource(
     portfolioService.getHomeData,
     initialValue,
     [],
     "Home",
     enabled,
-    {
-      /*
-       * Si Render está suspendido, sigue probando hasta que arranque.
-       * Solo afecta a este hook de Home.
-       */
-      retryOnError: true,
-
-      /*
-       * Guarda la última respuesta válida en sessionStorage.
-       * Al pulsar F5 en la misma pestaña se renderizan primero
-       * esos datos y se actualizan en segundo plano.
-       */
-      persistCache: true,
-
-      /*
-       * Actualiza automáticamente los datos de Home cada minuto.
-       * Pon 0 si prefieres cargar solo al entrar/recargar.
-       */
-      refreshInterval: 60_000,
-    },
+    portfolioAsyncOptions,
   );
 
   const socialLinks = useMemo(
@@ -128,5 +115,6 @@ export default function usePortfolioHome(enabled = true) {
     loading,
     error,
     isRefreshing,
+    isRetrying,
   };
 }

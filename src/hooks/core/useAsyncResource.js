@@ -10,11 +10,6 @@ function buildHookErrorMessage(label, error) {
   return `${label} error al cargar datos`;
 }
 
-/*
- * Detecta si la respuesta tiene contenido utilizable.
- * También admite la estructura del endpoint de health:
- * status, service, timestamp, render, database, etc.
- */
 function hasMeaningfulData(value) {
   if (value == null) {
     return false;
@@ -28,6 +23,11 @@ function hasMeaningfulData(value) {
     return value !== "";
   }
 
+  /*
+   * Compatibilidad con /health:
+   * una respuesta con status/service/timestamp ya es válida aunque
+   * todavía no haya arrays o todos los demás campos sean opcionales.
+   */
   if (
     value.status ||
     value.service ||
@@ -108,7 +108,7 @@ function setSessionResource(cacheKey, data) {
       }),
     );
   } catch {
-    // sessionStorage no disponible o lleno.
+    // Storage no disponible, lleno o restringido.
   }
 }
 
@@ -118,7 +118,8 @@ function getLocalResource(cacheKey) {
   }
 
   try {
-    const raw = window.localStorage.getItem(getStorageKey(cacheKey, "local"));
+    const storageKey = getStorageKey(cacheKey, "local");
+    const raw = window.localStorage.getItem(storageKey);
 
     if (!raw) {
       return null;
@@ -138,7 +139,7 @@ function getLocalResource(cacheKey) {
     const ageMs = Date.now() - cached.time;
 
     if (ageMs > CACHE_TTL) {
-      window.localStorage.removeItem(getStorageKey(cacheKey, "local"));
+      window.localStorage.removeItem(storageKey);
       return null;
     }
 
@@ -162,7 +163,7 @@ function setLocalResource(cacheKey, data) {
       }),
     );
   } catch {
-    // localStorage no disponible o lleno.
+    // Storage no disponible, lleno o restringido.
   }
 }
 
@@ -206,6 +207,12 @@ function setCachedEntry(cacheKey, data, persistCache) {
     return;
   }
 
+  /*
+   * Conserva exactamente el comportamiento actual:
+   * cache en localStorage y sessionStorage.
+   * Por tanto, HealthStatus también podrá recuperar los últimos
+   * datos válidos si su hook usa persistCache: true.
+   */
   setLocalResource(cacheKey, data);
   setSessionResource(cacheKey, data);
 }
@@ -237,19 +244,6 @@ function getSharedRequest(cacheKey, fetcher, persistCache) {
   return request;
 }
 
-/*
- * Hook genérico para cargar recursos asíncronos.
- *
- * fetcher: función async que devuelve los datos.
- * initialValue: valor inicial, por ejemplo [] o null.
- * deps: valores que realmente deben reiniciar la petición.
- * label: clave/identificador del recurso.
- * enabled: permite activar o desactivar la carga.
- * options:
- *   retryOnError: reintenta cuando Render está arrancando.
- *   persistCache: guarda caché en localStorage/sessionStorage.
- *   refreshInterval: actualiza cada X milisegundos.
- */
 export default function useAsyncResource(
   fetcher,
   initialValue,
@@ -265,9 +259,9 @@ export default function useAsyncResource(
   } = options;
 
   /*
-   * El cacheKey se basa solo en valores serializables/estables.
-   * No incluimos initialValue en dependencias: normalmente es [] o {},
-   * y se recrea en cada render, causando Maximum update depth exceeded.
+   * initialValue no se incluye aquí ni en el efecto:
+   * si algún hook pasa [] / {} inline, una nueva referencia por render
+   * provocaría de nuevo un bucle de actualizaciones.
    */
   const cacheKey = JSON.stringify([label, enabled, persistCache, ...deps]);
 
@@ -276,10 +270,6 @@ export default function useAsyncResource(
   const fetcherRef = useRef(fetcher);
   const initialValueRef = useRef(initialValue);
 
-  /*
-   * Conserva el último fetcher e initialValue sin convertirlos
-   * en dependencias del effect.
-   */
   fetcherRef.current = fetcher;
   initialValueRef.current = initialValue;
 
@@ -290,6 +280,7 @@ export default function useAsyncResource(
         loading: false,
         error: "",
         isRefreshing: false,
+        isRetrying: false,
       };
     }
 
@@ -301,6 +292,7 @@ export default function useAsyncResource(
         loading: false,
         error: "",
         isRefreshing: true,
+        isRetrying: false,
       };
     }
 
@@ -309,6 +301,7 @@ export default function useAsyncResource(
       loading: true,
       error: "",
       isRefreshing: false,
+      isRetrying: false,
     };
   });
 
@@ -343,6 +336,7 @@ export default function useAsyncResource(
           loading: !hasPreviousData,
           isRefreshing: hasPreviousData,
           error: "",
+          isRetrying: previous.isRetrying,
         };
       });
 
@@ -372,6 +366,7 @@ export default function useAsyncResource(
           loading: false,
           error: "",
           isRefreshing: false,
+          isRetrying: false,
         });
 
         if (refreshInterval > 0) {
@@ -382,6 +377,8 @@ export default function useAsyncResource(
           return;
         }
 
+        const isTemporaryFailure = retryOnError;
+
         setState((previous) => {
           const hasPreviousData = hasMeaningfulData(previous.data);
 
@@ -389,7 +386,21 @@ export default function useAsyncResource(
             ...previous,
             loading: !hasPreviousData,
             isRefreshing: hasPreviousData,
-            error: buildHookErrorMessage(label, error),
+
+            /*
+             * Render arrancando = error temporal:
+             * no llenamos `error` para que las tarjetas no muestren
+             * “no se pueden cargar datos”.
+             */
+            error: isTemporaryFailure
+              ? ""
+              : buildHookErrorMessage(label, error),
+
+            /*
+             * Los componentes pueden usar esto para skeletons o
+             * “Conectando con el servidor…”.
+             */
+            isRetrying: isTemporaryFailure,
           };
         });
 
@@ -415,6 +426,7 @@ export default function useAsyncResource(
         loading: false,
         error: "",
         isRefreshing: false,
+        isRetrying: false,
       });
 
       return () => {
@@ -431,6 +443,7 @@ export default function useAsyncResource(
         loading: false,
         error: "",
         isRefreshing: true,
+        isRetrying: false,
       });
     }
 

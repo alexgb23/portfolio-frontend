@@ -10,7 +10,9 @@ import {
   Play,
   Sparkles,
 } from "lucide-react";
+
 import { Link } from "react-router";
+
 import styles from "./BodyHead.module.css";
 
 function BodyHead({ project }) {
@@ -22,7 +24,13 @@ function BodyHead({ project }) {
 
   const visibleAdjuntos = Array.isArray(project.adjuntos)
     ? [...project.adjuntos]
-        .filter((item) => item?.es_visible && item?.url)
+        .filter(
+          (item) =>
+            item &&
+            item.es_visible !== false &&
+            typeof item.url === "string" &&
+            item.url.trim().length > 0,
+        )
         .filter(
           (item) =>
             !String(item.titulo || "")
@@ -43,6 +51,46 @@ function BodyHead({ project }) {
 
   const progressValue = getProjectProgress(project);
 
+  const codeLink =
+    visibleAdjuntos.find((item) => item.grupo === "backend") ||
+    visibleAdjuntos.find((item) => item.grupo === "api") ||
+    visibleAdjuntos.find(
+      (item) =>
+        String(item.titulo || "")
+          .toLowerCase()
+          .includes("código") ||
+        String(item.titulo || "")
+          .toLowerCase()
+          .includes("repo"),
+    ) ||
+    visibleAdjuntos[0] ||
+    null;
+
+  const demoLink =
+    visibleAdjuntos.find((item) => item.grupo === "general") ||
+    visibleAdjuntos.find((item) => item.es_destacado) ||
+    visibleAdjuntos.find((item) =>
+      String(item.titulo || "")
+        .toLowerCase()
+        .includes("demo"),
+    ) ||
+    visibleAdjuntos[1] ||
+    null;
+
+  const docsLink =
+    visibleAdjuntos.find((item) =>
+      String(item.titulo || "")
+        .toLowerCase()
+        .includes("documentación"),
+    ) || null;
+
+  const downloadLink =
+    visibleAdjuntos.find((item) =>
+      String(item.titulo || "")
+        .toLowerCase()
+        .includes("descargar"),
+    ) || null;
+
   return (
     <section className={styles.head} id="project-top">
       <div className={styles.layout}>
@@ -60,7 +108,7 @@ function BodyHead({ project }) {
             <div className={styles.heroContent}>
               <div className={styles.badges}>
                 <span className={styles.featuredBadge}>
-                  <Sparkles size={14} />
+                  <Sparkles size={14} aria-hidden="true" />
                   Proyecto destacado
                 </span>
               </div>
@@ -86,45 +134,73 @@ function BodyHead({ project }) {
           </div>
 
           <div className={styles.heroFooter}>
-            <a
-              href="https://github.com/tu-repo"
-              target="_blank"
-              rel="noopener noreferrer"
-              className={styles.actionButton}
-            >
-              <Code2 className={styles.actionIcon} size={18} />
-              <span className={styles.actionLabel}>Ver Código</span>
-            </a>
+            {codeLink ? (
+              <a
+                href={codeLink.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={styles.actionButton}
+                aria-label="Abrir código del proyecto en una pestaña nueva"
+              >
+                <Code2
+                  className={styles.actionIcon}
+                  size={18}
+                  aria-hidden="true"
+                />
+                <span className={styles.actionLabel}>Ver Código</span>
+              </a>
+            ) : null}
 
-            <a
-              href="https://tu-demo.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className={styles.actionButton}
-            >
-              <Play className={styles.actionIcon} size={18} />
-              <span className={styles.actionLabel}>Ver Demo</span>
-            </a>
+            {demoLink ? (
+              <a
+                href={demoLink.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={styles.actionButton}
+                aria-label="Abrir demostración del proyecto en una pestaña nueva"
+              >
+                <Play
+                  className={styles.actionIcon}
+                  size={18}
+                  aria-hidden="true"
+                />
+                <span className={styles.actionLabel}>Ver Demo</span>
+              </a>
+            ) : null}
 
-            <a
-              href="https://tu-docs.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className={styles.actionButton}
-            >
-              <FileText className={styles.actionIcon} size={18} />
-              <span className={styles.actionLabel}>Documentación</span>
-            </a>
+            {docsLink ? (
+              <a
+                href={docsLink.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={styles.actionButton}
+                aria-label="Abrir documentación del proyecto en una pestaña nueva"
+              >
+                <FileText
+                  className={styles.actionIcon}
+                  size={18}
+                  aria-hidden="true"
+                />
+                <span className={styles.actionLabel}>Documentación</span>
+              </a>
+            ) : null}
 
-            <a
-              href="/archivo.zip"
-              target="_blank"
-              rel="noopener noreferrer"
-              className={styles.actionButton}
-            >
-              <Download className={styles.actionIcon} size={18} />
-              <span className={styles.actionLabel}>Descargar</span>
-            </a>
+            {downloadLink ? (
+              <a
+                href={downloadLink.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={styles.actionButton}
+                aria-label="Descargar recurso del proyecto"
+              >
+                <Download
+                  className={styles.actionIcon}
+                  size={18}
+                  aria-hidden="true"
+                />
+                <span className={styles.actionLabel}>Descargar</span>
+              </a>
+            ) : null}
           </div>
         </article>
 
@@ -133,7 +209,7 @@ function BodyHead({ project }) {
             <h2>Estado del Proyecto</h2>
 
             <div className={styles.statusRow}>
-              <span className={styles.statusDot} />
+              <span className={styles.statusDot} aria-hidden="true" />
               <span className={styles.statusText}>
                 {getStatusLabel(project)}
               </span>
@@ -199,7 +275,11 @@ function BodyHead({ project }) {
                       <span
                         className={`${styles.quickIcon} ${styles.quickIconBaseApi}`}
                       >
-                        <DatabaseZap size={17} strokeWidth={2} />
+                        <DatabaseZap
+                          size={17}
+                          strokeWidth={2}
+                          aria-hidden="true"
+                        />
                       </span>
 
                       <span className={styles.quickText}>
@@ -212,7 +292,11 @@ function BodyHead({ project }) {
                       <span
                         className={`${styles.quickArrow} ${styles.quickArrowStatic}`}
                       >
-                        <DatabaseZap size={15} strokeWidth={2} />
+                        <DatabaseZap
+                          size={15}
+                          strokeWidth={2}
+                          aria-hidden="true"
+                        />
                       </span>
                     </div>
                   );
@@ -225,6 +309,7 @@ function BodyHead({ project }) {
                     target="_blank"
                     rel="noopener noreferrer"
                     className={styles.quickLink}
+                    aria-label={`Abrir ${item.titulo} en una pestaña nueva`}
                   >
                     <span className={styles.quickIcon}>
                       {getQuickIcon(item)}
@@ -236,7 +321,11 @@ function BodyHead({ project }) {
                     </span>
 
                     <span className={styles.quickArrow}>
-                      <ExternalLink size={15} strokeWidth={2} />
+                      <ExternalLink
+                        size={15}
+                        strokeWidth={2}
+                        aria-hidden="true"
+                      />
                     </span>
                   </a>
                 );
@@ -312,26 +401,26 @@ function getQuickIcon(item) {
     .trim();
 
   if (title.includes("documentación")) {
-    return <FileText size={17} strokeWidth={2} />;
+    return <FileText size={17} strokeWidth={2} aria-hidden="true" />;
   }
 
   if (title.includes("demo") || title.includes("frontend")) {
-    return <Play size={17} strokeWidth={2} />;
+    return <Play size={17} strokeWidth={2} aria-hidden="true" />;
   }
 
   if (title.includes("health")) {
-    return <HeartPulse size={17} strokeWidth={2} />;
+    return <HeartPulse size={17} strokeWidth={2} aria-hidden="true" />;
   }
 
   if (group === "general") {
-    return <Globe size={17} strokeWidth={2} />;
+    return <Globe size={17} strokeWidth={2} aria-hidden="true" />;
   }
 
   if (group === "api" || group === "backend") {
-    return <Code2 size={17} strokeWidth={2} />;
+    return <Code2 size={17} strokeWidth={2} aria-hidden="true" />;
   }
 
-  return <ExternalLink size={17} strokeWidth={2} />;
+  return <ExternalLink size={17} strokeWidth={2} aria-hidden="true" />;
 }
 
 export default BodyHead;

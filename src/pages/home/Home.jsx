@@ -1,5 +1,6 @@
 import { useEffect, useMemo } from "react";
 import { useOutletContext } from "react-router";
+
 import HeroSection from "../../layout/sections/heroSection/HeroSection";
 import AboutPreview from "../../layout/sections/aboutPreview/AboutPreview";
 import FeaturedProjects from "../../layout/sections/FeaturedProjects";
@@ -17,6 +18,7 @@ function Home() {
     loading,
     error,
     isRefreshing,
+    isRetrying,
   } = useOutletContext();
 
   usePageTitle(
@@ -43,6 +45,8 @@ function Home() {
   const hasLaboratory = Boolean(featuredLaboratory);
   const hasSocialLinks = Array.isArray(socialLinks) && socialLinks.length > 0;
   const hasHomeContent = hasProjects || hasLaboratory || hasSocialLinks;
+
+  const isConnecting = Boolean(isRetrying || (loading && !hasHomeContent));
 
   const homeSchema = useMemo(
     () => ({
@@ -111,18 +115,41 @@ function Home() {
 
       <AboutPreview />
 
-      {error && !hasHomeContent ? (
+      {/*
+        Si Render está despertando, no mostramos “error”.
+        Dejamos que FeaturedProjects y FeaturedLaboratory rendericen sus
+        propios skeletons usando loading/isRetrying.
+      */}
+      {error && !hasHomeContent && !isConnecting ? (
         <section className="section section-spaced section-separated">
-          <div className="empty-inline-state">
-            <p>No se pudieron cargar los datos de inicio en este momento.</p>
+          <div className="empty-inline-state" role="alert">
+            <p>
+              No se pudieron cargar los datos de inicio en este momento.
+              Inténtalo de nuevo más tarde.
+            </p>
           </div>
         </section>
       ) : (
         <>
+          {isConnecting && !hasHomeContent ? (
+            <section
+              className="section section-spaced section-separated"
+              aria-live="polite"
+            >
+              <div className="empty-inline-state">
+                <p>
+                  Conectando con el laboratorio. El servidor se está iniciando;
+                  los proyectos y laboratorios aparecerán en breve.
+                </p>
+              </div>
+            </section>
+          ) : null}
+
           <FeaturedProjects
             projects={featuredProjects}
             loading={loading}
             isRefreshing={isRefreshing}
+            isRetrying={isRetrying}
             error={error}
           />
 
@@ -130,10 +157,16 @@ function Home() {
             item={featuredLaboratory}
             loading={loading}
             isRefreshing={isRefreshing}
+            isRetrying={isRetrying}
             error={error}
           />
 
-          <ContactPreview socialLinks={socialLinks} />
+          <ContactPreview
+            socialLinks={socialLinks}
+            loading={loading}
+            isRefreshing={isRefreshing}
+            isRetrying={isRetrying}
+          />
         </>
       )}
     </main>

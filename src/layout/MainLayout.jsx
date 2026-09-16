@@ -7,6 +7,7 @@ import {
   useState,
 } from "react";
 import { Outlet, useLocation } from "react-router";
+
 import Navbar from "./navbar/Navbar";
 import Footer from "./footer/Footer";
 import { usePortfolioHome } from "../hooks/usePortfolioData";
@@ -56,8 +57,15 @@ function MainLayout() {
   const [isCvOpen, setIsCvOpen] = useState(false);
   const [cvSocialLinks, setCvSocialLinks] = useState([]);
 
-  const { socialLinks, projects, laboratories, loading, error, isRefreshing } =
-    usePortfolioHome();
+  const {
+    socialLinks,
+    projects,
+    laboratories,
+    loading,
+    error,
+    isRefreshing,
+    isRetrying,
+  } = usePortfolioHome();
 
   const isDarkMode =
     themeMode === "dark" || (themeMode === "system" && systemPrefersDark);
@@ -179,11 +187,17 @@ function MainLayout() {
             loading,
             error,
             isRefreshing,
+            isRetrying,
           }}
         />
       </main>
 
-      <Footer socialLinks={socialLinks} />
+      <Footer
+        socialLinks={socialLinks}
+        loading={loading}
+        isRefreshing={isRefreshing}
+        isRetrying={isRetrying}
+      />
 
       <Suspense fallback={null}>
         {isCvOpen ? (
