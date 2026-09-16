@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react";
 import {
   Download,
   FileText,
@@ -7,6 +8,7 @@ import {
   Package,
   Video,
 } from "lucide-react";
+
 import styles from "./ProjectResources.module.css";
 
 function asArray(value) {
@@ -119,7 +121,7 @@ function getResourceCards(project) {
   return [
     {
       key: "screenshots",
-      title: "Capturas de Pantalla",
+      title: "Capturas de pantalla",
       subtitle:
         imageItems.length > 0
           ? `${imageItems.length} imágenes`
@@ -130,7 +132,7 @@ function getResourceCards(project) {
     },
     {
       key: "videos",
-      title: "Videos",
+      title: "Vídeos",
       subtitle:
         videoItems.length > 0
           ? `${videoItems.length} demostraciones`
@@ -157,7 +159,7 @@ function getResourceCards(project) {
     },
     {
       key: "services",
-      title: "URLs de Servicios",
+      title: "URLs de servicios",
       subtitle:
         serviceItems.length > 0
           ? `${serviceItems.length} endpoints`
@@ -185,18 +187,59 @@ function getResourceCards(project) {
   ];
 }
 
-function handleTrackWheel(event) {
-  const el = event.currentTarget;
-  const canScrollHorizontally = el.scrollWidth > el.clientWidth;
-
-  if (!canScrollHorizontally) return;
-
-  event.preventDefault();
-  el.scrollLeft += event.deltaY;
-}
-
 function ProjectResources({ project }) {
-  if (!project) return null;
+  const trackRef = useRef(null);
+
+  useEffect(() => {
+    const track = trackRef.current;
+
+    if (!track) {
+      return undefined;
+    }
+
+    const handleWheel = (event) => {
+      const canScrollHorizontally = track.scrollWidth > track.clientWidth;
+
+      if (!canScrollHorizontally) {
+        return;
+      }
+
+      const isVerticalWheel = Math.abs(event.deltaY) > Math.abs(event.deltaX);
+
+      if (!isVerticalWheel) {
+        return;
+      }
+
+      const goingLeft = event.deltaY < 0;
+      const goingRight = event.deltaY > 0;
+
+      const isAtStart = track.scrollLeft <= 0;
+      const isAtEnd =
+        track.scrollLeft + track.clientWidth >= track.scrollWidth - 1;
+
+      /*
+       * Solo bloquea el scroll vertical de la página si todavía existe
+       * contenido horizontal por recorrer. Si estás en el extremo, permite
+       * continuar desplazando la página normalmente.
+       */
+      if ((goingLeft && !isAtStart) || (goingRight && !isAtEnd)) {
+        event.preventDefault();
+        track.scrollLeft += event.deltaY;
+      }
+    };
+
+    track.addEventListener("wheel", handleWheel, {
+      passive: false,
+    });
+
+    return () => {
+      track.removeEventListener("wheel", handleWheel);
+    };
+  }, []);
+
+  if (!project) {
+    return null;
+  }
 
   const cards = getResourceCards(project);
 
@@ -206,16 +249,18 @@ function ProjectResources({ project }) {
       id="resources"
       aria-label="Recursos del proyecto"
     >
-      <div className={styles.track} onWheel={handleTrackWheel}>
+      <div ref={trackRef} className={styles.track}>
         {cards.map((card) => {
           const Icon = card.icon;
 
           const content = (
             <>
               <div
-                className={`${styles.iconBox} ${styles[`accent${card.accent}`]}`}
+                className={`${styles.iconBox} ${
+                  styles[`accent${card.accent}`]
+                }`}
               >
-                <Icon size={18} strokeWidth={2} />
+                <Icon size={18} strokeWidth={2} aria-hidden="true" />
               </div>
 
               <div className={styles.texts}>
@@ -227,7 +272,11 @@ function ProjectResources({ project }) {
 
           if (!card.href) {
             return (
-              <article key={card.key} className={styles.card}>
+              <article
+                key={card.key}
+                className={styles.card}
+                aria-label={`${card.title}: ${card.subtitle}`}
+              >
                 {content}
               </article>
             );
@@ -238,8 +287,9 @@ function ProjectResources({ project }) {
               key={card.key}
               href={card.href}
               target="_blank"
-              rel="noreferrer"
+              rel="noopener noreferrer"
               className={styles.card}
+              aria-label={`Abrir ${card.title} en una pestaña nueva`}
             >
               {content}
             </a>
