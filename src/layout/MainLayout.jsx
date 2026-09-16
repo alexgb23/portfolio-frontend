@@ -56,7 +56,6 @@ function MainLayout() {
   const [isCvOpen, setIsCvOpen] = useState(false);
   const [cvSocialLinks, setCvSocialLinks] = useState([]);
 
-  // ÚNICA PETICIÓN DE DATOS DE HOME PARA TODO EL LAYOUT
   const { socialLinks, projects, laboratories, loading, error, isRefreshing } =
     usePortfolioHome();
 

@@ -1,3 +1,5 @@
+// src/services/api.js (portfolio)
+
 import axios from "axios";
 
 const API_URL = (
@@ -61,7 +63,8 @@ export const portfolioService = {
 
 export const laboratoriosRealesService = {
   getHome: () => getRequest("/laboratorios-reales/home", "Laboratorios Home"),
-  getHomeLab: () => getRequest("/laboratorios-reales/home-lab", "Laboratorios HomeLab"),
+  getHomeLab: () =>
+    getRequest("/laboratorios-reales/home-lab", "Laboratorios HomeLab"),
   getList: () => getRequest("/laboratorios-reales", "Laboratorios List"),
   getDetail: (slug) =>
     getRequest(`/laboratorios-reales/${slug}`, "Laboratorio Detail"),
@@ -70,6 +73,11 @@ export const laboratoriosRealesService = {
 export const contactService = {
   sendMessage: (payload) =>
     postRequest("/contact-messages", payload, "Contact Message"),
+};
+
+// Nueva ruta de health (igual que en syskovex)
+export const healthService = {
+  getMetrics: () => getRequest("/health/metrics", "Health Metrics"),
 };
 
 export { apiClient, getRequest, postRequest };

@@ -1,6 +1,12 @@
 /* =========================================================
    HERO: ENTRADA
    ========================================================= */
+.hero-health-status {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  z-index: 10;
+}
 
 .hero-centered-section {
   position: relative;
@@ -499,6 +505,14 @@
    ========================================================= */
 
 @media (max-width: 767px) {
+    .hero-health-status {
+    position: relative;
+    top: auto;
+    right: auto;
+    display: flex;
+    justify-content: center;
+    margin: 1rem 0;
+  }
   .hero-main-title {
     font-size: clamp(2rem, 9vw, 3.4rem);
   }

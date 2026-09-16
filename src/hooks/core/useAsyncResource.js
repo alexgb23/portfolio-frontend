@@ -1,3 +1,5 @@
+// src/core/useAsyncResource.js (portfolio)
+
 import { useEffect, useRef, useState } from "react";
 
 function buildHookErrorMessage(label, error) {
@@ -8,59 +10,61 @@ function buildHookErrorMessage(label, error) {
   return `${label} error al cargar datos`;
 }
 
-function hasMeaningfulData(value, initialValue) {
+/**
+ * Versión adaptada para soportar tanto datos simples como health metrics.
+ * Considera "significativos" ciertos campos clave aunque otros estén vacíos.
+ */
+function hasMeaningfulData(value) {
+  if (!value || typeof value !== "object") {
+    return false;
+  }
+
+  // Campos que, si existen, ya consideramos que hay datos útiles
+  if (value.status) return true;
+  if (value.service) return true;
+  if (value.timestamp) return true;
+  if (value.request_duration_ms != null) return true;
+
+  // Arrays: al menos un elemento
   if (Array.isArray(value)) {
     return value.length > 0;
   }
 
-  if (!value || typeof value !== "object") {
-    return value !== initialValue && value != null && value !== "";
-  }
-
-  const initialObject =
-    initialValue && typeof initialValue === "object" ? initialValue : {};
-
-  return Object.keys(value).some((key) => {
-    const current = value[key];
-    const initial = initialObject[key];
-
-    if (Array.isArray(current)) {
-      return current.length > 0;
+  // Objetos: basta con algún valor no nulo/vacío
+  return Object.values(value).some((v) => {
+    if (Array.isArray(v)) return v.length > 0;
+    if (v && typeof v === "object") {
+      // En objetos anidados, también vale con status/service/timestamp
+      if (v.status || v.service || v.timestamp) return true;
+      return Object.keys(v).length > 0;
     }
-
-    if (current && typeof current === "object") {
-      return hasMeaningfulData(current, initial);
-    }
-
-    return current != null && current !== "" && current !== initial;
+    return v != null && v !== "";
   });
 }
 
 const resourceCache = new Map();
 const pendingRequests = new Map();
 
-const CACHE_TTL = 5 * 60 * 1000;
+const CACHE_TTL = 5 * 60 * 1000; // 5 minutos
 const STARTUP_RETRY_MS = 3_000;
-const MAX_RETRY_DELAY_MS = 15_000;
+const MAX_RETRY_DELAY_MS = 45_000; // más paciencia para arranques lentos
 
-function getStorageKey(cacheKey) {
-  return `syskovex:async-resource:${cacheKey}`;
+function getStorageKey(cacheKey, type = "local") {
+  return `portfolio:async-resource:${type}:${cacheKey}`;
 }
 
-function getPersistentCache(cacheKey) {
+function getSessionResource(cacheKey) {
   if (typeof window === "undefined") {
     return null;
   }
 
   try {
-    const raw = window.sessionStorage.getItem(getStorageKey(cacheKey));
-
-    if (!raw) {
-      return null;
-    }
+    const raw = window.sessionStorage.getItem(
+      getStorageKey(cacheKey, "session"),
+    );
+    if (!raw) return null;
 
     const cached = JSON.parse(raw);
-
     if (!cached || typeof cached !== "object" || !cached.data || !cached.time) {
       return null;
     }
@@ -71,27 +75,70 @@ function getPersistentCache(cacheKey) {
   }
 }
 
-function setPersistentCache(cacheKey, data) {
+function setSessionResource(cacheKey, data) {
   if (typeof window === "undefined") {
     return;
   }
 
   try {
     window.sessionStorage.setItem(
-      getStorageKey(cacheKey),
+      getStorageKey(cacheKey, "session"),
       JSON.stringify({
         data,
         time: Date.now(),
       }),
     );
   } catch {
-    // Si no hay storage disponible, continúa con la caché en memoria.
+    // Ignorar si sessionStorage no está disponible
+  }
+}
+
+function getLocalResource(cacheKey) {
+  if (typeof window === "undefined") {
+    return null;
+  }
+
+  try {
+    const raw = window.localStorage.getItem(getStorageKey(cacheKey, "local"));
+    if (!raw) return null;
+
+    const cached = JSON.parse(raw);
+    if (!cached || typeof cached !== "object" || !cached.data || !cached.time) {
+      return null;
+    }
+
+    const ageMs = Date.now() - cached.time;
+    if (ageMs > CACHE_TTL) {
+      return null;
+    }
+
+    return cached;
+  } catch {
+    return null;
+  }
+}
+
+function setLocalResource(cacheKey, data) {
+  if (typeof window === "undefined") {
+    return;
+  }
+
+  try {
+    window.localStorage.setItem(
+      getStorageKey(cacheKey, "local"),
+      JSON.stringify({
+        data,
+        time: Date.now(),
+      }),
+    );
+  } catch {
+    // Ignorar si localStorage no está disponible
   }
 }
 
 function getCachedEntry(cacheKey, persistCache) {
+  // 1. Memoria
   const memoryCached = resourceCache.get(cacheKey);
-
   if (memoryCached) {
     return memoryCached;
   }
@@ -100,15 +147,21 @@ function getCachedEntry(cacheKey, persistCache) {
     return null;
   }
 
-  const persistentCached = getPersistentCache(cacheKey);
-
-  if (!persistentCached) {
-    return null;
+  // 2. localStorage (principal)
+  const localCached = getLocalResource(cacheKey);
+  if (localCached) {
+    resourceCache.set(cacheKey, localCached);
+    return localCached;
   }
 
-  resourceCache.set(cacheKey, persistentCached);
+  // 3. sessionStorage (extra)
+  const sessionCached = getSessionResource(cacheKey);
+  if (sessionCached) {
+    resourceCache.set(cacheKey, sessionCached);
+    return sessionCached;
+  }
 
-  return persistentCached;
+  return null;
 }
 
 function setCachedEntry(cacheKey, data, persistCache) {
@@ -117,10 +170,14 @@ function setCachedEntry(cacheKey, data, persistCache) {
     time: Date.now(),
   };
 
+  // Memoria
   resourceCache.set(cacheKey, entry);
 
   if (persistCache) {
-    setPersistentCache(cacheKey, data);
+    // localStorage como caché principal
+    setLocalResource(cacheKey, data);
+    // sessionStorage como extra
+    setSessionResource(cacheKey, data);
   }
 }
 
@@ -133,7 +190,21 @@ function getSharedRequest(cacheKey, fetcher) {
 
   const request = Promise.resolve()
     .then(fetcher)
-    .finally(() => {
+    .then((result) => {
+      const data = result ?? null;
+
+      /*
+       * No guardamos respuestas vacías. Si Render aún está arrancando
+       * y tu fetcher devuelve null, {} o una respuesta sin contenido,
+       * conservamos los últimos datos reales disponibles.
+       */
+      if (hasMeaningfulData(data)) {
+        setCachedEntry(cacheKey, data, true); // <-- guarda en caché
+      }
+
+      return data;
+    })
+    .finally(() => {F
       pendingRequests.delete(cacheKey);
     });
 
@@ -145,15 +216,10 @@ function getSharedRequest(cacheKey, fetcher) {
 /**
  * Hook reutilizable para recursos asíncronos.
  *
- * Los últimos dos parámetros son opcionales:
- *
- * retryOnError:
- * - false por defecto: conserva el comportamiento de tus hooks actuales.
- * - true: reintenta automáticamente si el backend está arrancando.
- *
- * persistCache:
- * - false por defecto: caché solo en memoria.
- * - true: guarda datos válidos en sessionStorage y los muestra tras F5.
+ * Opciones:
+ * - retryOnError: false por defecto. Si true, reintenta automáticamente.
+ * - persistCache: false por defecto. Si true, guarda en localStorage + sessionStorage.
+ * - refreshInterval: 0 por defecto. Si > 0, refresca cada X ms cuando hay datos.
  */
 export default function useAsyncResource(
   fetcher,
@@ -188,7 +254,7 @@ export default function useAsyncResource(
     }
 
     const cached = getCachedEntry(cacheKey, persistCache);
-    const cachedHasData = hasMeaningfulData(cached?.data, initialValue);
+    const cachedHasData = hasMeaningfulData(cached?.data);
 
     if (cachedHasData) {
       return {
@@ -231,7 +297,7 @@ export default function useAsyncResource(
       }
 
       setState((previous) => {
-        const hasPreviousData = hasMeaningfulData(previous.data, initialValue);
+        const hasPreviousData = hasMeaningfulData(previous.data);
 
         return {
           ...previous,
@@ -249,7 +315,7 @@ export default function useAsyncResource(
         }
 
         const data = result ?? initialValue;
-        const hasNewData = hasMeaningfulData(data, initialValue);
+        const hasNewData = hasMeaningfulData(data);
 
         if (!hasNewData) {
           throw new Error("La API todavía no ha devuelto datos");
@@ -276,14 +342,10 @@ export default function useAsyncResource(
 
         const hasCachedData = hasMeaningfulData(
           getCachedEntry(cacheKey, persistCache)?.data,
-          initialValue,
         );
 
         setState((previous) => {
-          const hasPreviousData = hasMeaningfulData(
-            previous.data,
-            initialValue,
-          );
+          const hasPreviousData = hasMeaningfulData(previous.data);
 
           return {
             ...previous,
@@ -329,15 +391,9 @@ export default function useAsyncResource(
     }
 
     const cached = getCachedEntry(cacheKey, persistCache);
-    const cachedHasData = hasMeaningfulData(cached?.data, initialValue);
+    const cachedHasData = hasMeaningfulData(cached?.data);
 
     if (cachedHasData) {
-      /*
-       * Hay datos de antes:
-       * - No se muestra el div de carga.
-       * - La API se consulta en segundo plano.
-       * - Si Render está apagado, se conservan los datos previos.
-       */
       setState({
         data: cached.data,
         loading: false,

@@ -4,4 +4,5 @@ export { default as useProjects } from "./pages/useProjects";
 export { default as useProjectDetail } from "./pages/useProjectDetail";
 export { default as useLaboratoryHome } from "./pages/useLaboratoryHome";
 export { default as useContactChat } from "./pages/useContactChat";
+export { default as useHealthMetrics } from "./pages/useHealthMetrics";
 

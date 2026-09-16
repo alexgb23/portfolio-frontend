@@ -1,0 +1,226 @@
+.container {
+  width: fit-content;
+  max-width: 100%;
+}
+
+.healthButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+
+  border: 1px solid rgb(41 92 145 / 0.65);
+  border-radius: 0.7rem;
+
+  background: linear-gradient(
+    135deg,
+    rgb(8 21 38 / 0.98),
+    rgb(5 13 26 / 0.98)
+  );
+
+  color: var(--color-text);
+  padding: 0.35rem 0.5rem 0.35rem 0.35rem;
+
+  cursor: pointer;
+  transition:
+    border-color 0.2s ease,
+    background-color 0.2s ease,
+    transform 0.15s ease;
+}
+
+.healthButton:hover,
+.healthButton:focus-visible {
+  border-color: var(--color-primary);
+  background: var(--color-surface-hover);
+  outline: none;
+  transform: scale(1.02);
+}
+
+.statusDot {
+  width: 0.45rem;
+  height: 0.45rem;
+  border-radius: 50%;
+  flex: 0 0 0.45rem;
+  box-shadow: 0 0 0.4rem currentColor;
+}
+
+.statusOk {
+  background: #34d399;
+  color: #34d399;
+}
+
+.statusError {
+  background: #f87171;
+  color: #f87171;
+}
+
+.statusUnknown {
+  background: #fbbf24;
+  color: #fbbf24;
+}
+
+.statusText {
+  font-size: clamp(0.5rem, 2vw, 0.6rem);
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.latency {
+  margin-left: 0.2rem;
+  color: var(--color-text-muted);
+  font-size: clamp(0.42rem, 1.6vw, 0.5rem);
+  white-space: nowrap;
+}
+
+/* Modal (simplificado del de syskovex) */
+.modalBackdrop {
+  position: fixed;
+  z-index: 9999;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  overflow-y: auto;
+  background: rgb(0 0 0 / 0.76);
+  padding: 0.75rem;
+}
+
+.modal {
+  width: 100%;
+  max-width: 34rem;
+  max-height: 90dvh;
+  overflow-y: auto;
+  border: 1px solid rgb(92 145 255 / 0.35);
+  border-radius: 1rem;
+  background: linear-gradient(145deg, rgb(13 22 36 / 0.99), rgb(5 9 18 / 0.99));
+  box-shadow: 0 1.5rem 4rem rgb(0 0 0 / 0.5);
+  padding: 0.85rem;
+}
+
+.modalHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.8rem;
+  border-bottom: 1px solid var(--color-border-soft);
+  padding-bottom: 0.8rem;
+}
+
+.modalEyebrow {
+  color: var(--color-primary-hover);
+  font-size: 0.5rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+}
+
+.modalHeader h2 {
+  margin-top: 0.25rem;
+  color: var(--color-text);
+  font-size: clamp(0.9rem, 4vw, 1.1rem);
+}
+
+.modalHeader p {
+  margin-top: 0.35rem;
+  color: var(--color-text-muted);
+  font-size: clamp(0.52rem, 2vw, 0.65rem);
+}
+
+.closeButton {
+  width: 2rem;
+  height: 2rem;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--color-border);
+  border-radius: 50%;
+  background: var(--color-surface);
+  color: var(--color-text-muted);
+  cursor: pointer;
+}
+
+.modalGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.7rem;
+  padding: 0.8rem 0;
+}
+
+.modalCard {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: rgb(13 22 36 / 0.75);
+  padding: 0.75rem;
+}
+
+.modalCardTitle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-bottom: 1px solid var(--color-border-soft);
+  padding-bottom: 0.6rem;
+}
+
+.modalCardTitle h3 {
+  color: var(--color-text);
+  font-size: 0.72rem;
+}
+
+.modalCardTitle span {
+  color: var(--color-text-subtle);
+  font-size: 0.52rem;
+}
+
+.detailsList {
+  display: grid;
+  margin-top: 0.35rem;
+}
+
+.detailRow {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  border-bottom: 1px solid var(--color-border-soft);
+  padding: 0.5rem 0;
+}
+
+.detailRow:last-child {
+  border-bottom: 0;
+}
+
+.detailRow dt {
+  flex: 0 0 40%;
+  color: var(--color-text-subtle);
+  font-size: 0.56rem;
+}
+
+.detailRow dd {
+  min-width: 0;
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: 0.56rem;
+  text-align: right;
+}
+
+.modalFooter {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  gap: 0.3rem;
+  border-top: 1px solid var(--color-border-soft);
+  padding-top: 0.7rem;
+  color: var(--color-text-subtle);
+  font-size: 0.54rem;
+}
+
+.modalFooter strong {
+  color: #34d399;
+}
+
+@media (min-width: 40rem) {
+  .modalGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .modalFooter {
+    align-items: center;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+}

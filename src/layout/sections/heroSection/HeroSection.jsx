@@ -13,6 +13,8 @@ import {
   FaEye,
 } from "react-icons/fa";
 
+import HealthStatus from "../../SystemStatus/HealthStatus";
+
 import "./HeroSection.css";
 
 const expertiseIconMap = {
@@ -124,6 +126,10 @@ function HeroSection({ socialLinks = [], onOpenCv }) {
       id="inicio"
       className={`hero-centered-section ${isVisible ? "hero-mounted" : ""}`}
     >
+      <div className="hero-health-status">
+        <HealthStatus />
+      </div>
+
       <div className="container hero-center-content">
         <div className="hero-top-row">
           <div className="hero-title-container">
