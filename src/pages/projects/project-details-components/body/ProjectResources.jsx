@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import {
   Download,
   FileText,
@@ -7,6 +7,9 @@ import {
   Braces,
   Package,
   Video,
+  X,
+  ChevronLeft,
+  ChevronRight,
 } from "lucide-react";
 
 import styles from "./ProjectResources.module.css";
@@ -53,19 +56,27 @@ function includesText(text) {
     normalizeText(item?.descripcion).includes(text);
 }
 
+function sortItems(items) {
+  return [...items].sort(
+    (a, b) => Number(a?.orden ?? 0) - Number(b?.orden ?? 0),
+  );
+}
+
 function getResourceCards(project) {
   const attachments = getVisibleAttachments(project);
   const docs = asArray(project?.documentacion);
 
-  const imageItems = findMany(
-    attachments,
-    (item) =>
-      byGroup("capturas")(item) ||
-      byGroup("galeria")(item) ||
-      byType("image")(item) ||
-      includesText("captura")(item) ||
-      includesText("screenshot")(item) ||
-      includesText("imagen")(item),
+  const imageItems = sortItems(
+    findMany(
+      attachments,
+      (item) =>
+        byGroup("capturas")(item) ||
+        byGroup("galeria")(item) ||
+        byType("image")(item) ||
+        includesText("captura")(item) ||
+        includesText("screenshot")(item) ||
+        includesText("imagen")(item),
+    ),
   );
 
   const videoItems = findMany(
@@ -189,6 +200,52 @@ function getResourceCards(project) {
 
 function ProjectResources({ project }) {
   const trackRef = useRef(null);
+  const [activeCaptureIndex, setActiveCaptureIndex] = useState(null);
+
+  const captureItems = sortItems(
+    getVisibleAttachments(project).filter(
+      (item) =>
+        byGroup("capturas")(item) ||
+        byGroup("galeria")(item) ||
+        byType("image")(item) ||
+        includesText("captura")(item) ||
+        includesText("screenshot")(item),
+    ),
+  );
+
+  const closeGallery = useCallback(() => {
+    setActiveCaptureIndex(null);
+  }, []);
+
+  const showPreviousCapture = useCallback(() => {
+    setActiveCaptureIndex((current) =>
+      current === null
+        ? null
+        : (current - 1 + captureItems.length) % captureItems.length,
+    );
+  }, [captureItems.length]);
+
+  const showNextCapture = useCallback(() => {
+    setActiveCaptureIndex((current) =>
+      current === null ? null : (current + 1) % captureItems.length,
+    );
+  }, [captureItems.length]);
+
+  useEffect(() => {
+    if (activeCaptureIndex === null) {
+      return undefined;
+    }
+
+    const handleKeyDown = (event) => {
+      if (event.key === "Escape") closeGallery();
+      if (event.key === "ArrowLeft") showPreviousCapture();
+      if (event.key === "ArrowRight") showNextCapture();
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [activeCaptureIndex, closeGallery, showNextCapture, showPreviousCapture]);
 
   useEffect(() => {
     const track = trackRef.current;
@@ -217,11 +274,6 @@ function ProjectResources({ project }) {
       const isAtEnd =
         track.scrollLeft + track.clientWidth >= track.scrollWidth - 1;
 
-      /*
-       * Solo bloquea el scroll vertical de la página si todavía existe
-       * contenido horizontal por recorrer. Si estás en el extremo, permite
-       * continuar desplazando la página normalmente.
-       */
       if ((goingLeft && !isAtStart) || (goingRight && !isAtEnd)) {
         event.preventDefault();
         track.scrollLeft += event.deltaY;
@@ -270,6 +322,20 @@ function ProjectResources({ project }) {
             </>
           );
 
+          if (card.key === "screenshots" && captureItems.length > 0) {
+            return (
+              <button
+                key={card.key}
+                type="button"
+                onClick={() => setActiveCaptureIndex(0)}
+                className={styles.card}
+                aria-label="Abrir galería de capturas de pantalla"
+              >
+                {content}
+              </button>
+            );
+          }
+
           if (!card.href) {
             return (
               <article
@@ -296,6 +362,64 @@ function ProjectResources({ project }) {
           );
         })}
       </div>
+
+      {activeCaptureIndex !== null && captureItems[activeCaptureIndex] && (
+        <div
+          className={styles.galleryOverlay}
+          role="dialog"
+          aria-modal="true"
+          aria-label="Galería de capturas"
+          onClick={closeGallery}
+        >
+          <div
+            className={styles.galleryDialog}
+            onClick={(event) => event.stopPropagation()}
+          >
+            <button
+              type="button"
+              className={styles.galleryClose}
+              onClick={closeGallery}
+              aria-label="Cerrar galería"
+            >
+              <X size={20} />
+            </button>
+
+            <img
+              className={styles.galleryImage}
+              src={captureItems[activeCaptureIndex].url}
+              alt={captureItems[activeCaptureIndex].titulo}
+            />
+
+            <div className={styles.galleryFooter}>
+              <button
+                type="button"
+                className={styles.galleryNav}
+                onClick={showPreviousCapture}
+                aria-label="Captura anterior"
+              >
+                <ChevronLeft size={20} />
+              </button>
+
+              <p className={styles.galleryCaption}>
+                {captureItems[activeCaptureIndex].titulo}
+                <span>
+                  {" "}
+                  {activeCaptureIndex + 1} / {captureItems.length}
+                </span>
+              </p>
+
+              <button
+                type="button"
+                className={styles.galleryNav}
+                onClick={showNextCapture}
+                aria-label="Captura siguiente"
+              >
+                <ChevronRight size={20} />
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 }
