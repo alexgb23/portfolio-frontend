@@ -81,10 +81,17 @@ function buildSrcSet(basePath, extension) {
 function getResponsiveImageSources(images) {
   const normalized = normalizeList(images);
 
+  const remoteBase = normalized.find((item) => isRemoteImage(item)) || "";
+
   const avifBase =
-    normalized.find((item) => /avif$/i.test(item) || /avif/i.test(item)) || "";
+    remoteBase ||
+    normalized.find((item) => /avif$/i.test(item) || /avif/i.test(item)) ||
+    "";
+
   const webpBase =
-    normalized.find((item) => /webp$/i.test(item) || /webp/i.test(item)) || "";
+    remoteBase ||
+    normalized.find((item) => /webp$/i.test(item) || /webp/i.test(item)) ||
+    "";
 
   const avifSrcSet = avifBase ? buildSrcSet(avifBase, "avif") : "";
   const webpSrcSet = webpBase ? buildSrcSet(webpBase, "webp") : "";
@@ -110,10 +117,9 @@ function getResponsiveImageSources(images) {
 }
 
 function getProjectIcon(project, techList) {
-  const text =
-    `${project?.title || ""} ${project?.short_description || ""} ${
-      project?.stack_summary || ""
-    } ${techList.join(" ")}`.toLowerCase();
+  const text = `${project?.title || ""} ${project?.short_description || ""} ${
+    project?.stack_summary || ""
+  } ${techList.join(" ")}`.toLowerCase();
 
   if (
     text.includes("api") ||
@@ -212,7 +218,7 @@ export default function ProjectCard({
   const techList = useMemo(() => {
     return normalizeList(project?.technologies ?? project?.tecnologías).slice(
       0,
-      maxTags
+      maxTags,
     );
   }, [project?.technologies, project?.tecnologías, maxTags]);
 
@@ -235,7 +241,7 @@ export default function ProjectCard({
   }, [project?.card_background_light]);
 
   const hasBackground = Boolean(
-    darkSources?.fallbackSrc || lightSources?.fallbackSrc
+    darkSources?.fallbackSrc || lightSources?.fallbackSrc,
   );
 
   const handleOpenProject = () => {
