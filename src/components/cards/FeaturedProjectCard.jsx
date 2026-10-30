@@ -43,8 +43,28 @@ function normalizeList(value) {
   return [];
 }
 
+function isRemoteImage(path) {
+  return /^https?:\/\//i.test(path);
+}
+
+function buildCloudinaryVariant(url, width, extension) {
+  if (!url) return "";
+
+  if (!url.includes("/upload/")) return url;
+
+  const [beforeUpload, afterUpload] = url.split("/upload/");
+  const transformation = `f_${extension},q_auto,w_${width}`;
+
+  return `${beforeUpload}/upload/${transformation}/${afterUpload}`;
+}
+
 function buildVariant(basePath, width, extension) {
   if (!basePath) return "";
+
+  if (isRemoteImage(basePath)) {
+    return buildCloudinaryVariant(basePath, width, extension);
+  }
+
   return `${basePath}-${width}.${extension}`;
 }
 
