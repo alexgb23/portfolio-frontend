@@ -1,6 +1,46 @@
 import ProjectFoldersModule from "./ProjectFoldersModule";
 import styles from "./ProjectShowcase.module.css";
 
+function normalizeCodeLines(items) {
+  if (!Array.isArray(items)) return [];
+
+  return items.flatMap((item) => {
+    if (typeof item === "string") {
+      return item.split("\n");
+    }
+
+    if (item && typeof item === "object" && item.codigo) {
+      return String(item.codigo).split("\n");
+    }
+
+    return [];
+  });
+}
+
+function normalizeTechnologies(items) {
+  if (!Array.isArray(items)) return [];
+
+  return items
+    .map((item) => {
+      if (typeof item === "string") {
+        return {
+          name: item,
+          value: null,
+        };
+      }
+
+      if (item && typeof item === "object") {
+        return {
+          name: item.name || item.titulo || "Tecnología",
+          value: Number.isFinite(Number(item.value)) ? Number(item.value) : null,
+        };
+      }
+
+      return null;
+    })
+    .filter(Boolean);
+}
+
 function ProjectShowcase({ project }) {
   const section =
     project?.secciones?.find((item) => item?.clave === "project_showcase") ||
@@ -19,13 +59,8 @@ function ProjectShowcase({ project }) {
   const tree = Array.isArray(metadata.tree) ? metadata.tree : [];
   const badge = metadata.stack_badge || section?.codigo_lenguaje || "Proyecto";
 
-  const highlightedCode = Array.isArray(metadata.highlighted_code)
-    ? metadata.highlighted_code
-    : [];
-
-  const technologies = Array.isArray(metadata.technologies)
-    ? metadata.technologies
-    : [];
+  const highlightedCode = normalizeCodeLines(metadata.highlighted_code);
+  const technologies = normalizeTechnologies(metadata.technologies);
 
   const codeTitle = metadata.code_title || "Código Destacado";
   const codeBadge = metadata.code_badge || "routes/api.php";
@@ -76,16 +111,22 @@ function ProjectShowcase({ project }) {
               {technologies.length > 0 ? (
                 technologies.map((item, index) => (
                   <div
-                    key={`${item?.name || "tech"}-${index}`}
+                    key={`${item.name}-${index}`}
                     className={styles.techItem}
                   >
                     <div className={styles.techMeta}>
-                      <span>{item?.name || "Tecnología"}</span>
-                      <span>{item?.value ?? 0}%</span>
+                      <span>{item.name}</span>
+                      <span>
+                        {item.value === null ? "—" : `${item.value}%`}
+                      </span>
                     </div>
 
                     <div className={styles.techBar}>
-                      <span style={{ width: `${item?.value ?? 0}%` }} />
+                      <span
+                        style={{
+                          width: `${item.value ?? 0}%`,
+                        }}
+                      />
                     </div>
                   </div>
                 ))
