@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react";
 import styles from "./ProjectTimeline.module.css";
 
 function asArray(value) {
@@ -6,8 +7,12 @@ function asArray(value) {
 
 function formatTimelineDate(value) {
   if (!value) return "";
+
   const date = new Date(value);
-  if (Number.isNaN(date.getTime())) return value;
+
+  if (Number.isNaN(date.getTime())) {
+    return value;
+  }
 
   return new Intl.DateTimeFormat("es-ES", {
     day: "2-digit",
@@ -24,6 +29,7 @@ function getTimelineSection(project) {
 
 function getTimelineItems(project) {
   const section = getTimelineSection(project);
+
   return asArray(section?.metadata?.timeline);
 }
 
@@ -33,17 +39,54 @@ function getItemTone(index, total) {
   return "blue";
 }
 
-function handleTrackWheel(event) {
-  const el = event.currentTarget;
-  const canScrollHorizontally = el.scrollWidth > el.clientWidth;
-
-  if (!canScrollHorizontally) return;
-
-  event.preventDefault();
-  el.scrollLeft += event.deltaY;
-}
-
 function ProjectTimeline({ project }) {
+  const viewportRef = useRef(null);
+
+  useEffect(() => {
+    const viewport = viewportRef.current;
+
+    if (!viewport) {
+      return undefined;
+    }
+
+    const handleWheel = (event) => {
+      const canScrollHorizontally =
+        viewport.scrollWidth > viewport.clientWidth;
+
+      if (!canScrollHorizontally) {
+        return;
+      }
+
+      const isVerticalWheel =
+        Math.abs(event.deltaY) > Math.abs(event.deltaX);
+
+      if (!isVerticalWheel) {
+        return;
+      }
+
+      const goingLeft = event.deltaY < 0;
+      const goingRight = event.deltaY > 0;
+
+      const isAtStart = viewport.scrollLeft <= 0;
+      const isAtEnd =
+        viewport.scrollLeft + viewport.clientWidth >=
+        viewport.scrollWidth - 1;
+
+      if ((goingLeft && !isAtStart) || (goingRight && !isAtEnd)) {
+        event.preventDefault();
+        viewport.scrollLeft += event.deltaY;
+      }
+    };
+
+    viewport.addEventListener("wheel", handleWheel, {
+      passive: false,
+    });
+
+    return () => {
+      viewport.removeEventListener("wheel", handleWheel);
+    };
+  }, []);
+
   if (!project) return null;
 
   const section = getTimelineSection(project);
@@ -61,7 +104,7 @@ function ProjectTimeline({ project }) {
         {section.titulo || "Timeline del desarrollo"}
       </h2>
 
-      <div className={styles.viewport} onWheel={handleTrackWheel}>
+      <div ref={viewportRef} className={styles.viewport}>
         <div className={styles.track}>
           <div className={styles.railBase} aria-hidden="true" />
           <div className={styles.railArrow} aria-hidden="true" />
@@ -84,7 +127,9 @@ function ProjectTimeline({ project }) {
                   <span
                     className={`${styles.pulse} ${styles[`pulse${tone}`]}`}
                   />
-                  <span className={`${styles.dot} ${styles[`dot${tone}`]}`} />
+                  <span
+                    className={`${styles.dot} ${styles[`dot${tone}`]}`}
+                  />
                 </div>
 
                 <h3 className={`${styles.title} ${styles[`title${tone}`]}`}>
