@@ -64,6 +64,32 @@ function normalizeProjects(items) {
   }));
 }
 
+function buildLabCoverMedia(value) {
+  const paths = normalizeList(value);
+
+  const resolve = (path, extension) => {
+    if (!path) return "";
+    if (/\.(avif|webp)(?:[?#].*)?$/i.test(path)) return path;
+    return `${path}-960.${extension}`;
+  };
+
+  const avif = resolve(
+    paths.find((path) => /avif(?:$|[?#])/i.test(path)) || "",
+    "avif"
+  );
+  const webp = resolve(
+    paths.find((path) => /webp(?:$|[?#])/i.test(path)) || "",
+    "webp"
+  );
+
+  return {
+    src: webp || avif || "",
+    avifSrcSet: avif,
+    webpSrcSet: webp,
+    width: 960,
+  };
+}
+
 function normalizeLaboratories(items) {
   if (!Array.isArray(items)) {
     return [];
@@ -78,6 +104,8 @@ function normalizeLaboratories(items) {
     summary: item?.resumen ?? "Laboratorio técnico real.",
     relatedAreas: normalizeList(item?.areas_relacionadas).slice(0, 4),
     coverImage: item?.cover_image ?? null,
+    coverImageMediaDark: buildLabCoverMedia(item?.fondo_tarjeta_dark),
+    coverImageMediaLight: buildLabCoverMedia(item?.fondo_tarjeta_light),
     documentationCount: Number(item?.documentacion_count) || 0,
     progressCount: Number(item?.avances_count) || 0,
   }));

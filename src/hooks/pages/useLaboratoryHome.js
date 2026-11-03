@@ -7,7 +7,7 @@ const initialValue = {
   stats: {},
 };
 
-const IMAGE_SCALES = [480, 768, 960];
+const IMAGE_SCALES = [960];
 
 const laboratoryAsyncOptions = {
   retryOnError: true,
