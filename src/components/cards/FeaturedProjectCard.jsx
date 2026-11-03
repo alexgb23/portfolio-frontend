@@ -71,11 +71,7 @@ function buildVariant(basePath, width, extension) {
 function buildSrcSet(basePath, extension) {
   if (!basePath) return "";
 
-  return [
-    `${buildVariant(basePath, 480, extension)} 480w`,
-    `${buildVariant(basePath, 768, extension)} 768w`,
-    `${buildVariant(basePath, 960, extension)} 960w`,
-  ].join(", ");
+  return `${buildVariant(basePath, 960, extension)} 960w`;
 }
 
 function getResponsiveImageSources(images) {
@@ -97,9 +93,9 @@ function getResponsiveImageSources(images) {
   const webpSrcSet = webpBase ? buildSrcSet(webpBase, "webp") : "";
 
   const fallbackSrc = webpBase
-    ? buildVariant(webpBase, 768, "webp")
+    ? buildVariant(webpBase, 960, "webp")
     : avifBase
-      ? buildVariant(avifBase, 768, "avif")
+      ? buildVariant(avifBase, 960, "avif")
       : "";
 
   const fallbackSrcSet = webpBase
