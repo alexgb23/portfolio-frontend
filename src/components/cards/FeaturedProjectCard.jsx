@@ -58,57 +58,40 @@ function buildCloudinaryVariant(url, width, extension) {
   return `${beforeUpload}/upload/${transformation}/${afterUpload}`;
 }
 
-function buildVariant(basePath, width, extension) {
-  if (!basePath) return "";
-
-  if (isRemoteImage(basePath)) {
-    return buildCloudinaryVariant(basePath, width, extension);
-  }
-
-  return `${basePath}-${width}.${extension}`;
+function hasImageExtension(path) {
+  return /\.(avif|webp|jpe?g|png|svg)$/i.test(path);
 }
 
-function buildSrcSet(basePath, extension) {
+function buildVariant(basePath, extension) {
   if (!basePath) return "";
 
-  return `${buildVariant(basePath, 960, extension)} 960w`;
+  if (hasImageExtension(basePath)) {
+    return basePath;
+  }
+
+  return `${basePath}-960.${extension}`;
 }
 
 function getResponsiveImageSources(images) {
   const normalized = normalizeList(images);
 
-  const remoteBase = normalized.find((item) => isRemoteImage(item)) || "";
-
   const avifBase =
-    remoteBase ||
-    normalized.find((item) => /avif$/i.test(item) || /avif/i.test(item)) ||
+    normalized.find((item) => /\.avif$/i.test(item)) ||
+    normalized.find((item) => /avif$/i.test(item)) ||
     "";
 
   const webpBase =
-    remoteBase ||
-    normalized.find((item) => /webp$/i.test(item) || /webp/i.test(item)) ||
+    normalized.find((item) => /\.webp$/i.test(item)) ||
+    normalized.find((item) => /webp$/i.test(item)) ||
     "";
 
-  const avifSrcSet = avifBase ? buildSrcSet(avifBase, "avif") : "";
-  const webpSrcSet = webpBase ? buildSrcSet(webpBase, "webp") : "";
-
-  const fallbackSrc = webpBase
-    ? buildVariant(webpBase, 960, "webp")
-    : avifBase
-      ? buildVariant(avifBase, 960, "avif")
-      : "";
-
-  const fallbackSrcSet = webpBase
-    ? buildSrcSet(webpBase, "webp")
-    : avifBase
-      ? buildSrcSet(avifBase, "avif")
-      : "";
+  const avifSrc = buildVariant(avifBase, "avif");
+  const webpSrc = buildVariant(webpBase, "webp");
 
   return {
-    avifSrcSet,
-    webpSrcSet,
-    fallbackSrc,
-    fallbackSrcSet,
+    avifSrc,
+    webpSrc,
+    fallbackSrc: webpSrc || avifSrc,
   };
 }
 
@@ -173,30 +156,18 @@ function BackgroundPicture({ sources, className }) {
 
   return (
     <picture className={className} aria-hidden="true">
-      {sources.avifSrcSet ? (
-        <source
-          type="image/avif"
-          srcSet={sources.avifSrcSet}
-          sizes="(max-width: 767px) calc(100vw - 2rem), (max-width: 1279px) 45vw, 534px"
-        />
+      {sources.avifSrc ? (
+        <source type="image/avif" srcSet={sources.avifSrc} />
       ) : null}
 
-      {sources.webpSrcSet ? (
-        <source
-          type="image/webp"
-          srcSet={sources.webpSrcSet}
-          sizes="(max-width: 767px) calc(100vw - 2rem), (max-width: 1279px) 45vw, 534px"
-        />
+      {sources.webpSrc ? (
+        <source type="image/webp" srcSet={sources.webpSrc} />
       ) : null}
 
       <img
         src={sources.fallbackSrc}
-        srcSet={sources.fallbackSrcSet || undefined}
-        sizes="(max-width: 767px) calc(100vw - 2rem), (max-width: 1279px) 45vw, 534px"
         alt=""
         className="project-card-bg__image"
-        width="534"
-        height="313"
         loading="lazy"
         decoding="async"
       />
