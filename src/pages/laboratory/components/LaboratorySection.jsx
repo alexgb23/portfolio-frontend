@@ -1,3 +1,6 @@
+import * as BrandIcons from "react-icons/si";
+import { createPortal } from "react-dom";
+import { useCallback, useEffect, useId, useRef, useState } from "react";
 import styles from "./LaboratorySection.module.css";
 
 const FIXED_TECHNOLOGIES = [
@@ -17,7 +20,7 @@ const FIXED_TECHNOLOGIES = [
     id: "n8n",
     label: "n8n",
     iconUrl:
-      "https://cdn.jsdelivr.net/gh/glincker/thesvg@main/public/icons/n8n/default.svg",
+      "https://cdn.jsdelivr.net/gh/glincker/thesvg@main/public/icons/n8n/dark.svg",
   },
   {
     id: "home-assistant",
@@ -33,8 +36,313 @@ const FIXED_TECHNOLOGIES = [
   },
 ];
 
+
+function useLaboratoryWheel(ref, count) {
+  useEffect(() => {
+    const element = ref.current;
+    if (!element) return;
+
+    const handleWheel = (event) => {
+      if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+      if (event.ctrlKey || event.shiftKey || Math.abs(event.deltaX) > Math.abs(event.deltaY)) return;
+      if (!event.deltaY) return;
+
+      const max = element.scrollWidth - element.clientWidth;
+      if (max <= 1) return;
+
+      const unit = event.deltaMode === 1
+        ? 16
+        : event.deltaMode === 2
+          ? element.clientWidth
+          : 1;
+
+      const delta = event.deltaY * unit;
+      const canMove = delta > 0
+        ? element.scrollLeft < max - 1
+        : element.scrollLeft > 1;
+
+      if (!canMove) return;
+
+      event.preventDefault();
+      element.scrollLeft += delta;
+    };
+
+    element.addEventListener("wheel", handleWheel, { passive: false });
+    return () => element.removeEventListener("wheel", handleWheel);
+  }, [ref, count]);
+}
+
+const TECHNOLOGY_ICON_CATALOG = {
+  laravel: { Icon: BrandIcons.SiLaravel, color: "#f05340" },
+  sanctum: { Icon: BrandIcons.SiLaravel, color: "#f05340" },
+  php: { Icon: BrandIcons.SiPhp, color: "#8993be" },
+  docker: { Icon: BrandIcons.SiDocker, color: "#2496ed" },
+  dockercompose: { Icon: BrandIcons.SiDocker, color: "#2496ed" },
+  render: { Icon: BrandIcons.SiRender, color: "#46bca6" },
+  postgresql: { Icon: BrandIcons.SiPostgresql, color: "#5f91ba" },
+  neonpostgresql: { Icon: BrandIcons.SiPostgresql, color: "#38b997" },
+  filament: { Icon: BrandIcons.SiFilament, color: "#e8a83e" },
+  resend: { Icon: BrandIcons.SiResend, color: "#7188a5" },
+  react: { Icon: BrandIcons.SiReact, color: "#20a6c8" },
+  vite: { Icon: BrandIcons.SiVite, color: "#9872ed" },
+  javascript: { Icon: BrandIcons.SiJavascript, color: "#d4af12" },
+  axios: { Icon: BrandIcons.SiAxios, color: "#9867e8" },
+  reactrouter: { Icon: BrandIcons.SiReactrouter, color: "#ef5b65" },
+  cloudflare: { Icon: BrandIcons.SiCloudflare, color: "#f48120" },
+  proxmox: { Icon: BrandIcons.SiProxmox, color: "#e57000" },
+  homeassistant: { Icon: BrandIcons.SiHomeassistant, color: "#18a7d5" },
+};
+
+function normalizeTechnologyKey(value) {
+  return String(value || "")
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9]/g, "");
+}
+
+function collectLaboratoryTechnologies(laboratories) {
+  const technologies = new Map();
+
+  for (const tech of FIXED_TECHNOLOGIES) {
+    technologies.set(normalizeTechnologyKey(tech.label), tech);
+  }
+
+  for (const lab of laboratories) {
+    const stack = Array.isArray(lab?.stack) ? lab.stack : [];
+
+    for (const entry of stack) {
+      const label = typeof entry === "string"
+        ? entry.trim()
+        : String(entry?.label || entry?.name || "").trim();
+
+      if (!label) continue;
+
+      const key = normalizeTechnologyKey(label);
+      if (!key || technologies.has(key)) continue;
+
+      const slug = normalizeTechnologyKey(entry?.slug);
+      const catalog =
+        TECHNOLOGY_ICON_CATALOG[key] ||
+        TECHNOLOGY_ICON_CATALOG[slug] ||
+        {};
+
+      technologies.set(key, {
+        id: key,
+        label,
+        Icon: catalog.Icon,
+        iconColor: catalog.color || "currentColor",
+        iconUrl: typeof entry === "object"
+          ? entry?.iconUrl || entry?.icon_url || ""
+          : "",
+      });
+    }
+  }
+
+  return Array.from(technologies.values());
+}
+
+function TechnologyListIcon({ tech, index }) {
+  const [failed, setFailed] = useState(false);
+  const Icon = tech.Icon;
+
+  return (
+    <span
+      className={styles.popoverTechIcon}
+      style={{ "--tech-hue": (index * 47 + 190) % 360 }}
+      aria-hidden="true"
+    >
+      {tech.iconUrl && !failed ? (
+        <img
+          src={tech.iconUrl}
+          alt=""
+          width="26"
+          height="26"
+          onError={() => setFailed(true)}
+        />
+      ) : (
+        <span style={{ color: tech.iconColor || undefined }}>
+            {Icon ? (
+              <Icon size={26} aria-hidden="true" />
+            ) : (
+              tech.label.slice(0, 2).toUpperCase()
+            )}
+          </span>
+      )}
+    </span>
+  );
+}
+
+function TechnologiesDialog({ open, onClose, technologies, id }) {
+  const panelRef = useRef(null);
+  const [position, setPosition] = useState(null);
+
+  useEffect(() => {
+    if (!open) {
+      setPosition(null);
+      return;
+    }
+
+    const trigger = document.querySelector(
+      `[aria-controls="${CSS.escape(id)}"]`
+    );
+    const panel = panelRef.current;
+    if (!trigger || !panel) return;
+
+    const updatePosition = () => {
+      const rect = trigger.getBoundingClientRect();
+      const viewportHeight = window.innerHeight;
+      const viewportWidth = window.innerWidth;
+      const gap = 10;
+      const margin = 12;
+
+      if (
+        rect.bottom < 0 || rect.top > viewportHeight ||
+        rect.right < 0 || rect.left > viewportWidth
+      ) {
+        onClose();
+        return;
+      }
+
+      const width = Math.min(340, viewportWidth - margin * 2);
+      const below = Math.max(0, viewportHeight - rect.bottom - gap - margin);
+      const above = Math.max(0, rect.top - gap - margin);
+      const wantedHeight = Math.min(panel.scrollHeight, 340);
+
+      const placement = below >= wantedHeight || below >= above
+        ? "bottom"
+        : "top";
+
+      const maxHeight = Math.min(340, placement === "bottom" ? below : above);
+      const height = Math.min(panel.scrollHeight, maxHeight);
+
+      const left = Math.max(
+        margin,
+        Math.min(rect.right - width, viewportWidth - width - margin)
+      );
+
+      const top = placement === "bottom"
+        ? rect.bottom + gap
+        : rect.top - gap - height;
+
+      setPosition({ left, top, width, maxHeight, placement });
+    };
+
+    const handleOutside = (event) => {
+      if (
+        !panel.contains(event.target) &&
+        !trigger.contains(event.target)
+      ) {
+        onClose();
+      }
+    };
+
+    const handleKeyDown = (event) => {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        onClose();
+        trigger.focus();
+      }
+    };
+
+    const handleFocus = (event) => {
+      if (
+        !panel.contains(event.target) &&
+        !trigger.contains(event.target)
+      ) {
+        onClose();
+      }
+    };
+
+    updatePosition();
+    window.addEventListener("resize", updatePosition);
+    window.addEventListener("scroll", updatePosition, true);
+    document.addEventListener("pointerdown", handleOutside);
+    document.addEventListener("keydown", handleKeyDown);
+    document.addEventListener("focusin", handleFocus);
+
+    return () => {
+      window.removeEventListener("resize", updatePosition);
+      window.removeEventListener("scroll", updatePosition, true);
+      document.removeEventListener("pointerdown", handleOutside);
+      document.removeEventListener("keydown", handleKeyDown);
+      document.removeEventListener("focusin", handleFocus);
+    };
+  }, [open, onClose, id, technologies.length]);
+
+  if (!open) return null;
+
+  return createPortal(
+    <div
+      ref={panelRef}
+      id={id}
+      className={styles.technologiesPopover}
+      role="region"
+      aria-labelledby={`${id}-title`}
+      data-placement={position?.placement || "bottom"}
+      style={{
+        left: position?.left ?? 0,
+        top: position?.top ?? 0,
+        width: position?.width ?? 320,
+        maxHeight: position?.maxHeight ?? 340,
+        visibility: position ? "visible" : "hidden",
+      }}
+    >
+      <div className={styles.popoverHeader}>
+        <h3 id={`${id}-title`}>Más tecnologías</h3>
+        <button
+          type="button"
+          onClick={onClose}
+          className={styles.popoverClose}
+          aria-label="Cerrar tecnologías"
+        >
+          ×
+        </button>
+      </div>
+
+      <ul className={styles.popoverTechList}>
+        {technologies.map((tech, index) => (
+          <li key={tech.id}>
+            <TechnologyListIcon tech={tech} index={index} />
+            <span className={styles.popoverTechName}>{tech.label}</span>
+          </li>
+        ))}
+      </ul>
+    </div>,
+    document.body
+  );
+}
+
+
+function TechnologyTile({ tech }) {
+  const [imageFailed, setImageFailed] = useState(false);
+
+  return (
+    <div className={styles.techCard}>
+      <div className={styles.techLogo}>
+        {tech.iconUrl && !imageFailed ? (
+          <img
+            src={tech.iconUrl}
+            alt=""
+            width="28"
+            height="28"
+            loading="lazy"
+            onError={() => setImageFailed(true)}
+          />
+        ) : (
+          <span className={styles.techInitial} aria-hidden="true">
+            {tech.label.slice(0, 2).toUpperCase()}
+          </span>
+        )}
+      </div>
+      <span>{tech.label}</span>
+    </div>
+  );
+}
+
+
 function buildLaboratories(items = []) {
-  return Array.isArray(items) ? items.slice(0, 3) : [];
+  return Array.isArray(items) ? items : [];
 }
 
 function buildStats(statsData = {}) {
@@ -70,14 +378,9 @@ function buildStats(statsData = {}) {
   ];
 }
 
-function getExtraTechnologiesCount(statsData = {}) {
-  const total = Number(statsData?.technologies_count ?? 0);
-  return Math.max(total - FIXED_TECHNOLOGIES.length, 0);
-}
-
 function getStatDisplayValue(value, id) {
   const safeValue = Number(value ?? 0);
-  return id === "docs" ? `${safeValue}` : `${safeValue} +`;
+  return String(safeValue);
 }
 
 function getLabHref(lab) {
@@ -289,7 +592,18 @@ function LaboratorySection({
 }) {
   const laboratories = buildLaboratories(featuredItems);
   const stats = buildStats(statsData);
-  const extraTechnologiesCount = getExtraTechnologiesCount(statsData);
+  const scrollerRef = useRef(null);
+  const [technologiesExpanded, setTechnologiesExpanded] = useState(false);
+  const closeTechnologies = useCallback(() => {
+    setTechnologiesExpanded(false);
+  }, []);
+  const technologiesId = useId();
+
+  useLaboratoryWheel(scrollerRef, laboratories.length);
+
+  const technologies = collectLaboratoryTechnologies(laboratories);
+  const extraTechnologies = technologies.slice(FIXED_TECHNOLOGIES.length);
+  const extraTechnologiesCount = extraTechnologies.length;
   const hasLaboratories = laboratories.length > 0;
 
   if (loading && !hasLaboratories) {
@@ -329,7 +643,24 @@ function LaboratorySection({
           </div>
 
           <div className={styles.featuredRow}>
-            <div className={styles.featuredScroller}>
+            <div
+              ref={scrollerRef}
+              className={styles.featuredScroller}
+              tabIndex={0}
+              role="region"
+              aria-label="Tarjetas de laboratorios. Usa las flechas izquierda y derecha para desplazarte."
+              onKeyDown={(event) => {
+                if (event.target !== event.currentTarget) return;
+                if (event.key !== "ArrowRight" && event.key !== "ArrowLeft") return;
+                event.preventDefault();
+                event.currentTarget.scrollBy({
+                  left: event.currentTarget.clientWidth * (event.key === "ArrowRight" ? 0.8 : -0.8),
+                  behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
+                    ? "auto"
+                    : "smooth",
+                });
+              }}
+            >
               {laboratories.map((lab, index) => {
                 const title = lab?.title ?? lab?.titulo ?? "";
                 const summary = lab?.summary ?? lab?.resumen ?? "";
@@ -427,36 +758,32 @@ function LaboratorySection({
             </div>
 
             <div className={styles.techGrid}>
-              {FIXED_TECHNOLOGIES.map((tech, index) => (
-                <div
-                  key={tech.id}
-                  className={`${styles.techCard} ${
-                    styles[`techTone${(index % 6) + 1}`] || ""
-                  }`}
-                >
-                  <div className={styles.techLogo}>
-                    <img
-                      src={tech.iconUrl}
-                      alt={tech.label}
-                      width="28"
-                      height="28"
-                      loading="lazy"
-                    />
-                  </div>
-                  <span>{tech.label}</span>
-                </div>
+              {FIXED_TECHNOLOGIES.map((tech) => (
+                <TechnologyTile key={tech.id} tech={tech} />
               ))}
 
               {extraTechnologiesCount > 0 && (
-                <div
-                  className={`${styles.techCard} ${styles.techCardMore} ${styles.techToneMore || ""}`}
+                <button
+                  type="button"
+                  className={`${styles.techCard} ${styles.techCardMore}`}
+                  
+                  aria-expanded={technologiesExpanded}
+                  aria-controls={technologiesId}
+                  onClick={() => setTechnologiesExpanded((value) => !value)}
                 >
                   <div className={styles.techMoreValue}>
-                    + {extraTechnologiesCount}
+                    {technologiesExpanded ? "−" : `+${extraTechnologiesCount}`}
                   </div>
-                  <span>Más</span>
-                </div>
+                  <span>{technologiesExpanded ? "Ver menos" : "Ver todas"}</span>
+                </button>
               )}
+
+              <TechnologiesDialog
+                id={technologiesId}
+                open={technologiesExpanded}
+                onClose={closeTechnologies}
+                technologies={extraTechnologies}
+              />
             </div>
           </article>
         </div>

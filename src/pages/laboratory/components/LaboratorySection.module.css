@@ -1028,3 +1028,356 @@
     scroll-behavior: auto;
   }
 }
+
+/* Ajuste suave: conservar diseño original */
+.featuredRow {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.featuredScroller {
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+/* Menos brillo, sin sustituir los colores originales */
+.labCard::before {
+  opacity: 0.35;
+}
+
+.labCard::after {
+  opacity: 0.2;
+}
+
+.labBackgroundPicture img {
+  filter: saturate(0.85) contrast(1.01);
+}
+
+.hexOuter {
+  filter: none;
+}
+
+.hexHalo,
+.hexGlow {
+  opacity: 0.35;
+}
+
+/* Mantener el acento, pero mejorar lectura */
+.labHeader h3 {
+  background: none;
+  -webkit-background-clip: initial;
+  background-clip: initial;
+  -webkit-text-fill-color: currentColor;
+  -webkit-text-stroke: 0;
+  color: var(--text-main);
+  text-shadow: none;
+  line-height: 1.25;
+}
+
+.countValue {
+  background: none;
+  -webkit-text-fill-color: currentColor;
+  -webkit-text-stroke: 0;
+  color: var(--text-main);
+  text-shadow: none;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+.statCard strong {
+  color: var(--text-main);
+  font-size: clamp(1.05rem, 1.3vw, 1.4rem);
+  line-height: 1.2;
+  font-variant-numeric: tabular-nums;
+}
+
+.statCard span {
+  font-size: clamp(0.7rem, 0.65rem + 0.16vw, 0.82rem);
+  line-height: 1.35;
+}
+
+.techCardMore {
+  appearance: none;
+  font: inherit;
+  cursor: pointer;
+  color: inherit;
+}
+
+.techCardMore:hover {
+  border-color: var(--lab-accent, var(--accent));
+}
+
+.techCardMore:focus-visible,
+.featuredScroller:focus-visible,
+.dialogClose:focus-visible {
+  outline: 2px solid var(--accent, #0891b2);
+  outline-offset: 4px;
+}
+
+.techLogo .techInitial {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  min-height: 0;
+  max-height: none;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+/* Ventana informativa: no añade tarjetas al panel */
+.technologiesDialog {
+  box-sizing: border-box;
+  width: min(520px, calc(100vw - 2rem));
+  max-height: 80dvh;
+  margin: auto;
+  padding: 1.4rem;
+  border-radius: 18px;
+  border: 1px solid #d7dee7;
+  background: #ffffff;
+  color: #17212f;
+  box-shadow: 0 24px 80px rgb(0 0 0 / 24%);
+  overflow-y: auto;
+}
+
+.technologiesDialog::backdrop {
+  background: rgb(5 12 22 / 48%);
+  backdrop-filter: blur(3px);
+}
+
+:global([data-theme="dark"]) .technologiesDialog {
+  background: var(--bg-card, #141e2c);
+  color: var(--text-main, #f1f5f9);
+  border-color: var(--border, #354152);
+}
+
+.dialogHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.dialogHeader h3 {
+  margin: 0;
+  font-size: 1.15rem;
+  line-height: 1.4;
+  color: inherit;
+}
+
+.dialogClose {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  border: 1px solid currentColor;
+  border-radius: 10px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.dialogDescription {
+  margin: 0.8rem 0 1rem;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: inherit;
+  opacity: 0.85;
+}
+
+.technologiesList {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.technologiesList li {
+  padding: 0.7rem 0.5rem;
+  border-bottom: 1px solid rgb(128 128 128 / 22%);
+  color: inherit;
+  font-size: 0.9rem;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+
+@media (min-width: 1024px) {
+  .featuredRow {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .featuredScroller {
+    overflow-x: auto;
+    scroll-snap-type: none;
+  }
+}
+
+@media (max-width: 380px) {
+  .technologiesList {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+/* Ventana informativa anclada al botón de tecnologías */
+.technologiesPopover {
+  position: fixed;
+  z-index: 1000;
+  box-sizing: border-box;
+  overflow-y: auto;
+  padding: 0.8rem;
+  border: 1px solid #d9e1ea;
+  border-radius: 16px;
+  background: #ffffff;
+  color: #17212f;
+  box-shadow:
+    0 14px 42px rgb(15 23 42 / 16%),
+    0 3px 10px rgb(15 23 42 / 6%);
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+}
+
+:global([data-theme="dark"]) .technologiesPopover {
+  background: var(--bg-card, #152131);
+  color: var(--text-main, #edf2f8);
+  border-color: var(--border, #344355);
+  box-shadow: 0 16px 45px rgb(0 0 0 / 30%);
+}
+
+.popoverHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.15rem 0.15rem 0.65rem;
+  border-bottom: 1px solid rgb(128 128 128 / 18%);
+}
+
+.popoverHeader h3 {
+  margin: 0;
+  color: inherit;
+  font-size: 0.94rem;
+  line-height: 1.4;
+  font-weight: 700;
+}
+
+.popoverClose {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 0;
+  border-radius: 8px;
+  background: rgb(128 128 128 / 10%);
+  color: inherit;
+  font: inherit;
+  font-size: 1.35rem;
+  cursor: pointer;
+}
+
+.popoverClose:hover {
+  background: rgb(128 128 128 / 20%);
+}
+
+.popoverClose:focus-visible {
+  outline: 2px solid var(--accent, #0891b2);
+  outline-offset: 2px;
+}
+
+.popoverTechList {
+  display: grid;
+  gap: 0.35rem;
+  margin: 0.65rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.popoverTechList li {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-width: 0;
+  padding: 0.55rem 0.65rem;
+  border: 1px solid rgb(128 128 128 / 13%);
+  border-radius: 11px;
+  background: rgb(128 128 128 / 5%);
+}
+
+.popoverTechIcon {
+  display: grid;
+  place-items: center;
+  flex: 0 0 38px;
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background: hsl(var(--tech-hue) 65% 50% / 10%);
+}
+
+.popoverTechIcon img {
+  display: block;
+  width: 26px;
+  height: 26px;
+  object-fit: contain;
+}
+
+.popoverTechIcon span {
+  color: hsl(var(--tech-hue) 65% 34%);
+  font-size: 0.74rem;
+  font-weight: 800;
+}
+
+:global([data-theme="dark"]) .popoverTechIcon span {
+  color: hsl(var(--tech-hue) 70% 74%);
+}
+
+.popoverTechName {
+  min-width: 0;
+  color: inherit;
+  font-size: 0.9rem;
+  line-height: 1.4;
+  font-weight: 550;
+  overflow-wrap: anywhere;
+}
+
+/* Fondo sólido de la ventana informativa */
+.technologiesPopover {
+  background: #ffffff;
+  color: #17212f;
+  border-color: #cbd5e1;
+  opacity: 1;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  box-shadow: 0 16px 45px rgb(15 23 42 / 24%);
+}
+
+:global([data-theme="dark"]) .technologiesPopover {
+  background: #182332;
+  color: #f1f5f9;
+  border-color: #46566b;
+  box-shadow: 0 16px 45px rgb(0 0 0 / 45%);
+}
+
+.popoverTechList li {
+  background: #f3f6fa;
+  border-color: #dce3ec;
+}
+
+:global([data-theme="dark"]) .popoverTechList li {
+  background: #223044;
+  border-color: #35465e;
+}
+
+.popoverHeader h3,
+.popoverTechName {
+  color: inherit;
+}
+
+.popoverTechIcon img {
+  opacity: 1;
+  filter: none;
+}
