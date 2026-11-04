@@ -12,18 +12,22 @@ import "./FeaturedProjectCard.css";
 
 function normalizeList(value) {
   if (Array.isArray(value)) {
-    return value.map((item) => String(item).trim()).filter(Boolean);
+    return value
+      .filter((item) => item !== null && item !== undefined)
+      .map((item) => String(item).trim())
+      .filter(Boolean);
   }
 
   if (typeof value === "string") {
     const trimmed = value.trim();
+
     if (!trimmed) return [];
 
     try {
       const parsed = JSON.parse(trimmed);
 
       if (Array.isArray(parsed)) {
-        return parsed.map((item) => String(item).trim()).filter(Boolean);
+        return normalizeList(parsed);
       }
 
       if (typeof parsed === "string") {
@@ -41,21 +45,6 @@ function normalizeList(value) {
   }
 
   return [];
-}
-
-function isRemoteImage(path) {
-  return /^https?:\/\//i.test(path);
-}
-
-function buildCloudinaryVariant(url, width, extension) {
-  if (!url) return "";
-
-  if (!url.includes("/upload/")) return url;
-
-  const [beforeUpload, afterUpload] = url.split("/upload/");
-  const transformation = `f_${extension},q_auto,w_${width}`;
-
-  return `${beforeUpload}/upload/${transformation}/${afterUpload}`;
 }
 
 function hasImageExtension(path) {
@@ -88,17 +77,29 @@ function getResponsiveImageSources(images) {
   const avifSrc = buildVariant(avifBase, "avif");
   const webpSrc = buildVariant(webpBase, "webp");
 
+  const otherImage = normalized.find((item) => hasImageExtension(item)) || "";
+
   return {
     avifSrc,
     webpSrc,
-    fallbackSrc: webpSrc || avifSrc,
+    fallbackSrc: webpSrc || avifSrc || otherImage,
   };
 }
 
+function getThemeBackgroundSources(primaryValue, alternativeValue) {
+  const primarySources = getResponsiveImageSources(primaryValue);
+
+  if (primarySources.fallbackSrc) {
+    return primarySources;
+  }
+
+  return getResponsiveImageSources(alternativeValue);
+}
+
 function getProjectIcon(project, techList) {
-  const text = `${project?.title || ""} ${project?.short_description || ""} ${
-    project?.stack_summary || ""
-  } ${techList.join(" ")}`.toLowerCase();
+  const text = `${project?.title || ""} ${
+    project?.short_description || ""
+  } ${project?.stack_summary || ""} ${techList.join(" ")}`.toLowerCase();
 
   if (
     text.includes("api") ||
@@ -200,19 +201,34 @@ export default function ProjectCard({
   }, [project, techList]);
 
   const darkSources = useMemo(() => {
-    return getResponsiveImageSources(project?.card_background_dark);
-  }, [project?.card_background_dark]);
+    return getThemeBackgroundSources(
+      project?.card_background_dark,
+      project?.fondo_tarjeta_dark,
+    );
+  }, [project?.card_background_dark, project?.fondo_tarjeta_dark]);
 
   const lightSources = useMemo(() => {
-    return getResponsiveImageSources(project?.card_background_light);
-  }, [project?.card_background_light]);
+    return getThemeBackgroundSources(
+      project?.card_background_light,
+      project?.fondo_tarjeta_light,
+    );
+  }, [project?.card_background_light, project?.fondo_tarjeta_light]);
 
   const hasBackground = Boolean(
-    darkSources?.fallbackSrc || lightSources?.fallbackSrc,
+    darkSources.fallbackSrc || lightSources.fallbackSrc,
   );
+
+  const resolvedLightSources = lightSources.fallbackSrc
+    ? lightSources
+    : darkSources;
+
+  const resolvedDarkSources = darkSources.fallbackSrc
+    ? darkSources
+    : lightSources;
 
   const handleOpenProject = () => {
     if (!projectSlug) return;
+
     navigate(`/proyectos/${projectSlug}`);
   };
 
@@ -232,19 +248,19 @@ export default function ProjectCard({
       }}
       role="button"
       tabIndex={projectSlug ? 0 : -1}
-      aria-label={`Abrir proyecto ${project?.title || "sin título"}`}
+      aria-label={`Abrir proyecto ${project.title || "sin título"}`}
       style={{ cursor: projectSlug ? "pointer" : "default" }}
     >
       {hasBackground ? (
         <>
           <div className="project-card-bg" aria-hidden="true">
             <BackgroundPicture
-              sources={lightSources?.fallbackSrc ? lightSources : darkSources}
+              sources={resolvedLightSources}
               className="project-card-bg__picture project-card-bg__picture--light"
             />
 
             <BackgroundPicture
-              sources={darkSources?.fallbackSrc ? darkSources : lightSources}
+              sources={resolvedDarkSources}
               className="project-card-bg__picture project-card-bg__picture--dark"
             />
           </div>
@@ -257,14 +273,14 @@ export default function ProjectCard({
         <div className="expertise-icon">{icon}</div>
 
         <div className="card-title-wrap">
-          <h3>{project?.title || "Sin título"}</h3>
+          <h3>{project.title || "Sin título"}</h3>
         </div>
       </div>
 
-      <p>{project?.short_description || "Sin descripción"}</p>
+      <p>{project.short_description || "Sin descripción"}</p>
 
       <div className="laboratory-counter project-card-stack">
-        <strong>{project?.stack_summary || "Software"}</strong>
+        <strong>{project.stack_summary || "Software"}</strong>
       </div>
 
       {techList.length > 0 ? (
