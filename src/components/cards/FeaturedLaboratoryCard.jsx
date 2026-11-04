@@ -8,35 +8,112 @@ import {
 } from "lucide-react";
 import "./FeaturedLaboratoryCard.css";
 
-function buildResponsiveImageSources(mediaLike, fallbackImage = "") {
-  const media = mediaLike || null;
+const DEFAULT_SIZES =
+  "(max-width: 767px) 92vw, (max-width: 1279px) 48vw, 420px";
 
-  if (media) {
-    return {
-      avifSrcSet: media.avifSrcSet || media.avif_srcset || "",
-      webpSrcSet: media.webpSrcSet || media.webp_srcset || "",
-      fallbackSrcSet: media.srcSet || media.srcset || "",
-      sizes:
-        media.sizes ||
-        "(max-width: 767px) 92vw, (max-width: 1279px) 48vw, 420px",
-      fallbackSrc: media.src || fallbackImage || "",
-      width: Number(media.width || 1400),
-      height: Number(media.height || 900),
-    };
+function normalizeList(value) {
+  if (Array.isArray(value)) {
+    return value
+      .filter((item) => typeof item === "string")
+      .map((item) => item.trim())
+      .filter(Boolean);
   }
 
+  if (typeof value !== "string") return [];
+
+  const trimmed = value.trim();
+
+  if (!trimmed) return [];
+
+  try {
+    const parsed = JSON.parse(trimmed);
+
+    if (Array.isArray(parsed)) {
+      return normalizeList(parsed);
+    }
+
+    if (typeof parsed === "string") {
+      return parsed
+        .split(",")
+        .map((item) => item.trim())
+        .filter(Boolean);
+    }
+  } catch {
+    return trimmed
+      .split(",")
+      .map((item) => item.trim())
+      .filter(Boolean);
+  }
+
+  return [];
+}
+
+function hasImageExtension(path) {
+  return /\.(avif|webp|jpe?g|png|svg)(?:[?#].*)?$/i.test(path);
+}
+
+function buildVariant(basePath, extension) {
+  if (!basePath) return "";
+
+  if (hasImageExtension(basePath)) {
+    return basePath;
+  }
+
+  const [, path, suffix = ""] = basePath.match(/^([^?#]*)(.*)$/);
+
+  return `${path}-960.${extension}${suffix}`;
+}
+
+function buildBackgroundImageSources(value) {
+  const images = normalizeList(value);
+
+  const avifBase =
+    images.find((image) => /\.avif(?:[?#].*)?$/i.test(image)) ||
+    images.find((image) => /avif$/i.test(image)) ||
+    "";
+
+  const webpBase =
+    images.find((image) => /\.webp(?:[?#].*)?$/i.test(image)) ||
+    images.find((image) => /webp$/i.test(image)) ||
+    "";
+
+  const avifSrc = buildVariant(avifBase, "avif");
+  const webpSrc = buildVariant(webpBase, "webp");
+
+  const otherImage = images.find((image) => hasImageExtension(image)) || "";
+
   return {
-    avifSrcSet: "",
-    webpSrcSet: "",
+    avifSrcSet: avifSrc,
+    webpSrcSet: webpSrc,
     fallbackSrcSet: "",
-    sizes: "(max-width: 767px) 92vw, (max-width: 1279px) 48vw, 420px",
-    fallbackSrc: fallbackImage || "",
+    sizes: DEFAULT_SIZES,
+    fallbackSrc: webpSrc || avifSrc || otherImage,
     width: 1400,
     height: 900,
   };
 }
 
+function buildResponsiveImageSources(mediaLike, fallbackImage = "") {
+  const media = mediaLike || null;
+
+  return {
+    avifSrcSet: media?.avifSrcSet || media?.avif_srcset || "",
+    webpSrcSet: media?.webpSrcSet || media?.webp_srcset || "",
+    fallbackSrcSet: media?.srcSet || media?.srcset || "",
+    sizes: media?.sizes || DEFAULT_SIZES,
+    fallbackSrc: media?.src || fallbackImage || "",
+    width: Number(media?.width || 1400),
+    height: Number(media?.height || 900),
+  };
+}
+
 function getThemeImageSources(item) {
+  const lightBackground = buildBackgroundImageSources(
+    item?.fondo_tarjeta_light,
+  );
+
+  const darkBackground = buildBackgroundImageSources(item?.fondo_tarjeta_dark);
+
   const lightMedia =
     item?.coverImageMediaLight ||
     item?.cover_image_media_light ||
@@ -51,45 +128,55 @@ function getThemeImageSources(item) {
     item?.cover_image_media?.dark ||
     null;
 
-  const lightImage =
-    item?.coverImageLight ||
-    item?.cover_image_light ||
-    item?.coverImage ||
-    "";
+  const lightImage = item?.coverImageLight || item?.cover_image_light || "";
 
-  const darkImage =
-    item?.coverImageDark ||
-    item?.cover_image_dark ||
-    item?.coverImage ||
-    "";
+  const darkImage = item?.coverImageDark || item?.cover_image_dark || "";
 
-  const light = buildResponsiveImageSources(lightMedia, lightImage);
-  const dark = buildResponsiveImageSources(darkMedia, darkImage);
+  const legacyLight = buildResponsiveImageSources(lightMedia, lightImage);
+  const legacyDark = buildResponsiveImageSources(darkMedia, darkImage);
+
+  const sharedImage = buildResponsiveImageSources(
+    null,
+    item?.coverImage || item?.cover_image || "",
+  );
+
+  const light = lightBackground.fallbackSrc ? lightBackground : legacyLight;
+
+  const dark = darkBackground.fallbackSrc ? darkBackground : legacyDark;
 
   return {
-    light: light?.fallbackSrc ? light : dark,
-    dark: dark?.fallbackSrc ? dark : light,
+    light: light.fallbackSrc ? light : dark.fallbackSrc ? dark : sharedImage,
+
+    dark: dark.fallbackSrc ? dark : light.fallbackSrc ? light : sharedImage,
   };
 }
 
-function BackgroundPicture({ sources, className, alt }) {
+function BackgroundPicture({ sources, className, alt = "" }) {
   if (!sources?.fallbackSrc) return null;
 
   return (
     <picture className={className} aria-hidden={alt ? undefined : "true"}>
       {sources.avifSrcSet ? (
-        <source type="image/avif" srcSet={sources.avifSrcSet} sizes={sources.sizes} />
+        <source
+          type="image/avif"
+          srcSet={sources.avifSrcSet}
+          sizes={sources.sizes}
+        />
       ) : null}
 
       {sources.webpSrcSet ? (
-        <source type="image/webp" srcSet={sources.webpSrcSet} sizes={sources.sizes} />
+        <source
+          type="image/webp"
+          srcSet={sources.webpSrcSet}
+          sizes={sources.sizes}
+        />
       ) : null}
 
       <img
         src={sources.fallbackSrc}
         srcSet={sources.fallbackSrcSet || undefined}
         sizes={sources.fallbackSrcSet ? sources.sizes : undefined}
-        alt={alt || ""}
+        alt={alt}
         className="lab-card-rich__image"
         loading="lazy"
         decoding="async"
@@ -103,20 +190,26 @@ function BackgroundPicture({ sources, className, alt }) {
 export default function LaboratoryCard({ item, className = "" }) {
   if (!item) return null;
 
-  const {
-    title = "Laboratorio destacado",
-    summary = "Laboratorio técnico real.",
-    category = "Laboratorio",
-    status = "Activo",
-    relatedAreas = [],
-    documentationCount = 0,
-    progressCount = 0,
-  } = item;
+  const title = item.title || item.titulo || "Laboratorio destacado";
+
+  const summary = item.summary || item.resumen || "Laboratorio técnico real.";
+
+  const category = item.category || item.categoria || "Laboratorio";
+  const status = item.status || item.estado || "Activo";
+
+  const relatedAreas = item.relatedAreas ?? item.areas_relacionadas ?? [];
+
+  const documentationCount =
+    item.documentationCount ?? item.documentacion_count ?? 0;
+
+  const progressCount = item.progressCount ?? 0;
 
   const safeRelatedAreas = Array.isArray(relatedAreas) ? relatedAreas : [];
+
   const themeSources = getThemeImageSources(item);
+
   const hasImage = Boolean(
-    themeSources?.light?.fallbackSrc || themeSources?.dark?.fallbackSrc
+    themeSources.light.fallbackSrc || themeSources.dark.fallbackSrc,
   );
 
   return (
@@ -135,13 +228,11 @@ export default function LaboratoryCard({ item, className = "" }) {
             <BackgroundPicture
               sources={themeSources.light}
               className="lab-card-rich__picture lab-card-rich__picture--light"
-              alt=""
             />
 
             <BackgroundPicture
               sources={themeSources.dark}
               className="lab-card-rich__picture lab-card-rich__picture--dark"
-              alt=""
             />
           </>
         ) : (
@@ -154,6 +245,7 @@ export default function LaboratoryCard({ item, className = "" }) {
 
         <div className="lab-card-rich__floating">
           <span className="lab-card-rich__badge">{category}</span>
+
           <span className="lab-card-rich__badge is-status">{status}</span>
         </div>
       </div>
@@ -202,6 +294,7 @@ export default function LaboratoryCard({ item, className = "" }) {
               <FolderKanban size={16} />
               Documentación
             </div>
+
             <strong>{documentationCount}</strong>
             <span>bloques</span>
           </div>
@@ -211,6 +304,7 @@ export default function LaboratoryCard({ item, className = "" }) {
               <Rocket size={16} />
               Avances
             </div>
+
             <strong>{progressCount}</strong>
             <span>hitos</span>
           </div>
@@ -220,6 +314,7 @@ export default function LaboratoryCard({ item, className = "" }) {
               <Activity size={16} />
               Estado
             </div>
+
             <strong className="is-text">{status}</strong>
             <span>actual</span>
           </div>
